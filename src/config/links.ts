@@ -20,6 +20,16 @@ export const LINKS = {
   /** Explore Academy: the Academy page on this site. The storefront inside Practice is `academyApp`. */
   academy: "/academy",
   academyApp: into("/academy", "academy"),
+  /** The live Academy page's own links, kept exactly as they point today (Academy doc: nothing about links changes). */
+  live: {
+    humanFoundations: "https://innerboardsuite.com/human-foundations",
+    wisdomCollection: "https://innerboardsuite.com/wisdom-collection",
+    certifiedMindMethod: "https://innerboardsuite.com/certified-mind-method",
+    innerlab: "https://innerboardsuite.com/innerlab-5011",
+    innerlabMembership: "https://innerboardsuite.com/innerlab-lp",
+    quizPage: "https://innerboardsuite.com/quiz-page",
+    login: "https://www.skool.com/login"
+  },
   /** The Practice sales page on this site. */
   practicePage: "/practice",
   /** The INQ Certification page on this site. */
@@ -29,7 +39,7 @@ export const LINKS = {
   /** Enroll now (INQ). Pending: checkout or enrollment URL. Interim: the same conversation. */
   inqEnroll: "mailto:info@innerboardsuite.com?subject=INQ%20Certification%3A%20enroll",
   /** The Certified Mind Method, its Academy course. Pending: the course URL. */
-  certifiedMind: into("/academy", "inq"),
+  certifiedMind: "https://innerboardsuite.com/certified-mind-method",
   /** InnerLab, inside Practice. */
   innerlab: into("/lab", "innerlab"),
   /** Explore InnerBoard IOS. Known. */
