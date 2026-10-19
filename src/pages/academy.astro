@@ -12,7 +12,7 @@ import { LINKS } from "../config/links";
 
 const title = "InnerBoard Academy · The curriculum school never offered";
 const description =
-  "Self-paced courses in the skills nobody taught you: what to do with a racing mind, a big feeling, a hard conversation. Start at the beginning, or start where you are.";
+  "Self-paced courses in the skills nobody taught you: a racing mind, a big feeling, a hard conversation. Start at the beginning, or where you are.";
 
 const levels = [
   { name: "Foundations", body: "Where you start seeing what's actually driving you. The starting place in every collection. Your thoughts, your reactions, and why you keep doing what you do." },
@@ -47,26 +47,32 @@ const testimonials = [
 ---
 <Base title={title} description={description} path="/academy" theme="teal" themeColor="#f7f4ee">
   <!-- ── Hero ─────────────────────────────────────────────────────────── -->
-  <section class="bg-ac-cream relative overflow-hidden">
-    <div class="absolute -top-32 right-[-10%] w-[640px] h-[640px] rounded-full bg-teal/10 blur-3xl" aria-hidden="true"></div>
-    <div class="wrap relative pt-[120px] sm:pt-[160px] pb-20 sm:pb-28">
-      <div class="reveal is-in max-w-[820px]">
-        <p class="eyebrow">InnerBoard Academy · Learn</p>
-        <h1 class="mt-5 text-[44px] sm:text-[64px] lg:text-[76px] leading-[1.0] text-ink" data-words>The curriculum school <em>never</em> offered.</h1>
-        <p class="mt-6 max-w-[640px] text-[17px] sm:text-[20px] leading-relaxed text-ink-muted">
-          Self-paced courses in the skills nobody taught you: what to do with a racing mind, a big feeling, a hard conversation. Start at the beginning, or start where you are.
-        </p>
-        <div class="mt-8">
-          <a href="#library" class="btn btn-teal">Browse the collections <Arrow /></a>
+  <section class="bg-ac-cream">
+    <div class="wrap pt-[120px] sm:pt-[160px] pb-16 sm:pb-24">
+      <div class="grid gap-12 lg:grid-cols-12 lg:items-end">
+        <div class="reveal is-in lg:col-span-7">
+          <p class="eyebrow">InnerBoard Academy · Learn</p>
+          <h1 class="mt-5 text-[44px] sm:text-[64px] lg:text-[72px] leading-[1.0] text-ink" data-words>The curriculum school <em>never</em> offered.</h1>
+          <p class="mt-6 max-w-[600px] text-[17px] sm:text-[20px] leading-relaxed text-ink-muted">
+            Self-paced courses in the skills nobody taught you: what to do with a racing mind, a big feeling, a hard conversation. Start at the beginning, or start where you are.
+          </p>
+          <div class="mt-8">
+            <a href="#library" class="btn btn-teal">Browse the collections <Arrow /></a>
+          </div>
+          <p class="mt-4 text-[15px] italic text-ink-faint font-display">For the moment you're done reacting the same way and getting the same result.</p>
         </div>
-        <p class="mt-4 text-[15px] italic text-ink-faint font-display">For the moment you're done reacting the same way and getting the same result.</p>
+        <ul class="reveal is-in lg:col-span-4 lg:col-start-9 space-y-5" style="--d:120ms">
+          {[["Twelve collections", "Core curriculum, life stage, and domain. Every one stands on its own."], ["Three levels", "Foundations, Practicum, Graduate. Go as deep as you want."], ["Yours to keep", "Buy the courses you want. Keep them forever."]].map(([n, b]) => (
+            <li class="border-t border-teal pt-4"><p class="font-display text-[22px] text-ink">{n}</p><p class="mt-1 text-[15px] text-ink-muted">{b}</p></li>
+          ))}
+        </ul>
       </div>
     </div>
   </section>
 
   <!-- ── The gap ──────────────────────────────────────────────────────── -->
-  <section class="bg-ac-cream-2">
-    <div class="wrap py-20 sm:py-28">
+  <section class="bg-ac-cream border-t border-ac-line">
+    <div class="wrap sec-s">
       <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
         <div class="reveal">
           <p class="eyebrow">The gap</p>
@@ -77,7 +83,7 @@ const testimonials = [
           </ul>
         </div>
         <div class="reveal" style="--d:120ms">
-          <h2 class="text-[36px] sm:text-[52px] text-ink">Nobody taught you how to <em>lead yourself.</em></h2>
+          <h2 class="text-[36px] sm:text-[48px] leading-[1.06] text-ink">Nobody taught you how to <em>lead yourself.</em></h2>
           <p class="mt-5 text-[18px] sm:text-[20px] text-ink-muted font-display">The most important skill of your life, <em>left for you to figure out on your own.</em></p>
         </div>
       </div>
@@ -85,76 +91,72 @@ const testimonials = [
   </section>
 
   <!-- ── How it works ─────────────────────────────────────────────────── -->
-  <section class="bg-ac-cream">
-    <div class="wrap py-20 sm:py-28">
+  <section class="bg-ac-cream-2">
+    <div class="wrap sec-m">
       <div class="reveal max-w-[720px]">
         <p class="eyebrow">How it works</p>
-        <h2 class="mt-4 text-[36px] sm:text-[52px] text-ink">Twelve collections. One <em>direction.</em></h2>
+        <h2 class="mt-4 text-[38px] sm:text-[56px] leading-[1.0] text-ink">Twelve collections. One <em>direction.</em></h2>
         <p class="mt-5 text-[16.5px] leading-relaxed text-ink-muted">Every collection stands on its own. There's no required order. Start with what's hardest right now and go as deep as you want.</p>
       </div>
-      <ul class="mt-12 grid gap-4 md:grid-cols-3">
+      <ol class="mt-12 border-t border-ac-line">
         {levels.map((level, i) => (
-          <li class="reveal card p-7 sm:p-8" style={`--d:${i * 90}ms`}>
-            <p class="eyebrow">{level.name}</p>
-            <p class="mt-3 text-[15.5px] leading-relaxed text-ink-muted">{level.body}</p>
+          <li class="reveal grid gap-2 md:grid-cols-[200px_1fr] py-6 border-b border-ac-line" style={`--d:${i * 80}ms`}>
+            <h3 class="text-[26px] text-ink">{level.name}</h3>
+            <p class="text-[16px] leading-relaxed text-ink-muted max-w-[640px]">{level.body}</p>
           </li>
         ))}
-      </ul>
+      </ol>
     </div>
   </section>
 
   <!-- ── The library ──────────────────────────────────────────────────── -->
-  <section id="library" class="bg-ac-cream-2">
-    <div class="wrap py-20 sm:py-28">
+  <section id="library" class="bg-ac-cream">
+    <div class="wrap sec-m">
       <div class="reveal max-w-[720px]">
         <p class="eyebrow">The library</p>
-        <h2 class="mt-4 text-[36px] sm:text-[52px] text-ink">Find your <em>door in.</em></h2>
+        <h2 class="mt-4 text-[38px] sm:text-[56px] leading-[1.0] text-ink">Find your <em>door in.</em></h2>
         <p class="mt-5 text-[16.5px] leading-relaxed text-ink-muted">Most people start with Human Foundations. Start anywhere else if you already know where you want to begin.</p>
       </div>
 
-      <h3 class="reveal mt-14 text-[24px] text-ink">Core curriculum</h3>
+      <p class="reveal mt-14 eyebrow">Core curriculum · Available now</p>
       <ul class="mt-5 grid gap-4 md:grid-cols-3">
         {core.map((c, i) => (
-          <li class="reveal card p-7 flex flex-col" style={`--d:${i * 80}ms`}>
-            <span class="self-start rounded-full bg-teal-soft text-teal text-[11px] font-semibold uppercase tracking-[0.12em] px-3 py-1">Available now</span>
-            <h4 class="mt-4 font-display text-[24px] leading-[1.15] text-ink">{c.name}</h4>
-            <p class="mt-2 text-[15px] leading-relaxed text-ink-muted flex-1">{c.body}</p>
-            <a href={c.href} class="link-arrow mt-5 text-[14.5px]">Open the collection <Arrow /></a>
+          <li class="reveal card p-8 flex flex-col" style={`--d:${i * 80}ms`}>
+            <h3 class="font-display text-[26px] leading-[1.1] text-ink">{c.name}</h3>
+            <p class="mt-3 text-[15px] leading-relaxed text-ink-muted flex-1">{c.body}</p>
+            <a href={c.href} class="link-arrow mt-6 text-[14.5px]">Open the collection <Arrow /></a>
           </li>
         ))}
       </ul>
 
-      <h3 class="reveal mt-14 text-[24px] text-ink">Life stage collections</h3>
-      <ul class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {lifeStage.map((c, i) => (
-          <li class="reveal card p-6 flex flex-col" style={`--d:${i * 70}ms`}>
-            <span class="self-start rounded-full border border-ac-line text-ink-faint text-[11px] font-semibold uppercase tracking-[0.12em] px-3 py-1">Coming soon</span>
-            <h4 class="mt-4 font-display text-[21px] leading-[1.15] text-ink">{c.name}</h4>
-            <p class="mt-2 text-[14.5px] leading-relaxed text-ink-muted">{c.body}</p>
-          </li>
-        ))}
-      </ul>
-
-      <h3 class="reveal mt-14 text-[24px] text-ink">Domain collections</h3>
-      <ul class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {domain.map((c, i) => (
-          <li class="reveal card p-6 flex flex-col" style={`--d:${i * 60}ms`}>
-            <span class="self-start rounded-full border border-ac-line text-ink-faint text-[11px] font-semibold uppercase tracking-[0.12em] px-3 py-1">Coming soon</span>
-            <h4 class="mt-4 font-display text-[21px] leading-[1.15] text-ink">{c.name}</h4>
-            <p class="mt-2 text-[14.5px] leading-relaxed text-ink-muted">{c.body}</p>
-          </li>
-        ))}
-      </ul>
+      <div class="mt-16 grid gap-12 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <p class="reveal eyebrow">Life stage collections · Coming soon</p>
+          <ul class="mt-4 border-t border-ac-line">
+            {lifeStage.map((c) => (
+              <li class="reveal py-4 border-b border-ac-line"><p class="font-display text-[20px] text-ink">{c.name}</p><p class="mt-1 text-[14.5px] text-ink-faint">{c.body}</p></li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p class="reveal eyebrow">Domain collections · Coming soon</p>
+          <ul class="mt-4 border-t border-ac-line">
+            {domain.map((c) => (
+              <li class="reveal py-4 border-b border-ac-line"><p class="font-display text-[20px] text-ink">{c.name}</p><p class="mt-1 text-[14.5px] text-ink-faint">{c.body}</p></li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- ── Why it works ─────────────────────────────────────────────────── -->
-  <section class="bg-ac-cream">
-    <div class="wrap py-20 sm:py-28">
+  <section class="bg-ac-cream border-t border-ac-line">
+    <div class="wrap sec-m">
       <div class="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
         <div class="reveal">
           <p class="eyebrow">Why it works</p>
-          <h2 class="mt-4 text-[36px] sm:text-[48px] text-ink">Most courses teach you something <em>new.</em> InnerBoard <em>names</em> something true.</h2>
+          <h2 class="mt-4 text-[34px] sm:text-[44px] leading-[1.06] text-ink">Most courses teach you something <em>new.</em> InnerBoard <em>names</em> something true.</h2>
         </div>
         <p class="reveal text-[17px] sm:text-[19px] leading-relaxed text-ink-muted" style="--d:120ms">
           The frameworks are not ideas to memorize. They are <em class="font-display text-ink">mirrors.</em> You read them and recognize yourself: what has been running, what it has been costing you, what has been possible the whole time. That is the moment a course stops being content and becomes change.
@@ -182,11 +184,11 @@ const testimonials = [
   </section>
 
   <!-- ── Go further ───────────────────────────────────────────────────── -->
-  <section class="bg-ac-cream-2">
-    <div class="wrap py-20 sm:py-28">
+  <section class="bg-ac-cream">
+    <div class="wrap sec-m">
       <div class="reveal max-w-[720px]">
         <p class="eyebrow">Want to go further?</p>
-        <h2 class="mt-4 text-[36px] sm:text-[52px] text-ink">The Academy is where it <em>starts.</em></h2>
+        <h2 class="mt-4 text-[36px] sm:text-[48px] leading-[1.06] text-ink">The Academy is where it <em>starts.</em></h2>
         <p class="mt-4 text-[17px] text-ink-muted">It doesn't have to be where it ends.</p>
       </div>
       <div class="mt-12 grid gap-4 md:grid-cols-2">
@@ -207,11 +209,11 @@ const testimonials = [
   </section>
 
   <!-- ── The filter ───────────────────────────────────────────────────── -->
-  <section class="on-dark bg-ink text-cream relative overflow-hidden aurora" data-glow><span class="aurora-2"></span>
-    <div class="wrap py-24 sm:py-32">
+  <section class="on-dark bg-charcoal text-cream">
+    <div class="wrap sec-l">
       <div class="reveal max-w-[820px]">
         <p class="eyebrow">The filter</p>
-        <h2 class="mt-4 text-[38px] sm:text-[56px]">There is what you have <em>learned.</em> And what you were <em>never taught.</em></h2>
+        <h2 class="mt-4 text-[38px] sm:text-[56px] leading-[1.0]">There is what you have <em>learned.</em> And what you were <em>never taught.</em></h2>
         <p class="mt-5 text-[18px] text-on-dark-muted">This is the curriculum.</p>
         <a href={LINKS.live.humanFoundations} class="btn btn-teal mt-8" data-event="academy_start_click" data-event-location="filter">Start with Human Foundations <Arrow /></a>
       </div>

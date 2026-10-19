@@ -19,12 +19,12 @@ const cards = [
 <ul class="grid gap-5 sm:grid-cols-2" role="list">
   {cards.map((card, i) => (
     <li class={`reveal ${i % 2 === 0 ? "slide-l" : "slide-r"}`} style={`--d:${i * 90}ms`}>
-      <button type="button" class="flip block w-full h-[300px] sm:h-[320px] text-left" aria-pressed="false" aria-label={`${card.front} Flip the card.`}>
+      <button type="button" class="flip block w-full h-[300px] sm:h-[320px] text-left" aria-pressed="false">
         <span class="flip-inner block">
           <span class="flip-face flip-front card bg-cream-3 p-7 flex flex-col justify-between border-gold-soft">
             <span class="eyebrow">Sound familiar?</span>
             <span class="font-display text-[26px] sm:text-[30px] leading-[1.1] tracking-[-0.02em] text-ink">"{card.front}"</span>
-            <span class="inline-flex items-center gap-2 text-[13px] font-semibold text-gold-ink">Flip it <Arrow /></span>
+            <span class="inline-flex items-center gap-2 text-[13px] font-semibold text-gold-ink">Flip it <Arrow /></span><span class="sr-only">Press to flip the card.</span>
           </span>
           <span class="flip-face flip-back bg-forest text-cream p-7 flex flex-col justify-between on-dark">
             <span class="eyebrow">Another way</span>

@@ -80,7 +80,7 @@ function entrances() {
   const items = document.querySelectorAll<HTMLElement>(".reveal, .draw, [data-words], [data-chat], [data-count]");
   if (!("IntersectionObserver" in window)) {
     items.forEach((el) => el.classList.add("is-in"));
-    return;
+    return; // counts stay at their server-rendered final numbers
   }
   const io = new IntersectionObserver(
     (entries) => {
@@ -101,7 +101,8 @@ function entrances() {
 function countUp(el: HTMLElement) {
   const target = Number(el.dataset.count);
   if (!Number.isFinite(target)) return;
-  if (reduced()) { el.textContent = String(target); return; }
+  if (reduced()) { el.textContent = el.dataset.count || String(target); return; }
+  el.textContent = (0).toFixed((el.dataset.count || "").split(".")[1]?.length || 0);
   const duration = Number(el.dataset.countDuration || 1400);
   const decimals = (el.dataset.count || "").split(".")[1]?.length || 0;
   const start = performance.now();
@@ -131,8 +132,10 @@ function header() {
   const button = el.querySelector<HTMLButtonElement>("[data-menu-button]");
   const panel = el.querySelector<HTMLElement>("[data-menu-panel]");
   if (!button || !panel) return;
+  panel.setAttribute("inert", "");
   const set = (open: boolean) => {
     panel.classList.toggle("is-open", open);
+    if (open) panel.removeAttribute("inert"); else panel.setAttribute("inert", "");
     button.setAttribute("aria-expanded", String(open));
     button.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     document.documentElement.classList.toggle("menu-open", open);
@@ -181,29 +184,11 @@ function scrollspy() {
   observe(io);
 }
 
-/** A soft light that follows the pointer across dark sections. Desktop only. */
-function glow() {
-  if (!finePointer() || reduced()) return;
-  document.querySelectorAll<HTMLElement>("[data-glow]").forEach((section) => {
-    let raf = 0;
-    listen(section, "pointermove", (e) => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        const r = section.getBoundingClientRect();
-        section.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
-        section.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
-        section.classList.add("is-lit");
-      });
-    });
-    listen(section, "pointerleave", () => section.classList.remove("is-lit"));
-  });
-}
-
 /** The hero visual leans a few degrees toward the pointer. Desktop only. */
 function tilt() {
   if (!finePointer() || reduced()) return;
   document.querySelectorAll<HTMLElement>("[data-tilt]").forEach((el) => {
+    el.classList.add("tilt-on");
     const max = Number(el.dataset.tilt || 6);
     let raf = 0;
     listen(el, "pointermove", (e) => {
@@ -229,17 +214,20 @@ function stories() {
     const steps = Array.from(story.querySelectorAll<HTMLElement>("[data-step]"));
     const screens = Array.from(story.querySelectorAll<HTMLElement>("[data-screen]"));
     if (!steps.length || !screens.length) return;
-    const show = (name: string) => {
+    // A step names the screen it is about; two steps may share one screen.
+    const show = (step: HTMLElement) => {
+      const name = step.dataset.stepScreen || step.dataset.step || "";
       screens.forEach((s) => s.classList.toggle("is-active", s.dataset.screen === name));
-      steps.forEach((s) => s.classList.toggle("is-current", s.dataset.step === name));
+      steps.forEach((s) => s.classList.toggle("is-current", s === step));
     };
-    show(steps[0].dataset.step || "");
+    show(steps[0]);
+    story.classList.add("js-ready");
     const io = new IntersectionObserver(
       (entries) => {
-        const hit = entries.filter((e) => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (hit) show((hit.target as HTMLElement).dataset.step || "");
+        const hit = entries.filter((e) => e.isIntersecting).pop();
+        if (hit) show(hit.target as HTMLElement);
       },
-      { rootMargin: "-40% 0px -40% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] }
+      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
     );
     steps.forEach((s) => io.observe(s));
     observe(io);
@@ -271,7 +259,11 @@ function scrollwords() {
       const p = Math.min(1, Math.max(0, (start - r.top) / (r.height + (start - end))));
       const list = words.get(el) || [];
       const n = Math.round(p * list.length);
-      list.forEach((w, i) => w.classList.toggle("lit", i < n));
+      const was = Number(el.dataset.lit || 0);
+      if (n === was) continue;
+      const [a, b] = n > was ? [was, n] : [n, was];
+      for (let i = a; i < b; i++) list[i]?.classList.toggle("lit", i < n);
+      el.dataset.lit = String(n);
     }
   };
   const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
@@ -283,9 +275,16 @@ function scrollwords() {
 /** Flip cards: click, tap, Enter and Space. Never on their own. */
 function flips() {
   document.querySelectorAll<HTMLButtonElement>(".flip").forEach((card) => {
+    const faces = () => {
+      const open = card.getAttribute("aria-pressed") === "true";
+      card.querySelector(".flip-front")?.setAttribute("aria-hidden", String(open));
+      card.querySelector(".flip-back")?.setAttribute("aria-hidden", String(!open));
+    };
+    faces();
     listen(card, "click", () => {
       const open = card.getAttribute("aria-pressed") === "true";
       card.setAttribute("aria-pressed", String(!open));
+      faces();
     });
   });
 }
@@ -295,12 +294,18 @@ function flips() {
  * data-passthrough gets the page's utm_* and from parameters appended, so the
  * campaign that brought somebody here is the one their start is counted under.
  */
+const CARRY_KEY = "innerboard.carried";
 function passthrough() {
   const params = new URLSearchParams(window.location.search);
-  const carried = new URLSearchParams();
+  let carried = new URLSearchParams();
   for (const [key, value] of params) {
-    if (/^utm_/i.test(key) || key === "from" || key === "ref") carried.set(key, value);
+    if (/^utm_/i.test(key) || /^(from|ref|gclid|fbclid|msclkid)$/.test(key)) carried.set(key, value);
   }
+  try {
+    // Remembered for the visit, so a landing on /?utm_source=x still counts after a click to /practice.
+    if ([...carried.keys()].length) sessionStorage.setItem(CARRY_KEY, carried.toString());
+    else carried = new URLSearchParams(sessionStorage.getItem(CARRY_KEY) || "");
+  } catch { /* storage may be unavailable */ }
   if ([...carried.keys()].length === 0) return;
   document.querySelectorAll<HTMLAnchorElement>("a[data-passthrough]").forEach((a) => {
     try {
@@ -337,7 +342,6 @@ function page() {
   entrances();
   header();
   scrollspy();
-  glow();
   tilt();
   stories();
   scrollwords();
@@ -345,10 +349,14 @@ function page() {
   passthrough();
 }
 
-// With Astro's ClientRouter, astro:page-load fires on the first load and after
-// every navigation. Without it, this runs once, now.
-if (document.querySelector('meta[name="astro-view-transitions-enabled"]')) {
-  document.addEventListener("astro:page-load", page);
-} else {
+// Module scripts run after the document is parsed, so bind now. With Astro's
+// ClientRouter, astro:page-load also fires after every navigation (and once
+// on first load, which the guard below skips).
+let firstLoadDone = false;
+page();
+document.addEventListener("astro:page-load", () => {
+  if (!firstLoadDone) { firstLoadDone = true; return; }
   page();
-}
+});
+// Before a swapped page paints, mark it so nothing flashes visible then hides.
+document.addEventListener("astro:after-swap", () => document.documentElement.classList.remove("no-js"));

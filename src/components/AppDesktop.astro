@@ -4,10 +4,6 @@ interface Props { screen: string; alt: string; class?: string; eager?: boolean }
 const { screen, alt, class: className = "", eager = false } = Astro.props;
 ---
 <figure class={`browser ${className}`} style="margin:0">
-  <div class="browser-bar">
-    <div class="browser-dots"><span></span><span></span><span></span></div>
-    <div class="browser-url"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>practiceinnerboard.com</div>
-  </div>
   <div class="browser-screen">
     <picture>
       <source type="image/webp" srcset={`/app/${screen}.webp`} />

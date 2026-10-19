@@ -3,10 +3,23 @@
   "framework": "astro",
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/human-foundations", "destination": "https://practiceinnerboard.com/academy?from=academy", "permanent": false },
+    { "source": "/wisdom-collection", "destination": "https://practiceinnerboard.com/academy?from=academy", "permanent": false },
+    { "source": "/certified-mind-method", "destination": "https://practiceinnerboard.com/academy?from=academy", "permanent": false },
+    { "source": "/innerlab-5011", "destination": "https://practiceinnerboard.com/lab?from=innerlab", "permanent": false },
+    { "source": "/innerlab-lp", "destination": "https://practiceinnerboard.com/lab?from=innerlab", "permanent": false },
+    { "source": "/quiz-page", "destination": "https://practiceinnerboard.com/quiz?from=suite", "permanent": false },
+    { "source": "/certification", "destination": "/inq-certification", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/fonts/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800, stale-while-revalidate=2592000" }]
+    },
+    {
+      "source": "/(app|images)/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800, stale-while-revalidate=2592000" }]
     },
     {
       "source": "/_astro/(.*)",

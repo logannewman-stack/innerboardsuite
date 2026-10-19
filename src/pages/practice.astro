@@ -19,7 +19,7 @@ import { LINKS } from "../config/links";
 
 const title = "Practice by InnerBoard · See how it works";
 const description =
-  "A walk through Practice, screen by screen: the Daily Practice Coach, the Dare of the Day, Set Up Your Day, the STEAR tool, the subscription quiz and the Journal. A web app for the home screen of any phone. Start as you are.";
+  "A walk through Practice, screen by screen: the Coach, the Dare of the Day, Set Up Your Day, STEAR, the quiz and the Journal. A web app for any phone. Start as you are.";
 
 /* One day, in the order it goes. Each step names the real screen it shows. */
 const day = [
@@ -46,12 +46,12 @@ const faq = [
   { q: "Is the Coach a person?", a: "No. The Daily Practice Coach is trained on the InnerBoard method and the material behind it. It is coaching, not therapy, and it says so before your first message." },
   { q: "Who can see what I write?", a: "Nobody. Every entry belongs to the person who wrote it. Inside InnerBoard OS, a leader sees how much of a module a team has completed, never what anyone answered." },
   { q: "How much time does it take?", a: "Set Up Your Day is about a minute. A tool is about two. Sunday Set is six, once a week. The point is a practice you keep, not a program you finish." },
-  { q: "What does a subscription include?", a: `Everything in the app, including the Academy and the Wisdom Collective. The current plans and prices are shown inside Practice under Membership. <a class="link-arrow" href="${LINKS.practice}">Open Practice</a>` }
+  { q: "What does a subscription include?", a: `Everything in the app, including the Academy and the Wisdom Collective. The current plans and prices are shown inside Practice under Membership. <a class="link-arrow" href="${LINKS.practice}" data-passthrough>Open Practice</a>` }
 ];
 ---
 <Base title={title} description={description} path="/practice">
   <!-- ── Hero: one statement, the real app ─────────────────────────────── -->
-  <section class="relative overflow-hidden bg-cream">
+  <section class="relative bg-cream">
     <div class="wrap relative pt-[120px] sm:pt-[150px]">
       <div class="reveal is-in mx-auto max-w-[920px] text-center">
         <p class="eyebrow">Practice by InnerBoard</p>
@@ -65,10 +65,8 @@ const faq = [
     </div>
     <div class="reveal is-in relative mt-14 sm:mt-20" style="--d:150ms">
       <div class="wrap">
-        <div class="relative mx-auto max-w-[1120px]">
-          <div class="hidden lg:block absolute left-0 bottom-0 z-[2]"><AppPhone screen="stear2" width={230} alt="STEAR, step two of eight: What did you make it mean? with a sentence typed in." /></div>
-          <div class="hidden lg:block absolute right-0 bottom-0 z-[2]"><AppPhone screen="quiz-results" width={230} alt="The subscription quiz result: Approval, what you're paying for, what it's costing you, and your first step." /></div>
-          <div class="relative z-[1] lg:mx-[150px]" data-tilt="2"><AppDesktop screen="desk-home" alt="Practice on a desktop: the Daily Practice Coach prompt, the Dare of the Day, Set Up Your Day and the October calendar." eager /></div>
+        <div class="relative mx-auto max-w-[1040px]" data-tilt="1">
+          <AppDesktop screen="desk-home" alt="Practice on a desktop: the Daily Practice Coach prompt, the Dare of the Day, Set Up Your Day and the October calendar." eager />
         </div>
       </div>
       <div class="absolute inset-x-0 bottom-0 h-[40%] bg-cream-2" aria-hidden="true"></div>
@@ -79,53 +77,53 @@ const faq = [
   </section>
 
   <!-- ── Section one · The loop ─────────────────────────────────────────── -->
-  <section id="loop" class="on-dark bg-charcoal text-cream relative overflow-hidden aurora" data-glow>
-    <span class="aurora-2"></span>
-    <div class="wrap py-24 sm:py-36 text-center">
-      <p class="eyebrow">Section one · The loop</p>
-      <h2 class="reveal mt-6 mx-auto max-w-[900px] text-[36px] sm:text-[54px] lg:text-[64px] leading-[1.02]">A situation is neutral until you put a sentence on it. <em>Everything after that is downstream.</em></h2>
-      <ol class="reveal mt-14 mx-auto max-w-[520px] space-y-0 font-display text-[26px] sm:text-[34px] leading-[1.1]" style="--d:120ms">
-        {[["Situation", "What a camera would record."], ["Thought", "The sentence you added."], ["Emotion", "What the thought creates."], ["Action", "What that state makes available."], ["Result", "Which proves the thought right."]].map(([w, d], i) => (
-          <li class="py-4">
-            {i > 0 && <span class="block mx-auto w-px h-6 bg-gold-2/40 mb-4" aria-hidden="true"></span>}
-            <span class="text-cream">{w}</span> <em class="text-gold-2">{d}</em>
-          </li>
-        ))}
-      </ol>
-      <p class="reveal mt-12 mx-auto max-w-[560px] text-[17px] leading-relaxed text-on-dark-muted" style="--d:200ms">Most people try to change the result. It almost never lasts. Every tool in Practice is a way of changing the sentence, in the moment it is being written.</p>
+  <section id="loop" class="on-dark bg-charcoal text-cream">
+    <div class="wrap sec-m">
+      <div class="mx-auto max-w-[880px]">
+        <p class="eyebrow">Section one · The loop</p>
+        <h2 class="reveal mt-6 text-[36px] sm:text-[52px] lg:text-[56px] leading-[1.0]">A situation is neutral until you put a sentence on it. <em>Everything after that is downstream.</em></h2>
+        <ol class="reveal mt-12 max-w-[640px] divide-y divide-cream/12 border-y border-cream/12" style="--d:120ms">
+          {[["Situation", "What a camera would record."], ["Thought", "The sentence you added."], ["Emotion", "What the thought creates."], ["Action", "What that state makes available."], ["Result", "Which proves the thought right."]].map(([w, d]) => (
+            <li class="grid grid-cols-[140px_1fr] sm:grid-cols-[170px_1fr] gap-4 py-4 font-display text-[22px] sm:text-[28px] leading-[1.15]">
+              <span class="text-cream">{w}</span><em class="text-on-dark-muted">{d}</em>
+            </li>
+          ))}
+        </ol>
+        <p class="reveal mt-10 max-w-[560px] text-[17px] leading-relaxed text-on-dark-muted" style="--d:200ms">Most people try to change the result. It almost never lasts. Every tool in Practice is a way of changing the sentence, in the moment it is being written.</p>
+      </div>
     </div>
   </section>
 
   <!-- ── Section two · A day in Practice (sticky story, real screens) ────── -->
   <section id="day" class="bg-cream">
-    <div class="wrap py-20 sm:py-28">
+    <div class="wrap sec-m">
       <div class="reveal max-w-[760px]">
         <p class="eyebrow">Section two · A day in Practice</p>
-        <h2 class="mt-5 text-[36px] sm:text-[52px] text-ink">One day, <em>as it actually goes.</em></h2>
+        <h2 class="mt-5 text-[38px] sm:text-[56px] leading-[1.0] text-ink">One day, <em>as it actually goes.</em></h2>
         <p class="mt-5 text-[16.5px] leading-relaxed text-ink-muted">Scroll, and the phone follows the day. Each screen is the app, not a picture of it.</p>
       </div>
       <div data-story class="mt-14 grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-20">
         <div class="hidden lg:block">
-          <div class="sticky top-[104px] flex justify-center">
-            <div class="screens w-[320px] aspect-[600/1299]">
+          <div class="sticky top-[120px] flex justify-center">
+            <div class="screens w-[300px] aspect-[600/1299]">
               {day.map((d, i) => (
-                <div data-screen={d.screen + i} class={i === 0 ? "is-active" : ""}><AppPhone screen={d.screen} width={320} alt="" /></div>
+                <div data-screen={d.screen + i} class={i === 0 ? "is-active" : ""}><AppPhone screen={d.screen} width={300} alt={d.name} /></div>
               ))}
             </div>
           </div>
         </div>
         <ol>
           {day.map((item, i) => (
-            <li data-step={String(i)} data-step-screen={item.screen + i} class="lg:min-h-[70vh] flex items-center py-6 lg:py-0">
+            <li data-step={String(i)} data-step-screen={item.screen + i} class="lg:min-h-[52vh] flex items-center py-6 lg:py-0">
               <div class="w-full">
                 <div class="flex items-baseline gap-4">
-                  <span class="font-display text-[44px] sm:text-[56px] leading-none text-gold">{item.n}</span>
+                  <span class="font-display text-[44px] sm:text-[56px] leading-none text-ink">{item.n}</span>
                   <span class="eyebrow">{item.when}</span>
                 </div>
                 <h3 class="mt-4 text-[28px] sm:text-[36px] leading-[1.08] text-ink">{item.name}</h3>
                 <p class="mt-4 text-[16px] sm:text-[17px] leading-relaxed text-ink-muted max-w-[520px]">{item.body}</p>
-                <div class="lg:hidden mt-7 flex justify-center">
-                  <AppPhone screen={item.screen} width={250} alt={item.name} />
+                <div class="lg:hidden mt-7 flex justify-center" aria-hidden="true">
+                  <AppPhone screen={item.screen} width={250} alt="" />
                 </div>
               </div>
             </li>
@@ -136,16 +134,16 @@ const faq = [
   </section>
 
   <!-- ── Section three · One tool, start to finish ───────────────────────── -->
-  <section id="stear" class="bg-cream-2 overflow-hidden">
-    <div class="wrap py-20 sm:py-28">
+  <section id="stear" class="bg-cream border-t border-line overflow-hidden">
+    <div class="wrap sec-m">
       <div class="reveal grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-end">
         <div>
           <p class="eyebrow">Section three · One tool, start to finish</p>
-          <h2 class="mt-5 text-[36px] sm:text-[52px] text-ink">STEAR, <em>as the app asks it.</em></h2>
+          <h2 class="mt-5 text-[36px] sm:text-[48px] leading-[1.06] text-ink">STEAR, <em>as the app asks it.</em></h2>
         </div>
         <p class="text-[16.5px] leading-relaxed text-ink-muted lg:pb-2">Eight questions, one at a time, each with a line of help under it. The example is a real run: a business partner went quiet after the numbers were sent. By question six, the person is writing what else might be true.</p>
       </div>
-      <ol class="rail mt-12 flex gap-6 overflow-x-auto snap-x snap-mandatory pb-6 -mx-5 px-5 sm:-mx-8 sm:px-8" aria-label="The STEAR steps">
+      <div class="rail-mask -mx-5 sm:-mx-8"><ol class="rail mt-12 flex gap-6 overflow-x-auto snap-x snap-mandatory pb-6 px-5 sm:px-8" role="region" aria-label="The STEAR steps, scrollable" tabindex="0">
         {stear.map((s) => (
           <li class="snap-start shrink-0 w-[250px] sm:w-[270px]">
             <AppPhone screen={s.screen} width={250} alt={`STEAR ${s.step}: ${s.q}`} class="mx-auto" />
@@ -162,8 +160,9 @@ const faq = [
             <a href={LINKS.practice} class="link-arrow mt-4 text-[14px]" data-passthrough>Run it yourself <Arrow /></a>
           </div>
         </li>
-      </ol>
-      <div class="reveal mt-6 grid gap-6 md:grid-cols-3 text-[14.5px] text-ink-muted">
+      </ol></div>
+      <p class="text-[13px] text-ink-faint">Seven frames. Scroll sideways, or swipe.</p>
+      <div class="reveal mt-8 grid gap-6 md:grid-cols-3 text-[14.5px] text-ink-muted border-t border-line pt-6">
         <p><span class="font-semibold text-ink">RAP</span> when a feeling has you: name it in one word, find it in the body, and let it pass. Five steps.</p>
         <p><span class="font-semibold text-ink">Pause + Redirect</span> when you are about to lose control. The ten-second read when you want to know how you are arriving.</p>
         <p><span class="font-semibold text-ink">Sixteen tools</span> in all, each named for the moment it is for, with the method's name beside it. Run them without an account; a membership keeps them.</p>
@@ -172,15 +171,15 @@ const faq = [
   </section>
 
   <!-- ── Section four · The quiz ─────────────────────────────────────────── -->
-  <section id="quiz" class="bg-cream">
-    <div class="wrap py-20 sm:py-28">
+  <section id="quiz" class="bg-cream border-t border-line">
+    <div class="wrap sec-m">
       <div class="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center">
         <div class="reveal">
           <p class="eyebrow">Section four · Where most people start</p>
-          <h2 class="mt-5 text-[36px] sm:text-[52px] text-ink">What are you <em class="text-gold-ink">subscribing to?</em></h2>
+          <h2 class="mt-5 text-[36px] sm:text-[48px] leading-[1.06] text-ink">What are you <em>subscribing to?</em></h2>
           <p class="mt-5 text-[16.5px] leading-relaxed text-ink-muted max-w-[520px]">Eighteen questions about the last thirty days, the way it actually went. No sign-in. The result names the pattern you are paying for most, what it is costing you, where, and one first step. The run on the right came back Approval.</p>
           <div class="mt-8 flex flex-col sm:flex-row gap-3">
-            <a href={LINKS.quiz} class="btn btn-dark" data-passthrough data-event="quiz_click" data-event-location="practice-quiz">Take the quiz <Arrow /></a>
+            <a href={LINKS.quiz} class="btn btn-gold" data-passthrough data-event="quiz_click" data-event-location="practice-quiz">Take the quiz <Arrow /></a>
           </div>
           <p class="mt-4 text-[13px] text-ink-faint">A reflection tool, not a clinical assessment. Four minutes.</p>
         </div>
@@ -193,26 +192,25 @@ const faq = [
   </section>
 
   <!-- ── Section five · Yours ────────────────────────────────────────────── -->
-  <section id="private" class="on-dark bg-navy text-cream relative overflow-hidden aurora" data-glow>
-    <span class="aurora-2"></span>
-    <div class="wrap py-24 sm:py-36">
+  <section id="private" class="on-dark bg-navy text-cream">
+    <div class="wrap sec-l">
       <p class="eyebrow">Section five · Yours</p>
-      <p class="mt-6 font-display text-[28px] sm:text-[40px] lg:text-[48px] leading-[1.15] tracking-[-0.015em] max-w-[1000px]" data-scrollwords>
+      <p class="mt-6 font-display text-[28px] sm:text-[36px] lg:text-[40px] leading-[1.18] tracking-[-0.01em] max-w-[880px]" data-scrollwords>
         Everything you write in Practice belongs to you. It is kept under your own account, nobody at InnerBoard reads it, and inside InnerBoard OS a leader sees module completion, never your answers. There is nothing to install. Practice runs in your browser, sits on the home screen of iPhone and Android, keeps working when the signal drops, and picks up where you left off.
       </p>
     </div>
   </section>
 
   <!-- ── Section six · Everything inside ─────────────────────────────────── -->
-  <section id="inside" class="bg-cream-2">
-    <div class="wrap py-20 sm:py-28">
+  <section id="inside" class="bg-cream">
+    <div class="wrap sec-m">
       <div class="reveal max-w-[760px]">
         <p class="eyebrow">Section six · Everything inside</p>
-        <h2 class="mt-5 text-[36px] sm:text-[52px] text-ink">One account. <em>One place.</em></h2>
+        <h2 class="mt-5 text-[36px] sm:text-[48px] leading-[1.06] text-ink">One account. <em>One place.</em></h2>
         <p class="mt-5 text-[16.5px] leading-relaxed text-ink-muted">The Coach, the tools, the Academy, Inner Lab, the book and InnerBoard OS share one left rail on a desk, and one bottom bar on a phone.</p>
       </div>
       <div class="reveal mt-12 grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-start">
-        <div data-tilt="2"><AppDesktop screen="desk-score" alt="The Company OS Score inside Practice: ten statements scored one to ten." /></div>
+        <div><AppDesktop screen="desk-score" alt="The Company OS Score inside Practice: ten statements scored one to ten." /></div>
         <ul class="divide-y divide-line">
           {[
             ["The Academy", "Every collection, read and practiced in the same place.", LINKS.academy, false],
@@ -233,16 +231,16 @@ const faq = [
   </section>
 
   <!-- ── Section seven · Levels and questions ────────────────────────────── -->
-  <section id="levels" class="bg-cream">
-    <div class="wrap py-20 sm:py-28">
+  <section id="levels" class="bg-cream border-t border-line">
+    <div class="wrap sec-m">
       <div class="grid gap-12 lg:grid-cols-[1fr_1.2fr]">
         <div class="reveal">
           <p class="eyebrow">Section seven · Start as a visitor</p>
-          <h2 class="mt-5 text-[36px] sm:text-[48px] text-ink">Three levels. <em>No card to start.</em></h2>
+          <h2 class="mt-5 text-[32px] sm:text-[40px] leading-[1.08] text-ink">Three levels. <em>No card to start.</em></h2>
           <ol class="mt-8 divide-y divide-line">
             {[["Visit", "Open the quiz, take a book assessment, run a quick tool, have a first conversation with the Coach. No sign-in. Your work stays on your device."], ["Account", "Saving your results is the moment an account exists. Everything on the device moves into it, and it is there next time, on any phone."], ["Subscribe", "Everything in the app: the full tools, the Coach without limits, the Academy, Inner Lab, and the Wisdom Collective. Plans and prices are inside the app, under Membership."]].map(([n, b], i) => (
               <li class="py-5 grid grid-cols-[48px_1fr] gap-3">
-                <span class="font-display text-[32px] leading-none text-gold">{i + 1}</span>
+                <span class="font-display text-[32px] leading-none text-ink">{i + 1}</span>
                 <div><p class="font-display text-[22px] text-ink">{n}</p><p class="mt-1 text-[15px] leading-relaxed text-ink-muted">{b}</p></div>
               </li>
             ))}
@@ -257,11 +255,10 @@ const faq = [
   </section>
 
   <!-- ── Final ───────────────────────────────────────────────────────────── -->
-  <section class="on-dark bg-forest text-cream relative overflow-hidden aurora" data-glow>
-    <span class="aurora-2"></span>
-    <div class="wrap py-24 sm:py-32 text-center">
+  <section class="on-dark bg-forest text-cream">
+    <div class="wrap sec-l text-center">
       <div class="reveal mx-auto max-w-[820px]">
-        <h2 class="text-[40px] sm:text-[60px]">Start today, <em>as you are.</em></h2>
+        <h2 class="text-[40px] sm:text-[56px] leading-[1.0]">Start today, <em>as you are.</em></h2>
         <p class="mt-5 text-[17px] leading-relaxed text-on-dark-muted">Open the app, take the quiz, or bring the Coach the thing that is on your mind. Nothing is asked of you first.</p>
         <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
           <a href={LINKS.practice} class="btn btn-gold" data-passthrough data-event="practice_click" data-event-location="final">Start in Practice <Arrow /></a>
@@ -271,7 +268,3 @@ const faq = [
     </div>
   </section>
 </Base>
-<style>
-  .rail { scrollbar-width: none; }
-  .rail::-webkit-scrollbar { display: none; }
-</style>

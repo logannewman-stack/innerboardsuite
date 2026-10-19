@@ -1,71 +1,50 @@
 /* ── Motion and surface details shared by the InnerBoard sites ───────────── */
 
 /* Headlines arrive a word at a time. */
-.words-ready .w { display: inline-block; opacity: 0; transform: translateY(0.55em) rotate(1.2deg); transform-origin: left bottom;
-  transition: opacity 600ms var(--ease-out), transform 700ms var(--ease-out); transition-delay: calc(var(--i, 0) * 38ms); }
+.words-ready .w { display: inline-block; opacity: 0; transform: translateY(0.4em); transform-origin: left bottom;
+  transition: opacity 520ms var(--ease-out), transform 620ms var(--ease-out); transition-delay: calc(var(--i, 0) * 30ms); }
 .words-ready.is-in .w { opacity: 1; transform: none; }
 .no-js .words-ready .w { opacity: 1; transform: none; }
 
-/* The header's reading progress. */
-[data-progress] { position: absolute; left: 0; bottom: -1px; height: 2px; width: 100%; transform: scaleX(0); transform-origin: left; will-change: transform; }
-
 /* The nav link for the section on screen. */
 [data-header] nav a { position: relative; }
-[data-header] nav a.is-active::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 4px; height: 1.5px; background: currentColor; opacity: 0.6; border-radius: 1px; }
+[data-header] nav a.is-active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 1px; background: currentColor; opacity: 0.7; }
 
-/* Buttons: a light sweeps across the gold on hover. */
-.btn { position: relative; overflow: hidden; isolation: isolate; }
-.btn-gold::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.38) 50%, transparent 70%);
-  transform: translateX(-120%); transition: transform 700ms var(--ease-out); pointer-events: none; z-index: -1; }
-.btn-gold:hover::after { transform: translateX(120%); }
-.btn-gold:hover { transform: translateY(-1px); }
-
-/* Cards lift under a pointer. */
-.card, .card-dark, .card-navy { transition: transform 260ms var(--ease-out), box-shadow 260ms var(--ease-out), border-color 260ms var(--ease-out); }
+/* Cards: a line on cream, a lift only over dark. */
+.card, .card-dark, .card-navy { transition: border-color 200ms var(--ease-out); }
 @media (hover: hover) and (pointer: fine) {
-  li.card:hover, a.card:hover, .card.lift:hover { transform: translateY(-4px); box-shadow: var(--shadow-float); }
-  li.card-dark:hover, li.card-navy:hover, .card-navy.lift:hover { transform: translateY(-4px); border-color: rgba(244,239,228,0.3); }
+  a.card:hover, .card.lift:hover { border-color: var(--color-line-strong); }
+  li.card-dark:hover, li.card-navy:hover, .card-navy.lift:hover { border-color: rgba(244,239,228,0.3); }
 }
 
-/* A light that follows the pointer on dark sections. */
-[data-glow] { position: relative; }
-[data-glow]::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 500ms var(--ease-out);
-  background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(201, 171, 102, 0.14), transparent 55%); z-index: 0; }
-[data-glow].is-lit::before { opacity: 1; }
-[data-glow] > * { position: relative; }
-
-/* Slow drifting colour behind dark sections. */
-.aurora::after, .aurora .aurora-2 { content: ""; position: absolute; width: 520px; height: 520px; border-radius: 50%; pointer-events: none;
-  filter: blur(90px); opacity: 0.32; will-change: transform; animation: drift 26s ease-in-out infinite alternate; z-index: 0; }
-.aurora::after { right: -140px; top: -160px; background: radial-gradient(circle, var(--color-gold-2, #c9ab66), transparent 62%); }
-.aurora .aurora-2 { left: -160px; bottom: -200px; opacity: 0.22; animation-duration: 34s; animation-direction: alternate-reverse;
-  background: radial-gradient(circle, var(--color-aurora-2, #8aa3bf), transparent 62%); }
-@keyframes drift { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(-60px, 40px, 0) scale(1.12); } 100% { transform: translate3d(40px, -30px, 0) scale(0.96); } }
-
-/* The brand mark as a watermark. */
-.watermark { position: absolute; pointer-events: none; opacity: 0.06; z-index: 0; }
-.watermark svg { width: 100%; height: 100%; }
-
 /* The tilting hero visual. */
-[data-tilt] { transition: transform 500ms var(--ease-out); transform-style: preserve-3d; will-change: transform; }
+[data-tilt] { transition: transform 500ms var(--ease-out); transform-style: preserve-3d; }
+.tilt-on { will-change: transform; }
 [data-tilt]:hover { transition-duration: 120ms; }
-
-/* The coach mock: messages arrive one after another once it is seen. */
-[data-chat] .msg { opacity: 0; transform: translateY(10px) scale(0.98); transform-origin: bottom; }
-[data-chat].is-in .msg { animation: pop 420ms var(--ease-spring) forwards; animation-delay: calc(var(--i, 0) * 900ms + 200ms); }
-[data-chat] .typing { opacity: 0; }
-[data-chat].is-in .typing { animation: typing-show 1s linear forwards; animation-delay: calc(var(--i, 0) * 900ms - 650ms); }
-@keyframes pop { to { opacity: 1; transform: none; } }
-@keyframes typing-show { 0%, 10% { opacity: 0; } 15%, 80% { opacity: 1; } 100% { opacity: 0; } }
-.no-js [data-chat] .msg { opacity: 1; transform: none; }
 
 /* The product story: screens crossfade, the current step brightens. */
 [data-story] .screens { position: relative; }
-[data-story] [data-screen] { position: absolute; inset: 0; opacity: 0; transform: translateY(14px) scale(0.985); transition: opacity 520ms var(--ease-out), transform 620ms var(--ease-out); pointer-events: none; }
+[data-story] [data-screen] { position: absolute; inset: 0; opacity: 0; transform: translateY(10px); transition: opacity 480ms var(--ease-out), transform 560ms var(--ease-out); pointer-events: none; }
+[data-story] [data-screen]:first-child { opacity: 1; transform: none; }
 [data-story] [data-screen].is-active { opacity: 1; transform: none; }
-[data-story] [data-step] { opacity: 0.45; transition: opacity 400ms var(--ease-out); }
+[data-story].js-ready [data-screen]:first-child:not(.is-active) { opacity: 0; }
+[data-story] [data-step] { opacity: 0.55; transition: opacity 400ms var(--ease-out); }
 [data-story] [data-step].is-current { opacity: 1; }
 .no-js [data-story] [data-step] { opacity: 1; }
+
+/* A paragraph that lights up as it is read. */
+.sw .w { display: inline-block; opacity: 0.45; transition: opacity 240ms var(--ease-out); }
+.sw .w.lit { opacity: 1; }
+.sw-done .w, .no-js .sw .w { opacity: 1; }
+
+/* A horizontal rail, with its edge fading so the overflow reads. */
+.rail { scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.rail::-webkit-scrollbar { display: none; }
+.rail-mask { mask-image: linear-gradient(to right, black calc(100% - 64px), transparent); -webkit-mask-image: linear-gradient(to right, black calc(100% - 64px), transparent); }
+
+/* A browser window for the desktop app: a line and a shadow, nothing drawn. */
+.browser { border: 1px solid var(--color-line-strong); border-radius: 12px; overflow: hidden; background: var(--color-app-canvas); box-shadow: 0 30px 60px -40px rgba(31,29,26,0.45); }
+.browser-screen { background: var(--color-app-canvas); }
 
 /* Accordions open smoothly where the browser can animate height. */
 .acc::details-content { block-size: 0; overflow: hidden; transition: block-size 320ms var(--ease-out), content-visibility 320ms allow-discrete; }
@@ -73,24 +52,12 @@
 @supports (interpolate-size: allow-keywords) { :root { interpolate-size: allow-keywords; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .words-ready .w, [data-chat] .msg, [data-story] [data-step] { opacity: 1; transform: none; transition: none; animation: none; }
-  .aurora::after, .aurora .aurora-2 { animation: none; }
-  .btn-gold::after { display: none; }
-  [data-glow]::before { display: none; }
+  .words-ready .w, [data-story] [data-step] { opacity: 1; transform: none; transition: none; }
+  .sw .w { opacity: 1; }
+  [data-tilt] { transition: none; transform: none !important; }
   .acc::details-content { transition: none; }
 }
 
-/* A paragraph that lights up as it is read. Chips inside it ride along. */
-.sw .w { display: inline-block; opacity: 0.22; transition: opacity 260ms var(--ease-out); }
-.sw .w.lit { opacity: 1; }
-.sw .chip { display: inline-flex; align-items: center; gap: 6px; vertical-align: middle; margin: 0 2px; padding: 3px 10px; border-radius: 999px; font-family: var(--font-sans); font-size: 0.42em; font-weight: 600; letter-spacing: 0.01em; background: rgba(244,239,228,0.12); border: 1px solid rgba(244,239,228,0.25); color: var(--color-cream, #f4efe4); transform: translateY(-0.08em); }
-.sw .chip svg { width: 1.1em; height: 1.1em; }
-.sw-done .w, .no-js .sw .w { opacity: 1; }
-
-/* A browser window for the desktop app. */
-.browser { border-radius: 16px; background: #0f0e0c; padding: 8px; box-shadow: var(--shadow-float), 0 0 0 1px rgba(0,0,0,0.5) inset; }
-.browser-bar { display: flex; align-items: center; gap: 10px; height: 32px; padding: 0 6px 6px; }
-.browser-dots { display: flex; gap: 6px; }
-.browser-dots span { width: 10px; height: 10px; border-radius: 50%; background: rgba(244,239,228,0.25); }
-.browser-url { flex: 1; height: 22px; border-radius: 6px; background: rgba(244,239,228,0.08); color: rgba(244,239,228,0.7); font-size: 11px; display: flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-sans); }
-.browser-screen { border-radius: 10px; overflow: hidden; background: var(--color-app-canvas); color: var(--color-app-ink); font-family: var(--font-sans); }
+@media (prefers-contrast: more) {
+  .sw .w, [data-story] [data-step], .words-ready .w { opacity: 1 !important; transform: none !important; }
+}

@@ -14,7 +14,7 @@ import Arrow from "../components/Arrow.astro";
 import Accordion from "../components/Accordion.astro";
 import { LINKS } from "../config/links";
 
-const title = "INQ Certification · Coach the transformation that actually changes people";
+const title = "INQ Certification · Coach the change that lasts";
 const description =
   "A self-paced, accredited certification for existing and aspiring coaches. Learn the method, live it in your own life, then lead it with the people you serve.";
 
@@ -80,7 +80,8 @@ const faq = [
   { q: "I'm not a coach yet. Is INQ for me?", a: "Yes. INQ gives you a full foundation: the method, the tools, practice with real people, and the business side. You don't need any coaching experience to start." },
   { q: "I'm already certified. Why add INQ?", a: "Most certifications teach the conversation. INQ gives you more tools and teaches what's underneath them: why people do what they do, and how they change it for themselves. Your existing training doesn't go away. It lands deeper." },
   { q: "How long does it take, and is it self-paced or live?", a: "It's self-paced. Most people finish in two to six months, depending on how quickly they move through the work. Weekly office hours and the community are there the whole way." },
-  { q: "Is it accredited? What credential do I receive?", a: "Yes. INQ is accredited by [ACCREDITING BODY]. Graduates earn [CREDENTIAL NAME]." },
+  // Hidden until Leah supplies the accrediting body and credential name (tracker INQ-14):
+  // { q: "Is it accredited? What credential do I receive?", a: "Yes. INQ is accredited by [ACCREDITING BODY]. Graduates earn [CREDENTIAL NAME]." },
   { q: "Will I use the tools in my own life?", a: "Yes. That's where every module starts." },
   { q: "Does INQ help me build a business?", a: "Yes. The Entrepreneurial Path and the Business Builder cover who you serve, offers, pricing, and how you talk about your work." },
   { q: "What does it cost?", a: "$6,997, with payment options available." },
@@ -90,36 +91,37 @@ const faq = [
 ---
 <Base title={title} description={description} path="/inq-certification" theme="teal" themeColor="#f7f4ee">
   <!-- ── Hero ─────────────────────────────────────────────────────────── -->
-  <section class="bg-ac-cream relative overflow-hidden">
-    <div class="absolute -top-32 right-[-10%] w-[640px] h-[640px] rounded-full bg-teal/10 blur-3xl" aria-hidden="true"></div>
-    <div class="wrap relative pt-[120px] sm:pt-[160px] pb-16 sm:pb-24">
-      <div class="reveal is-in max-w-[860px]">
-        <p class="eyebrow">INQ Certification by InnerBoard</p>
-        <h1 class="mt-5 text-[42px] sm:text-[60px] lg:text-[72px] leading-[1.0] text-ink" data-words>Coach the transformation that actually <em class="text-teal">changes people.</em></h1>
-        <p class="mt-6 max-w-[640px] text-[17px] sm:text-[20px] leading-relaxed text-ink-muted">A self-paced, accredited certification for existing and aspiring coaches. Learn the method, live it in your own life, then lead it with the people you serve.</p>
-        <div class="mt-8 flex flex-col sm:flex-row gap-3">
-          <a href={LINKS.inqBook} class="btn btn-teal" data-event="inq_book_click" data-event-location="hero">Book a conversation <Arrow /></a>
-          <a href={LINKS.inqEnroll} class="btn btn-outline-teal" data-event="inq_enroll_click" data-event-location="hero">Enroll now</a>
+  <section class="bg-ac-cream">
+    <div class="wrap pt-[120px] sm:pt-[160px] pb-16 sm:pb-24">
+      <div class="grid gap-12 lg:grid-cols-12 lg:items-start">
+        <div class="reveal is-in lg:col-span-7">
+          <p class="eyebrow">INQ Certification by InnerBoard</p>
+          <h1 class="mt-5 text-[42px] sm:text-[60px] lg:text-[72px] leading-[1.0] text-ink" data-words>Coach the transformation that actually <em class="text-teal">changes people.</em></h1>
+          <p class="mt-6 max-w-[600px] text-[17px] sm:text-[20px] leading-relaxed text-ink-muted">A self-paced, accredited certification for existing and aspiring coaches. Learn the method, live it in your own life, then lead it with the people you serve.</p>
+          <div class="mt-8 flex flex-col sm:flex-row gap-3">
+            <a href={LINKS.inqBook} class="btn btn-teal" data-event="inq_book_click" data-event-location="hero">Book a conversation <Arrow /></a>
+            <a href={LINKS.inqEnroll} class="btn btn-outline-teal" data-event="inq_enroll_click" data-event-location="hero">Enroll now</a>
+          </div>
+          <p class="mt-8 font-display italic text-[19px] text-ink">Learn it. Live it. Lead it.</p>
         </div>
-        <p class="mt-8 font-display italic text-[19px] text-ink">Learn it. Live it. Lead it.</p>
+        <ul class="reveal is-in lg:col-span-4 lg:col-start-9 space-y-5 lg:pt-10" style="--d:120ms">
+          {values.map((v) => (
+            <li class="border-t border-teal pt-4">
+              <p class="font-display text-[20px] leading-[1.15] text-ink">{v.name}</p>
+              <p class="mt-2 text-[14.5px] leading-relaxed text-ink-muted">{v.body}</p>
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul class="reveal mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 border-t border-ac-line pt-8" style="--d:120ms">
-        {values.map((v) => (
-          <li class="border-t-2 border-teal pt-4">
-            <h2 class="text-[22px] leading-[1.15] text-ink">{v.name}</h2>
-            <p class="mt-3 text-[14.5px] leading-relaxed text-ink-muted">{v.body}</p>
-          </li>
-        ))}
-      </ul>
     </div>
   </section>
 
   <!-- ── Sound familiar ───────────────────────────────────────────────── -->
   <section class="bg-ac-cream-2">
-    <div class="wrap py-20 sm:py-28">
+    <div class="wrap sec-m">
       <div class="reveal max-w-[760px]">
         <p class="eyebrow">Sound familiar?</p>
-        <h2 class="mt-4 text-[36px] sm:text-[48px] text-ink">People already bring you what they're <em class="text-teal">carrying.</em></h2>
+        <h2 class="mt-4 text-[38px] sm:text-[56px] leading-[1.0] text-ink">People already bring you what they're <em class="text-teal">carrying.</em></h2>
         <p class="mt-5 text-[16.5px] leading-relaxed text-ink-muted">What you do with it is the difference between a good conversation and real change.</p>
       </div>
       <div class="mt-12 grid gap-4 md:grid-cols-2">
@@ -146,12 +148,12 @@ const faq = [
   </section>
 
   <!-- ── Why INQ works ────────────────────────────────────────────────── -->
-  <section class="on-dark bg-teal text-white relative overflow-hidden" data-glow>
-    <div class="wrap py-20 sm:py-28">
+  <section class="on-dark bg-teal text-white">
+    <div class="wrap sec-m">
       <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
         <div class="reveal">
           <p class="eyebrow">Why INQ works</p>
-          <h2 class="mt-4 text-[36px] sm:text-[52px]">Work the surface and you create a session. Work the source and you create <em class="text-gold-soft">change.</em></h2>
+          <h2 class="mt-4 text-[36px] sm:text-[52px] leading-[1.02]">Work the surface and you create a session. Work the source and you create <em>change.</em></h2>
           <p class="mt-6 text-[16.5px] leading-relaxed text-white/80 max-w-[620px]">People don't stay stuck because they don't know what to do. They stay stuck because of the thought they keep thinking, the feeling it creates, and the action that follows, until the result proves the thought right. INQ teaches you to see that loop, help someone see it for themselves, and help them change it.</p>
         </div>
         <p class="reveal font-display text-[26px] sm:text-[30px] leading-[1.25] text-white" style="--d:120ms">More information doesn't change that loop. Neither does motivation.</p>
@@ -161,11 +163,11 @@ const faq = [
 
   <!-- ── What you get ─────────────────────────────────────────────────── -->
   <section class="bg-ac-cream">
-    <div class="wrap py-20 sm:py-28">
+    <div class="wrap sec-m">
       <div class="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-start">
         <div class="reveal">
           <p class="eyebrow">What you get</p>
-          <h2 class="mt-4 text-[36px] sm:text-[48px] text-ink">The tools, and the method that tells you <em class="text-teal">which one to use.</em></h2>
+          <h2 class="mt-4 text-[32px] sm:text-[40px] leading-[1.08] text-ink">The tools, and the method that tells you <em class="text-teal">which one to use.</em></h2>
         </div>
         <div class="reveal space-y-4 text-[16.5px] leading-relaxed text-ink-muted" style="--d:120ms">
           <p>INQ gives you a full set of coaching tools, gathered in The Framework Book, for thoughts, emotions, identity, relationships, energy, and goals.</p>
@@ -178,19 +180,19 @@ const faq = [
 
   <!-- ── Learn it. Live it. Lead it. ──────────────────────────────────── -->
   <section class="bg-ac-cream-2">
-    <div class="wrap py-20 sm:py-28">
+    <div class="wrap sec-m">
       <div class="reveal max-w-[760px]">
         <p class="eyebrow">Learn it. Live it. Lead it.</p>
-        <h2 class="mt-4 text-[36px] sm:text-[48px] text-ink">This isn't a certification you collect. It's a method you <em class="text-teal">become.</em></h2>
+        <h2 class="mt-4 text-[38px] sm:text-[56px] leading-[1.0] text-ink">This isn't a certification you collect. It's a method you <em class="text-teal">become.</em></h2>
       </div>
-      <div class="mt-12 grid gap-4 md:grid-cols-3">
+      <div class="mt-12 grid gap-8 md:grid-cols-3 border-t border-ac-line pt-8">
         {[
           ["Learn it.", "Why people do what they do, and the tools that help them change it."],
           ["Live it.", "Every tool goes through your own life first: your thinking, your emotions, your relationships, your goals."],
           ["Lead it.", "Bring it into real coaching conversations. Every module ends with three written questions and a coaching moment you record."]
         ].map(([n, b], i) => (
-          <div class="reveal card p-7" style={`--d:${i * 90}ms`}>
-            <h3 class="text-[26px] text-ink">{n}</h3>
+          <div class="reveal" style={`--d:${i * 90}ms`}>
+            <h3 class="text-[32px] text-ink">{n}</h3>
             <p class="mt-3 text-[15px] leading-relaxed text-ink-muted">{b}</p>
           </div>
         ))}
@@ -204,11 +206,11 @@ const faq = [
 
   <!-- ── In the room ──────────────────────────────────────────────────── -->
   <section class="bg-ac-cream">
-    <div class="wrap py-20 sm:py-28">
+    <div class="wrap sec-m">
       <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
         <div class="reveal">
           <p class="eyebrow">In the room</p>
-          <h2 class="mt-4 text-[36px] sm:text-[48px] text-ink">What you'll be able to do</h2>
+          <h2 class="mt-4 text-[32px] sm:text-[40px] leading-[1.08] text-ink">What you'll be able to do</h2>
           <p class="mt-5 font-display italic text-[18px] text-ink-muted">Less guessing. More reps. Coaching you trust because you've done it.</p>
         </div>
         <ul class="reveal divide-y divide-ac-line border-y border-ac-line" style="--d:100ms">
@@ -222,34 +224,39 @@ const faq = [
 
   <!-- ── The certification ────────────────────────────────────────────── -->
   <section id="modules" class="bg-ac-cream-2">
-    <div class="wrap py-20 sm:py-28">
+    <div class="wrap sec-m">
       <div class="reveal max-w-[760px]">
         <p class="eyebrow">The certification</p>
-        <h2 class="mt-4 text-[36px] sm:text-[48px] text-ink">One method, built <em class="text-teal">module by module.</em></h2>
+        <h2 class="mt-4 text-[38px] sm:text-[56px] leading-[1.0] text-ink">One method, built <em class="text-teal">module by module.</em></h2>
       </div>
-      <ol class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ol class="mt-12 grid gap-x-16 lg:grid-cols-2 border-t border-ac-line">
         {modules.map((m, i) => (
-          <li class="reveal card p-6 sm:p-7 flex flex-col" style={`--d:${i * 60}ms`}>
-            <h3 class="text-[22px] leading-[1.15] text-ink">{m.name}</h3>
-            <p class="mt-3 text-[14.5px] leading-relaxed text-ink-muted">{m.body}</p>
+          <li class="reveal grid grid-cols-[56px_1fr] gap-3 py-6 border-b border-ac-line" style={`--d:${i * 50}ms`}>
+            <span class="font-display text-[32px] leading-none text-teal">{String(i + 1).padStart(2, "0")}</span>
+            <div>
+              <h3 class="text-[22px] leading-[1.15] text-ink">{m.name}</h3>
+              <p class="mt-2 text-[14.5px] leading-relaxed text-ink-muted">{m.body}</p>
+            </div>
           </li>
         ))}
-        <li class="reveal rounded-[18px] bg-teal-soft border border-teal/40 p-6 sm:p-7" style="--d:480ms">
-          <span class="text-[11px] font-semibold uppercase tracking-[0.16em] text-teal">Bonus</span>
-          <h3 class="mt-2 text-[22px] leading-[1.15] text-ink">The Entrepreneurial Path</h3>
-          <p class="mt-3 text-[14.5px] leading-relaxed text-ink-muted">Turn the work into a practice: who you serve, your offers, your pricing, and how you talk about what you do.</p>
-        </li>
       </ol>
+      <div class="reveal mt-8 rounded-[12px] bg-teal-soft px-7 py-6 grid gap-3 md:grid-cols-[220px_1fr] md:items-center">
+        <div>
+          <span class="text-[11px] font-semibold uppercase tracking-[0.16em] text-teal">Bonus</span>
+          <h3 class="mt-1 text-[22px] leading-[1.15] text-ink">The Entrepreneurial Path</h3>
+        </div>
+        <p class="text-[14.5px] leading-relaxed text-ink-muted">Turn the work into a practice: who you serve, your offers, your pricing, and how you talk about what you do.</p>
+      </div>
     </div>
   </section>
 
   <!-- ── Your practice ────────────────────────────────────────────────── -->
   <section class="bg-ac-cream">
-    <div class="wrap py-20 sm:py-28">
+    <div class="wrap sec-m">
       <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
         <div class="reveal">
           <p class="eyebrow">Your practice</p>
-          <h2 class="mt-4 text-[36px] sm:text-[48px] text-ink">You can love this work and <em class="text-teal">make a living at it.</em></h2>
+          <h2 class="mt-4 text-[32px] sm:text-[40px] leading-[1.08] text-ink">You can love this work and <em class="text-teal">make a living at it.</em></h2>
           <p class="mt-5 text-[16.5px] leading-relaxed text-ink-muted max-w-[520px]">Whether you're starting a practice from scratch or growing the one you have, the Entrepreneurial Path and the Business Builder help you build it on purpose. People who really change tell people. Over time, that becomes how your business grows.</p>
         </div>
         <ul class="reveal divide-y divide-ac-line border-y border-ac-line" style="--d:120ms">
@@ -261,15 +268,15 @@ const faq = [
 
   <!-- ── Who INQ is for ───────────────────────────────────────────────── -->
   <section class="bg-ac-cream-2">
-    <div class="wrap py-20 sm:py-28">
+    <div class="wrap sec-m">
       <div class="reveal max-w-[760px]">
         <p class="eyebrow">Is INQ right for you?</p>
-        <h2 class="mt-4 text-[36px] sm:text-[48px] text-ink">Who INQ is for</h2>
+        <h2 class="mt-4 text-[32px] sm:text-[40px] leading-[1.08] text-ink">Who INQ is for</h2>
       </div>
-      <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-5">
         {audiences.map((a, i) => (
-          <li class="reveal card p-6" style={`--d:${i * 70}ms`}>
-            <h3 class="text-[20px] leading-[1.2] text-ink font-sans font-semibold">{a.name}</h3>
+          <li class="reveal border-t-2 border-teal pt-4" style={`--d:${i * 70}ms`}>
+            <h3 class="text-[20px] leading-[1.15] text-ink">{a.name}</h3>
             <p class="mt-2 text-[14.5px] leading-relaxed text-ink-muted">{a.body}</p>
           </li>
         ))}
@@ -280,7 +287,7 @@ const faq = [
 
   <!-- ── Your investment ──────────────────────────────────────────────── -->
   <section id="investment" class="bg-ac-cream">
-    <div class="wrap py-20 sm:py-28">
+    <div class="wrap sec-m">
       <div class="reveal card p-8 sm:p-10 lg:p-12 grid gap-10 lg:grid-cols-[1fr_1fr] border-teal/30" style="--d:60ms">
         <div>
           <p class="eyebrow">Your investment</p>
@@ -305,15 +312,16 @@ const faq = [
 
   <!-- ── How to get started ───────────────────────────────────────────── -->
   <section class="bg-ac-cream-2">
-    <div class="wrap py-20 sm:py-28">
+    <div class="wrap sec-m">
       <div class="reveal max-w-[760px]">
         <p class="eyebrow">How to get started</p>
-        <h2 class="mt-4 text-[36px] sm:text-[48px] text-ink">Start the same day.</h2>
+        <h2 class="mt-4 text-[32px] sm:text-[40px] leading-[1.08] text-ink">Start the same day.</h2>
       </div>
-      <ol class="mt-12 grid gap-4 md:grid-cols-3">
+      <ol class="mt-10 grid gap-8 md:grid-cols-3 border-t border-ac-line pt-8">
         {steps.map((s, i) => (
-          <li class="reveal card p-7" style={`--d:${i * 90}ms`}>
-            <h3 class="text-[24px] text-ink">{s.name}</h3>
+          <li class="reveal" style={`--d:${i * 90}ms`}>
+            <span class="font-display text-[40px] leading-none text-teal">{String(i + 1).padStart(2, "0")}</span>
+            <h3 class="mt-3 text-[22px] text-ink">{s.name}</h3>
             <p class="mt-2 text-[15px] leading-relaxed text-ink-muted">{s.body}</p>
           </li>
         ))}
@@ -324,7 +332,7 @@ const faq = [
 
   <!-- ── Questions people ask ─────────────────────────────────────────── -->
   <section id="faq" class="bg-ac-cream">
-    <div class="wrap py-20 sm:py-28">
+    <div class="wrap sec-m">
       <div class="grid gap-10 lg:grid-cols-[0.7fr_1.3fr]">
         <div class="reveal">
           <h2 class="text-[36px] sm:text-[44px] text-ink">Questions people ask</h2>
@@ -337,11 +345,10 @@ const faq = [
   </section>
 
   <!-- ── Close ────────────────────────────────────────────────────────── -->
-  <section class="on-dark bg-ink text-cream relative overflow-hidden aurora" data-glow>
-    <span class="aurora-2"></span>
-    <div class="wrap py-24 sm:py-32 text-center">
+  <section class="on-dark bg-charcoal text-cream">
+    <div class="wrap sec-l text-center">
       <div class="reveal mx-auto max-w-[820px]">
-        <h2 class="text-[34px] sm:text-[52px]">You can coach a person's <em>behavior.</em> Or you can coach <em>the person.</em></h2>
+        <h2 class="text-[36px] sm:text-[56px] leading-[1.0]">You can coach a person's <em>behavior.</em> Or you can coach <em>the person.</em></h2>
         <p class="mt-6 font-display text-[22px] sm:text-[26px] text-cream">One creates a session. The other creates change.</p>
         <p class="mt-3 text-[16px] text-on-dark-muted">INQ is for anyone who's decided which one they're here to do.</p>
         <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
