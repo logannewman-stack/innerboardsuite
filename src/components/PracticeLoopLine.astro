@@ -1,0 +1,38 @@
+---
+/**
+ * The loop, drawn in one stroke at the reader's pace (BUILD_SPEC 2.2.2):
+ * down the five words from Situation to Result, then back up to Thought
+ * with an arrowhead. Two scroll drawn SVGs share the 56 px gutter so the
+ * words light exactly as the down stroke reaches them (the engine lights
+ * row i at p >= (i + .5) / 5, which maps onto a straight down stroke) and
+ * the return stroke begins the moment the down stroke ends: its box starts
+ * at the list's bottom edge, where the first SVG's progress reaches one.
+ * Both stretch to the list (preserveAspectRatio none) so a row of any
+ * height keeps the stroke on the row centres; the rows are equal (1fr).
+ * The arrowhead is the last segment of the return path, so it draws and
+ * undraws with the stroke; the separate `.draw-head` is only the one time
+ * pulse the engine fires with `.done` (it ends invisible, see practice.astro),
+ * so nothing floats at Thought when the reader scrolls back up.
+ */
+interface Props { rows: [string, string][]; id?: string }
+const { rows, id = "loop-rows" } = Astro.props;
+---
+<div class="pr-loop-list">
+  <div class="pr-loop-gutter" aria-hidden="true">
+    <svg class="pr-loop-svg pr-loop-down" viewBox="0 0 56 440" preserveAspectRatio="none" data-draw="scroll" data-draw-rows={rows.length} data-draw-for={`#${id}`} aria-hidden="true" focusable="false" fill="none" stroke="#c9ab66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path class="draw-line" d="M40 44 V396" />
+    </svg>
+    <svg class="pr-loop-svg pr-loop-back" viewBox="0 0 56 198" preserveAspectRatio="none" data-draw="scroll" aria-hidden="true" focusable="false" fill="none" stroke="#c9ab66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path class="draw-line" d="M40 -44 V-22 C40 -8 28 0 18 -8 C12 -13 12 -20 12 -28 V-308 M7 -302 L12 -308 L17 -302" />
+      <path class="draw-head" d="M7 -302 L12 -308 L17 -302" />
+    </svg>
+  </div>
+  <ol class="loop-rows pr-loop-rows" id={id}>
+    {rows.map(([word, definition]) => (
+      <li class="loop-row">
+        <span class="t-s pr-loop-word">{word}</span>
+        <em class="t-s-pull pr-loop-def">{definition}</em>
+      </li>
+    ))}
+  </ol>
+</div>

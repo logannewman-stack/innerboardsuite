@@ -1,0 +1,25 @@
+---
+/**
+ * The drifting floor of the Practice final (BUILD_SPEC 2.2.9): the 18
+ * derived tiles under /app/tiles/, in the spec's order, as a perspective
+ * plane that drifts by its own height for a seamless loop. The strip is
+ * duplicated once; `.run` on the section (1.7.15) plays it. On phones the
+ * plane shows the first twelve tiles in four columns (global.css).
+ */
+const stems = [
+  "coach-draft", "today", "tools-home", "energy", "sunday-quick-plan", "score-m1",
+  "close-day", "wins-saved", "score-upstream-scored", "spark", "hear", "facts-vs-story",
+  "quiz-results", "leader-blueprint", "friday-energy", "arriving-word", "discomfort-name", "score-m1-result"
+];
+---
+<div class="floor" aria-hidden="true">
+  <div class="floor-plane">
+    <ul class="floor-strip">
+      {stems.map((s) => <li><img src={`/app/tiles/${s}.webp`} alt="" width="390" height="844" loading="lazy" decoding="async" fetchpriority="low" /></li>)}
+    </ul>
+    <ul class="floor-strip" aria-hidden="true">
+      {stems.map((s) => <li><img src={`/app/tiles/${s}.webp`} alt="" width="390" height="844" loading="lazy" decoding="async" fetchpriority="low" /></li>)}
+    </ul>
+  </div>
+  <div class="floor-fade grain"></div>
+</div>

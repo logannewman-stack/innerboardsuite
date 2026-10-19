@@ -1,0 +1,54 @@
+---
+/**
+ * Everything inside (BUILD_SPEC 2.2.7): the 792 desk window with three
+ * stacked screens and an idle cursor scene that only clicks items whose
+ * next frame shows them highlighted in the app's own rail; the caption and
+ * the Folio dot pager that follow the frame; and the page's one ladder,
+ * whose rows preview the frames on hover or focus (1.7.13).
+ */
+import WindowFrame from "./WindowFrame.astro";
+import Arrow from "./Arrow.astro";
+import { LINKS } from "../config/links";
+
+const caps = [
+  "The Coach home, on a desk.",
+  "A Company OS Score result, with The Book open in the rail.",
+  "The Track page, on a desk."
+];
+const items = [
+  { name: "The Academy", body: "Every collection, read and practiced in the same place.", href: LINKS.academy, pass: false, external: false, preview: undefined },
+  { name: "Inner Lab", body: "Live sessions each month, the masterclass open to anybody, and a community.", href: LINKS.innerlab, pass: true, external: false, preview: undefined },
+  { name: "The Book", body: "Replaceable: the book, the audiobook, its assessments and worksheets, with each chapter's door into the practice.", href: LINKS.book, pass: true, external: false, preview: 1 },
+  { name: "InnerBoard OS", body: "The Company OS Score, the Team OS Score and the Gap Audit, and the curriculum a team works through.", href: LINKS.ios, pass: false, external: true, preview: 2 }
+];
+---
+<div class="grid pr-inside">
+  <div class="pr-inside-win rise-obj" data-warm>
+    <WindowFrame id="inside-win" ww={792} loop={5000}
+      flow='[["start",40,60],["hold",1200],["move",5,38.3,1300],["click"],["state",1,320],["hold",1800],["cam",1.22,62,18,1400],["hold",2200],["cam",1,50,50,1100],["move",5,23.6,1300],["click"],["state",2,320],["hold",2400],["move",5,9,1200],["click"],["state",0,320],["move",40,60,1100],["end"]]'
+      screens={[
+        { name: "desk-coach-draft", alt: "Practice on a desk: the Daily Practice Coach with a sentence typed, the Dare of the Day, Set Up Your Day and the October calendar." },
+        { name: "desk-score-upstream-result", alt: "A Company OS Score result on a desk, with The Book open in the rail." },
+        { name: "desk-track-home", alt: "The Track page on a desk, with InnerBoard OS open in the rail." }
+      ]} />
+    <div class="win-caps">
+      {caps.map((c, i) => <p class={`win-cap t-cap-i${i === 0 ? " on" : ""}`} data-cap={i}>{c}</p>)}
+    </div>
+    <div class="win-pager" role="tablist" data-preview-target="#inside-win" aria-label="The screens on the desk">
+      {caps.map((c, i) => <button type="button" role="tab" data-go={i} aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1} aria-label={c}><i></i></button>)}
+    </div>
+  </div>
+  <ul class="ladder pr-inside-ladder" role="list">
+    {items.map((it, i) => (
+      <li class="rise" style={`--d:${i * 70}ms`} data-preview={it.preview} data-preview-target={it.preview !== undefined ? "#inside-win" : undefined}>
+        <a href={it.href} data-passthrough={it.pass ? true : undefined} rel={it.external ? "noopener" : undefined}>
+          <span class="pr-row">
+            <span class="ladder-name">{it.name}</span>
+            <span class="ladder-body">{it.body}</span>
+          </span>
+          <span class="pr-arrow" aria-hidden="true"><Arrow /></span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>

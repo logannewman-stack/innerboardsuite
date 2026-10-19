@@ -1,0 +1,25 @@
+---
+/**
+ * The quiz still life (BUILD_SPEC 2.1.4): a linen mat with a whisper of blush
+ * (the only blush on the site), the results phone standing on it with its
+ * screen scrolling the real result under the app's own fixed header as the
+ * section passes (1.7.11), and the drawn toggle card leaning behind the
+ * phone's lower left. The mat's size and the phone's width come from the
+ * page's CSS so the 390 layout can change them.
+ */
+import ToggleCard from "./ToggleCard.astro";
+---
+<div class="mat mat-blush hm-mat">
+  <ToggleCard class="hm-tcard tcard-in" />
+  <figure class="phone rise-obj floor-on hm-quiz-phone" style="--pw:268px">
+    <div class="phone-screen" data-scrollscreen style="--range:179.4">
+      <span class="slot" aria-hidden="true"></span>
+      <img class="ds-head" src="/app/quiz-results.webp" alt="" width="600" height="1298" decoding="async" loading="lazy" />
+      <div class="scroll-body" style="height:395.8em">
+        <img src="/app/quiz-results.webp" alt="The quiz result: Approval, what it is costing, where, and a first step." width="600" height="1298" decoding="async" loading="lazy" style="top:0" />
+        <img class="hm-quiz-2" src="/app/quiz-results2.webp" alt="The quiz result's other five patterns: Pressure, Proving, Control, Old identity, Certainty." width="600" height="1298" decoding="async" loading="lazy" />
+      </div>
+    </div>
+    <i class="phone-floor" aria-hidden="true"></i>
+  </figure>
+</div>

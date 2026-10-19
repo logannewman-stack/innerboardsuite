@@ -9,25 +9,49 @@
  * subscription quiz from its welcome to its result, the Journal, and the
  * Company OS Score. The copy on the screens is the app's own. The page
  * walks a visitor through one day, then through one tool, then the quiz.
+ *
+ * Built to BUILD_SPEC 2.2 on the system of part 1: the hero window with two
+ * phones and a cursor, the loop drawn at the reader's pace, the day stage
+ * with its sky and tap scenes, the STEAR rail with the reading camera, the
+ * quiz still life, the lit statement, the desk with a cursor and the ladder
+ * that answers it, the levels and questions, and the drifting floor.
  */
 import Base from "../layouts/Base.astro";
 import Arrow from "../components/Arrow.astro";
-import AppPhone from "../components/AppPhone.astro";
-import AppDesktop from "../components/AppDesktop.astro";
+import PhoneFrame from "../components/PhoneFrame.astro";
+import WindowFrame from "../components/WindowFrame.astro";
+import Rail from "../components/Rail.astro";
+import DayStage from "../components/DayStage.astro";
+import Geo from "../components/Geo.astro";
 import Accordion from "../components/Accordion.astro";
+import PracticeLoopLine from "../components/PracticeLoopLine.astro";
+import PracticeInside from "../components/PracticeInside.astro";
+import PracticeFloor from "../components/PracticeFloor.astro";
 import { LINKS } from "../config/links";
 
 const title = "Practice by InnerBoard · See how it works";
 const description =
   "A walk through Practice, screen by screen: the Coach, the Dare of the Day, Set Up Your Day, STEAR, the quiz and the Journal. A web app for any phone. Start as you are.";
 
-/* One day, in the order it goes. Each step names the real screen it shows. */
-const day = [
-  { n: "01", when: "Morning, 7:10", screen: "home", name: "Open the app. The Coach is first.", body: "Home shows four things: the Coach's prompt, Set Up Your Day, the Dare of the Day, and your calendar. Nothing to configure. The Coach is trained on the InnerBoard method and says, on screen, that it is not a person." },
-  { n: "02", when: "Morning, 7:12", screen: "today", name: "Set up your day in a minute.", body: "How are you arriving? One thing you are grateful for. How you want to approach today. What would make today a win. Four fields, one line each, and the day has a shape." },
-  { n: "03", when: "Midday, 1:40", screen: "stear2", name: "Something lands. You run STEAR.", body: "A business partner goes quiet after you send the numbers. Instead of rereading your message for an hour, you open STEAR: what happened, what you made it mean, what that thought created. Two minutes, and the story is separated from the fact." },
-  { n: "04", when: "Afternoon, 4:05", screen: "dare", name: "Do the Dare. Check it off.", body: "One small thing before the day ends, new every day. When you tap I did it, the app marks it with a star, asks how it went in one line, and never asks twice." },
-  { n: "05", when: "Evening", screen: "journal", name: "Everything you did is in the Journal.", body: "Every tool you ran, every check-in, every quiz result, dated and yours. Saved on the device as a visitor. Kept in your account the moment you make one." }
+/* The loop, five rows. */
+const loopRows: [string, string][] = [
+  ["Situation", "What a camera would record."],
+  ["Thought", "The sentence you added."],
+  ["Emotion", "What the thought creates."],
+  ["Action", "What that state makes available."],
+  ["Result", "Which proves the thought right."]
+];
+
+/* One day, in the order it goes. The phone holds the frames stacked once:
+ * 0 home, 1 today, 2 stear1, 3 stear2, 4 dare, 5 journal; each flow's
+ * state indices refer to that order. */
+const home = { name: "home", alt: "The Coach home as a visitor: the Daily Practice Coach, the Dare of the Day and Set Up Your Day.", w: 600 as const, h: 1298 as const };
+const daySteps = [
+  { label: "Morning", name: "Open the app. The Coach is first.", body: "Home shows four things: the Coach's prompt, Set Up Your Day, the Dare of the Day, and your calendar. Nothing to configure. The Coach is trained on the InnerBoard method and says, on screen, that it is not a person.", caption: "The Coach home.", frames: [home], flow: '[["hold",500],["cam",1.14,50,18,1400],["hold",1800],["cam",1,50,50,1200],["end"]]' },
+  { label: "Morning", name: "Set up your day in a minute.", body: "How are you arriving? One thing you are grateful for. How you want to approach today. What would make today a win. Four fields, one line each, and the day has a shape.", caption: "Set Up Your Day.", frames: [{ name: "today", alt: "Set Up Your Day, with the ten-second read and two fields filled.", w: 600 as const, h: 1298 as const }], flow: '[["cam",1.2,50,42,1300],["hold",1600],["cam",1.2,50,72,1200],["hold",1800],["cam",1,50,50,1000],["end"]]' },
+  { label: "Midday", name: "Something lands. You run STEAR.", body: "A business partner goes quiet after you send the numbers. Instead of rereading your message for an hour, you open STEAR: what happened, what you made it mean, what that thought created. Two minutes, and the story is separated from the fact.", caption: "STEAR, question one, then question two.", frames: [{ name: "stear1", alt: "STEAR, question one, with the fact written.", w: 600 as const, h: 1298 as const }, { name: "stear2", alt: "STEAR, question two, with the thought written.", w: 600 as const, h: 1298 as const }], flow: '[["hold",1200],["tap",50,95],["state",3,320],["hold",3000],["end"]]' },
+  { label: "Afternoon", name: "Do the Dare. Check it off.", body: "One small thing before the day ends, new every day. When you tap I did it, the app marks it with a star, asks how it went in one line, and never asks twice.", caption: "The Dare, done.", frames: [home, { name: "dare", alt: "The home after the Dare is checked, with the star line.", w: 600 as const, h: 1298 as const }], flow: '[["cam",1.22,50,64,1200],["hold",600],["tap",19,69],["state",4,320],["hold",2400],["cam",1,50,50,1200],["end"]]' },
+  { label: "Evening", name: "Everything you did is in the Journal.", body: "Every tool you ran, every check-in, every quiz result, dated and yours. Saved on the device as a visitor. Kept in your account the moment you make one.", caption: "The Journal.", frames: [{ name: "journal", alt: "The Journal, with one entry on this device.", w: 600 as const, h: 1298 as const }], flow: '[["cam",1.1,50,14,1400],["hold",2400],["cam",1,50,50,1200],["end"]]' }
 ];
 
 /* The STEAR run, as the app asks it. Frames are real captures of each step. */
@@ -39,6 +63,24 @@ const stear = [
   { screen: "stear5", step: "5 / 8", q: "What did that create?", note: "Notice how the result proves the original thought right." },
   { screen: "stear6", step: "6 / 8", q: "What else might be true?", note: "How could you be wrong about this? What would your highest self see?" }
 ];
+/* The camera's x origin is 20, not the spec's 50: the capture's text begins at
+ * 4.7% of the screen width, and a 1.18 zoom about the centre crops 9% from
+ * each side, cutting the first glyph of every line. About x 20 the left crop
+ * is 3.6%, so the question stays whole and the crop falls on the right. */
+const readingCam = '[["hold",700],["cam",1.18,20,24,1200],["hold",2000],["cam",1,50,50,1000],["end"]]';
+
+/* The three notes under the rail, each with its tile. */
+const notes = [
+  { lead: "RAP", rest: " when a feeling has you: name it in one word, find it in the body, and let it pass. Five steps.", caption: "RAP, step one of five.", screen: "rap1", alt: "RAP, step one of five: what are you feeling, with frustrated chosen.", w: 600, h: 1298 },
+  { lead: "Pause + Redirect", rest: " when you are about to lose control. The ten-second read when you want to know how you are arriving.", caption: "Pause + Redirect, one breath.", screen: "pause-breath", alt: "Pause + Redirect, one breath: the ring counting down.", w: 780, h: 1688 },
+  { lead: "Sixteen tools", rest: " in all, each named for the moment it is for, with the method's name beside it. Run them without an account; a membership keeps them.", caption: "The ten-second read.", screen: "arriving-quadrant", alt: "The ten-second read: how are you arriving, with a quadrant chosen.", w: 780, h: 1688 }
+];
+
+const levels = [
+  ["Visit", "Open the quiz, take a book assessment, run a quick tool, have a first conversation with the Coach. No <span class=\"nb\">sign-in</span>. Your work stays on your device."],
+  ["Account", "Saving your results is the moment an account exists. Everything on the device moves into it, and it is there next time, on any phone."],
+  ["Subscribe", "Everything in the app: the full tools, the Coach without limits, the Academy, Inner Lab, and the Wisdom Collective. Plans and prices are inside the app, under Membership."]
+];
 
 const faq = [
   { q: "Is it an app I download?", a: "Practice is a web app. Open it in your browser, add it to the home screen on iPhone or Android, and it opens like any other app. There is nothing to find in the App Store or Google Play." },
@@ -46,225 +88,473 @@ const faq = [
   { q: "Is the Coach a person?", a: "No. The Daily Practice Coach is trained on the InnerBoard method and the material behind it. It is coaching, not therapy, and it says so before your first message." },
   { q: "Who can see what I write?", a: "Nobody. Every entry belongs to the person who wrote it. Inside InnerBoard OS, a leader sees how much of a module a team has completed, never what anyone answered." },
   { q: "How much time does it take?", a: "Set Up Your Day is about a minute. A tool is about two. Sunday Set is six, once a week. The point is a practice you keep, not a program you finish." },
-  { q: "What does a subscription include?", a: `Everything in the app, including the Academy and the Wisdom Collective. The current plans and prices are shown inside Practice under Membership. <a class="link-arrow" href="${LINKS.practice}" data-passthrough>Open Practice</a>` }
+  { q: "What does a subscription include?", a: `Everything in the app, including the Academy and the Wisdom Collective. The current plans and prices are shown inside Practice under Membership. <a href="${LINKS.practice}" data-passthrough>Open Practice</a>` }
 ];
 ---
 <Base title={title} description={description} path="/practice">
-  <!-- ── Hero: one statement, the real app ─────────────────────────────── -->
-  <section class="relative bg-cream">
-    <div class="wrap relative pt-[120px] sm:pt-[150px]">
-      <div class="reveal is-in mx-auto max-w-[920px] text-center">
-        <p class="eyebrow">Practice by InnerBoard</p>
-        <h1 class="mt-5 text-[46px] sm:text-[66px] lg:text-[84px] leading-[0.96] text-ink tracking-[-0.025em]" data-words>People don't do what they know. <em class="text-gold-ink">They do who they are.</em></h1>
-        <p class="mt-7 mx-auto max-w-[640px] text-[17px] sm:text-[20px] leading-relaxed text-ink-muted">Practice is the daily app that closes the gap between the two. Here is how it works, screen by screen, as it looks today.</p>
-        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-          <a href={LINKS.practice} class="btn btn-gold" data-passthrough data-event="practice_click" data-event-location="practice-hero">Start in Practice <Arrow /></a>
-          <a href="#day" class="btn btn-outline">Walk through a day</a>
+  <!-- Hero: the window with two phones and a cursor (2.2.1) -->
+  <section class="pr-hero grain grain-cream" data-tone="cream">
+    <i class="lamp lamp-cream" aria-hidden="true" style="--lx:50%;--ly:0%"></i>
+    <div class="wrap pr-hero-wrap">
+      <div class="grid">
+        <div class="pr-hero-copy">
+          <p class="eyebrow rise" style="--d:.45s">Practice by InnerBoard</p>
+          <h1 class="t-xl pr-h1" data-lines><span class="hl">People don't do what they know.</span> <em class="hl">They do who they are.</em></h1>
+          <p class="t-lead pr-lead rise" style="--d:.52s">Practice is the daily app that closes the gap between the two. Here is how it works, screen by screen, as it looks today.</p>
+          <div class="pr-btns rise" style="--d:.6s">
+            <a href={LINKS.practice} class="btn btn-gold" data-passthrough data-event="practice_click" data-event-location="practice-hero">Start in Practice <Arrow /></a>
+            <a href="#day" class="btn btn-line">Walk through a day</a>
+          </div>
         </div>
       </div>
     </div>
-    <div class="reveal is-in relative mt-14 sm:mt-20" style="--d:150ms">
-      <div class="wrap">
-        <div class="relative mx-auto max-w-[1040px]" data-tilt="1">
-          <AppDesktop screen="desk-home" alt="Practice on a desktop: the Daily Practice Coach prompt, the Dare of the Day, Set Up Your Day and the October calendar." eager />
+    <!-- The strap line follows the buttons in the document (the page's promise is read before the captions); the flex order places it under the scene. -->
+    <div class="wrap pr-strap rise" style="--d:.9s">
+      <div class="grid">
+        <i class="pr-strap-rule" aria-hidden="true"></i>
+        <p class="t-cap pr-strap-line">Every screen on this page is a capture of the app as built, taken as a visitor with no account. Nothing is drawn.</p>
+      </div>
+    </div>
+    <div class="wrap-wide pr-scene" data-warm>
+      <div class="pr-scene-win rise-obj" style="--d:.3s">
+        <WindowFrame id="hero-win" ww={1320} eager tilt={2} parallax={-22} loop={4000}
+          flow='[["start",40,60],["hold",1400],["move",5,33.4,1300],["click"],["state",1,320],["hold",2600],["cam",1.18,50,30,1200],["hold",1600],["cam",1,50,50,1000],["move",5,9,1200],["click"],["state",0,320],["hold",1200],["move",40,60,900],["end"]]'
+          screens={[
+            { name: "desk-coach-draft", alt: "Practice on a desk: the Daily Practice Coach with a sentence typed, the Dare of the Day, Set Up Your Day and the October calendar.", x2: true },
+            { name: "desk-tools-home", alt: "The Tools hub on a desk: start with the moment you're in, Set Up Your Day and the Right now prompts.", x2: true }
+          ]} />
+      </div>
+      <p class="t-cap-i pr-scene-cap rise" style="--d:.7s">The Coach home, on a desk, with a sentence typed.</p>
+      <div class="pr-scene-phones">
+        <div class="pr-scene-phone pr-scene-l rise-obj floor-on" style="--d:.48s">
+          <PhoneFrame width={212} parallax={-10} caption="The Tools hub." screens={[{ name: "tools-home", alt: "The Tools hub on a phone, with Tools active in the bottom bar.", w: 780, h: 1688 }]} />
+        </div>
+        <div class="pr-scene-phone pr-scene-r rise-obj floor-on" style="--d:.6s">
+          <PhoneFrame width={212} parallax={-10} caption="Close the day." screens={[{ name: "close-day", alt: "Close the day on a phone, with both fields filled and Coach active in the bottom bar.", w: 780, h: 1688 }]} />
         </div>
       </div>
-      <div class="absolute inset-x-0 bottom-0 h-[40%] bg-cream-2" aria-hidden="true"></div>
-    </div>
-    <div class="relative bg-cream-2 border-b border-line">
-      <div class="wrap py-4 text-center text-[12.5px] text-ink-faint">Every screen on this page is a capture of the app as built, taken as a visitor with no account. Nothing is drawn.</div>
     </div>
   </section>
 
-  <!-- ── Section one · The loop ─────────────────────────────────────────── -->
-  <section id="loop" class="on-dark bg-charcoal text-cream">
-    <div class="wrap sec-m">
-      <div class="mx-auto max-w-[880px]">
-        <p class="eyebrow">Section one · The loop</p>
-        <h2 class="reveal mt-6 text-[36px] sm:text-[52px] lg:text-[56px] leading-[1.0]">A situation is neutral until you put a sentence on it. <em>Everything after that is downstream.</em></h2>
-        <ol class="reveal mt-12 max-w-[640px] divide-y divide-cream/12 border-y border-cream/12" style="--d:120ms">
-          {[["Situation", "What a camera would record."], ["Thought", "The sentence you added."], ["Emotion", "What the thought creates."], ["Action", "What that state makes available."], ["Result", "Which proves the thought right."]].map(([w, d]) => (
-            <li class="grid grid-cols-[140px_1fr] sm:grid-cols-[170px_1fr] gap-4 py-4 font-display text-[22px] sm:text-[28px] leading-[1.15]">
-              <span class="text-cream">{w}</span><em class="text-on-dark-muted">{d}</em>
-            </li>
-          ))}
-        </ol>
-        <p class="reveal mt-10 max-w-[560px] text-[17px] leading-relaxed text-on-dark-muted" style="--d:200ms">Most people try to change the result. It almost never lasts. Every tool in Practice is a way of changing the sentence, in the moment it is being written.</p>
+  <!-- The loop: a charcoal bleed, the line drawn down the words and back to Thought (2.2.2) -->
+  <section id="loop" class="pr-loop" data-tone="charcoal">
+    <i class="lamp grain" aria-hidden="true" style="--lx:80%;--ly:100%;--la:.1"></i>
+    <div class="wrap">
+      <div class="grid">
+        <div class="pr-loop-head">
+          <p class="eyebrow rise">The loop</p>
+          <h2 class="t-l wipe">A situation is neutral until you put a sentence on it. <em>Everything after that is downstream.</em></h2>
+        </div>
+        <div class="pr-loop-body">
+          <PracticeLoopLine rows={loopRows} id="loop-rows" />
+        </div>
+        <p class="t-lead pr-loop-para rise" style="--d:.3s">Most people try to change the result. It almost never lasts. Every tool in Practice is a way of changing the sentence, in the moment it is being written.</p>
       </div>
     </div>
   </section>
 
-  <!-- ── Section two · A day in Practice (sticky story, real screens) ────── -->
-  <section id="day" class="bg-cream">
-    <div class="wrap sec-m">
-      <div class="reveal max-w-[760px]">
-        <p class="eyebrow">Section two · A day in Practice</p>
-        <h2 class="mt-5 text-[38px] sm:text-[56px] leading-[1.0] text-ink">One day, <em>as it actually goes.</em></h2>
-        <p class="mt-5 text-[16.5px] leading-relaxed text-ink-muted">Scroll, and the phone follows the day. Each screen is the app, not a picture of it.</p>
+  <!-- A day in Practice: the sky stage with tap scenes (2.2.3) -->
+  <section id="day" class="pr-day" data-tone="cream">
+    <i class="lamp grain pr-day-lamp" aria-hidden="true" style="--lx:50%;--ly:100%;--la:.1"></i>
+    <div class="wrap">
+      <div class="grid">
+        <div class="pr-day-head">
+          <p class="eyebrow rise">A day in Practice</p>
+          <h2 class="t-l wipe">One day, <em>as it actually goes.</em></h2>
+          <p class="t-lead pr-lead rise" style="--d:.3s">Scroll, and the phone follows the day. Each screen is the app, not a picture of it.</p>
+        </div>
       </div>
-      <div data-story class="mt-14 grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-20">
-        <div class="hidden lg:block">
-          <div class="sticky top-[120px] flex justify-center">
-            <div class="screens w-[300px] aspect-[600/1299]">
-              {day.map((d, i) => (
-                <div data-screen={d.screen + i} class={i === 0 ? "is-active" : ""}><AppPhone screen={d.screen} width={300} alt={d.name} /></div>
-              ))}
+      <div class="pr-day-stage">
+        <DayStage steps={daySteps} width={230} id="day-stage" />
+      </div>
+    </div>
+    <!-- Interim for a race in site.ts: when a scroll jumps two or more steps the stage snaps (no smoothing frames follow), so the page tone engine never re-reads this section's data-tone until the next scroll event. A synthetic scroll kicks one frame. Remove once setIdx() kicks the loop itself. -->
+    <script is:inline data-astro-rerun>
+      (function () {
+        var day = document.getElementById("day");
+        if (!day || !("MutationObserver" in window)) return;
+        new MutationObserver(function () { window.dispatchEvent(new Event("scroll")); }).observe(day, { attributes: true, attributeFilter: ["data-tone"] });
+      })();
+    </script>
+  </section>
+
+  <!-- One tool, start to finish: the STEAR rail with the reading camera (2.2.4) -->
+  <section id="stear" class="pr-stear" data-tone="cream">
+    <div class="wrap">
+      <div class="grid pr-stear-head">
+        <div class="pr-stear-title">
+          <p class="eyebrow rise">One tool, start to finish</p>
+          <h2 class="t-l wipe">STEAR, <em>as the app asks it.</em></h2>
+        </div>
+        <p class="t-lead pr-stear-intro rise" style="--d:.3s">Eight questions, one at a time, each with a line of help under it. The example is a real run: a business partner went quiet after the numbers were sent. By question six, the person is writing what else might be true.</p>
+      </div>
+    </div>
+    <div class="pr-band" data-warm>
+      <Rail ariaLabel="STEAR, as the app asks it." by="item">
+        <div slot="tabs" class="pr-rail-tabs">
+          <p class="t-cap pr-rail-help">Seven frames. Scroll sideways, or swipe.</p>
+          <div class="rail-tabs" role="tablist" aria-label="STEAR, as the app asks it.">
+            {[...stear.map((x) => x.step), "Then"].map((l, i) => (
+              <button type="button" class="rail-tab" role="tab" aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1}><span class="bar"></span><span class="t">{l}</span></button>
+            ))}
+          </div>
+        </div>
+        {stear.map((s, i) => (
+          <li class="rail-slide">
+            <div class="rise-obj floor-on" style={`--d:${i * 90}ms`}>
+              <PhoneFrame width={232} flow={readingCam} screens={[{ name: s.screen, alt: `STEAR, ${s.q}`, w: 600, h: 1298 }]} />
+            </div>
+            <div class="rail-cap pr-rail-cap">
+              <p class="t-folio pr-folio">{s.step}</p>
+              <p class="t-title pr-rail-q">{s.q}</p>
+              <p class="t-cap pr-rail-h">{s.note}</p>
+            </div>
+          </li>
+        ))}
+        <li class="rail-slide pr-then">
+          <div class="paper pr-then-card rise-obj" style="--d:540ms">
+            <p class="eyebrow">Then</p>
+            <p class="t-title">A new thought, and the next move.</p>
+            <p class="t-body pr-then-body">Questions seven and eight. The run is saved to your Journal, and the Coach can talk it through.</p>
+            <a href={LINKS.practice} class="link pr-then-link" data-passthrough>Run it yourself <Arrow /></a>
+          </div>
+        </li>
+      </Rail>
+    </div>
+    <div class="wrap">
+      <div class="pr-notes" data-warm>
+        {notes.map((n, i) => (
+          <div class="pr-note">
+            <p class="t-body pr-note-text rise" style={`--d:${i * 90}ms`}><b class="lb">{n.lead}</b>{n.rest}</p>
+            <figure class="paper tile pr-tile rise" style={`--d:${120 + i * 90}ms`}>
+              <figcaption class="t-cap-i">{n.caption}</figcaption>
+              <div class="tile-media tile-media-ct">
+                <img class="screen" src={`/app/${n.screen}.webp`} alt={n.alt} width={n.w} height={n.h} loading="lazy" decoding="async" />
+              </div>
+            </figure>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- The quiz: two phones on linen (2.2.5) -->
+  <section id="quiz" class="pr-quiz" data-tone="cream">
+    <div class="wrap">
+      <i class="pr-rule-top" aria-hidden="true"></i>
+      <div class="grid pr-quiz-grid">
+        <div class="pr-quiz-copy">
+          <p class="eyebrow rise">Where most people start</p>
+          <h2 class="t-m wipe">What are you <em>subscribing to?</em></h2>
+          <p class="t-lead pr-lead pr-quiz-body rise" style="--d:.3s">Eighteen questions about the last thirty days, the way it actually went. No sign-in. The result names the pattern you are paying for most, what it is costing you, where, and one first step. The run on the right came back Approval.</p>
+          <div class="pr-btns rise" style="--d:.4s">
+            <a href={LINKS.quiz} class="btn btn-gold" data-passthrough data-event="quiz_click" data-event-location="practice-quiz">Take the quiz <Arrow /></a>
+          </div>
+          <p class="t-cap pr-quiz-note rise" style="--d:.5s">A reflection tool, not a clinical assessment. Four minutes.</p>
+        </div>
+        <div class="pr-quiz-still" data-warm>
+          <div class="mat pr-quiz-mat">
+            <div class="pr-quiz-q rise-obj floor-on" style="--d:.3s">
+              <PhoneFrame width={212} flow='[["hold",1200],["tap",50,56],["end"]]' screens={[{ name: "quiz-q1", alt: "The quiz, question one of eighteen: when I get less done than I planned, I'm disappointed in myself, from Never to Almost always.", w: 600, h: 1298 }]} />
+            </div>
+            <div class="pr-quiz-r rise-obj floor-on" style="--d:.42s">
+              <PhoneFrame width={260} parallax={-8} flow='[["cam",1.06,50,30,2400],["hold",3000],["cam",1,50,50,1600],["end"]]' screens={[{ name: "quiz-results", alt: "The quiz result: Approval, with what you're paying for, what it's actually costing you, where you're paying, and your first step.", w: 600, h: 1298 }]} />
             </div>
           </div>
         </div>
-        <ol>
-          {day.map((item, i) => (
-            <li data-step={String(i)} data-step-screen={item.screen + i} class="lg:min-h-[52vh] flex items-center py-6 lg:py-0">
-              <div class="w-full">
-                <div class="flex items-baseline gap-4">
-                  <span class="font-display text-[44px] sm:text-[56px] leading-none text-ink">{item.n}</span>
-                  <span class="eyebrow">{item.when}</span>
-                </div>
-                <h3 class="mt-4 text-[28px] sm:text-[36px] leading-[1.08] text-ink">{item.name}</h3>
-                <p class="mt-4 text-[16px] sm:text-[17px] leading-relaxed text-ink-muted max-w-[520px]">{item.body}</p>
-                <div class="lg:hidden mt-7 flex justify-center" aria-hidden="true">
-                  <AppPhone screen={item.screen} width={250} alt="" />
-                </div>
-              </div>
-            </li>
-          ))}
-        </ol>
       </div>
     </div>
   </section>
 
-  <!-- ── Section three · One tool, start to finish ───────────────────────── -->
-  <section id="stear" class="bg-cream border-t border-line overflow-hidden">
-    <div class="wrap sec-m">
-      <div class="reveal grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-end">
-        <div>
-          <p class="eyebrow">Section three · One tool, start to finish</p>
-          <h2 class="mt-5 text-[36px] sm:text-[48px] leading-[1.06] text-ink">STEAR, <em>as the app asks it.</em></h2>
-        </div>
-        <p class="text-[16.5px] leading-relaxed text-ink-muted lg:pb-2">Eight questions, one at a time, each with a line of help under it. The example is a real run: a business partner went quiet after the numbers were sent. By question six, the person is writing what else might be true.</p>
-      </div>
-      <div class="rail-mask -mx-5 sm:-mx-8"><ol class="rail mt-12 flex gap-6 overflow-x-auto snap-x snap-mandatory pb-6 px-5 sm:px-8" role="region" aria-label="The STEAR steps, scrollable" tabindex="0">
-        {stear.map((s) => (
-          <li class="snap-start shrink-0 w-[250px] sm:w-[270px]">
-            <AppPhone screen={s.screen} width={250} alt={`STEAR ${s.step}: ${s.q}`} class="mx-auto" />
-            <p class="mt-5 eyebrow">{s.step}</p>
-            <p class="mt-1 font-display text-[20px] leading-[1.15] text-ink">{s.q}</p>
-            <p class="mt-1.5 text-[13.5px] text-ink-muted leading-snug">{s.note}</p>
-          </li>
-        ))}
-        <li class="snap-start shrink-0 w-[250px] sm:w-[270px] flex items-center">
-          <div class="card p-6">
-            <p class="eyebrow">Then</p>
-            <p class="mt-2 font-display text-[20px] leading-[1.15] text-ink">A new thought, and the next move.</p>
-            <p class="mt-2 text-[13.5px] text-ink-muted leading-snug">Questions seven and eight. The run is saved to your Journal, and the Coach can talk it through.</p>
-            <a href={LINKS.practice} class="link-arrow mt-4 text-[14px]" data-passthrough>Run it yourself <Arrow /></a>
-          </div>
-        </li>
-      </ol></div>
-      <p class="text-[13px] text-ink-faint">Seven frames. Scroll sideways, or swipe.</p>
-      <div class="reveal mt-8 grid gap-6 md:grid-cols-3 text-[14.5px] text-ink-muted border-t border-line pt-6">
-        <p><span class="font-semibold text-ink">RAP</span> when a feeling has you: name it in one word, find it in the body, and let it pass. Five steps.</p>
-        <p><span class="font-semibold text-ink">Pause + Redirect</span> when you are about to lose control. The ten-second read when you want to know how you are arriving.</p>
-        <p><span class="font-semibold text-ink">Sixteen tools</span> in all, each named for the moment it is for, with the method's name beside it. Run them without an account; a membership keeps them.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Section four · The quiz ─────────────────────────────────────────── -->
-  <section id="quiz" class="bg-cream border-t border-line">
-    <div class="wrap sec-m">
-      <div class="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center">
-        <div class="reveal">
-          <p class="eyebrow">Section four · Where most people start</p>
-          <h2 class="mt-5 text-[36px] sm:text-[48px] leading-[1.06] text-ink">What are you <em>subscribing to?</em></h2>
-          <p class="mt-5 text-[16.5px] leading-relaxed text-ink-muted max-w-[520px]">Eighteen questions about the last thirty days, the way it actually went. No sign-in. The result names the pattern you are paying for most, what it is costing you, where, and one first step. The run on the right came back Approval.</p>
-          <div class="mt-8 flex flex-col sm:flex-row gap-3">
-            <a href={LINKS.quiz} class="btn btn-gold" data-passthrough data-event="quiz_click" data-event-location="practice-quiz">Take the quiz <Arrow /></a>
-          </div>
-          <p class="mt-4 text-[13px] text-ink-faint">A reflection tool, not a clinical assessment. Four minutes.</p>
-        </div>
-        <div class="reveal flex justify-center gap-4 sm:gap-6 items-end" style="--d:120ms">
-          <AppPhone screen="quiz-q1" width={210} alt="Quiz question one of eighteen: When I get less done than I planned, I'm disappointed in myself. Never to Almost always." class="hidden sm:block" />
-          <AppPhone screen="quiz-results" width={250} alt="Quiz result: Approval. What you're paying for, what it's actually costing you, where you're paying, and your first step." />
+  <!-- Yours: a navy bleed, the lit statement (2.2.6) -->
+  <section id="private" class="pr-private" data-tone="navy">
+    <i class="lamp grain" aria-hidden="true" style="--lx:10%;--ly:0%;--la:.14"></i>
+    <div class="wrap">
+      <div class="grid">
+        <div class="pr-private-copy">
+          <p class="eyebrow">Yours</p>
+          <p class="t-state" data-lit><b class="lb">Everything you write in Practice belongs to you.</b> It is kept under your own account, nobody at InnerBoard reads it, and inside InnerBoard OS a leader sees module completion, never your answers. There is nothing to install. Practice runs in your browser, sits on the home screen of iPhone and Android, keeps working when the signal drops, and picks up where you left off.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Section five · Yours ────────────────────────────────────────────── -->
-  <section id="private" class="on-dark bg-navy text-cream">
-    <div class="wrap sec-l">
-      <p class="eyebrow">Section five · Yours</p>
-      <p class="mt-6 font-display text-[28px] sm:text-[36px] lg:text-[40px] leading-[1.18] tracking-[-0.01em] max-w-[880px]" data-scrollwords>
-        Everything you write in Practice belongs to you. It is kept under your own account, nobody at InnerBoard reads it, and inside InnerBoard OS a leader sees module completion, never your answers. There is nothing to install. Practice runs in your browser, sits on the home screen of iPhone and Android, keeps working when the signal drops, and picks up where you left off.
-      </p>
-    </div>
-  </section>
-
-  <!-- ── Section six · Everything inside ─────────────────────────────────── -->
-  <section id="inside" class="bg-cream">
-    <div class="wrap sec-m">
-      <div class="reveal max-w-[760px]">
-        <p class="eyebrow">Section six · Everything inside</p>
-        <h2 class="mt-5 text-[36px] sm:text-[48px] leading-[1.06] text-ink">One account. <em>One place.</em></h2>
-        <p class="mt-5 text-[16.5px] leading-relaxed text-ink-muted">The Coach, the tools, the Academy, Inner Lab, the book and InnerBoard OS share one left rail on a desk, and one bottom bar on a phone.</p>
+  <!-- Everything inside: the desk with a cursor, and the ladder that answers it (2.2.7) -->
+  <section id="inside" class="pr-inside-sec" data-tone="cream">
+    <div class="wrap">
+      <div class="grid">
+        <div class="pr-inside-head">
+          <p class="eyebrow rise">Everything inside</p>
+          <h2 class="t-l wipe">One account. <em>One place.</em></h2>
+          <p class="t-lead pr-lead rise" style="--d:.3s">The Coach, the tools, the Academy, Inner Lab, the book and InnerBoard OS share one left rail on a desk, and one bottom bar on a phone.</p>
+        </div>
       </div>
-      <div class="reveal mt-12 grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-start">
-        <div><AppDesktop screen="desk-score" alt="The Company OS Score inside Practice: ten statements scored one to ten." /></div>
-        <ul class="divide-y divide-line">
-          {[
-            ["The Academy", "Every collection, read and practiced in the same place.", LINKS.academy, false],
-            ["Inner Lab", "Live sessions each month, the masterclass open to anybody, and a community.", LINKS.innerlab, true],
-            ["The Book", "Replaceable: the book, the audiobook, its assessments and worksheets, with each chapter's door into the practice.", LINKS.book, true],
-            ["InnerBoard OS", "The Company OS Score, the Team OS Score and the Gap Audit, and the curriculum a team works through.", LINKS.ios, false]
-          ].map(([n, b, href, pass]) => (
-            <li class="py-5 first:pt-0">
-              <a href={href as string} class="group flex items-baseline justify-between gap-4" data-passthrough={pass ? true : undefined} rel={(href as string).startsWith("http") ? "noopener" : undefined}>
-                <span><span class="font-display text-[24px] text-ink group-hover:text-gold-ink transition-colors">{n}</span><span class="block mt-1 text-[14.5px] text-ink-muted">{b}</span></span>
-                <span class="text-gold-ink"><Arrow /></span>
-              </a>
-            </li>
-          ))}
-        </ul>
+      <div class="pr-inside-body">
+        <PracticeInside />
       </div>
     </div>
   </section>
 
-  <!-- ── Section seven · Levels and questions ────────────────────────────── -->
-  <section id="levels" class="bg-cream border-t border-line">
-    <div class="wrap sec-m">
-      <div class="grid gap-12 lg:grid-cols-[1fr_1.2fr]">
-        <div class="reveal">
-          <p class="eyebrow">Section seven · Start as a visitor</p>
-          <h2 class="mt-5 text-[32px] sm:text-[40px] leading-[1.08] text-ink">Three levels. <em>No card to start.</em></h2>
-          <ol class="mt-8 divide-y divide-line">
-            {[["Visit", "Open the quiz, take a book assessment, run a quick tool, have a first conversation with the Coach. No sign-in. Your work stays on your device."], ["Account", "Saving your results is the moment an account exists. Everything on the device moves into it, and it is there next time, on any phone."], ["Subscribe", "Everything in the app: the full tools, the Coach without limits, the Academy, Inner Lab, and the Wisdom Collective. Plans and prices are inside the app, under Membership."]].map(([n, b], i) => (
-              <li class="py-5 grid grid-cols-[48px_1fr] gap-3">
-                <span class="font-display text-[32px] leading-none text-ink">{i + 1}</span>
-                <div><p class="font-display text-[22px] text-ink">{n}</p><p class="mt-1 text-[15px] leading-relaxed text-ink-muted">{b}</p></div>
+  <!-- Levels and questions (2.2.8) -->
+  <section id="levels" class="pr-levels" data-tone="cream">
+    <div class="wrap">
+      <i class="pr-rule-top" aria-hidden="true"></i>
+      <div class="grid pr-levels-grid">
+        <div class="pr-levels-copy">
+          <p class="eyebrow rise">Start as a visitor</p>
+          <h2 class="t-m wipe">Three levels. <em>No card to start.</em></h2>
+          <ol class="pr-levels-cols">
+            {levels.map(([name, body], i) => (
+              <li class="rise" style={`--d:${.25 + i * .09}s`}>
+                <p class="t-s pr-level-name">{name}</p>
+                <p class="t-body pr-level-body" set:html={body}></p>
               </li>
             ))}
           </ol>
         </div>
-        <div class="reveal" style="--d:100ms">
+        <div class="pr-faq rise" style="--d:.2s">
           <p class="eyebrow">Questions</p>
-          <div class="mt-4"><Accordion items={faq} /></div>
+          <Accordion items={faq} />
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Final ───────────────────────────────────────────────────────────── -->
-  <section class="on-dark bg-forest text-cream">
-    <div class="wrap sec-l text-center">
-      <div class="reveal mx-auto max-w-[820px]">
-        <h2 class="text-[40px] sm:text-[56px] leading-[1.0]">Start today, <em>as you are.</em></h2>
-        <p class="mt-5 text-[17px] leading-relaxed text-on-dark-muted">Open the app, take the quiz, or bring the Coach the thing that is on your mind. Nothing is asked of you first.</p>
-        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-          <a href={LINKS.practice} class="btn btn-gold" data-passthrough data-event="practice_click" data-event-location="final">Start in Practice <Arrow /></a>
-          <a href={LINKS.quiz} class="btn btn-outline-light" data-passthrough data-event="quiz_click" data-event-location="final">What's Holding You Back?</a>
+  <!-- Final: a forest bleed, the drifting floor (2.2.9) -->
+  <section class="pr-final" data-tone="forest" data-run data-warm>
+    <PracticeFloor />
+    <Geo class="pr-geo" color="#f4efe4" opacity={0.06} />
+    <div class="wrap pr-final-wrap">
+      <div class="grid">
+        <div class="pr-final-copy">
+          <h2 class="t-l wipe pr-final-h2">Start today, <em>as you are.</em></h2>
+          <p class="t-lead pr-final-lead rise" style="--d:.3s">Open the app, take the quiz, or bring the Coach the thing that is on your mind. Nothing is asked of you first.</p>
+          <div class="pr-btns pr-final-btns rise" style="--d:.4s">
+            <a href={LINKS.practice} class="btn btn-gold" data-passthrough data-event="practice_click" data-event-location="final">Start in Practice <Arrow /></a>
+            <a href={LINKS.quiz} class="btn btn-line" data-passthrough data-event="quiz_click" data-event-location="final">What's Holding You Back?</a>
+          </div>
         </div>
       </div>
     </div>
   </section>
 </Base>
+
+<style is:global>
+  /* ── Practice page layout. Every number is from BUILD_SPEC 2.2; the
+   * components, classes and attributes are the system's (SYSTEM_API). ── */
+
+  /* 2.2.1 Hero */
+  .pr-hero { position: relative; display: flex; flex-direction: column; padding-top: var(--nav-h); padding-bottom: var(--sec); overflow-x: clip; }
+  .pr-hero > .wrap, .pr-hero > .wrap-wide { flex: none; }
+  .pr-hero > .lamp { z-index: 0; }
+  .pr-hero-wrap { position: relative; z-index: 2; }
+  .pr-hero-copy { grid-column: 1 / span 9; padding-top: 90px; }
+  .pr-h1 { max-width: 11em; margin: 0; }
+  .pr-lead { margin-top: var(--lead-gap); color: var(--fg-2); }
+  .pr-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: var(--btn-gap); }
+  .pr-scene { position: relative; z-index: 1; order: 1; margin-top: clamp(48px, 6vh, 96px); padding-bottom: 40px; }
+  .pr-scene-win { position: relative; z-index: 1; }
+  .pr-scene-cap { text-align: center; margin: 14px auto 0; max-width: none; }
+  .pr-scene-phones { position: absolute; left: 0; right: 0; top: 0; aspect-ratio: 1000 / 657; z-index: 2; pointer-events: none; }
+  .pr-scene-phone { position: absolute; bottom: -40px; pointer-events: auto; }
+  .pr-scene-l { left: 24px; }
+  .pr-scene-r { right: 24px; }
+  /* The rise uses the translate property (the figure's own transform carries the parallax), so it is named in the transition list. */
+  .js .pr-scene-phone.rise-obj { translate: 0 80px; transition-property: opacity, transform, translate; transition-duration: 1.3s; }
+  .js .pr-scene-phone.rise-obj.in { translate: 0 0; }
+  .js .pr-scene-phone .phone figcaption { opacity: 0; transition: opacity .9s var(--slow) 1.25s; }
+  .js .pr-scene-phone.in .phone figcaption { opacity: 1; }
+  .pr-strap { position: relative; z-index: 1; order: 2; margin-top: 40px; }
+  .pr-strap-rule { grid-column: 3 / span 8; display: block; height: 1px; background: var(--line); }
+  .pr-strap-line { grid-column: 1 / -1; text-align: center; margin: 20px auto 0; max-width: none; }
+
+  /* 2.2.2 The loop */
+  .pr-loop { padding-block: var(--sec-l); }
+  .pr-loop-head { grid-column: 1 / span 9; }
+  /* Columns 1 to 8 rather than 7, so "What that state makes available." stays on one line at every width and the rows keep their 88 px rhythm. */
+  .pr-loop-body { grid-column: 1 / span 8; margin-top: var(--head-gap); }
+  .pr-loop-para { grid-column: 9 / span 4; align-self: end; color: var(--fg-2); margin-top: var(--head-gap); }
+  .pr-loop-list { position: relative; display: grid; grid-template-columns: 56px 1fr; }
+  .pr-loop-gutter { position: relative; }
+  .pr-loop-svg { position: absolute; left: 0; width: 100%; display: block; overflow: visible; }
+  .pr-loop-down { top: 0; height: 100%; }
+  .pr-loop-back { top: 100%; height: 45%; }
+  .pr-loop-rows { list-style: none; margin: 0; padding: 0; display: grid; grid-auto-rows: 1fr; }
+  .pr-loop-rows > li { display: grid; grid-template-columns: 200px 1fr; column-gap: var(--gap); align-items: baseline; min-height: 88px; padding-block: 26px; box-sizing: border-box; border-top: 1px solid var(--line); }
+  .pr-loop-rows > li:last-child { border-bottom: 1px solid var(--line); }
+  .pr-loop-word { max-width: none; }
+  .pr-loop-def { color: var(--fg-2); max-width: none; transition: color .4s var(--ease); }
+  .js .pr-loop-rows > li:not(.on) .pr-loop-def { color: inherit; }
+  /* The dim follows the page tone, so the words never vanish while the tone is still cross fading. */
+  .js .pr-loop .pr-loop-rows > li:not(.on) { color: color-mix(in srgb, var(--fg) 40%, transparent); }
+  /* The arrowhead is part of the drawn return path (PracticeLoopLine); the engine's `.done` is sticky,
+   * so `.draw-head` is only the one time pulse over it and ends invisible. */
+  .js svg.pr-loop-back .draw-head { opacity: 0; }
+  .js svg.pr-loop-back.done .draw-head { opacity: 0; animation: pr-head-pulse 600ms var(--ease); }
+  @keyframes pr-head-pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 1; transform: scale(1.3); } 100% { opacity: 0; transform: scale(1); } }
+
+  /* 2.2.3 A day in Practice */
+  .pr-day { padding-block: var(--sec); }
+  .pr-day > .lamp { opacity: 0; }
+  .pr-day-head { grid-column: 1 / span 8; }
+  .pr-day-stage { margin-top: var(--head-gap); }
+  /* The spec's mat is 690 x 640 (seven columns, x 630 to 1320 beside the five column step list); the shared stage column spans six. */
+  @media (min-width: 1069px) { .pr-day-stage .day-stagecol { grid-column: 6 / span 7; } }
+
+  /* 2.2.4 STEAR */
+  .pr-stear { padding-block: var(--sec); }
+  .pr-stear-head { align-items: end; }
+  .pr-stear-title { grid-column: 1 / span 6; }
+  .pr-stear-intro { grid-column: 8 / span 5; color: var(--fg-2); max-width: none; padding-bottom: .15em; }
+  .pr-band .rail-track { --rail-w: 250px; --rail-gap: 32px; background: #ebe4d5; padding-block: 64px 56px; box-shadow: inset 0 1px 0 var(--line), inset 0 -1px 0 var(--line); margin-top: var(--head-gap); }
+  .pr-rail-cap { margin-top: 20px; }
+  .pr-folio { color: var(--fg-3); }
+  .pr-rail-q { margin-top: 8px; max-width: none; }
+  .pr-rail-h { margin-top: 6px; }
+  .pr-then { display: flex; align-items: center; height: calc(232px * 2.224); }
+  .pr-then-card { width: 250px; min-height: 300px; padding: 28px; display: flex; flex-direction: column; justify-content: center; }
+  .pr-then-card .eyebrow { margin-bottom: 14px; }
+  .pr-then-body { margin-top: 10px; }
+  .pr-then-link { margin-top: 18px; }
+  .pr-band .rail-nav { align-items: flex-start; }
+  .pr-rail-tabs { display: flex; flex-direction: column; gap: 14px; }
+  .pr-rail-help { order: 2; margin: 0; }
+  .no-js .pr-band .rail-nav { display: flex; }
+  .no-js .pr-band .rail-tabs, .no-js .pr-band .rail-arrows { display: none; }
+  .pr-notes { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: var(--gap); margin-top: 64px; padding-top: 28px; border-top: 1px solid var(--line); }
+  .pr-note { display: contents; }
+  .pr-note-text { grid-row: 1; color: var(--fg-2); max-width: 24em; }
+  .pr-note-text b { font-weight: inherit; }
+  .pr-tile { grid-row: 2; width: 282px; max-width: 100%; min-height: 360px; margin-top: 24px; }
+  .pr-tile figcaption { margin: 0; }
+
+  /* 2.2.5 The quiz */
+  .pr-quiz { padding-block: var(--sec); }
+  .pr-rule-top { display: block; height: 1px; background: var(--line); }
+  .pr-quiz-grid { margin-top: var(--sec); }
+  .pr-quiz-copy { grid-column: 1 / span 5; align-self: center; }
+  .pr-quiz-body { max-width: 28em; }
+  .pr-quiz-note { margin-top: 16px; }
+  .pr-quiz-still { grid-column: 6 / span 7; }
+  .pr-quiz-mat { height: 620px; }
+  .pr-quiz-q { position: absolute; left: 76px; bottom: 6px; z-index: 1; }
+  .pr-quiz-r { position: absolute; right: 60px; bottom: 30px; z-index: 2; }
+
+  /* 2.2.6 Yours */
+  .pr-private { padding-block: var(--sec-l); }
+  .pr-private-copy { grid-column: 1 / span 10; }
+
+  /* 2.2.7 Everything inside */
+  .pr-inside-sec { padding-block: var(--sec); }
+  .pr-inside-head { grid-column: 1 / span 8; }
+  .pr-inside-body { margin-top: var(--head-gap); }
+  .pr-inside-win { grid-column: 1 / span 8; }
+  .pr-inside-ladder { grid-column: 9 / span 4; }
+  .pr-inside-ladder > li { grid-template-columns: 1fr; padding-block: 24px; }
+  .pr-inside-ladder > li:first-child { border-top: 0; padding-top: 4px; }
+  .pr-inside-ladder a { display: grid; grid-template-columns: 1fr 16px; column-gap: 16px; align-items: start; }
+  .pr-inside-ladder .ladder-name { display: block; font-size: var(--fs-s); letter-spacing: -.012em; line-height: 1.12; text-wrap: balance; }
+  .pr-inside-ladder .ladder-body { display: block; margin-top: 8px; }
+  .pr-inside-ladder .pr-arrow { color: var(--accent); margin-top: .4em; transition: transform 200ms var(--hover); }
+  .pr-inside-ladder .pr-arrow svg { width: 16px; height: 16px; }
+  .pr-inside-ladder a:hover .pr-arrow, .pr-inside-ladder a:focus-visible .pr-arrow { transform: translateX(3px); }
+
+  /* 2.2.8 Levels and questions */
+  .pr-levels { padding-block: var(--sec); }
+  .pr-levels-grid { margin-top: var(--sec); }
+  .pr-levels-copy { grid-column: 1 / span 6; }
+  .pr-faq { grid-column: 8 / span 5; }
+  .pr-levels-cols { list-style: none; margin: var(--head-gap) 0 0; padding: 20px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 32px; border-top: 1px solid var(--line); }
+  .pr-levels-cols > li { position: relative; }
+  .pr-levels-cols > li + li::before { content: ""; position: absolute; left: -16px; top: 0; bottom: 0; width: 1px; background: var(--line); }
+  .pr-level-name { max-width: none; }
+  .pr-level-body { color: var(--fg-2); margin-top: 12px; }
+  .nb { white-space: nowrap; }
+
+  /* 2.2.9 Final */
+  .pr-final { position: relative; height: max(640px, 92svh); overflow: clip; isolation: isolate; display: flex; align-items: flex-start; }
+  /* The floor and the glow fade in with the forest tone, so the page never hard cuts at the section's top edge. */
+  .pr-final .floor { z-index: 0; opacity: 0; transition: opacity .5s var(--ease); }
+  html[data-theme="forest"] .pr-final .floor, .no-js .pr-final .floor { opacity: 1; }
+  .pr-geo { right: -260px; bottom: -420px; z-index: 0; }
+  .pr-final-wrap { position: relative; z-index: 2; margin-top: 14vh; }
+  .pr-final-copy { grid-column: 3 / span 8; position: relative; text-align: center; }
+  .pr-final-copy::before { content: ""; position: absolute; inset: -80px -120px; background: radial-gradient(50% 60% at 50% 40%, rgba(31,61,46,.85), transparent 75%); z-index: -1; pointer-events: none; opacity: 0; transition: opacity .5s var(--ease); }
+  html[data-theme="forest"] .pr-final-copy::before, .no-js .pr-final-copy::before { opacity: 1; }
+  .pr-final-h2 { margin-inline: auto; }
+  .pr-final-lead { color: #cdc6b8; margin: var(--lead-gap) auto 0; }
+  .pr-final-btns { justify-content: center; }
+
+  @media (max-width: 1068px) {
+    .pr-hero-copy { grid-column: 1 / -1; padding-top: 64px; }
+    .pr-scene { padding-bottom: 0; }
+    .pr-scene-phones { position: static; aspect-ratio: auto; display: flex; justify-content: center; gap: 24px; margin-top: 32px; padding-bottom: 44px; pointer-events: auto; }
+    .pr-scene-phone { position: static; }
+    .pr-scene-phone .phone { --pw: 190px !important; }
+    .js .pr-scene-phone.rise-obj { translate: 0 28px; transition-duration: 1.2s; }
+    .pr-strap { margin-top: 24px; }
+    .pr-loop-head, .pr-loop-para, .pr-day-head, .pr-stear-title, .pr-stear-intro, .pr-quiz-copy, .pr-quiz-still, .pr-private-copy, .pr-inside-head, .pr-inside-win, .pr-inside-ladder, .pr-levels-copy, .pr-faq { grid-column: 1 / -1; }
+    .pr-loop-body { grid-column: 1 / span 8; }
+    .pr-loop-para { margin-top: 40px; }
+    .pr-stear-intro { margin-top: 24px; padding-bottom: 0; }
+    .pr-quiz-still { margin-top: 48px; }
+    .pr-inside-ladder { margin-top: 40px; }
+    .pr-inside-ladder > li:first-child { border-top: 1px solid var(--line); padding-top: 24px; }
+    .pr-faq { margin-top: 56px; }
+    .pr-final-copy { grid-column: 2 / span 10; }
+    .pr-notes { grid-template-columns: repeat(2, 1fr); row-gap: 48px; }
+    .pr-note { display: block; }
+    .pr-note-text, .pr-tile { grid-row: auto; }
+  }
+
+  @media (max-width: 734px) {
+    .pr-hero { padding-bottom: var(--sec-s); }
+    .pr-hero-copy { padding-top: 40px; }
+    .pr-btns { flex-direction: column; }
+    .pr-btns .btn { width: 100%; }
+    .pr-scene { margin-top: 40px; }
+    .pr-scene-phones { gap: 16px; margin-top: 28px; }
+    .pr-scene-phone .phone { --pw: 150px !important; }
+    .pr-scene-phone .phone figcaption { font-size: 12px; margin-top: 12px; }
+    .pr-strap-rule { grid-column: 1 / -1; }
+    .pr-strap-line { font-size: 12.5px; margin-top: 16px; }
+    .pr-loop { padding-block: 152px; }
+    .pr-loop-body { grid-column: 1 / -1; }
+    .pr-loop-list { grid-template-columns: 32px 1fr; }
+    .pr-loop-rows > li { grid-template-columns: 1fr; row-gap: 4px; min-height: 0; padding-block: 18px; }
+    .pr-band .rail-track { --rail-w: 232px; --rail-gap: 20px; }
+    .pr-band .rail-slide .phone { --pw: 212px !important; }
+    .pr-then { height: calc(212px * 2.224); }
+    .pr-then-card { width: 232px; }
+    .pr-notes { grid-template-columns: 1fr; row-gap: 40px; margin-top: 48px; }
+    .pr-tile { width: 100%; }
+    .pr-tile .tile-media-ct { --screen-w: 60%; }
+    .pr-quiz { overflow-x: clip; }
+    .pr-quiz-grid { margin-top: var(--sec-s); }
+    .pr-quiz-mat { height: 480px; margin-inline: calc(-1 * var(--gutter)); border-radius: 0; }
+    .pr-quiz-q { left: 16px; bottom: 6px; }
+    .pr-quiz-q .phone { --pw: 150px !important; }
+    .pr-quiz-r { right: 16px; bottom: 22px; }
+    .pr-quiz-r .phone { --pw: 170px !important; }
+    .pr-private { padding-block: 152px; }
+    .pr-levels-grid { margin-top: var(--sec-s); }
+    .pr-levels-cols { grid-template-columns: 1fr; row-gap: 0; padding-top: 0; }
+    .pr-levels-cols > li { padding-block: 22px; }
+    .pr-levels-cols > li + li { border-top: 1px solid var(--line); }
+    .pr-levels-cols > li + li::before { display: none; }
+    .pr-faq { margin-top: 48px; }
+    .pr-final { height: 88svh; }
+    .pr-final-wrap { margin-top: 10vh; }
+    .pr-final-copy { grid-column: 1 / -1; }
+    .pr-final-copy::before { inset: -48px -40px -72px; background: radial-gradient(60% 65% at 50% 45%, rgba(31,61,46,.92), transparent 78%); }
+    .pr-final .floor-plane { top: 36%; }
+    .floor-strip li:nth-child(n + 13) { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .pr-scene-phone.rise-obj { translate: none; transition: none; }
+    .js .pr-scene-phone .phone figcaption { opacity: 1; transition: none; }
+    .js .pr-loop-rows > li:not(.on) .pr-loop-def { color: var(--fg-2); }
+    .js .pr-loop .pr-loop-rows > li:not(.on) { color: inherit; }
+  }
+</style>

@@ -1,0 +1,31 @@
+---
+/**
+ * The home hero's object (BUILD_SPEC 2.1.1): the navy plate that starts at
+ * column 9 and runs to the right edge, lit from its top left corner, and the
+ * phone that stands in front of it, hangs past its bottom edge onto the cream
+ * and plays the Coach scene (the ring presses the composer, the draft
+ * appears, the home returns). Both are siblings of the copy inside the hero
+ * section, which positions them; the section's CSS lives in index.astro.
+ */
+import PhoneFrame from "./PhoneFrame.astro";
+---
+<div class="plate grain hm-plate" data-surface="dark" aria-hidden="true">
+  <i class="lamp" aria-hidden="true" style="--lx:18%;--ly:0%" data-parallax="-48"></i>
+</div>
+<div class="hm-hero-phone rise-obj floor-on" style="--d:.3s">
+  <PhoneFrame
+    id="hero-phone"
+    width={302}
+    style="--pw:inherit"
+    eager
+    shadow="dark"
+    tilt={3}
+    parallax={-36}
+    loop={1400}
+    flow='[["hold",1000],["tap",50,27],["state",1,320],["hold",6200],["state",0,320],["end"]]'
+    screens={[
+      { name: "home", alt: "Practice on a phone: the Daily Practice Coach, the Dare of the Day and Set Up Your Day.", w: 600, h: 1298 },
+      { name: "coach-draft", alt: "The Daily Practice Coach with a sentence typed in the composer.", w: 780, h: 1688 }
+    ]}
+  />
+</div>

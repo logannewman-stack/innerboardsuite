@@ -1,32 +1,35 @@
 ---
 /**
- * innerboardsuite.com
+ * innerboardsuite.com, the homepage (BUILD_SPEC 2.1).
  *
- * Built to the InnerBoard Suite Logan implementation handoff (October 15,
- * 2026) and the INNERBOARD SUITE build brief. The copy below is theirs,
- * section by section, in the locked order. The hero photograph is from
- * Leah's own brand shoot, placed as the handoff's "sophisticated,
- * reflective woman in a warm cream setting" until a different approved
- * image is supplied.
+ * Built to the InnerBoard Suite handoff (October 15, 2026) and the build
+ * brief: the copy below is theirs, section by section, in the locked order.
+ * Eight sections: the plate hero, the recognition cards, the Practice panel
+ * with the looping phone, the quiz still life, the typographic Academy, the
+ * INQ teaser (where the page turns to evening), the lit mission and the
+ * InnerBoard IOS panel. Every image is a real capture of Practice.
  */
 import Base from "../layouts/Base.astro";
 import Arrow from "../components/Arrow.astro";
 import FeatureIcon from "../components/FeatureIcon.astro";
-import AppPhone from "../components/AppPhone.astro";
-import QuizPhone from "../components/QuizPhone.astro";
 import FlipCards from "../components/FlipCards.astro";
+import PhoneFrame from "../components/PhoneFrame.astro";
+import Geo from "../components/Geo.astro";
+import HomeHeroPlate from "../components/HomeHeroPlate.astro";
+import HomeQuizStill from "../components/HomeQuizStill.astro";
 import { LINKS } from "../config/links";
 
 const title = "InnerBoard · A new way to meet this life";
 const description =
   "A few minutes a day to think more clearly, feel more confident, and choose what comes next, with a coach in your pocket. Practice, Academy, INQ and InnerBoard IOS.";
 
+/* The five features, with the loop phone's step for each row (1.7.8). */
 const features = [
-  { icon: "coach", name: "Daily Practice Coach", body: "Type what is happening, and think it through right when it matters." },
-  { icon: "dare", name: "The Daily Dare", body: "One small thing to do before the day ends. A new one every day." },
-  { icon: "courses", name: "Courses", body: "Go deeper on what you're living, from your thoughts and feelings to relationships and confidence." },
-  { icon: "live", name: "Live Sessions and Community", body: "Monthly masterclasses, coaching labs, and a room where nobody has to figure it out alone." },
-  { icon: "tools", name: "Tools for the Moment", body: "For when you're reacting right now: a breath, a reset, and your next move." }
+  { icon: "coach", name: "Daily Practice Coach", body: "Type what is happening, and think it through right when it matters.", frame: "0", ms: 2600, tap: undefined },
+  { icon: "dare", name: "The Daily Dare", body: "One small thing to do before the day ends. A new one every day.", frame: "1", ms: 3200, tap: "19,69,900,2" },
+  { icon: "courses", name: "Courses", body: "Go deeper on what you're living, from your thoughts and feelings to relationships and confidence.", frame: "none", ms: 1800, tap: undefined },
+  { icon: "live", name: "Live Sessions and Community", body: "Monthly masterclasses, coaching labs, and a room where nobody has to figure it out alone.", frame: "none", ms: 1800, tap: undefined },
+  { icon: "tools", name: "Tools for the Moment", body: "For when you're reacting right now: a breath, a reset, and your next move.", frame: "3", ms: 3600, tap: "50,60,1200,4" }
 ];
 
 const quizBenefits = [
@@ -37,198 +40,398 @@ const quizBenefits = [
 ];
 ---
 <Base title={title} description={description} path="/">
-  <!-- ── 1. Hero ──────────────────────────────────────────────────────── -->
-  <section class="relative bg-cream">
-    <div class="wrap relative pt-[112px] sm:pt-[140px] pb-14 sm:pb-24">
-      <div class="grid gap-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-        <div class="reveal is-in">
-          <p class="eyebrow">Practice by InnerBoard</p>
-          <h1 class="mt-5 text-[44px] sm:text-[60px] lg:text-[72px] leading-[1.0] text-charcoal" data-words>
-            You don't need a different life, <em class="text-gold-ink">just a new way to meet this one.</em>
-          </h1>
-          <p class="mt-7 max-w-[560px] text-[17px] sm:text-[19px] leading-relaxed text-ink-muted">
-            A few minutes a day to think more clearly, feel more confident, and choose what comes next with a coach in your pocket.
-          </p>
-          <div class="mt-9 flex flex-col sm:flex-row gap-3 sm:items-center">
+  <!-- 1. Hero: the plate, the hanging phone, the line rise -->
+  <section class="hm-hero grain grain-cream" data-tone="cream">
+    <i class="lamp lamp-cream" aria-hidden="true" style="--lx:50%;--ly:0%"></i>
+    <div class="wrap hm-hero-wrap">
+      <div class="grid">
+        <div class="hm-hero-copy">
+          <p class="eyebrow rise" style="--d:.45s">Practice by InnerBoard</p>
+          <h1 data-lines class="t-xl hm-h1"><span class="hl">You don't need a different life,</span> <em class="hl">just a new way to meet this one.</em></h1>
+          <p class="t-lead hm-lead rise" style="--d:.52s">A few minutes a day to think more clearly, feel more confident, and choose what comes next with a coach in your pocket.</p>
+          <div class="hm-btns hm-hero-btns rise" style="--d:.6s">
             <a href={LINKS.practice} class="btn btn-gold" data-passthrough data-event="practice_click" data-event-location="hero">Start in Practice <Arrow /></a>
-            <a href={LINKS.quiz} class="btn btn-outline" data-passthrough data-event="quiz_click" data-event-location="hero">What's Holding You Back?</a>
-          </div>
-        </div>
-        <div class="reveal is-in flex justify-center lg:justify-end" style="--d:120ms">
-          <!-- The handoff's photograph (a reflective woman in a warm cream setting) can sit behind the phone when one is approved. Nothing of Leah appears on the site. -->
-          <AppPhone screen="home" width={320} alt="Practice on a phone: the Daily Practice Coach, Dare of the Day and Set Up Your Day." eager />
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 2. Recognition cards ─────────────────────────────────────────── -->
-  <section id="recognize" class="bg-cream border-t border-line">
-    <div class="wrap sec-m">
-      <div class="reveal max-w-[760px]">
-        <h2 class="text-[38px] sm:text-[56px] leading-[1.0] text-ink">On paper, <em>it all looks fine.</em></h2>
-      </div>
-      <div class="mt-12">
-        <FlipCards />
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 3. Practice ──────────────────────────────────────────────────── -->
-  <section id="practice" class="bg-cream">
-    <div class="wrap pb-16 sm:pb-24">
-      <div class="on-dark relative overflow-hidden rounded-[20px] sm:rounded-[24px] bg-forest text-cream">
-        <div class="relative px-6 py-14 sm:px-12 sm:py-20 lg:px-16 grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-center">
-          <div>
-            <div class="reveal">
-              <p class="eyebrow">Practice by InnerBoard</p>
-              <h2 class="mt-4 text-[34px] sm:text-[48px] leading-[1.06]">A different way to meet <em>whatever life brings.</em></h2>
-              <p class="mt-5 text-[16.5px] leading-relaxed text-on-dark-muted max-w-[520px]">A daily practice coach with personalized insight, real-time support, and tools to help you think differently, feel differently, and choose what's next.</p>
-            </div>
-            <div class="reveal mt-10 flex justify-center lg:justify-start gap-5" style="--d:120ms">
-              <AppPhone screen="dare" width={240} alt="Practice home after the Dare of the Day is checked off: You did your Dare of the Day." />
-              <AppPhone screen="stear2" width={240} alt="STEAR step two: What did you make it mean?" class="hidden sm:block" />
-            </div>
-          </div>
-          <div>
-            <ul class="divide-y divide-cream/15">
-              {features.map((f, i) => (
-                <li class="reveal py-5 first:pt-0 grid grid-cols-[44px_1fr] gap-4" style={`--d:${i * 80}ms`}>
-                  <span class="mt-0.5 inline-flex w-11 h-11 rounded-full border border-cream/25 items-center justify-center text-cream"><FeatureIcon name={f.icon} class="w-5 h-5" /></span>
-                  <div>
-                    <h3 class="text-[22px] text-cream leading-tight">{f.name}</h3>
-                    <p class="mt-1.5 text-[15px] leading-relaxed text-on-dark-muted">{f.body}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-        <div class="relative dark-rule px-6 py-12 sm:px-12 lg:px-16 grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
-          <div class="reveal">
-            <p class="font-display text-[28px] sm:text-[36px] leading-[1.1] text-cream">Start today, <em>as you are.</em></p>
-            <p class="mt-3 text-[16px] text-on-dark-muted max-w-[560px]">Bring what's happening in your life right now. We'll help you take the next step.</p>
-          </div>
-          <div class="reveal flex flex-col sm:flex-row gap-3" style="--d:100ms">
-            <a href={LINKS.practice} class="btn btn-gold" data-passthrough data-event="practice_click" data-event-location="practice">Start in Practice <Arrow /></a>
-            <a href={LINKS.practicePage} class="btn btn-outline-light">See everything inside</a>
+            <a href={LINKS.quiz} class="btn btn-line" data-passthrough data-event="quiz_click" data-event-location="hero">What's Holding You Back?</a>
           </div>
         </div>
       </div>
     </div>
+    <HomeHeroPlate />
   </section>
 
-  <!-- ── 4. The subscription quiz ─────────────────────────────────────── -->
-  <section id="quiz" class="bg-cream">
-    <div class="wrap sec-s">
-      <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-        <div class="reveal flex justify-center">
-          <div class="relative w-full max-w-[520px] rounded-[24px] bg-cream-2 py-12 flex items-center justify-center">
-            <div class="scale-[0.9]"><QuizPhone /></div>
+  <!-- 2. Recognition cards -->
+  <section id="recognize" class="hm-recognize" data-tone="cream">
+    <div class="wrap">
+      <h2 class="t-l wipe hm-recognize-h2">On paper, <em>it all looks fine.</em></h2>
+      <FlipCards class="hm-flips" />
+    </div>
+  </section>
+
+  <!-- 3. Practice: the forest panel with the looping phone and the ladder -->
+  <section id="practice" class="hm-practice" data-tone="cream">
+    <div class="wrap-wide panel-forest grain surface-forest hm-panel" data-surface="dark" data-loop>
+      <i class="lamp" aria-hidden="true" style="--lx:18%;--ly:0%"></i>
+      <div class="hm-panel-in">
+        <div class="hm-panel-grid">
+          <div class="hm-panel-copy">
+            <p class="eyebrow rise">Practice by InnerBoard</p>
+            <h2 class="t-m wipe hm-panel-h2">A different way to meet <em>whatever life brings.</em></h2>
+            <p class="t-lead hm-panel-lead rise" style="--d:.28s">A daily practice coach with personalized insight, real-time support, and tools to help you think differently, feel differently, and choose what's next.</p>
           </div>
-        </div>
-        <div class="reveal" style="--d:120ms">
-          <p class="eyebrow">The subscription quiz</p>
-          <h2 class="mt-4 text-[32px] sm:text-[40px] leading-[1.08] text-ink">What's costing you <em class="text-gold-ink">more than you think?</em></h2>
-          <div class="mt-5 space-y-3 text-[16.5px] leading-relaxed text-ink-muted max-w-[520px]">
-            <p>You know those subscriptions you forgot about, but they're still on auto-renew?</p>
-            <p>What if you're doing the same thing in your life?</p>
-            <p>Except these subscriptions aren't charging your credit card. They're costing you time, energy, confidence, peace, and connection.</p>
+          <div class="hm-panel-phone rise-obj floor-on" style="--d:.2s">
+            <PhoneFrame width={300} shadow="dark" screens={[
+              { name: "coach-draft", alt: "The Daily Practice Coach with a sentence typed in the composer.", w: 780, h: 1688 },
+              { name: "home", alt: "The Coach home as a visitor.", w: 600, h: 1298 },
+              { name: "dare", alt: "The home after the Dare is checked, with the star line.", w: 600, h: 1298 },
+              { name: "tools-home", alt: "The Tools hub.", w: 780, h: 1688 },
+              { name: "pause-breath", alt: "Pause + Redirect, one breath.", w: 780, h: 1688 }
+            ]} />
           </div>
-          <ul class="mt-7 grid gap-4 sm:grid-cols-2">
-            {quizBenefits.map((b) => (
-              <li class="flex gap-3">
-                <span class="mt-[7px] w-2 h-2 rounded-full bg-gold shrink-0"></span>
-                <p class="text-[15px] leading-snug text-ink-muted"><span class="font-semibold text-ink">{b.name}.</span> {b.body}</p>
+          <ul class="ladder ladder-gold hm-ladder" role="list">
+            {features.map((f, i) => (
+              <li class="rise" style={`--d:${i * 70}ms`} data-loop-step={i} data-loop-frame={f.frame} data-loop-ms={f.ms} data-loop-tap={f.tap}>
+                <span class="ring" aria-hidden="true"><FeatureIcon name={f.icon} class="hm-ring-icon" /></span>
+                <div><p class="ladder-name">{f.name}</p><p class="ladder-body">{f.body}</p></div>
               </li>
             ))}
           </ul>
-          <div class="mt-8 flex flex-col sm:flex-row gap-4 sm:items-center">
-            <a href={LINKS.quiz} class="btn btn-gold" data-passthrough data-event="quiz_click" data-event-location="quiz">Take the Quiz <Arrow /></a>
-            <p class="font-display italic text-[17px] text-ink-muted">It's time to cancel what's no longer serving you.</p>
+        </div>
+        <div class="rule-gold hm-panel-rule" aria-hidden="true"></div>
+        <div class="hm-panel-foot">
+          <div class="hm-panel-close rise">
+            <p class="t-s hm-panel-close-line">Start today, <em>as you are.</em></p>
+            <p class="t-body hm-panel-close-body">Bring what's happening in your life right now. We'll help you take the next step.</p>
+          </div>
+          <div class="hm-btns hm-panel-btns rise" style="--d:.3s">
+            <a href={LINKS.practice} class="btn btn-gold" data-passthrough data-event="practice_click" data-event-location="practice">Start in Practice <Arrow /></a>
+            <a href={LINKS.practicePage} class="btn btn-line">See everything inside</a>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── 5. Academy ───────────────────────────────────────────────────── -->
-  <section id="academy" class="bg-cream border-t border-line">
-    <div class="wrap sec-m">
-      <div class="grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
-        <div class="reveal">
-          <p class="eyebrow">Academy | Courses to own</p>
-          <h2 class="mt-4 text-[36px] sm:text-[48px] leading-[1.06] text-ink">Go deeper into the skills <em>that change everything.</em></h2>
-          <p class="mt-6 text-[16.5px] leading-relaxed text-ink-muted max-w-[560px]">Practical, transformational learning for real life. Buy the courses you want. Keep them forever.</p>
-          <p class="mt-2 text-[16.5px] leading-relaxed text-ink-muted max-w-[560px]">Explore courses in thinking, feeling, and leading differently.</p>
-          <div class="mt-8 flex flex-col sm:flex-row gap-3 sm:items-center">
-            <a href={LINKS.academy} class="btn btn-gold" data-event="academy_click" data-event-location="academy">Explore Academy <Arrow /></a>
-            <a href={LINKS.practice} class="btn btn-outline" data-passthrough data-event="practice_click" data-event-location="academy">Explore Practice</a>
-          </div>
+  <!-- 4. The subscription quiz: the still life with the scrolling result -->
+  <section id="quiz" class="hm-quiz" data-tone="cream">
+    <div class="wrap grid">
+      <div class="hm-quiz-still">
+        <HomeQuizStill />
+      </div>
+      <div class="hm-quiz-copy">
+        <p class="eyebrow rise">The subscription quiz</p>
+        <h2 class="t-m wipe">What's costing you <em>more than you think?</em></h2>
+        <div class="t-lead hm-stack hm-quiz-lead">
+          <p class="rise">You know those subscriptions you forgot about, but they're still on auto-renew?</p>
+          <p class="rise" style="--d:.28s">What if you're doing the same thing in your life?</p>
+          <p class="rise" style="--d:.36s">Except these subscriptions aren't charging your credit card. They're costing you time, energy, confidence, peace, and connection.</p>
         </div>
-        <!-- The three navy books (Think Different, Feel Different, Lead Different) go here when Leah sends the original reference image. -->
-        <div class="reveal card p-7 sm:p-8 lg:mt-12" style="--d:120ms">
+        <ul class="hm-benefits" role="list">
+          {quizBenefits.map((b, i) => (
+            <li class="rise" style={`--d:${0.2 + i * 0.07}s`}><b class="t-title">{b.name}</b><p class="t-body">{b.body}</p></li>
+          ))}
+        </ul>
+        <div class="hm-quiz-cta rise" style="--d:.5s">
+          <a href={LINKS.quiz} class="btn btn-gold" data-passthrough data-event="quiz_click" data-event-location="quiz">Take the Quiz <Arrow /></a>
+          <p class="hm-quiz-closing">It's time to cancel what's no longer serving you.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Academy: typographic, with the italic deck and the paper note -->
+  <section id="academy" class="hm-academy" data-tone="cream">
+    <div class="wrap hm-academy-wrap">
+      <div class="grid">
+        <div class="hm-academy-head">
+          <p class="eyebrow rise">Academy | Courses to own</p>
+          <h2 class="t-l wipe">Go deeper into the skills <em>that change everything.</em></h2>
+        </div>
+      </div>
+      <div class="grid hm-academy-grid">
+        <p class="t-lead hm-academy-body rise">Practical, transformational learning for real life. Buy the courses you want. Keep them forever.</p>
+        <div class="hm-deck rise" style="--d:.24s">
+          <i class="rule-draw" aria-hidden="true"></i>
+          <p class="t-s-pull hm-deck-line">Explore courses in thinking, feeling, and leading differently.</p>
+          <i class="rule-draw" aria-hidden="true" style="--d:.15s"></i>
+        </div>
+        <div class="hm-btns hm-academy-btns rise" style="--d:.3s">
+          <a href={LINKS.academy} class="btn btn-gold" data-event="academy_click" data-event-location="academy">Explore Academy <Arrow /></a>
+          <a href={LINKS.practice} class="btn btn-line" data-passthrough data-event="practice_click" data-event-location="academy">Explore Practice</a>
+        </div>
+        <div class="paper hm-note rise" style="--d:.2s">
           <p class="eyebrow">Also included in Practice</p>
-          <p class="mt-3 text-[16px] leading-relaxed text-ink-muted">Get access to these courses with a paid Practice subscription, alongside your daily coach, live sessions, and tools for the moment.</p>
+          <p class="t-body hm-note-body">Get access to these courses with a paid Practice subscription, alongside your daily coach, live sessions, and tools for the moment.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── 6. INQ Certification teaser ──────────────────────────────────── -->
-  <section id="inq" class="on-dark bg-navy text-cream">
-    <div class="wrap sec-m">
-      <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
-        <div class="reveal">
-          <p class="eyebrow">INQ Certification | Lead it</p>
-          <h2 class="mt-4 text-[38px] sm:text-[56px] leading-[1.0]">Coach the change that <em>actually changes people.</em></h2>
-          <p class="mt-6 text-[16.5px] leading-relaxed text-on-dark-muted max-w-[560px]">A science-informed certification in human behavior, neuroscience, emotional intelligence, and habit change.</p>
-          <p class="mt-3 text-[16.5px] leading-relaxed text-on-dark-muted max-w-[560px]">Gain the confidence to create meaningful results for your clients, apply the work to your own life, and build a coaching business around the impact you make.</p>
-        </div>
-        <div class="reveal flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-start" style="--d:120ms">
-          <a href={LINKS.inq} class="btn btn-gold" data-event="inq_click" data-event-location="teaser">Explore INQ Certification <Arrow /></a>
-          <a href={LINKS.inqBook} class="btn btn-outline-light" data-event="inq_book_click" data-event-location="teaser">Book a Conversation</a>
-        </div>
+  <!-- 6. INQ Certification teaser: a navy bleed, the page turns to evening -->
+  <section id="inq" class="hm-inq" data-tone="navy">
+    <i class="lamp grain" aria-hidden="true" style="--lx:85%;--ly:0%"></i>
+    <Geo class="hm-geo-inq" color="#f4efe4" opacity={0.08} />
+    <div class="wrap grid">
+      <div class="hm-inq-copy">
+        <p class="eyebrow rise">INQ Certification | Lead it</p>
+        <h2 class="t-l wipe">Coach the change that <em>actually changes people.</em></h2>
+        <p class="t-lead hm-inq-lead rise">A science-informed certification in human behavior, neuroscience, emotional intelligence, and habit change.</p>
+        <p class="t-lead hm-inq-lead hm-inq-lead-2 rise" style="--d:.3s">Gain the confidence to create meaningful results for your clients, apply the work to your own life, and build a coaching business around the impact you make.</p>
+      </div>
+      <i class="rule-gold-v rule-draw-v hm-inq-rule" aria-hidden="true"></i>
+      <div class="hm-inq-btns rise" style="--d:.24s">
+        <a href={LINKS.inq} class="btn btn-gold" data-event="inq_click" data-event-location="teaser">Explore INQ Certification <Arrow /></a>
+        <a href={LINKS.inqBook} class="btn btn-line" data-event="inq_book_click" data-event-location="teaser">Book a Conversation</a>
       </div>
     </div>
   </section>
 
-  <!-- ── 7. Why InnerBoard exists ─────────────────────────────────────── -->
-  <section id="mission" class="bg-cream">
-    <div class="wrap sec-l">
-      <div class="reveal mx-auto max-w-[820px] text-center">
-        <p class="eyebrow">Why InnerBoard exists</p>
-        <h2 class="mt-5 text-[40px] sm:text-[56px] leading-[1.0] text-ink">We believe people are capable of more.</h2>
-        <p class="mt-3 font-display italic text-[24px] sm:text-[30px] text-gold-ink">Sometimes they just need a different way forward.</p>
-        <div class="mt-8 space-y-4 text-[17px] sm:text-[18px] leading-relaxed text-ink-muted">
-          <p>InnerBoard was built on a simple belief: the way we think, feel, and respond shapes the way we experience our lives.</p>
-          <p>And those aren't things we're stuck with. They're skills we can learn, strengthen, and practice.</p>
-          <p>Our mission is to make that kind of growth accessible, practical, and part of everyday life, so more people can become who they're capable of being.</p>
+  <!-- 7. Why InnerBoard exists: the lit mission -->
+  <section id="mission" class="hm-mission" data-tone="cream">
+    <div class="wrap">
+      <div class="hm-mission-in">
+        <p class="eyebrow rise">Why InnerBoard exists</p>
+        <h2 class="t-l wipe hm-mission-h2">We believe people are capable of more.</h2>
+        <p class="t-s-pull hm-mission-sub rise">Sometimes they just need a different way forward.</p>
+        <div class="t-state hm-mission-lit" data-lit>
+          <p><b class="lb">InnerBoard was built on a simple belief:</b> the way we think, feel, and respond shapes the way we experience our lives.</p>
+          <p><b class="lb">And those aren't things we're stuck with.</b> They're skills we can learn, strengthen, and practice.</p>
+          <p><b class="lb">Our mission</b> is to make that kind of growth accessible, practical, and part of everyday life, so more people can become who they're capable of being.</p>
         </div>
-        <p class="mt-8 font-display text-[22px] sm:text-[26px] text-ink">Learn it. Live it. Lead it. <em>Practice it.</em></p>
-        <p class="mt-8 text-[12px] uppercase tracking-[0.18em] font-semibold text-ink-faint">Founded by Leah Roling</p>
+        <p class="t-s hm-mission-close" data-lit="lines" data-lit-step="120"><span class="lw">Learn it.</span> <span class="lw">Live it.</span> <span class="lw">Lead it.</span> <em class="lw">Practice it.</em></p>
       </div>
     </div>
   </section>
 
-  <!-- ── 8. InnerBoard IOS ────────────────────────────────────────────── -->
-  <section id="ios" class="on-dark bg-navy text-cream dark-rule">
-    <div class="wrap sec-m">
-      <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-        <div class="reveal">
-          <p class="eyebrow">InnerBoard IOS | Scale it</p>
-          <h2 class="mt-4 text-[32px] sm:text-[40px] leading-[1.08]">Imagine what happens when <em class="text-gold-2">an entire team grows.</em></h2>
-          <p class="mt-6 text-[16.5px] leading-relaxed text-on-dark-muted max-w-[600px]">Personal growth changes how one person shows up. Imagine what becomes possible when an entire organization learns to think differently, lead themselves, and bring their best to work.</p>
-          <p class="mt-3 text-[16.5px] leading-relaxed text-on-dark-muted max-w-[600px]">InnerBoard IOS brings a people operating system into organizations, helping build the confidence, capability, and accountability that strengthen culture and drive results.</p>
+  <!-- 8. InnerBoard IOS: the navy panel, the page's last and largest action -->
+  <section id="ios" class="hm-ios" data-tone="cream">
+    <div class="wrap-wide panel-navy grain hm-ios-panel" data-surface="dark">
+      <i class="lamp" aria-hidden="true" style="--lx:12%;--ly:100%;--la:.12"></i>
+      <Geo class="hm-geo-ios" color="#f4efe4" opacity={0.08} />
+      <div class="hm-ios-in">
+        <div class="hm-ios-copy">
+          <i class="rule-gold-v rule-draw-v hm-ios-rule" aria-hidden="true"></i>
+          <p class="eyebrow rise">InnerBoard IOS | Scale it</p>
+          <h2 class="t-m wipe hm-ios-h2">Imagine what happens when <em class="grad">an entire team grows.</em></h2>
+          <p class="t-lead hm-ios-lead rise">Personal growth changes how one person shows up. Imagine what becomes possible when an entire organization learns to think differently, lead themselves, and bring their best to work.</p>
+          <p class="t-lead hm-ios-lead hm-ios-lead-2 rise" style="--d:.3s">InnerBoard IOS brings a people operating system into organizations, helping build the confidence, capability, and accountability that strengthen culture and drive results.</p>
         </div>
-        <div class="reveal lg:justify-self-end" style="--d:100ms">
-          <a href={LINKS.ios} class="btn btn-gold" rel="noopener" data-event="ios_click" data-event-location="pathway">Explore InnerBoard IOS <Arrow /></a>
+        <div class="hm-ios-btn rise" style="--d:.36s">
+          <a href={LINKS.ios} class="btn btn-gold btn-lg" rel="noopener" data-event="ios_click" data-event-location="pathway">Explore InnerBoard IOS <Arrow /></a>
         </div>
       </div>
     </div>
   </section>
 </Base>
 
-<style>
-  .book-spine { display: none; }
+<style is:global>
+  /* Homepage layout (BUILD_SPEC 2.1). Every number is from the spec; the
+   * system's tokens, classes and components do the rest. Prefixed hm- so the
+   * rules never reach a shared component. */
+
+  /* ── 2.1.1 Hero ───────────────────────────────────────────────────── */
+  .hm-hero { min-height: max(640px, min(100svh, 980px)); padding-top: var(--nav-h); overflow: visible; }
+  .hm-hero > .lamp { z-index: 0; }
+  /* The lamp's gold foot and the grain fade out before the section's bottom edge, so the hero ends in the page's cream rather than on a line. */
+  .hm-hero > .lamp-cream, .hm-hero.grain::after { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 96px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 96px), transparent); }
+  .hm-hero-wrap { position: relative; z-index: 2; }
+  .hm-hero-copy { grid-column: 1 / span 7; padding-top: 90px; }
+  .hm-h1 { max-width: 7.8em; margin: 0; }
+  .hm-lead { margin-top: 28px; color: var(--fg-2); }
+  .hm-btns { display: flex; flex-wrap: wrap; gap: 12px; }
+  .hm-hero-btns { margin-top: 36px; }
+  .hm-plate, .hm-hero-phone { --plate-l: calc(var(--edge) + 8 * (var(--colw) + var(--gap))); }
+  .hm-plate { position: absolute; top: 120px; bottom: 0; left: var(--plate-l); right: 0; border-radius: var(--r-lg) 0 0 var(--r-lg); z-index: 1; }
+  /* The phone's bottom lands 72 px under the plate's bottom edge (the section's
+   * bottom) at every height: 300 from the top at 1440 x 900, 274 at 1280 x 800. */
+  .hm-hero-phone { --pw: clamp(240px, min(21vw, 40vh), 340px); position: absolute; z-index: 3;
+    top: max(200px, calc(max(640px, min(100svh, 980px)) + 72px - var(--pw) * 2.224));
+    left: calc(var(--plate-l) + (100% - var(--plate-l)) / 2 - var(--pw) * .53); }
+
+  /* ── 2.1.2 Recognition ────────────────────────────────────────────── */
+  .hm-recognize { padding-top: calc(var(--sec) + 72px); padding-bottom: var(--sec); }
+  .hm-recognize-h2 { max-width: calc(7 * var(--colw) + 6 * var(--gap)); }
+  .hm-flips { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); margin-top: var(--head-gap); }
+  .hm-flips > li:nth-child(1) { grid-column: 1 / span 5; }
+  .hm-flips > li:nth-child(2) { grid-column: 7 / span 5; margin-top: 96px; }
+  .hm-flips > li:nth-child(3) { grid-column: 2 / span 5; margin-top: -24px; }
+  .hm-flips > li:nth-child(4) { grid-column: 8 / span 5; margin-top: 72px; }
+  .hm-recognize .flip-close { max-width: calc(8 * var(--colw) + 7 * var(--gap)); }
+
+  /* ── 2.1.3 The forest panel ───────────────────────────────────────── */
+  .hm-practice { padding-bottom: var(--sec); }
+  .hm-panel { padding: 88px 80px 72px; }
+  .hm-panel-in { position: relative; z-index: 1; }
+  .hm-panel-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
+  .hm-panel-copy { grid-column: 1 / span 6; grid-row: 1; }
+  .hm-panel-h2 { color: #f4efe4; }
+  .hm-panel-lead { color: #cdc6b8; max-width: 28em; margin-top: var(--lead-gap); }
+  .hm-panel-phone { grid-column: 2 / span 5; grid-row: 2; margin-top: 48px; }
+  .hm-ladder { grid-column: 8 / span 5; grid-row: 1 / span 2; align-self: center; }
+  .hm-ladder > li { grid-template-columns: 44px 1fr; }
+  .hm-ladder .ring { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--line-gold); color: #c9ab66; }
+  .hm-ring-icon { width: 18px; height: 18px; }
+  .hm-ladder .ladder-name { color: #f4efe4; }
+  .hm-ladder .ladder-body { color: #cdc6b8; }
+  .hm-panel-rule { margin-block: 48px; }
+  .hm-panel-foot { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: end; }
+  .hm-panel-close { grid-column: 1 / span 7; }
+  .hm-panel-close-line { color: #f4efe4; }
+  .hm-panel-close-body { color: #cdc6b8; margin-top: 12px; }
+  .hm-panel-btns { grid-column: 8 / span 5; justify-content: flex-end; }
+
+  /* ── 2.1.4 The quiz still life ────────────────────────────────────── */
+  .hm-quiz { padding-block: var(--sec); }
+  .hm-quiz-still { grid-column: 1 / span 6; }
+  .hm-quiz-copy { grid-column: 8 / span 5; align-self: center; }
+  .hm-mat { height: 640px; }
+  .hm-quiz-phone { position: absolute; left: calc(50% - 53em); bottom: 22px; z-index: 2; }
+  .js .hm-quiz-phone.rise-obj { transition: opacity .45s var(--slow), translate 1.2s var(--slow); }
+  .hm-tcard { position: absolute; left: 28px; bottom: 46px; z-index: 1; box-shadow: var(--sh-paper), 0 18px 30px -18px rgba(31,29,26,.35); }
+  .no-js .hm-tcard { transform: rotate(-5deg); }
+  .hm-quiz-2 { top: 179.4em; clip-path: inset(6.2% 0 0 0); -webkit-mask-image: linear-gradient(to bottom, transparent 6.2%, #000 calc(6.2% + 2em)); mask-image: linear-gradient(to bottom, transparent 6.2%, #000 calc(6.2% + 2em)); }
+  .hm-stack p + p { margin-top: 1em; }
+  .hm-quiz-lead { color: var(--fg-2); max-width: 28em; margin-top: var(--lead-gap); }
+  .hm-benefits { list-style: none; margin: 40px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 28px 18px; }
+  .hm-benefits b { display: block; }
+  .hm-benefits p { color: var(--fg-2); margin-top: 6px; }
+  .hm-quiz-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; margin-top: 36px; }
+  .hm-quiz-closing { flex: 1 1 200px; max-width: 19em; font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 16px; line-height: 1.4; color: var(--fg-2); margin: 0; }
+
+  /* ── 2.1.5 Academy ────────────────────────────────────────────────── */
+  .hm-academy-wrap { border-top: 1px solid var(--line); padding-block: var(--sec); }
+  .hm-academy-head { grid-column: 1 / span 9; }
+  .hm-academy-grid { margin-top: var(--head-gap); row-gap: 0; }
+  .hm-academy-body { grid-column: 1 / span 4; grid-row: 1; color: var(--fg-2); max-width: 24em; }
+  .hm-academy-btns { grid-column: 1 / span 4; grid-row: 2; margin-top: 36px; align-self: start; }
+  .hm-deck { grid-column: 6 / span 3; grid-row: 1 / span 2; align-self: start; display: grid; gap: 20px; }
+  .hm-deck .rule-draw { display: block; height: 1px; background: var(--line); }
+  .hm-deck-line { color: var(--accent); line-height: 1.2; }
+  .hm-note { grid-column: 10 / span 3; grid-row: 1 / span 2; align-self: start; padding: 28px; }
+  .hm-note-body { color: var(--fg-2); }
+
+  /* ── 2.1.6 INQ teaser ─────────────────────────────────────────────── */
+  .hm-inq { padding-block: var(--sec-l); overflow: hidden; }
+  .hm-geo-inq { right: -320px; top: -200px; z-index: 0; }
+  .hm-inq-copy { grid-column: 1 / span 8; grid-row: 1; }
+  .hm-inq-lead { color: var(--fg-2); max-width: 28em; margin-top: 28px; }
+  .hm-inq-lead-2 { margin-top: 1em; }
+  .hm-inq-rule { grid-column: 9 / span 1; grid-row: 1; justify-self: start; align-self: stretch; display: block; }
+  .hm-inq-btns { grid-column: 10 / span 3; grid-row: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; align-self: end; }
+
+  /* ── 2.1.7 Mission ────────────────────────────────────────────────── */
+  .hm-mission { padding-block: var(--sec-l); }
+  .hm-mission-in { max-width: calc(8 * var(--colw) + 7 * var(--gap)); margin-inline: auto; text-align: center; }
+  .hm-mission-h2 { margin-inline: auto; }
+  .hm-mission-sub { color: var(--accent); margin: 16px auto 0; }
+  .hm-mission-lit { margin: 48px auto 0; }
+  .hm-mission-lit p + p { margin-top: 1em; }
+  .hm-mission-close { margin: 56px auto 0; }
+
+  /* ── 2.1.8 InnerBoard IOS ─────────────────────────────────────────── */
+  .hm-ios { padding-block: var(--sec); }
+  .hm-ios-panel { padding: 96px 80px 88px; }
+  .hm-geo-ios { left: -320px; bottom: -300px; z-index: 0; }
+  .hm-ios-in { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
+  .hm-ios-copy { grid-column: 1 / span 7; position: relative; }
+  .hm-ios-rule { position: absolute; left: -32px; top: 0; bottom: 0; display: block; }
+  .hm-ios-h2 { color: #f4efe4; }
+  .hm-ios h2 em.grad { color: transparent; -webkit-text-fill-color: transparent; }
+  .hm-ios-lead { color: #cdc6b8; max-width: 28em; margin-top: var(--lead-gap); }
+  .hm-ios-lead-2 { margin-top: 1em; }
+  .hm-ios-btn { grid-column: 9 / span 4; align-self: end; justify-self: end; }
+
+  /* ── Tablet (735 to 1068) ─────────────────────────────────────────── */
+  @media (max-width: 1068px) {
+    .hm-flips { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .hm-flips > li { grid-column: auto !important; margin-top: 0 !important; }
+    .js .hm-flips > li.slide-l.rise:not(.in) { transform: translate(-24px, 16px); }
+    .js .hm-flips > li.slide-r.rise:not(.in) { transform: translate(24px, 16px); }
+    .hm-panel { padding: 56px 40px; }
+    .hm-panel-copy { grid-column: 1 / -1; }
+    .hm-panel-phone { grid-column: 1 / -1; grid-row: 2; display: flex; justify-content: center; margin-top: 40px; }
+    .hm-ladder { grid-column: 1 / -1; grid-row: 3; margin-top: 40px; }
+    .hm-panel-close { grid-column: 1 / -1; }
+    .hm-panel-btns { grid-column: 1 / -1; justify-content: flex-start; margin-top: 28px; }
+    .hm-quiz-still { grid-column: 1 / -1; }
+    .hm-quiz-copy { grid-column: 1 / -1; margin-top: 48px; }
+    .hm-mat { max-width: 588px; }
+    .hm-academy-head { grid-column: 1 / -1; }
+    .hm-academy-body { grid-column: 1 / span 6; }
+    .hm-academy-btns { grid-column: 1 / span 6; }
+    .hm-deck { grid-column: 7 / span 6; grid-row: 1; }
+    .hm-note { grid-column: 7 / span 6; grid-row: 2; margin-top: 36px; }
+    .hm-inq-copy { grid-column: 1 / -1; }
+    .hm-inq-rule { display: none; }
+    .hm-inq-btns { grid-column: 1 / -1; grid-row: 2; flex-direction: row; flex-wrap: wrap; margin-top: 32px; }
+    .hm-ios-panel { padding: 64px 40px; }
+    .hm-ios-copy { grid-column: 1 / -1; }
+    .hm-ios-btn { grid-column: 1 / -1; justify-self: start; margin-top: 36px; }
+  }
+
+  /* The hero stacks below 900: the plate becomes a band under the copy. */
+  @media (max-width: 899px) {
+    .hm-hero { min-height: 0; padding-bottom: 56px; overflow-x: clip; }
+    .hm-hero-copy { grid-column: 1 / span 10; padding-top: 48px; }
+    .hm-plate { position: relative; top: auto; left: auto; right: auto; bottom: auto; margin: 32px 0 0; height: 560px; border-radius: 0; }
+    .hm-plate .lamp { --lx: 50%; }
+    .hm-hero-phone { --pw: 272px; position: absolute; top: auto; left: calc(50% - var(--pw) * .53); bottom: 0; }
+    .hm-recognize { padding-top: calc(var(--sec) + 56px); }
+  }
+
+  /* ── Phone (390) ──────────────────────────────────────────────────── */
+  @media (max-width: 734px) {
+    .hm-hero-copy { grid-column: 1 / -1; padding-top: 40px; }
+    .hm-lead { margin-top: 20px; }
+    .hm-btns { flex-direction: column; gap: 10px; }
+    .hm-btns .btn { width: 100%; }
+    .hm-hero-btns { margin-top: 28px; }
+    .hm-plate { margin-top: 24px; height: 512px; }
+    .hm-hero-phone { --pw: 234px; }
+    .hm-recognize-h2 { max-width: none; }
+    .hm-flips { grid-template-columns: 1fr; gap: 20px 0; }
+    .hm-flips > li { grid-column: 1 / -1 !important; }
+    .hm-panel { width: calc(100% - 24px); border-radius: 20px; padding: 48px 24px; }
+    .hm-panel-phone { margin-block: 40px; }
+    .hm-panel-phone .phone { --pw: 220px !important; }
+    .hm-ladder { margin-top: 0; }
+    .hm-ladder > li { grid-template-columns: 44px 1fr; padding-block: 18px; column-gap: 16px; }
+    .hm-panel-rule { margin-block: 40px; }
+    .hm-panel-btns { margin-top: 24px; }
+    .hm-mat { height: 520px; max-width: none; margin-inline: calc(-1 * var(--gutter)); border-radius: 0; }
+    .hm-quiz-phone { left: calc(50% + 58px - 53em); --pw: 220px !important; }
+    .hm-quiz-phone .phone-floor { left: -4%; right: -4%; }
+    .hm-tcard { left: 16px; bottom: 36px; }
+    .hm-quiz-copy { margin-top: 40px; }
+    .hm-benefits { grid-template-columns: 1fr; gap: 22px; margin-top: 32px; }
+    .hm-quiz-cta { flex-direction: column; align-items: stretch; gap: 18px; margin-top: 32px; }
+    .hm-quiz-cta .btn { width: 100%; }
+    .hm-quiz-closing { text-align: center; max-width: none; }
+    .hm-academy-grid { display: flex; flex-direction: column; }
+    .hm-academy-body { max-width: 34em; }
+    .hm-deck { margin-top: 36px; gap: 18px; order: 2; }
+    .hm-deck-line { font-size: 24px; }
+    .hm-note { margin-top: 28px; padding: 24px; order: 3; }
+    .hm-academy-btns { order: 4; margin-top: 32px; align-self: stretch; }
+    .hm-inq { padding-block: var(--sec); }
+    .hm-geo-inq { --geo-size: 720px !important; --geo-o: .06 !important; right: -300px; top: -140px; }
+    .hm-inq-copy { grid-column: 1 / -1; }
+    .hm-inq-lead { margin-top: 22px; }
+    /* The margin rule becomes a 48 px horizontal rule above the buttons. */
+    .hm-inq-rule { display: block; grid-column: 1 / -1; grid-row: 2; width: 48px; height: 1px; margin: 36px 0 0; justify-self: start; align-self: auto;
+      background: linear-gradient(90deg, var(--line-gold), var(--line-gold) 70%, transparent); transform-origin: left; }
+    .js .hm-inq-rule { transform: scaleX(0); }
+    .js .hm-inq-rule.in, .js .in .hm-inq-rule { transform: scaleX(1); }
+    .hm-inq-btns { grid-row: 3; flex-direction: column; margin-top: 24px; }
+    .hm-inq-btns .btn { width: 100%; }
+    .hm-mission-in { max-width: none; }
+    .hm-mission-lit { margin-top: 36px; }
+    .hm-mission-close { margin-top: 44px; }
+    .hm-ios-panel { width: calc(100% - 24px); border-radius: 20px; padding: 48px 24px; }
+    .hm-geo-ios { --geo-size: 720px !important; --geo-o: .06 !important; left: -300px; bottom: -260px; }
+    .hm-ios-rule { position: static; width: 48px; height: 1px; margin: 0 0 24px; background: linear-gradient(90deg, var(--line-gold), var(--line-gold) 70%, transparent); transform-origin: left; }
+    .js .hm-ios-rule { transform: scaleX(0); }
+    .js .hm-ios-rule.in, .js .in .hm-ios-rule { transform: scaleX(1); }
+    .hm-ios-btn { margin-top: 32px; width: 100%; }
+    .hm-ios-btn .btn { width: 100%; }
+  }
 </style>
