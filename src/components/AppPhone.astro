@@ -1,0 +1,22 @@
+---
+/**
+ * A real screen from Practice, inside a phone. The screenshots were taken
+ * from the app as built (October 19), at 390 by 844 on a 2x display, in
+ * light mode, as a visitor with no account. Nothing in them is drawn.
+ */
+interface Props { screen: string; alt: string; class?: string; eager?: boolean; width?: number }
+const { screen, alt, class: className = "", eager = false, width = 300 } = Astro.props;
+---
+<figure class={`app-phone ${className}`} style={`--w:${width}px`}>
+  <div class="app-phone-body">
+    <picture>
+      <source type="image/webp" srcset={`/app/${screen}.webp`} />
+      <img src={`/app/${screen}.jpg`} alt={alt} width="600" height="1299" loading={eager ? "eager" : "lazy"} decoding="async" fetchpriority={eager ? "high" : undefined} />
+    </picture>
+  </div>
+</figure>
+<style>
+  .app-phone { width: var(--w); margin: 0; }
+  .app-phone-body { position: relative; border-radius: calc(var(--w) * 0.14); background: #0f0e0c; padding: calc(var(--w) * 0.03); box-shadow: var(--shadow-float), 0 0 0 1px rgba(0,0,0,0.5) inset; }
+  .app-phone-body picture, .app-phone-body img { display: block; width: 100%; height: auto; border-radius: calc(var(--w) * 0.11); }
+</style>

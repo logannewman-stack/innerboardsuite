@@ -32,8 +32,7 @@
 [data-glow]::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 500ms var(--ease-out);
   background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(201, 171, 102, 0.14), transparent 55%); z-index: 0; }
 [data-glow].is-lit::before { opacity: 1; }
-[data-glow], .aurora { isolation: isolate; }
-.aurora > .wrap, [data-glow] > .wrap { position: relative; z-index: 1; }
+[data-glow] > * { position: relative; }
 
 /* Slow drifting colour behind dark sections. */
 .aurora::after, .aurora .aurora-2 { content: ""; position: absolute; width: 520px; height: 520px; border-radius: 50%; pointer-events: none;
@@ -80,3 +79,18 @@
   [data-glow]::before { display: none; }
   .acc::details-content { transition: none; }
 }
+
+/* A paragraph that lights up as it is read. Chips inside it ride along. */
+.sw .w { display: inline-block; opacity: 0.22; transition: opacity 260ms var(--ease-out); }
+.sw .w.lit { opacity: 1; }
+.sw .chip { display: inline-flex; align-items: center; gap: 6px; vertical-align: middle; margin: 0 2px; padding: 3px 10px; border-radius: 999px; font-family: var(--font-sans); font-size: 0.42em; font-weight: 600; letter-spacing: 0.01em; background: rgba(244,239,228,0.12); border: 1px solid rgba(244,239,228,0.25); color: var(--color-cream, #f4efe4); transform: translateY(-0.08em); }
+.sw .chip svg { width: 1.1em; height: 1.1em; }
+.sw-done .w, .no-js .sw .w { opacity: 1; }
+
+/* A browser window for the desktop app. */
+.browser { border-radius: 16px; background: #0f0e0c; padding: 8px; box-shadow: var(--shadow-float), 0 0 0 1px rgba(0,0,0,0.5) inset; }
+.browser-bar { display: flex; align-items: center; gap: 10px; height: 32px; padding: 0 6px 6px; }
+.browser-dots { display: flex; gap: 6px; }
+.browser-dots span { width: 10px; height: 10px; border-radius: 50%; background: rgba(244,239,228,0.25); }
+.browser-url { flex: 1; height: 22px; border-radius: 6px; background: rgba(244,239,228,0.08); color: rgba(244,239,228,0.7); font-size: 11px; display: flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-sans); }
+.browser-screen { border-radius: 10px; overflow: hidden; background: var(--color-app-canvas); color: var(--color-app-ink); font-family: var(--font-sans); }

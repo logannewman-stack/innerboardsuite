@@ -13,7 +13,7 @@ import Base from "../layouts/Base.astro";
 import Arrow from "../components/Arrow.astro";
 import Mark from "../components/Mark.astro";
 import FeatureIcon from "../components/FeatureIcon.astro";
-import PracticePhone from "../components/PracticePhone.astro";
+import AppPhone from "../components/AppPhone.astro";
 import QuizPhone from "../components/QuizPhone.astro";
 import FlipCards from "../components/FlipCards.astro";
 import { LINKS } from "../config/links";
@@ -57,19 +57,22 @@ const quizBenefits = [
             <a href={LINKS.quiz} class="btn btn-outline" data-passthrough data-event="quiz_click" data-event-location="hero">What's Holding You Back?</a>
           </div>
         </div>
-        <div class="reveal is-in" style="--d:150ms">
-          <div class="hero-scene relative mx-auto" data-tilt="4">
-            <div class="hero-photo relative rounded-[32px] overflow-hidden aspect-[4/5] sm:aspect-[5/4] lg:aspect-[4/5]">
-              <picture>
-                <source type="image/webp" srcset="/images/leah-hero-sm.webp 900w, /images/leah-hero.webp 1600w" sizes="(min-width: 1024px) 46vw, 100vw" />
-                <img src="/images/leah-hero.jpg" srcset="/images/leah-hero-sm.jpg 900w, /images/leah-hero.jpg 1600w" sizes="(min-width: 1024px) 46vw, 100vw" alt="A woman in a white shirt, thoughtful, in a warm, plant-filled room." width="1600" height="1347" fetchpriority="high" decoding="async" class="w-full h-full object-cover object-[78%_20%] lg:object-[60%_20%]" />
-              </picture>
-              <div class="absolute inset-0 bg-gradient-to-t from-charcoal/35 via-transparent to-transparent" aria-hidden="true"></div>
+        <div class="reveal is-in relative flex justify-center lg:justify-end" style="--d:150ms">
+          <!-- The handoff's photograph (a reflective woman in a warm cream setting) goes behind this scene when one is approved. Nothing of Leah appears on the site. -->
+          <div class="hero-scene relative" data-tilt="5">
+            <div class="hero-backdrop absolute inset-0 rounded-[40px]" aria-hidden="true"></div>
+            <p class="absolute -top-2 right-2 text-right text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/60 leading-[1.9]" aria-hidden="true">Same life.<br />Different way<br />to meet it.</p>
+            <div class="relative z-[1] phone-float"><AppPhone screen="home" width={300} alt="Practice on a phone: the Daily Practice Coach, Dare of the Day and Set Up Your Day." eager /></div>
+            <div class="float-card absolute -left-6 sm:-left-16 bottom-16 card p-4 w-[220px] z-[2]" aria-hidden="true">
+              <p class="text-[10px] font-semibold uppercase tracking-[0.14em] text-steel">Proof Log</p>
+              <p class="mt-1 text-[13px] font-medium text-ink">Had the conversation I had been circling. It took four minutes.</p>
+              <p class="mt-2 text-[11px] text-ink-faint">Tuesday · 3 this week</p>
             </div>
-            <div class="hero-phone absolute -bottom-6 -left-3 sm:-left-10 scale-[0.5] sm:scale-[0.72] origin-bottom-left">
-              <PracticePhone variant="today" />
+            <div class="float-card-2 hidden sm:block absolute -right-4 sm:-right-12 top-44 card p-4 w-[200px] z-[2]" aria-hidden="true">
+              <p class="text-[10px] font-semibold uppercase tracking-[0.14em] text-steel">STEAR · Reset</p>
+              <p class="mt-1 text-[13px] font-medium text-ink">Where you are now</p>
+              <p class="mt-1.5 flex gap-1">{[1,2,3,4,5].map((n) => <span class={`w-6 h-6 rounded-full text-[11px] flex items-center justify-center border border-line ${n === 4 ? "bg-ink text-cream" : "text-ink-faint"}`}>{n}</span>)}</p>
             </div>
-            <p class="absolute top-6 right-6 text-right text-[11px] font-semibold uppercase tracking-[0.22em] text-cream/90 drop-shadow leading-[1.9]" aria-hidden="true">Same life.<br />Different way<br />to meet it.</p>
           </div>
         </div>
       </div>
@@ -101,8 +104,8 @@ const quizBenefits = [
               <p class="mt-5 text-[16.5px] leading-relaxed text-on-dark-muted max-w-[520px]">A daily practice coach with personalized insight, real-time support, and tools to help you think differently, feel differently, and choose what's next.</p>
             </div>
             <div class="reveal mt-10 flex justify-center lg:justify-start gap-5" style="--d:120ms">
-              <PracticePhone variant="today" class="phone-sm" />
-              <PracticePhone variant="coach" class="phone-sm hidden sm:block" />
+              <AppPhone screen="dare" width={240} alt="Practice home after the Dare of the Day is checked off: You did your Dare of the Day." />
+              <AppPhone screen="stear2" width={240} alt="STEAR step two: What did you make it mean?" class="hidden sm:block" />
             </div>
           </div>
           <div>
@@ -272,9 +275,14 @@ const quizBenefits = [
 </Base>
 
 <style>
-  .hero-scene { width: min(100%, 520px); }
-  .hero-phone { filter: drop-shadow(0 30px 40px rgba(31,29,26,0.35)); }
-  .phone-sm { transform: scale(0.82); transform-origin: top center; margin-bottom: -100px; }
+  .hero-scene { width: min(100%, 440px); padding: 28px 0; }
+  .hero-backdrop { background: linear-gradient(160deg, var(--color-cream-2), var(--color-gold-soft) 60%, var(--color-cream-2)); transform: rotate(-4deg) scale(1.02); }
+  .phone-float { margin-inline: auto; animation: float 7s ease-in-out infinite; }
+  .float-card { animation: float 9s ease-in-out infinite 1s; }
+  .float-card-2 { animation: float 8s ease-in-out infinite 0.5s; }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  @media (max-width: 420px) { .phone-float { transform: scale(0.9); transform-origin: top center; } .float-card { bottom: 6px; left: 0; } }
+  @media (prefers-reduced-motion: reduce) { .phone-float, .float-card, .float-card-2 { animation: none; } }
   .book-spine { transform: rotate(-1deg); }
   .book-spine:nth-child(2) { transform: rotate(1deg); }
   .book-spine:nth-child(3) { transform: rotate(-0.5deg); }

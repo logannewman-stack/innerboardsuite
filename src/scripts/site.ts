@@ -229,23 +229,55 @@ function stories() {
     const steps = Array.from(story.querySelectorAll<HTMLElement>("[data-step]"));
     const screens = Array.from(story.querySelectorAll<HTMLElement>("[data-screen]"));
     if (!steps.length || !screens.length) return;
-    // A step names the screen it is about; two steps may share one screen.
-    const show = (step: HTMLElement) => {
-      const name = step.dataset.stepScreen || "";
+    const show = (name: string) => {
       screens.forEach((s) => s.classList.toggle("is-active", s.dataset.screen === name));
-      steps.forEach((s) => s.classList.toggle("is-current", s === step));
+      steps.forEach((s) => s.classList.toggle("is-current", s.dataset.step === name));
     };
-    show(steps[0]);
+    show(steps[0].dataset.step || "");
     const io = new IntersectionObserver(
       (entries) => {
         const hit = entries.filter((e) => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (hit) show(hit.target as HTMLElement);
+        if (hit) show((hit.target as HTMLElement).dataset.step || "");
       },
       { rootMargin: "-40% 0px -40% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] }
     );
     steps.forEach((s) => io.observe(s));
     observe(io);
   });
+}
+
+/**
+ * A paragraph that lights up a word at a time as it crosses the middle of
+ * the screen. The words are split once; scrolling sets how many are lit.
+ */
+function scrollwords() {
+  const blocks = Array.from(document.querySelectorAll<HTMLElement>("[data-scrollwords]"));
+  if (!blocks.length) return;
+  blocks.forEach((el) => {
+    if (reduced()) { el.classList.add("sw-done"); return; }
+    splitWords(el);
+    el.classList.add("sw");
+  });
+  if (reduced()) return;
+  const words = new Map(blocks.map((el) => [el, Array.from(el.querySelectorAll<HTMLElement>(".w"))]));
+  let raf = 0;
+  const update = () => {
+    raf = 0;
+    const vh = window.innerHeight;
+    for (const el of blocks) {
+      const r = el.getBoundingClientRect();
+      // 0 when the block's top reaches 80% down the screen, 1 when its bottom passes 35%.
+      const start = vh * 0.8, end = vh * 0.35;
+      const p = Math.min(1, Math.max(0, (start - r.top) / (r.height + (start - end))));
+      const list = words.get(el) || [];
+      const n = Math.round(p * list.length);
+      list.forEach((w, i) => w.classList.toggle("lit", i < n));
+    }
+  };
+  const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+  update();
+  listen(window, "scroll", onScroll, { passive: true });
+  listen(window, "resize", onScroll, { passive: true });
 }
 
 /** Flip cards: click, tap, Enter and Space. Never on their own. */
@@ -308,6 +340,7 @@ function page() {
   glow();
   tilt();
   stories();
+  scrollwords();
   flips();
   passthrough();
 }

@@ -1,0 +1,72 @@
+---
+/**
+ * Practice on a desktop: the browser window, the app's own left rail (Coach,
+ * Tools, Academy, Inner Lab, InnerBoard OS, Get Certified, The Book, You)
+ * and the Home screen as the October 17 simplification describes it: the
+ * Coach prompt, Set Up Your Day, Dare of the Day, and the calendar with the
+ * streak as one line. Drawn, and illustrative until screenshots are approved.
+ */
+interface Props { class?: string }
+const { class: className = "" } = Astro.props;
+const rail = ["Coach", "Tools", "Academy", "Inner Lab", "InnerBoard OS", "Get Certified", "The Book", "You"];
+const days = Array.from({ length: 28 }, (_, i) => i + 1);
+const practiced = new Set([1, 2, 3, 5, 6, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 22, 23, 24]);
+---
+<div class={`browser ${className}`} aria-hidden="true">
+  <div class="browser-bar">
+    <div class="browser-dots"><span></span><span></span><span></span></div>
+    <div class="browser-url"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>practiceinnerboard.com</div>
+  </div>
+  <div class="browser-screen grid grid-cols-[172px_1fr] min-h-[520px]">
+    <aside class="border-r border-app-line bg-app-surface px-3 py-4">
+      <div class="flex items-center gap-2 px-2 text-[13px] font-display">
+        <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.2" stroke-width="2"/><path d="M12 1.6v20.8M1.6 12h20.8" stroke-width="1.5"/><circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/></svg>Practice
+      </div>
+      <ul class="mt-4 space-y-0.5 text-[12px]">
+        {rail.map((r, i) => (
+          <li class={`px-2.5 py-1.5 rounded-[7px] ${i === 0 ? "bg-steel-soft font-semibold text-app-ink" : "text-app-muted"}`}>{r}</li>
+        ))}
+      </ul>
+      <p class="mt-8 px-2 text-[9.5px] text-app-faint leading-snug">Trained on the InnerBoard method. It is not a person.</p>
+    </aside>
+    <main class="p-5 grid gap-4 lg:grid-cols-[1.25fr_0.75fr]">
+      <div class="space-y-3">
+        <div>
+          <p class="font-display text-[22px] leading-[1.1]">Hey Abra.</p>
+          <p class="text-[12px] text-app-muted mt-0.5">Daily Practice Coach</p>
+        </div>
+        <div class="rounded-[12px] border border-app-line bg-app-surface px-3.5 py-3 text-[12px] text-app-faint flex items-center justify-between">What's on your mind today?<span class="w-6 h-6 rounded-full bg-app-ink"></span></div>
+        <div class="flex flex-wrap gap-1.5">
+          {["I'm reacting right now", "Help me make sense of this", "I have a hard conversation coming"].map((t) => <span class="rounded-full border border-app-line bg-app-surface px-2.5 py-1 text-[10.5px] font-medium">{t}</span>)}
+        </div>
+        <div class="grid gap-3 sm:grid-cols-2">
+          <div class="rounded-[14px] border border-app-line bg-app-surface p-3.5">
+            <p class="text-[9.5px] font-semibold uppercase tracking-[0.14em] text-steel">Set up your day</p>
+            <p class="mt-1 text-[12.5px] font-semibold">What would make today a win?</p>
+            <div class="mt-2 inline-flex rounded-full bg-app-ink text-app-canvas px-3 py-1 text-[10.5px] font-semibold">Check in</div>
+          </div>
+          <div class="rounded-[14px] bg-steel text-[#f8f5ee] p-3.5">
+            <p class="text-[9.5px] font-semibold uppercase tracking-[0.14em] opacity-80">Dare of the Day</p>
+            <p class="mt-1 font-display text-[14px] leading-[1.2]">Say the thing you have been rehearsing. Today. Out loud.</p>
+            <div class="mt-2 flex items-center gap-2 text-[10.5px] font-semibold"><span class="inline-block w-3.5 h-3.5 rounded-full border-[1.5px] border-[#f8f5ee]/80"></span> I did it</div>
+          </div>
+        </div>
+      </div>
+      <div class="rounded-[14px] border border-app-line bg-app-surface p-3.5">
+        <div class="flex items-center justify-between">
+          <p class="text-[12px] font-semibold">October</p>
+          <p class="text-[10.5px] font-semibold text-steel">6 days in a row</p>
+        </div>
+        <div class="mt-3 grid grid-cols-7 gap-1 text-center text-[9px] text-app-faint">
+          {["M", "T", "W", "T", "F", "S", "S"].map((d) => <span>{d}</span>)}
+        </div>
+        <div class="mt-1 grid grid-cols-7 gap-1">
+          {days.map((d) => (
+            <span class={`aspect-square rounded-[6px] text-[9.5px] flex items-center justify-center ${practiced.has(d) ? "bg-steel text-[#f8f5ee]" : d === 25 ? "ring-1 ring-app-ink text-app-ink" : "bg-app-canvas text-app-faint"}`}>{d}</span>
+          ))}
+        </div>
+        <p class="mt-3 text-[10px] text-app-faint">Tap a day to see what you practiced.</p>
+      </div>
+    </main>
+  </div>
+</div>
