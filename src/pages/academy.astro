@@ -2,12 +2,19 @@
 /**
  * innerboardsuite.com/academy
  *
- * Built to "Academy Page Rebuild: Copy and Build Directions" (D1 in the
- * tracker). Copy as written there, section by section, in the cream and teal
- * system it specifies. Nothing here paraphrases the approved copy.
+ * Built to BUILD_SPEC 2.3 on the system of part 1. The copy is the locked
+ * copy of "Academy Page Rebuild: Copy and Build Directions" (D1), verbatim,
+ * every <em> where the file has it; the only removal is the three summary
+ * items beside the hero, which were our own sentences. Cream and teal:
+ * teal pills, teal eyebrows, paper at 20 px. The page's drawn moments are
+ * the mark geometry and the margin rule on the hero and the stair line
+ * beside the three levels; its object with depth is the InnerLab card.
  */
 import Base from "../layouts/Base.astro";
 import Arrow from "../components/Arrow.astro";
+import Geo from "../components/Geo.astro";
+import AcademyStair from "../components/AcademyStair.astro";
+import AcademyLabCard from "../components/AcademyLabCard.astro";
 import { LINKS } from "../config/links";
 
 const title = "InnerBoard Academy · The curriculum school never offered";
@@ -44,105 +51,121 @@ const testimonials = [
   "I have tried every productivity system. None of it lasted. This was the first time I understood why, and what to actually do about it.",
   "I came in looking for a tool. I walked out with a different way of seeing."
 ];
+
+/** The ampersand rule (1.3 item 8): the glyph changes face, the sentence does not. */
+const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</span> ');
 ---
 <Base title={title} description={description} path="/academy" theme="teal" themeColor="#f7f4ee">
-  <!-- ── Hero ─────────────────────────────────────────────────────────── -->
-  <section class="bg-ac-cream">
-    <div class="wrap pt-[120px] sm:pt-[160px] pb-16 sm:pb-24">
-      <div class="grid gap-12 lg:grid-cols-12 lg:items-end">
-        <div class="reveal is-in lg:col-span-7">
-          <p class="eyebrow">InnerBoard Academy · Learn</p>
-          <h1 class="mt-5 text-[44px] sm:text-[64px] lg:text-[72px] leading-[1.0] text-ink" data-words>The curriculum school <em>never</em> offered.</h1>
-          <p class="mt-6 max-w-[600px] text-[17px] sm:text-[20px] leading-relaxed text-ink-muted">
-            Self-paced courses in the skills nobody taught you: what to do with a racing mind, a big feeling, a hard conversation. Start at the beginning, or start where you are.
-          </p>
-          <div class="mt-8">
+  <!-- 2.3.1 Hero: type, the mark geometry drawing in, one margin rule -->
+  <section class="ac-hero grain grain-cream" data-tone="ac-cream">
+    <i class="lamp lamp-cream" aria-hidden="true" style="--lx:80%;--ly:0%"></i>
+    <Geo class="ac-hero-geo" color="#1e5b57" opacity={0.1} />
+    <div class="wrap ac-hero-wrap">
+      <i class="ac-rule ac-hero-rule rule-draw-v" aria-hidden="true" style="--d:.6s"></i>
+      <div class="grid">
+        <div class="ac-hero-copy">
+          <p class="eyebrow rise" style="--d:.45s">InnerBoard Academy · Learn</p>
+          <h1 class="t-xl ac-h1" data-lines><span class="hl">The curriculum school <em>never</em> offered.</span></h1>
+          <p class="t-lead ac-lead rise" style="--d:.52s">Self-paced courses in the skills nobody taught you: what to do with a racing mind, a big feeling, a hard conversation. Start at the beginning, or start where you are.</p>
+          <div class="ac-btns rise" style="--d:.58s">
             <a href="#library" class="btn btn-teal">Browse the collections <Arrow /></a>
           </div>
-          <p class="mt-4 text-[15px] italic text-ink-faint font-display">For the moment you're done reacting the same way and getting the same result.</p>
+          <p class="ac-hero-note rise" style="--d:.6s">For the moment you're done reacting the same way and getting the same result.</p>
         </div>
-        <ul class="reveal is-in lg:col-span-4 lg:col-start-9 space-y-5" style="--d:120ms">
-          {[["Twelve collections", "Core curriculum, life stage, and domain. Every one stands on its own."], ["Three levels", "Foundations, Practicum, Graduate. Go as deep as you want."], ["Yours to keep", "Buy the courses you want. Keep them forever."]].map(([n, b]) => (
-            <li class="border-t border-teal pt-4"><p class="font-display text-[22px] text-ink">{n}</p><p class="mt-1 text-[15px] text-ink-muted">{b}</p></li>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2.3.2 The gap: the sequenced litany -->
+  <section class="ac-gap" data-tone="ac-cream">
+    <div class="wrap ac-gap-wrap">
+      <div class="grid">
+        <div class="ac-gap-left">
+          <p class="eyebrow rise">The gap</p>
+          <ul class="ac-litany" data-lit="lines" role="list">
+            <li class="t-s-pull">You learned the dates.</li>
+            <li class="t-s-pull">You learned where the appendix sits.</li>
+            <li class="t-s-pull">You learned how to diagram a sentence.</li>
+          </ul>
+        </div>
+        <div class="ac-gap-right">
+          <h2 class="t-l wipe" style="--d:.9s">Nobody taught you how to <em>lead yourself.</em></h2>
+          <p class="t-s-quote ac-gap-line rise" style="--d:1.2s">The most important skill of your life, <em>left for you to figure out on your own.</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2.3.3 How it works: the three levels as a stair -->
+  <section class="ac-how sec-alt" data-tone="ac-cream">
+    <div class="wrap">
+      <div class="grid">
+        <div class="ac-head8">
+          <p class="eyebrow rise">How it works</p>
+          <h2 class="t-l wipe">Twelve collections. One <em>direction.</em></h2>
+          <p class="t-lead ac-head-lead rise" style="--d:.3s">Every collection stands on its own. There's no required order. Start with what's hardest right now and go as deep as you want.</p>
+        </div>
+      </div>
+      <div class="ac-ladder-wrap">
+        <AcademyStair />
+        <ul class="ladder ac-ladder" role="list">
+          {levels.map((level, i) => (
+            <li class="rise" style={`--d:${i * 70}ms`}>
+              <p class="ladder-name">{level.name}</p>
+              <p class="ladder-body">{level.body}</p>
+            </li>
           ))}
         </ul>
+        <i class="ac-rule ac-how-rule rule-draw-v" aria-hidden="true" style="--d:.4s"></i>
       </div>
     </div>
   </section>
 
-  <!-- ── The gap ──────────────────────────────────────────────────────── -->
-  <section class="bg-ac-cream border-t border-ac-line">
-    <div class="wrap sec-s">
-      <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
-        <div class="reveal">
-          <p class="eyebrow">The gap</p>
-          <ul class="mt-5 space-y-2 text-[17px] text-ink-muted">
-            <li>You learned the dates.</li>
-            <li>You learned where the appendix sits.</li>
-            <li>You learned how to diagram a sentence.</li>
-          </ul>
-        </div>
-        <div class="reveal" style="--d:120ms">
-          <h2 class="text-[36px] sm:text-[48px] leading-[1.06] text-ink">Nobody taught you how to <em>lead yourself.</em></h2>
-          <p class="mt-5 text-[18px] sm:text-[20px] text-ink-muted font-display">The most important skill of your life, <em>left for you to figure out on your own.</em></p>
+  <!-- 2.3.4 The library: three paper cards and a ledger -->
+  <section class="ac-lib" id="library" data-tone="ac-cream">
+    <div class="wrap">
+      <div class="grid">
+        <div class="ac-head8">
+          <p class="eyebrow rise">The library</p>
+          <h2 class="t-l wipe">Find your <em>door in.</em></h2>
+          <p class="t-lead ac-head-lead rise" style="--d:.3s">Most people start with Human Foundations. Start anywhere else if you already know where you want to begin.</p>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- ── How it works ─────────────────────────────────────────────────── -->
-  <section class="bg-ac-cream-2">
-    <div class="wrap sec-m">
-      <div class="reveal max-w-[720px]">
-        <p class="eyebrow">How it works</p>
-        <h2 class="mt-4 text-[38px] sm:text-[56px] leading-[1.0] text-ink">Twelve collections. One <em>direction.</em></h2>
-        <p class="mt-5 text-[16.5px] leading-relaxed text-ink-muted">Every collection stands on its own. There's no required order. Start with what's hardest right now and go as deep as you want.</p>
-      </div>
-      <ol class="mt-12 border-t border-ac-line">
-        {levels.map((level, i) => (
-          <li class="reveal grid gap-2 md:grid-cols-[200px_1fr] py-6 border-b border-ac-line" style={`--d:${i * 80}ms`}>
-            <h3 class="text-[26px] text-ink">{level.name}</h3>
-            <p class="text-[16px] leading-relaxed text-ink-muted max-w-[640px]">{level.body}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <!-- ── The library ──────────────────────────────────────────────────── -->
-  <section id="library" class="bg-ac-cream">
-    <div class="wrap sec-m">
-      <div class="reveal max-w-[720px]">
-        <p class="eyebrow">The library</p>
-        <h2 class="mt-4 text-[38px] sm:text-[56px] leading-[1.0] text-ink">Find your <em>door in.</em></h2>
-        <p class="mt-5 text-[16.5px] leading-relaxed text-ink-muted">Most people start with Human Foundations. Start anywhere else if you already know where you want to begin.</p>
-      </div>
-
-      <p class="reveal mt-14 eyebrow">Core curriculum · Available now</p>
-      <ul class="mt-5 grid gap-4 md:grid-cols-3">
+      <p class="eyebrow ac-lib-label rise">Core curriculum · Available now</p>
+      <ul class="ac-cards" role="list">
         {core.map((c, i) => (
-          <li class="reveal card p-8 flex flex-col" style={`--d:${i * 80}ms`}>
-            <h3 class="font-display text-[26px] leading-[1.1] text-ink">{c.name}</h3>
-            <p class="mt-3 text-[15px] leading-relaxed text-ink-muted flex-1">{c.body}</p>
-            <a href={c.href} class="link-arrow mt-6 text-[14.5px]">Open the collection <Arrow /></a>
+          <li class="paper ac-card rise-obj" style={`--d:${0.2 + i * 0.09}s`}>
+            <i class="ac-card-rule rule-draw" aria-hidden="true" style={`--d:${0.5 + i * 0.09}s`}></i>
+            <h3 class="t-s ac-card-title">{c.name}</h3>
+            <p class="t-body ac-card-body">{c.body}</p>
+            <a href={c.href} class="link ac-card-link">Open the collection <Arrow /></a>
           </li>
         ))}
       </ul>
 
-      <div class="mt-16 grid gap-12 lg:grid-cols-2 lg:gap-16">
-        <div>
-          <p class="reveal eyebrow">Life stage collections · Coming soon</p>
-          <ul class="mt-4 border-t border-ac-line">
-            {lifeStage.map((c) => (
-              <li class="reveal py-4 border-b border-ac-line"><p class="font-display text-[20px] text-ink">{c.name}</p><p class="mt-1 text-[14.5px] text-ink-faint">{c.body}</p></li>
+      <div class="grid ac-ledgers">
+        <div class="ac-ledger ac-ledger-l">
+          <p class="eyebrow rise">Life stage collections</p>
+          <ul class="ac-index" role="list">
+            {lifeStage.map((c, i) => (
+              <li class="rise" style={`--d:${i * 40}ms`}>
+                <span class="ac-soon">Coming soon</span>
+                <p class="t-title ac-row-name" set:html={amp(c.name)}></p>
+                <p class="t-body ac-row-body">{c.body}</p>
+              </li>
             ))}
           </ul>
         </div>
-        <div>
-          <p class="reveal eyebrow">Domain collections · Coming soon</p>
-          <ul class="mt-4 border-t border-ac-line">
-            {domain.map((c) => (
-              <li class="reveal py-4 border-b border-ac-line"><p class="font-display text-[20px] text-ink">{c.name}</p><p class="mt-1 text-[14.5px] text-ink-faint">{c.body}</p></li>
+        <div class="ac-ledger ac-ledger-r">
+          <p class="eyebrow rise">Domain collections</p>
+          <ul class="ac-index" role="list">
+            {domain.map((c, i) => (
+              <li class="rise" style={`--d:${i * 40}ms`}>
+                <span class="ac-soon">Coming soon</span>
+                <p class="t-title ac-row-name" set:html={amp(c.name)}></p>
+                <p class="t-body ac-row-body">{c.body}</p>
+              </li>
             ))}
           </ul>
         </div>
@@ -150,73 +173,228 @@ const testimonials = [
     </div>
   </section>
 
-  <!-- ── Why it works ─────────────────────────────────────────────────── -->
-  <section class="bg-ac-cream border-t border-ac-line">
-    <div class="wrap sec-m">
-      <div class="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
-        <div class="reveal">
-          <p class="eyebrow">Why it works</p>
-          <h2 class="mt-4 text-[34px] sm:text-[44px] leading-[1.06] text-ink">Most courses teach you something <em>new.</em> InnerBoard <em>names</em> something true.</h2>
+  <!-- 2.3.5 Why it works: the lit thesis -->
+  <section class="ac-why" data-tone="ac-cream">
+    <div class="wrap ac-why-wrap">
+      <div class="grid">
+        <div class="ac-why-left">
+          <p class="eyebrow rise">Why it works</p>
+          <h2 class="t-m wipe">Most courses teach you something <em>new.</em> InnerBoard <em>names</em> something true.</h2>
         </div>
-        <p class="reveal text-[17px] sm:text-[19px] leading-relaxed text-ink-muted" style="--d:120ms">
-          The frameworks are not ideas to memorize. They are <em class="font-display text-ink">mirrors.</em> You read them and recognize yourself: what has been running, what it has been costing you, what has been possible the whole time. That is the moment a course stops being content and becomes change.
-        </p>
+        <p class="t-state ac-why-state" data-lit><b class="lb">The frameworks are not ideas to memorize.</b> They are <em>mirrors.</em> You read them and recognize yourself: what has been running, what it has been costing you, what has been possible the whole time. That is the moment a course stops being content and becomes change.</p>
       </div>
     </div>
   </section>
 
-  <!-- ── What becomes possible ────────────────────────────────────────── -->
-  <section class="on-dark bg-teal text-white relative overflow-hidden" data-glow>
-    <div class="wrap py-20 sm:py-28">
-      <div class="reveal max-w-[720px]">
-        <p class="eyebrow">What becomes possible</p>
-        <h2 class="mt-4 text-[36px] sm:text-[52px]">Real shifts. Real <em>lives.</em></h2>
+  <!-- 2.3.6 What becomes possible: a teal bleed, three ruled columns -->
+  <section class="ac-possible" data-tone="teal">
+    <i class="lamp lamp-teal grain" aria-hidden="true" style="--lx:85%;--ly:100%;--ga:.2"></i>
+    <div class="wrap">
+      <div class="grid">
+        <div class="ac-head7">
+          <p class="eyebrow rise">What becomes possible</p>
+          <h2 class="t-l wipe">Real shifts. Real <em>lives.</em></h2>
+        </div>
       </div>
-      <ul class="mt-12 grid gap-4 md:grid-cols-3">
+      <ul class="ac-quotes" role="list">
         {testimonials.map((t, i) => (
-          <li class="reveal rounded-[18px] bg-teal-2 p-7 flex flex-col" style={`--d:${i * 90}ms`}>
-            <p class="font-display text-[20px] leading-[1.3] flex-1">"{t}"</p>
-            <p class="mt-6 text-[13px] font-semibold uppercase tracking-[0.12em] text-white/70">Academy student</p>
+          <li class="ac-quote rise" style={`--d:${i * 90}ms`}>
+            <p class="t-s-quote quote-hang ac-quote-text">"{t}"</p>
+            <p class="eyebrow ac-sig">Academy student</p>
           </li>
         ))}
       </ul>
     </div>
   </section>
 
-  <!-- ── Go further ───────────────────────────────────────────────────── -->
-  <section class="bg-ac-cream">
-    <div class="wrap sec-m">
-      <div class="reveal max-w-[720px]">
-        <p class="eyebrow">Want to go further?</p>
-        <h2 class="mt-4 text-[36px] sm:text-[48px] leading-[1.06] text-ink">The Academy is where it <em>starts.</em></h2>
-        <p class="mt-4 text-[17px] text-ink-muted">It doesn't have to be where it ends.</p>
-      </div>
-      <div class="mt-12 grid gap-4 md:grid-cols-2">
-        <div class="reveal card p-8">
-          <p class="eyebrow">Live</p>
-          <h3 class="mt-3 text-[30px] text-ink"><em>Inner</em>Lab.</h3>
-          <p class="mt-3 text-[15.5px] leading-relaxed text-ink-muted">Put the frameworks into daily practice. Live coaching. Community. Real accountability.</p>
-          <a href={LINKS.live.innerlab} class="link-arrow mt-5 text-[14.5px]">Explore InnerLab <Arrow /></a>
+  <!-- 2.3.7 Go further: two paper doors, one with a screen -->
+  <section class="ac-further" data-tone="ac-cream">
+    <div class="wrap">
+      <div class="grid">
+        <div class="ac-head8">
+          <p class="eyebrow rise">Want to go further?</p>
+          <h2 class="t-l wipe">The Academy is where it <em>starts.</em></h2>
+          <p class="t-lead ac-head-lead rise" style="--d:.3s">It doesn't have to be where it ends.</p>
         </div>
-        <div class="reveal card p-8" style="--d:100ms">
+      </div>
+      <div class="grid ac-doors">
+        <AcademyLabCard style="--d:.2s" />
+        <div class="paper ac-door ac-door-2 rise-obj" style="--d:.32s">
           <p class="eyebrow">Lead</p>
-          <h3 class="mt-3 text-[30px] text-ink">INQ <em>Certify</em>.</h3>
-          <p class="mt-3 text-[15.5px] leading-relaxed text-ink-muted">If the Graduate work lights you up, INQ is what comes next.</p>
-          <a href={LINKS.inq} class="link-arrow mt-5 text-[14.5px]">Explore Certify <Arrow /></a>
+          <h3 class="t-m ac-door-name">INQ <em>Certify</em>.</h3>
+          <p class="t-body ac-door-body">If the Graduate work lights you up, INQ is what comes next.</p>
+          <a href={LINKS.inq} class="link ac-door-link">Explore Certify <Arrow /></a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── The filter ───────────────────────────────────────────────────── -->
-  <section class="on-dark bg-charcoal text-cream">
-    <div class="wrap sec-l">
-      <div class="reveal max-w-[820px]">
-        <p class="eyebrow">The filter</p>
-        <h2 class="mt-4 text-[38px] sm:text-[56px] leading-[1.0]">There is what you have <em>learned.</em> And what you were <em>never taught.</em></h2>
-        <p class="mt-5 text-[18px] text-on-dark-muted">This is the curriculum.</p>
-        <a href={LINKS.live.humanFoundations} class="btn btn-teal mt-8" data-event="academy_start_click" data-event-location="filter">Start with Human Foundations <Arrow /></a>
+  <!-- 2.3.8 The filter: an ink bleed -->
+  <section class="ac-filter" data-tone="ink">
+    <i class="lamp grain" aria-hidden="true" style="--lx:15%;--ly:0%;--la:.1"></i>
+    <div class="wrap ac-filter-wrap">
+      <i class="ac-rule ac-filter-rule rule-draw-v" aria-hidden="true" style="--d:.5s"></i>
+      <div class="grid">
+        <div class="ac-head9">
+          <p class="eyebrow rise">The filter</p>
+          <h2 class="t-l wipe">There is what you have <em>learned.</em> And what you were <em>never taught.</em></h2>
+          <p class="t-s-quote ac-filter-line rise" style="--d:.5s">This is the curriculum.</p>
+          <div class="ac-btns rise" style="--d:.62s">
+            <a href={LINKS.live.humanFoundations} class="btn btn-cream" data-event="academy_start_click" data-event-location="filter">Start with Human Foundations <Arrow /></a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 </Base>
+
+<style is:global>
+  /* ── Shared on this page ────────────────────────────────────────────── */
+  .ac-head7 { grid-column: 1 / span 7; }
+  .ac-head8 { grid-column: 1 / span 8; }
+  .ac-head9 { grid-column: 1 / span 9; }
+  .ac-head-lead { margin-top: var(--lead-gap); color: var(--fg-2); }
+  .ac-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: var(--btn-gap); }
+  /* The margin rule: a teal hairline on column 10's left edge, scaleY drawn from the top. */
+  /* Column 10's left edge is 9 / 12 of (wrap + gap) from the wrap's left: computed from the wrap itself so it holds at every width, including the zoomed --max above 1800. */
+  .ac-rule { position: absolute; left: calc(75% + .75 * var(--gap)); top: 0; bottom: 0; width: 1px; background: rgba(30,91,87,.35); pointer-events: none; }
+  .js .ac-rule.rule-draw-v { transition-duration: 1.2s; }
+  .ac-possible .eyebrow, .ac-filter .eyebrow, .ac-possible .link, .ac-filter .link { transition: color .5s var(--ease); }
+
+  /* ── 2.3.1 Hero ─────────────────────────────────────────────────────── */
+  .ac-hero { position: relative; overflow: hidden; min-height: min(100svh, 880px); padding-top: var(--nav-h); display: flex; flex-direction: column; }
+  .ac-hero > .lamp { z-index: 0; }
+  .ac-hero-wrap { position: relative; z-index: 1; flex: 1; }
+  .ac-hero .ac-hero-geo { right: -410px; top: -130px; z-index: 0; max-width: none; }
+  .ac-hero .ac-hero-geo .draw-line { transition-delay: calc(var(--d, 0s) + .4s); }
+  .ac-hero-rule { top: 90px; }
+  .ac-hero-copy { position: relative; z-index: 1; grid-column: 1 / span 9; padding-top: 90px; padding-bottom: clamp(72px, 10vh, 120px); }
+  /* Greedy wrap, not balance: with the 8.6em measure the break is "The curriculum / school never / offered." at every width (balance set "school" alone on a line at tablet). */
+  .ac-h1 { max-width: 8.6em; margin: 0; text-wrap: wrap; }
+  .ac-lead { margin-top: var(--lead-gap); color: var(--fg-2); }
+  .ac-hero-note { margin-top: 20px; font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 15px; line-height: 1.4; color: var(--fg-3); max-width: 40em; }
+
+  /* ── 2.3.2 The gap ──────────────────────────────────────────────────── */
+  .ac-gap-wrap { border-top: 1px solid var(--line); padding-block: var(--sec-l); }
+  .ac-gap-left { grid-column: 1 / span 6; }
+  .ac-litany { list-style: none; margin: 0; padding: 0; display: grid; row-gap: 14px; }
+  .ac-litany > li { color: var(--fg); text-wrap: balance; max-width: none; }
+  .ac-gap-right { grid-column: 7 / span 6; padding-top: calc(var(--fs-eyebrow) + var(--eyebrow-gap)); }
+  .ac-gap-line { margin-top: var(--lead-gap); color: var(--fg-2); max-width: 20em; }
+  .ac-gap-line em, .ac-filter-line em { font-style: italic; font-weight: 400; color: var(--accent); }
+
+  /* ── 2.3.3 How it works ─────────────────────────────────────────────── */
+  .ac-how { padding-block: var(--sec); }
+  .ac-ladder-wrap { --stair-w: clamp(32px, calc(var(--edge) - 20px), 80px); --step: calc(var(--stair-w) * .4); position: relative; margin-top: var(--head-gap); }
+  .ac-ladder { display: grid; grid-auto-rows: 1fr; }
+  .ac-ladder > li { grid-template-columns: 240px minmax(0, 1fr); align-content: start; }
+  .ac-ladder > li:nth-child(2) { padding-left: var(--step); }
+  .ac-ladder > li:nth-child(3) { padding-left: calc(2 * var(--step)); }
+  .ac-ladder .ladder-name { font-size: var(--fs-s); letter-spacing: -.012em; line-height: 1.12; margin: 0; }
+  .ac-ladder .ladder-body { max-width: 36em; margin: 0; }
+  .ac-how-rule { top: 0; bottom: 0; }
+  /* At desktop the rows' text stays in columns 1 to 9: the margin rule on column 10's edge keeps 24 px of air from the longest body. */
+  @media (min-width: 1069px) { .ac-ladder > li { padding-right: calc(25% + .25 * var(--gap) + 24px); } }
+
+  /* ── 2.3.4 The library ──────────────────────────────────────────────── */
+  .ac-lib { padding-block: var(--sec); }
+  .ac-lib-label { margin-top: var(--head-gap); margin-bottom: 20px; }
+  .ac-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--gap); row-gap: var(--gap); }
+  .ac-card { padding: 32px; min-height: 300px; display: flex; flex-direction: column; transition: transform 200ms var(--hover), box-shadow 200ms var(--hover); }
+  .ac-card-rule { display: block; height: 2px; background: #1e5b57; margin-bottom: 26px; }
+  .ac-card-title { margin: 0; max-width: 12em; }
+  .ac-card-body { margin-top: 12px; color: var(--fg-2); }
+  .ac-card-link { margin-top: auto; padding-top: 28px; }
+  @media (hover: hover) and (pointer: fine) {
+    .ac-card:hover { transform: translateY(-2px); background-image: linear-gradient(var(--paper), var(--paper)), linear-gradient(180deg, #ffffff 0%, #ebe7df 42%, #d9d3c7 100%); }
+  }
+  .ac-ledgers { margin-top: 72px; row-gap: 48px; }
+  .ac-ledger-l { grid-column: 1 / span 6; padding-right: 32px; }
+  .ac-ledger-r { grid-column: 7 / span 6; }
+  .ac-index { list-style: none; margin: 0; padding: 0; }
+  .ac-index > li { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name soon" "body soon"; column-gap: 24px; padding-block: 18px; border-top: 1px solid var(--line); }
+  .ac-index > li:last-child { border-bottom: 1px solid var(--line); }
+  .ac-row-name { grid-area: name; margin: 0; }
+  .ac-row-body { grid-area: body; margin-top: 4px; color: var(--fg-3); max-width: 30em; }
+  .ac-soon { grid-area: soon; align-self: start; justify-self: end; font-family: var(--font-sans); font-size: var(--fs-cap); font-weight: 500; line-height: 1.45; color: var(--accent); font-variant-numeric: tabular-nums; white-space: nowrap; padding-top: .2em; }
+
+  /* ── 2.3.5 Why it works ─────────────────────────────────────────────── */
+  .ac-why-wrap { border-top: 1px solid var(--line); padding-block: var(--sec); }
+  .ac-why-left { grid-column: 1 / span 6; }
+  .ac-why-state { grid-column: 8 / span 5; margin: 0; }
+
+  /* ── 2.3.6 What becomes possible ────────────────────────────────────── */
+  .ac-possible { padding-block: var(--sec-l); overflow: hidden; }
+  .ac-quotes { list-style: none; margin: var(--head-gap) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 40px; }
+  .ac-quote { display: flex; flex-direction: column; border-top: 1px solid var(--line); padding-top: 28px; }
+  .ac-quote-text { color: var(--fg); margin: 0; }
+  .ac-sig { margin: auto 0 0; padding-top: 28px; }
+
+  /* ── 2.3.7 Go further ───────────────────────────────────────────────── */
+  .ac-further { padding-block: var(--sec); }
+  .ac-doors { margin-top: var(--head-gap); row-gap: var(--gap); }
+  .ac-door { padding: 40px; min-height: 320px; display: flex; flex-direction: column; transition: transform 200ms var(--hover), box-shadow 200ms var(--hover); }
+  .ac-door-2 { grid-column: 7 / span 6; }
+  .ac-door-1 { grid-column: 1 / span 6; }
+  .ac-door .eyebrow { margin-bottom: var(--eyebrow-gap); }
+  .ac-door-name { margin: 0; }
+  .ac-door-body { margin-top: 14px; color: var(--fg-2); }
+  .ac-door-link { margin-top: auto; padding-top: 32px; align-self: flex-start; }
+  @media (hover: hover) and (pointer: fine) {
+    .ac-door:hover { transform: translateY(-4px); box-shadow: inset 0 1px 0 rgba(255,255,255,.9), inset 0 0 0 1px rgba(255,255,255,.5), var(--sh-object); }
+  }
+
+  /* ── 2.3.8 The filter ───────────────────────────────────────────────── */
+  .ac-filter { padding-block: var(--sec-l); overflow: hidden; }
+  .ac-filter-rule { background: linear-gradient(180deg, transparent, rgba(201,171,102,.45) 12% 88%, transparent); }
+  .ac-filter-line { margin-top: var(--lead-gap); color: var(--fg-2); }
+
+  /* ── Tablet ──────────────────────────────────────────────────────────── */
+  @media (max-width: 1068px) {
+    .ac-hero-copy { grid-column: 1 / span 11; padding-top: 64px; }
+    .ac-hero .ac-hero-geo { right: -520px; top: -80px; }
+    .ac-gap-left, .ac-gap-right { grid-column: 1 / -1; }
+    .ac-gap-right { padding-top: 40px; }
+    .ac-head7, .ac-head8, .ac-head9 { grid-column: 1 / span 10; }
+    .ac-ladder > li { grid-template-columns: 180px minmax(0, 1fr); }
+    .ac-ladder-wrap { --stair-w: 40px; display: grid; grid-template-columns: 40px minmax(0, 1fr); column-gap: 12px; }
+    .ac-how-rule { display: none; }
+    .ac-ledger-l, .ac-ledger-r { grid-column: 1 / -1; }
+    .ac-ledger-l { padding-right: 0; }
+    .ac-ledgers { row-gap: 48px; }
+    .ac-cards { column-gap: 16px; }
+    .ac-card { padding: 24px; min-height: 0; }
+    .ac-why-left { grid-column: 1 / span 5; }
+    .ac-why-state { grid-column: 7 / span 6; }
+    .ac-quotes { grid-template-columns: 1fr; row-gap: 0; }
+    .ac-quote { padding-bottom: 36px; }
+    .ac-quote:last-child { border-bottom: 1px solid var(--line); }
+    .ac-sig { padding-top: 22px; }
+    .ac-door-1, .ac-door-2 { grid-column: 1 / -1; }
+    .ac-door { padding: 32px; min-height: 0; }
+  }
+
+  /* ── Phone ───────────────────────────────────────────────────────────── */
+  @media (max-width: 734px) {
+    .ac-hero { min-height: 0; }
+    .ac-hero-copy { grid-column: 1 / -1; padding-top: 48px; padding-bottom: 64px; }
+    .ac-hero .ac-hero-geo { width: 700px; height: 700px; left: 70px; right: auto; top: -50px; }
+    .ac-hero .ac-hero-geo :is(path, circle.ring) { opacity: .08; }
+    .ac-hero .ac-hero-geo circle.dot { opacity: .16; }
+    .ac-rule { display: none; }
+    .ac-btns { flex-direction: column; }
+    .ac-btns .btn { width: 100%; }
+    .ac-gap-left, .ac-gap-right, .ac-head7, .ac-head8, .ac-head9, .ac-why-left, .ac-why-state, .ac-ledger-l, .ac-ledger-r { grid-column: 1 / -1; }
+    .ac-gap-right { padding-top: 40px; }
+    .ac-ladder > li { grid-template-columns: 1fr; row-gap: 6px; padding-block: 20px; }
+    .ac-cards { grid-template-columns: 1fr; row-gap: 16px; }
+    .ac-card { padding: 28px 24px; min-height: 0; }
+    .ac-card-link { padding-top: 24px; }
+    .ac-ledgers { margin-top: 56px; row-gap: 40px; }
+    .ac-index > li { column-gap: 16px; }
+    .ac-why-state { margin-top: 36px; }
+    .ac-doors { row-gap: 16px; }
+    .ac-door { padding: 24px; min-height: 0; }
+    .ac-door-link { padding-top: 24px; }
+  }
+</style>

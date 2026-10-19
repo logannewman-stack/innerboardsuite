@@ -1,0 +1,44 @@
+---
+/**
+ * The InnerLab door (BUILD_SPEC 2.3.7): the Academy page's object with depth.
+ * A paper card whose top right corner holds a bezel-less Inner Lab screen in
+ * a 196 px box, masked so only the app's header, the month, the title, the
+ * "Live it." line and the top of the Masterclass card show. The line about
+ * October's dates sits at 44.6% of the capture, 228 px at this width, and
+ * is never rendered because the box ends at 196 px. The screen rises 12 px
+ * inside its mask 350 ms after the card arrives.
+ */
+import Arrow from "./Arrow.astro";
+import { LINKS } from "../config/links";
+interface Props { class?: string; style?: string }
+const { class: className = "", style = "" } = Astro.props;
+---
+<div class={`paper ac-door ac-door-1 rise-obj ${className}`.trim()} style={style}>
+  <div class="ac-lab-text">
+    <p class="eyebrow">Live</p>
+    <h3 class="t-m ac-door-name"><em>Inner</em>Lab.</h3>
+    <p class="t-body ac-door-body">Put the frameworks into daily practice. Live coaching. Community. Real accountability.</p>
+    <a href={LINKS.live.innerlab} class="link ac-door-link">Explore InnerLab <Arrow /></a>
+  </div>
+  <div class="ac-lab-media">
+    <img class="ac-lab-screen" src="/app/lab-home.webp" alt="The Inner Lab screen in Practice, with the month and the Masterclass." width="780" height="1688" sizes="236px" loading="lazy" decoding="async" />
+  </div>
+</div>
+
+<style is:global>
+  .ac-door-1 { position: relative; }
+  .ac-door-1 .ac-lab-text { position: relative; z-index: 1; width: calc(100% - 260px); display: flex; flex-direction: column; flex: 1; }
+  .ac-lab-media { position: absolute; top: 6px; right: 6px; width: 284px; height: 196px; overflow: hidden; contain: paint; pointer-events: none; z-index: 0; border-radius: 0 14px 0 0;
+    -webkit-mask-image: linear-gradient(to bottom, #000 140px, transparent 196px); mask-image: linear-gradient(to bottom, #000 140px, transparent 196px); }
+  .ac-lab-screen { position: absolute; top: 0; right: 0; width: 236px; height: auto; max-width: none; display: block; border-radius: 0 14px 0 0; background: #f2ece0;
+    box-shadow: 0 0 0 1px rgba(31,29,26,.08), 0 1px 2px rgba(31,29,26,.12), 0 14px 28px -14px rgba(31,29,26,.26), 0 50px 76px -44px rgba(31,29,26,.38);
+    transition: transform 1.2s var(--slow) .35s; }
+  .js .ac-door-1:not(.in) .ac-lab-screen { transform: translateY(12px); }
+  @media (max-width: 734px) {
+    .ac-door-1 .ac-lab-text { width: 100%; }
+    .ac-door-1 .ac-door-name { margin-top: 128px; }
+    .ac-lab-media { width: 240px; height: 160px; -webkit-mask-image: linear-gradient(to bottom, #000 114px, transparent 160px); mask-image: linear-gradient(to bottom, #000 114px, transparent 160px); }
+    .ac-lab-screen { width: 200px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .js .ac-door-1:not(.in) .ac-lab-screen { transform: none; } }
+</style>

@@ -1,0 +1,17 @@
+---
+/**
+ * The connector of "How to get started" (BUILD_SPEC 2.4.11): one 1 px teal
+ * line across the row at y 12, drawn left to right over 1.4 s when the row
+ * arrives (1.7.14, enter mode). The viewBox is the content column at 1440
+ * (1200 x 24) and the box stretches to the row's width; a horizontal line
+ * keeps its 1 px stroke under the stretch because the height never scales.
+ * The three dots sit in the columns themselves (InqSteps markup on the page),
+ * so they land exactly on each column's left edge at every width. On phones
+ * this line is hidden and the columns carry their own vertical segments.
+ */
+interface Props { class?: string }
+const { class: className = "" } = Astro.props;
+---
+<svg class={`inq-steps-svg ${className}`.trim()} viewBox="0 0 1200 24" preserveAspectRatio="none" width="100%" height="24" data-draw="enter" aria-hidden="true" focusable="false" fill="none" style="--dur:1400ms">
+  <path class="draw-line" d="M0 12H1200" stroke="#1e5b57" stroke-width="1"></path>
+</svg>

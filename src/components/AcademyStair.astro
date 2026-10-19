@@ -1,0 +1,32 @@
+---
+/**
+ * The stair line beside "How it works" (BUILD_SPEC 2.3.3): a teal hairline
+ * running from row one's top to row three's bottom as three vertical
+ * segments that step right at each row boundary, drawn as the list enters.
+ *
+ * The three segments are <line>s with percentage y coordinates, so they
+ * follow the list's real height (the ladder forces equal rows, so the
+ * boundaries sit at thirds). `pathLength="1"` makes the dash the script
+ * writes a multiple of the live length, so a resize never leaves a gap.
+ * The two short horizontals grow from the left with the system's
+ * `.draw-pop` hook, timed to the joint they belong to.
+ */
+interface Props { class?: string }
+const { class: className = "" } = Astro.props;
+---
+<svg class={`ac-stair ${className}`.trim()} data-draw="enter" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="square" style="--dur:530ms">
+  <line class="draw-line" pathLength="1" x1="10%" y1="0" x2="10%" y2="33.333%" style="--d:0s"></line>
+  <line class="draw-pop" x1="10%" y1="33.333%" x2="50%" y2="33.333%" style="--d:.5s"></line>
+  <line class="draw-line" pathLength="1" x1="50%" y1="33.333%" x2="50%" y2="66.667%" style="--d:.58s"></line>
+  <line class="draw-pop" x1="50%" y1="66.667%" x2="90%" y2="66.667%" style="--d:1.08s"></line>
+  <line class="draw-line" pathLength="1" x1="90%" y1="66.667%" x2="90%" y2="100%" style="--d:1.16s"></line>
+</svg>
+
+<style is:global>
+  .ac-stair { position: absolute; left: calc(-1 * var(--stair-w, 80px) - 12px); top: 0; width: var(--stair-w, 80px); height: 100%; display: block; color: #1e5b57; opacity: .5; overflow: visible; pointer-events: none; }
+  .ac-stair .draw-pop { transform: scaleX(0); transform-origin: 0 50%; transform-box: fill-box; transition: transform .22s var(--slow); transition-delay: var(--d, 0s); }
+  .ac-stair.in .draw-pop { transform: scaleX(1); }
+  .no-js .ac-stair .draw-pop { transform: none; }
+  @media (prefers-reduced-motion: reduce) { .ac-stair .draw-pop { transform: none; transition: none; } }
+  @media (max-width: 1068px) { .ac-stair { position: static; left: auto; width: 40px; height: auto; align-self: stretch; } }
+</style>

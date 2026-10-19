@@ -1,0 +1,33 @@
+---
+/**
+ * The loop glyph (BUILD_SPEC 2.4.3): five unlabelled dots on a circle of
+ * radius 120 joined by a 1 px white arc at .35 alpha with a 6 px arrowhead
+ * closing the loop. It is the Practice page's loop, returning on teal without
+ * its words: the words are in the lit statement beside it. The arc draws over
+ * 1.8 s and the dots pop 80 ms apart when the glyph arrives (1.7.14, enter
+ * mode); under reduced motion and without the script it is fully drawn.
+ */
+interface Props { class?: string }
+const { class: className = "" } = Astro.props;
+
+const cx = 160, cy = 160, r = 120;
+const rad = (deg: number) => (deg * Math.PI) / 180;
+const f = (n: number) => n.toFixed(2);
+// Situation, Thought, Emotion, Action, Result: five points, clockwise from the top.
+const dots = [-90, -18, 54, 126, 198].map((a) => [cx + r * Math.cos(rad(a)), cy + r * Math.sin(rad(a))]);
+// The arc runs clockwise from the first dot almost all the way round and stops
+// short of it, so the arrowhead lands just before the loop's start.
+const end = rad(-104);
+const ex = cx + r * Math.cos(end), ey = cy + r * Math.sin(end);
+const tx = -Math.sin(end), ty = Math.cos(end); // the clockwise tangent at the end
+const wing = (deg: number) => {
+  const t = rad(deg), bx = -tx, by = -ty;
+  return [6 * (bx * Math.cos(t) - by * Math.sin(t)), 6 * (bx * Math.sin(t) + by * Math.cos(t))];
+};
+const [w1x, w1y] = wing(30), [w2x, w2y] = wing(-30);
+const d = `M${f(dots[0][0])} ${f(dots[0][1])} A${r} ${r} 0 1 1 ${f(ex)} ${f(ey)} l${f(w1x)} ${f(w1y)} M${f(ex)} ${f(ey)} l${f(w2x)} ${f(w2y)}`;
+---
+<svg class={`inq-glyph ${className}`.trim()} viewBox="0 0 320 320" width="320" height="320" data-draw="enter" aria-hidden="true" focusable="false" fill="none" style="--dur:1800ms">
+  <path class="draw-line" d={d} stroke="#ffffff" stroke-opacity=".35" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+  {dots.map(([x, y], i) => <circle class="draw-pop" cx={f(x)} cy={f(y)} r="3" fill="#ffffff" fill-opacity=".9" style={`--d:${i * 80}ms`}></circle>)}
+</svg>
