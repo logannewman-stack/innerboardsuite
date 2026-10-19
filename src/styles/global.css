@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./motion.css";
 
 /* ── Fraunces and Instrument Sans, from this domain ─────────────────────── */
 @font-face { font-family: "Fraunces"; src: url("/fonts/fraunces-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
@@ -53,6 +54,7 @@
   --color-app-faint: #67605a;
   --color-steel: #486786;
   --color-steel-soft: #e6e7ea;
+  --color-aurora-2: #8aa3bf;
 
   --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
   --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;

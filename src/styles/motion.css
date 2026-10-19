@@ -1,0 +1,82 @@
+/* ── Motion and surface details shared by the InnerBoard sites ───────────── */
+
+/* Headlines arrive a word at a time. */
+.words-ready .w { display: inline-block; opacity: 0; transform: translateY(0.55em) rotate(1.2deg); transform-origin: left bottom;
+  transition: opacity 600ms var(--ease-out), transform 700ms var(--ease-out); transition-delay: calc(var(--i, 0) * 38ms); }
+.words-ready.is-in .w { opacity: 1; transform: none; }
+.no-js .words-ready .w { opacity: 1; transform: none; }
+
+/* The header's reading progress. */
+[data-progress] { position: absolute; left: 0; bottom: -1px; height: 2px; width: 100%; transform: scaleX(0); transform-origin: left; will-change: transform; }
+
+/* The nav link for the section on screen. */
+[data-header] nav a { position: relative; }
+[data-header] nav a.is-active::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 4px; height: 1.5px; background: currentColor; opacity: 0.6; border-radius: 1px; }
+
+/* Buttons: a light sweeps across the gold on hover. */
+.btn { position: relative; overflow: hidden; isolation: isolate; }
+.btn-gold::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.38) 50%, transparent 70%);
+  transform: translateX(-120%); transition: transform 700ms var(--ease-out); pointer-events: none; z-index: -1; }
+.btn-gold:hover::after { transform: translateX(120%); }
+.btn-gold:hover { transform: translateY(-1px); }
+
+/* Cards lift under a pointer. */
+.card, .card-dark, .card-navy { transition: transform 260ms var(--ease-out), box-shadow 260ms var(--ease-out), border-color 260ms var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  li.card:hover, a.card:hover, .card.lift:hover { transform: translateY(-4px); box-shadow: var(--shadow-float); }
+  li.card-dark:hover, li.card-navy:hover, .card-navy.lift:hover { transform: translateY(-4px); border-color: rgba(244,239,228,0.3); }
+}
+
+/* A light that follows the pointer on dark sections. */
+[data-glow] { position: relative; }
+[data-glow]::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 500ms var(--ease-out);
+  background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(201, 171, 102, 0.14), transparent 55%); z-index: 0; }
+[data-glow].is-lit::before { opacity: 1; }
+[data-glow], .aurora { isolation: isolate; }
+.aurora > .wrap, [data-glow] > .wrap { position: relative; z-index: 1; }
+
+/* Slow drifting colour behind dark sections. */
+.aurora::after, .aurora .aurora-2 { content: ""; position: absolute; width: 520px; height: 520px; border-radius: 50%; pointer-events: none;
+  filter: blur(90px); opacity: 0.32; will-change: transform; animation: drift 26s ease-in-out infinite alternate; z-index: 0; }
+.aurora::after { right: -140px; top: -160px; background: radial-gradient(circle, var(--color-gold-2, #c9ab66), transparent 62%); }
+.aurora .aurora-2 { left: -160px; bottom: -200px; opacity: 0.22; animation-duration: 34s; animation-direction: alternate-reverse;
+  background: radial-gradient(circle, var(--color-aurora-2, #8aa3bf), transparent 62%); }
+@keyframes drift { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(-60px, 40px, 0) scale(1.12); } 100% { transform: translate3d(40px, -30px, 0) scale(0.96); } }
+
+/* The brand mark as a watermark. */
+.watermark { position: absolute; pointer-events: none; opacity: 0.06; z-index: 0; }
+.watermark svg { width: 100%; height: 100%; }
+
+/* The tilting hero visual. */
+[data-tilt] { transition: transform 500ms var(--ease-out); transform-style: preserve-3d; will-change: transform; }
+[data-tilt]:hover { transition-duration: 120ms; }
+
+/* The coach mock: messages arrive one after another once it is seen. */
+[data-chat] .msg { opacity: 0; transform: translateY(10px) scale(0.98); transform-origin: bottom; }
+[data-chat].is-in .msg { animation: pop 420ms var(--ease-spring) forwards; animation-delay: calc(var(--i, 0) * 900ms + 200ms); }
+[data-chat] .typing { opacity: 0; }
+[data-chat].is-in .typing { animation: typing-show 1s linear forwards; animation-delay: calc(var(--i, 0) * 900ms - 650ms); }
+@keyframes pop { to { opacity: 1; transform: none; } }
+@keyframes typing-show { 0%, 10% { opacity: 0; } 15%, 80% { opacity: 1; } 100% { opacity: 0; } }
+.no-js [data-chat] .msg { opacity: 1; transform: none; }
+
+/* The product story: screens crossfade, the current step brightens. */
+[data-story] .screens { position: relative; }
+[data-story] [data-screen] { position: absolute; inset: 0; opacity: 0; transform: translateY(14px) scale(0.985); transition: opacity 520ms var(--ease-out), transform 620ms var(--ease-out); pointer-events: none; }
+[data-story] [data-screen].is-active { opacity: 1; transform: none; }
+[data-story] [data-step] { opacity: 0.45; transition: opacity 400ms var(--ease-out); }
+[data-story] [data-step].is-current { opacity: 1; }
+.no-js [data-story] [data-step] { opacity: 1; }
+
+/* Accordions open smoothly where the browser can animate height. */
+.acc::details-content { block-size: 0; overflow: hidden; transition: block-size 320ms var(--ease-out), content-visibility 320ms allow-discrete; }
+.acc[open]::details-content { block-size: auto; }
+@supports (interpolate-size: allow-keywords) { :root { interpolate-size: allow-keywords; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .words-ready .w, [data-chat] .msg, [data-story] [data-step] { opacity: 1; transform: none; transition: none; animation: none; }
+  .aurora::after, .aurora .aurora-2 { animation: none; }
+  .btn-gold::after { display: none; }
+  [data-glow]::before { display: none; }
+  .acc::details-content { transition: none; }
+}

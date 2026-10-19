@@ -35,6 +35,7 @@ const current = Astro.url.pathname.replace(/\/$/, "");
       </button>
     </div>
   </div>
+  <div data-progress class="bg-gold" aria-hidden="true"></div>
   <div id="mobile-menu" data-menu-panel class="menu-panel lg:hidden absolute inset-x-0 top-full bg-cream-3 border-t border-line shadow-float">
     <nav aria-label="Primary, mobile" class="wrap py-4 flex flex-col">
       {nav.map((item) => (

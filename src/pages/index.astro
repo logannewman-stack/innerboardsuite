@@ -4,6 +4,7 @@ import Arrow from "../components/Arrow.astro";
 import PracticePhone from "../components/PracticePhone.astro";
 import QuizPhone from "../components/QuizPhone.astro";
 import FlipCards from "../components/FlipCards.astro";
+import Mark from "../components/Mark.astro";
 import { LINKS } from "../config/links";
 
 const title = "InnerBoard · Self-leadership from the inside out";
@@ -35,7 +36,7 @@ const quizBenefits = [
       <div class="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <div class="reveal is-in">
           <p class="eyebrow">InnerBoard</p>
-          <h1 class="mt-5 text-[42px] sm:text-[58px] lg:text-[68px] leading-[1.02] text-ink">
+          <h1 class="mt-5 text-[42px] sm:text-[58px] lg:text-[68px] leading-[1.02] text-ink" data-words>
             You don't need a different life, <em class="text-gold-ink">just a new way to meet this one.</em>
           </h1>
           <p class="mt-6 max-w-[560px] text-[17px] sm:text-[19px] leading-relaxed text-ink-muted">
@@ -48,7 +49,7 @@ const quizBenefits = [
           <p class="mt-4 text-[13.5px] text-ink-faint">A web app, on the home screen of any phone. Nothing to install from a store.</p>
         </div>
         <div class="reveal is-in relative flex justify-center lg:justify-end" style="--d:150ms">
-          <div class="hero-scene relative">
+          <div class="hero-scene relative" data-tilt="5">
             <div class="hero-backdrop absolute inset-0 rounded-[40px]" aria-hidden="true"></div>
             <PracticePhone class="relative z-[1] phone-float" />
             <div class="float-card absolute -left-6 sm:-left-16 bottom-16 card p-4 w-[220px] z-[2]" aria-hidden="true">
@@ -82,7 +83,7 @@ const quizBenefits = [
   </section>
 
   <!-- ── Practice ─────────────────────────────────────────────────────── -->
-  <section id="practice" class="on-dark bg-forest text-cream relative overflow-hidden">
+  <section id="practice" class="on-dark bg-forest text-cream relative overflow-hidden aurora" data-glow><span class="aurora-2"></span>
     <div class="absolute -top-40 left-[-10%] w-[600px] h-[600px] rounded-full bg-gold/10 blur-3xl" aria-hidden="true"></div>
     <div class="wrap relative py-20 sm:py-28">
       <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
@@ -201,7 +202,7 @@ const quizBenefits = [
   </section>
 
   <!-- ── INQ teaser ───────────────────────────────────────────────────── -->
-  <section id="inq" class="on-dark bg-navy text-cream relative overflow-hidden">
+  <section id="inq" class="on-dark bg-navy text-cream relative overflow-hidden aurora" data-glow><span class="aurora-2"></span>
     <div class="absolute inset-0 opacity-70" style="background-image: linear-gradient(to right, rgba(244,239,228,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(244,239,228,0.05) 1px, transparent 1px); background-size: 64px 64px; mask-image: radial-gradient(ellipse at 80% 50%, black 20%, transparent 70%);" aria-hidden="true"></div>
     <div class="wrap relative py-20 sm:py-28">
       <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
@@ -221,8 +222,9 @@ const quizBenefits = [
   </section>
 
   <!-- ── Mission ──────────────────────────────────────────────────────── -->
-  <section id="mission" class="bg-cream">
-    <div class="wrap py-24 sm:py-32">
+  <section id="mission" class="bg-cream relative overflow-hidden">
+    <div class="watermark w-[640px] h-[640px] -right-40 -top-40" aria-hidden="true"><Mark /></div>
+    <div class="wrap relative py-24 sm:py-32">
       <div class="reveal mx-auto max-w-[820px] text-center">
         <p class="eyebrow">Why InnerBoard</p>
         <h2 class="mt-5 text-[38px] sm:text-[56px] text-ink">We believe people are <em>capable of more.</em></h2>
@@ -235,7 +237,7 @@ const quizBenefits = [
   </section>
 
   <!-- ── IOS pathway ──────────────────────────────────────────────────── -->
-  <section id="ios" class="on-dark bg-navy-2 text-cream">
+  <section id="ios" class="on-dark bg-navy-2 text-cream relative overflow-hidden" data-glow>
     <div class="wrap py-20 sm:py-24">
       <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
         <div class="reveal">

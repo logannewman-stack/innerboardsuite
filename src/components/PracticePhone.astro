@@ -3,7 +3,7 @@
  * Practice, as it opens: the Today screen, drawn in the app's own ivory and
  * steel. Illustrative until Leah approves real screenshots (tracker SU-13).
  */
-interface Props { class?: string; variant?: "today" | "coach" | "stear" }
+interface Props { class?: string; variant?: "today" | "coach" | "stear" | "close" | "proof" }
 const { class: className = "", variant = "today" } = Astro.props;
 ---
 <div class={`phone ${className}`} aria-hidden="true">
@@ -43,14 +43,18 @@ const { class: className = "", variant = "today" } = Astro.props;
         <p class="text-[9.5px] font-semibold uppercase tracking-[0.16em] text-steel">Coach</p>
         <p class="mt-1 font-display text-[18px] leading-[1.1]">Daily Practice Coach</p>
         <p class="text-[9.5px] text-app-faint mt-0.5">Trained on the InnerBoard method. It is not a person.</p>
-        <div class="mt-4 space-y-2.5 flex-1">
-          <div class="ml-auto max-w-[85%] rounded-[14px] rounded-br-[4px] bg-steel text-[#f8f5ee] px-3 py-2 text-[11px]">My business partner went quiet after I sent the numbers. I keep rereading my message.</div>
-          <div class="max-w-[90%] rounded-[14px] rounded-bl-[4px] bg-app-surface border border-app-line px-3 py-2 text-[11px] leading-snug">
+        <div class="mt-4 space-y-2.5 flex-1" data-chat>
+          <div class="msg ml-auto max-w-[85%] rounded-[14px] rounded-br-[4px] bg-steel text-[#f8f5ee] px-3 py-2 text-[11px]" style="--i:0">My business partner went quiet after I sent the numbers. I keep rereading my message.</div>
+          <div class="msg max-w-[90%] rounded-[14px] rounded-bl-[4px] bg-app-surface border border-app-line px-3 py-2 text-[11px] leading-snug" style="--i:1">
             Let's separate what happened from what you added. The situation: you sent the numbers, and there's been no reply yet. What are you making the silence mean?
           </div>
-          <div class="ml-auto max-w-[85%] rounded-[14px] rounded-br-[4px] bg-steel text-[#f8f5ee] px-3 py-2 text-[11px]">That I got something wrong.</div>
-          <div class="max-w-[90%] rounded-[14px] rounded-bl-[4px] bg-app-surface border border-app-line px-3 py-2 text-[11px] leading-snug">
+          <div class="msg ml-auto max-w-[85%] rounded-[14px] rounded-br-[4px] bg-steel text-[#f8f5ee] px-3 py-2 text-[11px]" style="--i:2">That I got something wrong.</div>
+          <div class="msg max-w-[90%] rounded-[14px] rounded-bl-[4px] bg-app-surface border border-app-line px-3 py-2 text-[11px] leading-snug" style="--i:3">
             That's the sentence creating the feeling. Is it a fact a camera would record, or a story? Try the next rung: "I don't know yet, and I can ask."
+          </div>
+          <div class="typing inline-flex gap-1 rounded-[14px] bg-app-surface border border-app-line px-3 py-2" style="--i:4" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <div class="msg max-w-[90%] rounded-[14px] rounded-bl-[4px] bg-app-surface border border-app-line px-3 py-2 text-[11px] leading-snug" style="--i:5">
+            Want to run that through STEAR? Two minutes, and you leave with the next move.
           </div>
         </div>
         <div class="mt-3 rounded-full border border-app-line bg-app-surface px-3 py-2 text-[11px] text-app-faint flex justify-between items-center">Reply<span class="w-5 h-5 rounded-full bg-app-ink"></span></div>
@@ -81,5 +85,52 @@ const { class: className = "", variant = "today" } = Astro.props;
         </div>
       </div>
     )}
+    {variant === "close" && (
+      <div class="px-5 pt-14 pb-6 text-[12px]">
+        <p class="text-[9.5px] font-semibold uppercase tracking-[0.16em] text-steel">Evening · Close the day</p>
+        <p class="mt-1 font-display text-[21px] leading-[1.1] tracking-[-0.02em]">What did you lead today?</p>
+        <p class="mt-1 text-[11px] text-app-muted">One line. A fact, not a grade.</p>
+        <div class="mt-3 rounded-[12px] border border-app-line bg-app-surface px-3 py-2.5 min-h-[64px] text-[11.5px] leading-snug">Had the conversation I had been circling since Monday. It took four minutes.</div>
+        <div class="mt-3 rounded-[14px] border border-app-line bg-app-surface p-3.5">
+          <p class="text-[9.5px] font-semibold uppercase tracking-[0.14em] text-app-faint">Today</p>
+          <ul class="mt-2 space-y-1.5 text-[11px]">
+            <li class="flex justify-between"><span>Set up your day</span><span class="font-semibold text-steel">Done</span></li>
+            <li class="flex justify-between"><span>Dare of the Day</span><span class="font-semibold text-steel">Done</span></li>
+            <li class="flex justify-between"><span>STEAR · 2:14 pm</span><span class="font-semibold text-steel">Saved</span></li>
+            <li class="flex justify-between"><span>Coach · 1 conversation</span><span class="text-app-faint">Kept</span></li>
+          </ul>
+        </div>
+        <div class="mt-3 inline-flex items-center rounded-full bg-app-ink text-app-canvas px-3.5 py-1.5 text-[11px] font-semibold">Close the day</div>
+        <p class="mt-3 text-[10.5px] text-app-faint">Goes into your Proof Log. 3 this week.</p>
+      </div>
+    )}
+    {variant === "proof" && (
+      <div class="px-5 pt-14 pb-6 text-[12px]">
+        <p class="text-[9.5px] font-semibold uppercase tracking-[0.16em] text-steel">Proof Log</p>
+        <p class="mt-1 font-display text-[21px] leading-[1.1] tracking-[-0.02em]">A record of what you actually did.</p>
+        <p class="mt-1 text-[11px] text-app-muted">3 this week · 11 this month</p>
+        <ul class="mt-3 space-y-2">
+          {[
+            ["Tue", "Had the conversation I had been circling. Four minutes."],
+            ["Mon", "Said no to the Saturday ask. Kindly, plainly."],
+            ["Sun", "Sunday Set. Three priorities, two blocks held."],
+            ["Fri", "Dare: asked for the referral out loud."]
+          ].map(([d, t]) => (
+            <li class="flex gap-3 rounded-[12px] border border-app-line bg-app-surface px-3 py-2.5">
+              <span class="w-8 shrink-0 text-[10px] font-semibold uppercase tracking-[0.1em] text-steel pt-0.5">{d}</span>
+              <span class="text-[11px] leading-snug">{t}</span>
+            </li>
+          ))}
+        </ul>
+        <div class="mt-3 rounded-[12px] bg-steel-soft px-3 py-2.5 text-[10.5px] text-app-muted">Collected from the evening check-in, finished commitments, and every module's Proof.</div>
+      </div>
+    )}
   </div>
 </div>
+<style>
+  .typing .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--color-app-faint); animation: blink 1s ease-in-out infinite; }
+  .typing .dot:nth-child(2) { animation-delay: 160ms; }
+  .typing .dot:nth-child(3) { animation-delay: 320ms; }
+  @keyframes blink { 0%, 100% { opacity: 0.3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-2px); } }
+  .typing { position: absolute; bottom: 58px; left: 16px; }
+</style>

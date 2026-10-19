@@ -18,12 +18,12 @@ const loop = [
 ];
 
 const day = [
-  { when: "Morning", name: "Set up your day", body: "What would make today a win? One line, under a minute. Stillness, movement, fuel, sleep and your energy, ticked off as facts.", tag: "MEDS Rx · 60 sec" },
-  { when: "The moment", name: "I'm reacting right now", body: "I'm about to react: Pause + Redirect. It's already a story: Quick STEAR. A feeling has me: Quick RAP. I've been circling a decision: the Capacity Edge.", tag: "Quick tools · 90 sec" },
-  { when: "Any time", name: "Talk to the Coach", body: "Bring the real moment. The Coach separates what happened from what you added, and ends by opening the tool that fits. It knows what you have been practicing this week.", tag: "Daily Practice Coach" },
-  { when: "One dare", name: "Dare of the Day", body: "Read it, do it, check it off. A small celebration, and a one-line reflection on how it went. Never asked twice.", tag: "Dare of the Day" },
-  { when: "Evening", name: "Close the day", body: "What did you lead today? It goes into your Proof Log: a record of what you actually did, not what you meant to.", tag: "Proof Log" },
-  { when: "Sunday", name: "Sunday Set", body: "What went well, what drained you, your top three, what you are saying no to, and the time blocks that are not negotiable. Six minutes, once a week.", tag: "Sunday Set · 6 min" }
+  { when: "Morning", screen: "today", name: "Set up your day", body: "What would make today a win? One line, under a minute. Stillness, movement, fuel, sleep and your energy, ticked off as facts.", tag: "MEDS Rx · 60 sec" },
+  { when: "The moment", screen: "stear", name: "I'm reacting right now", body: "I'm about to react: Pause + Redirect. It's already a story: Quick STEAR. A feeling has me: Quick RAP. I've been circling a decision: the Capacity Edge.", tag: "Quick tools · 90 sec" },
+  { when: "Any time", screen: "coach", name: "Talk to the Coach", body: "Bring the real moment. The Coach separates what happened from what you added, and ends by opening the tool that fits. It knows what you have been practicing this week.", tag: "Daily Practice Coach" },
+  { when: "One dare", screen: "today", name: "Dare of the Day", body: "Read it, do it, check it off. A small celebration, and a one-line reflection on how it went. Never asked twice.", tag: "Dare of the Day" },
+  { when: "Evening", screen: "close", name: "Close the day", body: "What did you lead today? It goes into your Proof Log: a record of what you actually did, not what you meant to.", tag: "Proof Log" },
+  { when: "Sunday", screen: "proof", name: "Sunday Set", body: "What went well, what drained you, your top three, what you are saying no to, and the time blocks that are not negotiable. Six minutes, once a week.", tag: "Sunday Set · 6 min" }
 ];
 
 const tools = [
@@ -61,7 +61,7 @@ const faq = [
     <div class="wrap relative pt-[120px] sm:pt-[150px] pb-8">
       <div class="reveal is-in mx-auto max-w-[860px] text-center">
         <p class="eyebrow">Practice by InnerBoard</p>
-        <h1 class="mt-5 text-[44px] sm:text-[64px] lg:text-[76px] leading-[1.0] text-ink">People don't do what they know. <em class="text-gold-ink">They do who they are.</em></h1>
+        <h1 class="mt-5 text-[44px] sm:text-[64px] lg:text-[76px] leading-[1.0] text-ink" data-words>People don't do what they know. <em class="text-gold-ink">They do who they are.</em></h1>
         <p class="mt-6 mx-auto max-w-[640px] text-[17px] sm:text-[20px] leading-relaxed text-ink-muted">
           Practice is the daily app that closes the gap between the two. A coach for the real moment, tools for the reaction, a check-in short enough to keep, and the whole InnerBoard curriculum inside.
         </p>
@@ -101,7 +101,7 @@ const faq = [
   </section>
 
   <!-- ── The loop ─────────────────────────────────────────────────────── -->
-  <section id="loop" class="on-dark bg-charcoal text-cream relative overflow-hidden">
+  <section id="loop" class="on-dark bg-charcoal text-cream relative overflow-hidden aurora" data-glow><span class="aurora-2"></span>
     <div class="absolute -top-40 right-[-10%] w-[560px] h-[560px] rounded-full bg-gold/10 blur-3xl" aria-hidden="true"></div>
     <div class="wrap relative py-20 sm:py-28">
       <div class="reveal max-w-[720px]">
@@ -123,32 +123,48 @@ const faq = [
     </div>
   </section>
 
-  <!-- ── A day in Practice ────────────────────────────────────────────── -->
+  <!-- ── A day in Practice: the product story ────────────────────────── -->
   <section id="day" class="bg-cream">
     <div class="wrap py-20 sm:py-28">
       <div class="reveal max-w-[720px]">
         <p class="eyebrow">A day in Practice</p>
         <h2 class="mt-4 text-[34px] sm:text-[48px] text-ink">Sixty seconds in the morning. <em>Two in the moment.</em></h2>
-        <p class="mt-5 text-[16.5px] leading-relaxed text-ink-muted">Nothing here is a program to finish. It is the shape of a day that leads itself.</p>
+        <p class="mt-5 text-[16.5px] leading-relaxed text-ink-muted">Nothing here is a program to finish. It is the shape of a day that leads itself. Scroll, and the phone follows the day.</p>
       </div>
-      <ol class="mt-12 relative grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {day.map((item, i) => (
-          <li class="reveal card p-6 sm:p-7 flex flex-col" style={`--d:${i * 70}ms`}>
-            <div class="flex items-center justify-between">
-              <span class="eyebrow">{item.when}</span>
-              <span class="text-[11px] font-semibold text-ink-faint">{String(i + 1).padStart(2, "0")}</span>
+      <div data-story class="mt-12 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+        <div class="hidden lg:block">
+          <div class="sticky top-[110px] flex justify-center">
+            <div class="screens w-[300px] aspect-[300/620]">
+              {["today", "stear", "coach", "close", "proof"].map((v, i) => (
+                <div data-screen={v} class={i === 0 ? "is-active" : ""}><PracticePhone variant={v as any} /></div>
+              ))}
             </div>
-            <h3 class="mt-3 text-[24px] text-ink">{item.name}</h3>
-            <p class="mt-2 text-[15px] leading-relaxed text-ink-muted flex-1">{item.body}</p>
-            <p class="mt-4 inline-block self-start text-[11.5px] font-semibold uppercase tracking-[0.12em] text-gold-ink bg-gold-soft/50 border border-gold-soft rounded-full px-3 py-1">{item.tag}</p>
-          </li>
-        ))}
-      </ol>
+          </div>
+        </div>
+        <ol class="space-y-6 lg:space-y-0">
+          {day.map((item, i) => (
+            <li data-step={String(i)} data-step-screen={item.screen} class="lg:min-h-[62vh] flex items-center">
+              <div class="reveal card p-6 sm:p-8 w-full" style={`--d:${i * 60}ms`}>
+                <div class="flex items-center justify-between">
+                  <span class="eyebrow">{item.when}</span>
+                  <span class="text-[11px] font-semibold text-ink-faint tabular-nums">{String(i + 1).padStart(2, "0")} / {String(day.length).padStart(2, "0")}</span>
+                </div>
+                <h3 class="mt-3 text-[26px] sm:text-[30px] text-ink">{item.name}</h3>
+                <p class="mt-3 text-[15.5px] leading-relaxed text-ink-muted">{item.body}</p>
+                <p class="mt-5 inline-block text-[11.5px] font-semibold uppercase tracking-[0.12em] text-gold-ink bg-gold-soft/50 border border-gold-soft rounded-full px-3 py-1">{item.tag}</p>
+                <div class="lg:hidden mt-6 flex justify-center">
+                  <PracticePhone variant={item.screen as any} class="phone-xs" />
+                </div>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
     </div>
   </section>
 
   <!-- ── The Coach ────────────────────────────────────────────────────── -->
-  <section id="coach" class="on-dark bg-forest text-cream relative overflow-hidden">
+  <section id="coach" class="on-dark bg-forest text-cream relative overflow-hidden aurora" data-glow><span class="aurora-2"></span>
     <div class="wrap relative py-20 sm:py-28">
       <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
         <div class="reveal order-2 lg:order-1 flex justify-center">
@@ -217,7 +233,7 @@ const faq = [
   </section>
 
   <!-- ── Levels ───────────────────────────────────────────────────────── -->
-  <section id="levels" class="on-dark bg-navy text-cream">
+  <section id="levels" class="on-dark bg-navy text-cream relative overflow-hidden aurora" data-glow><span class="aurora-2"></span>
     <div class="wrap py-20 sm:py-28">
       <div class="reveal max-w-[720px]">
         <p class="eyebrow">Three levels</p>
@@ -286,5 +302,6 @@ const faq = [
   .trio .trio-side { transform: scale(0.86) translateY(26px); opacity: 0.92; }
   .trio .trio-main { transform: scale(1); }
   .trio { margin-bottom: -40px; }
+  .phone-xs { transform: scale(0.8); transform-origin: top center; margin-bottom: -124px; }
   @media (max-width: 420px) { .trio .trio-main { transform: scale(0.88); transform-origin: bottom center; } }
 </style>
