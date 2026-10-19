@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://innerboardsuite.com/sitemap-index.xml

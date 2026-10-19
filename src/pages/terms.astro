@@ -1,0 +1,29 @@
+---
+import Base from "../layouts/Base.astro";
+import { LINKS } from "../config/links";
+const updated = "October 19, 2026";
+---
+<Base title="Terms of use · InnerBoard" description="The terms that cover your use of innerboardsuite.com." path="/terms">
+  <article class="wrap pt-[120px] pb-24 max-w-[760px] prose-ib">
+    <p class="eyebrow">Terms of use</p>
+    <h1 class="mt-4 text-[38px] sm:text-[48px] text-ink">The terms for this site, in plain words.</h1>
+    <p class="mt-3 text-[14px] text-ink-faint">Last updated {updated}. These terms cover innerboardsuite.com. Practice by InnerBoard, the app, has its own terms inside the app.</p>
+    <h2>Using the site</h2>
+    <p>You may read, link to and share the pages on this site. You may not copy the frameworks, curriculum descriptions, quiz content or course descriptions for commercial use without written permission from InnerBoard.</p>
+    <h2>What the content is</h2>
+    <p>Everything here describes an approach to self-leadership, coaching and organizational development. It is educational. It is not medical, psychological, legal or financial advice, and reading it does not create a client relationship with InnerBoard.</p>
+    <h2>The quiz</h2>
+    <p>The subscription quiz is a reflection tool, not a clinical assessment. Its result is produced from your own answers. Decisions you make from it are yours.</p>
+    <h2>INQ Certification</h2>
+    <p>Enrollment in INQ Certification is a separate agreement, made at the time of enrollment, with its own terms covering payment, access and the license to teach and coach from the frameworks.</p>
+    <h2>Links to other places</h2>
+    <p>Buttons on this site open Practice by InnerBoard and InnerBoardOS.com, each of which has its own terms.</p>
+    <h2>Ownership</h2>
+    <p>InnerBoard, Practice by InnerBoard, InnerBoard Academy, InnerLab, INQ, InnerBoard IOS, the InnerBoard mark and the names of the frameworks are the property of InnerBoard.</p>
+    <h2>Liability</h2>
+    <p>The site is provided as it is. To the extent the law allows, InnerBoard is not liable for loss arising from your use of the site or your reliance on its content.</p>
+    <h2>Questions</h2>
+    <p>Write to <a href={`mailto:${LINKS.contactEmail}`}>{LINKS.contactEmail}</a>.</p>
+    <p class="text-[14px] text-ink-faint">Written in plain language; to be reviewed by counsel before launch.</p>
+  </article>
+</Base>

@@ -1,0 +1,290 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PracticePhone from "../components/PracticePhone.astro";
+import Accordion from "../components/Accordion.astro";
+import { LINKS } from "../config/links";
+
+const title = "Practice by InnerBoard · The daily practice for self-leadership";
+const description =
+  "A coach for the real moment, tools for the reaction, a check-in short enough to keep, and the Academy inside. Practice by InnerBoard is a web app for the home screen of any phone. Start as you are.";
+
+const loop = [
+  { n: "S", label: "Situation", body: "What a camera would record. Facts only." },
+  { n: "T", label: "Thought", body: "The sentence you added. This is the lever." },
+  { n: "E", label: "Emotion", body: "Information about the thought, never proof of the fact." },
+  { n: "A", label: "Action", body: "What the state makes available to you." },
+  { n: "R", label: "Result", body: "Which loops back and proves the thought right." }
+];
+
+const day = [
+  { when: "Morning", name: "Set up your day", body: "What would make today a win? One line, under a minute. Stillness, movement, fuel, sleep and your energy, ticked off as facts.", tag: "MEDS Rx · 60 sec" },
+  { when: "The moment", name: "I'm reacting right now", body: "I'm about to react: Pause + Redirect. It's already a story: Quick STEAR. A feeling has me: Quick RAP. I've been circling a decision: the Capacity Edge.", tag: "Quick tools · 90 sec" },
+  { when: "Any time", name: "Talk to the Coach", body: "Bring the real moment. The Coach separates what happened from what you added, and ends by opening the tool that fits. It knows what you have been practicing this week.", tag: "Daily Practice Coach" },
+  { when: "One dare", name: "Dare of the Day", body: "Read it, do it, check it off. A small celebration, and a one-line reflection on how it went. Never asked twice.", tag: "Dare of the Day" },
+  { when: "Evening", name: "Close the day", body: "What did you lead today? It goes into your Proof Log: a record of what you actually did, not what you meant to.", tag: "Proof Log" },
+  { when: "Sunday", name: "Sunday Set", body: "What went well, what drained you, your top three, what you are saying no to, and the time blocks that are not negotiable. Six minutes, once a week.", tag: "Sunday Set · 6 min" }
+];
+
+const tools = [
+  "RAP", "STEAR", "Reverse STEAR", "The ten-second read", "Facts vs Story", "Belief Ladder", "Pause + Redirect", "Capacity Edge",
+  "Discomfort Recognition", "Ownership Statement", "Pattern Interrupt", "Pre-Interaction Standard", "SPARK", "HEAR", "Power Question", "Integration Questions"
+];
+
+const inside = [
+  { name: "The Academy", body: "Every collection, from Human Foundations to the Certified Mind Method, read and practiced in the same place.", href: LINKS.academy, cta: "Explore Academy" },
+  { name: "InnerLab", body: "This month, live: coaching calls, a community of people doing the same work, and accountability that is real because other people can see it.", href: LINKS.innerlab, cta: "See InnerLab", passthrough: true },
+  { name: "The Book", body: "Replaceable, by Leah Roling. The book, the audiobook, its assessments and its worksheets, with every chapter's door into the practice.", href: LINKS.book, cta: "Open the book", passthrough: true },
+  { name: "InnerBoard OS", body: "For organizations: the Company OS Score, the curriculum your team works through, and a progress view that shows completion and never anyone's answers.", href: LINKS.ios, cta: "Explore InnerBoard IOS" }
+];
+
+const levels = [
+  { name: "Visit", body: "Open the quiz, take a book assessment, run a quick tool, talk to the Coach. No sign-in. Your work stays on your device." },
+  { name: "Account", body: "Saving your results is the moment an account exists. Everything on the device moves into it, and it is there next time, on any phone." },
+  { name: "Subscribe", body: "Everything in the app: the full tools, the Coach without limits, the Academy, InnerLab, and the Wisdom Collective." }
+];
+
+const faq = [
+  { q: "Is it an app I download?", a: "Practice is a web app. Open it in your browser, add it to the home screen on iPhone or Android, and it opens like any other app. There is nothing to find in the App Store or Google Play." },
+  { q: "Do I need an account to start?", a: "No. The quiz, the book assessments, the quick tools and the Coach all work without one. Saving your results is the moment an account is created, and nothing asks for a card to do it." },
+  { q: "Is the Coach a person?", a: "No. The Daily Practice Coach is trained on the InnerBoard method and the material behind it. It is coaching, not therapy, and it says so before your first message. If you are in crisis, it will point you to a person." },
+  { q: "Who can see what I write?", a: "Nobody. Every entry belongs to the person who wrote it. Inside InnerBoard OS, a leader sees how much of a module a team has completed, never what anyone answered." },
+  { q: "How much time does it take?", a: "The daily check-in is under a minute. A tool is about two. Sunday Set is six, once a week. The point is a practice you keep, not a program you finish." },
+  { q: "What does a subscription include?", a: `Everything in the app, including the Academy and the Wisdom Collective. The current plans and prices are shown inside Practice under Membership. <a class="link-arrow" href="${LINKS.practice}">Open Practice</a>` }
+];
+---
+<Base title={title} description={description} path="/practice">
+  <!-- ── Hero ─────────────────────────────────────────────────────────── -->
+  <section class="relative overflow-hidden bg-cream">
+    <div class="absolute inset-0 grain opacity-60" aria-hidden="true"></div>
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[600px] rounded-full bg-gold/15 blur-3xl" aria-hidden="true"></div>
+    <div class="wrap relative pt-[120px] sm:pt-[150px] pb-8">
+      <div class="reveal is-in mx-auto max-w-[860px] text-center">
+        <p class="eyebrow">Practice by InnerBoard</p>
+        <h1 class="mt-5 text-[44px] sm:text-[64px] lg:text-[76px] leading-[1.0] text-ink">People don't do what they know. <em class="text-gold-ink">They do who they are.</em></h1>
+        <p class="mt-6 mx-auto max-w-[640px] text-[17px] sm:text-[20px] leading-relaxed text-ink-muted">
+          Practice is the daily app that closes the gap between the two. A coach for the real moment, tools for the reaction, a check-in short enough to keep, and the whole InnerBoard curriculum inside.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+          <a href={LINKS.practice} class="btn btn-gold" data-passthrough data-event="practice_click" data-event-location="practice-hero">Start in Practice <Arrow /></a>
+          <a href={LINKS.quiz} class="btn btn-outline" data-passthrough data-event="quiz_click" data-event-location="practice-hero">Take the quiz first</a>
+        </div>
+        <p class="mt-4 text-[13.5px] text-ink-faint">No sign-in to start. A web app for the home screen of any phone.</p>
+      </div>
+      <div class="reveal is-in mt-14 flex justify-center items-end gap-4 sm:gap-8 trio" style="--d:150ms">
+        <PracticePhone variant="coach" class="trio-side hidden sm:block" />
+        <PracticePhone variant="today" class="trio-main" />
+        <PracticePhone variant="stear" class="trio-side hidden sm:block" />
+      </div>
+    </div>
+    <div class="relative border-y border-line bg-cream-3/70">
+      <div class="wrap py-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-[12.5px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
+        {["Daily Practice Coach", "16 tools", "4 routines", "The Academy", "InnerLab", "The Book", "InnerBoard OS"].map((x) => <span>{x}</span>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── The gap ──────────────────────────────────────────────────────── -->
+  <section id="gap" class="bg-cream-2">
+    <div class="wrap py-20 sm:py-28">
+      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <div class="reveal">
+          <p class="eyebrow">The gap</p>
+          <h2 class="mt-4 text-[34px] sm:text-[48px] text-ink">You already know what to do. <em>You are not doing it.</em></h2>
+        </div>
+        <div class="reveal space-y-5 text-[17px] sm:text-[18px] leading-relaxed text-ink-muted" style="--d:120ms">
+          <p>Knowledge is not the constraint and never was. Every plan you have abandoned was one you understood perfectly. The gap between knowing and doing is where every unfinished plan lives, and it closes at the level of who you are being, not what you learn next.</p>
+          <p>That is why Practice is not a course. It is the place the frameworks run: in the ninety seconds before the meeting, in the evening after the hard conversation, on the Sunday you set the week.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── The loop ─────────────────────────────────────────────────────── -->
+  <section id="loop" class="on-dark bg-charcoal text-cream relative overflow-hidden">
+    <div class="absolute -top-40 right-[-10%] w-[560px] h-[560px] rounded-full bg-gold/10 blur-3xl" aria-hidden="true"></div>
+    <div class="wrap relative py-20 sm:py-28">
+      <div class="reveal max-w-[720px]">
+        <p class="eyebrow">The loop underneath everything</p>
+        <h2 class="mt-4 text-[34px] sm:text-[48px]">A situation is neutral until you put a sentence on it. <em>Everything after that is downstream.</em></h2>
+      </div>
+      <div class="mt-12 grid gap-3 sm:grid-cols-5">
+        {loop.map((step, i) => (
+          <div class="reveal card-dark p-5" style={`--d:${i * 70}ms`}>
+            <span class="inline-flex w-9 h-9 rounded-full bg-gold text-charcoal items-center justify-center font-display text-[17px]">{step.n}</span>
+            <p class="mt-3 text-[18px] font-display text-cream">{step.label}</p>
+            <p class="mt-1 text-[13.5px] text-on-dark-muted leading-relaxed">{step.body}</p>
+          </div>
+        ))}
+      </div>
+      <p class="reveal mt-8 max-w-[640px] text-[15.5px] leading-relaxed text-on-dark-muted">
+        The loop is why insight alone never held. You cannot think your way out of a result the thought is still producing. You change the sentence, or you keep getting the proof. Every tool in Practice is a way of changing the sentence.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── A day in Practice ────────────────────────────────────────────── -->
+  <section id="day" class="bg-cream">
+    <div class="wrap py-20 sm:py-28">
+      <div class="reveal max-w-[720px]">
+        <p class="eyebrow">A day in Practice</p>
+        <h2 class="mt-4 text-[34px] sm:text-[48px] text-ink">Sixty seconds in the morning. <em>Two in the moment.</em></h2>
+        <p class="mt-5 text-[16.5px] leading-relaxed text-ink-muted">Nothing here is a program to finish. It is the shape of a day that leads itself.</p>
+      </div>
+      <ol class="mt-12 relative grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {day.map((item, i) => (
+          <li class="reveal card p-6 sm:p-7 flex flex-col" style={`--d:${i * 70}ms`}>
+            <div class="flex items-center justify-between">
+              <span class="eyebrow">{item.when}</span>
+              <span class="text-[11px] font-semibold text-ink-faint">{String(i + 1).padStart(2, "0")}</span>
+            </div>
+            <h3 class="mt-3 text-[24px] text-ink">{item.name}</h3>
+            <p class="mt-2 text-[15px] leading-relaxed text-ink-muted flex-1">{item.body}</p>
+            <p class="mt-4 inline-block self-start text-[11.5px] font-semibold uppercase tracking-[0.12em] text-gold-ink bg-gold-soft/50 border border-gold-soft rounded-full px-3 py-1">{item.tag}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── The Coach ────────────────────────────────────────────────────── -->
+  <section id="coach" class="on-dark bg-forest text-cream relative overflow-hidden">
+    <div class="wrap relative py-20 sm:py-28">
+      <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
+        <div class="reveal order-2 lg:order-1 flex justify-center">
+          <PracticePhone variant="coach" />
+        </div>
+        <div class="reveal order-1 lg:order-2" style="--d:120ms">
+          <p class="eyebrow">The Daily Practice Coach</p>
+          <h2 class="mt-4 text-[34px] sm:text-[48px]">Bring the real moment. <em>Leave with your next move.</em></h2>
+          <p class="mt-5 text-[16.5px] leading-relaxed text-on-dark-muted max-w-[520px]">
+            The Coach answers from Leah Roling's own material, nothing invented. It will not tell you the situation is hard. It will ask what you are making it mean, walk you down the Belief Ladder, and end by opening the tool that fits.
+          </p>
+          <ul class="mt-6 space-y-3 text-[15px] text-on-dark-muted">
+            <li class="flex gap-3"><span class="mt-[9px] w-2 h-2 rounded-full bg-gold-2 shrink-0"></span>Knows what you have been practicing this week, so it coaches the week you are in.</li>
+            <li class="flex gap-3"><span class="mt-[9px] w-2 h-2 rounded-full bg-gold-2 shrink-0"></span>Keeps a log of every conversation, yours to reread.</li>
+            <li class="flex gap-3"><span class="mt-[9px] w-2 h-2 rounded-full bg-gold-2 shrink-0"></span>Trained on the InnerBoard method and the material behind it. It is not a person, and it never pretends to be.</li>
+          </ul>
+          <a href={LINKS.practice} class="btn btn-gold mt-8" data-passthrough data-event="practice_click" data-event-location="coach">Talk to the Coach <Arrow /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Tools ────────────────────────────────────────────────────────── -->
+  <section id="tools" class="bg-cream-2">
+    <div class="wrap py-20 sm:py-28">
+      <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+        <div class="reveal">
+          <p class="eyebrow">The tools</p>
+          <h2 class="mt-4 text-[34px] sm:text-[44px] text-ink">Sixteen tools. <em>Four routines.</em> One method.</h2>
+          <p class="mt-5 text-[16px] leading-relaxed text-ink-muted">Each one is small enough to run in the time you actually have. Each one changes the sentence. Run them without an account; a membership keeps them, so you can see your own patterns over time.</p>
+          <div class="mt-6 flex flex-wrap gap-2">
+            {["MEDS Rx · 60 sec", "STEAR · 2 min", "Sunday Set · 6 min", "WIN Sheet · 8 min"].map((r) => (
+              <span class="rounded-full bg-charcoal text-cream px-3.5 py-1.5 text-[12.5px] font-semibold">{r}</span>
+            ))}
+          </div>
+        </div>
+        <ul class="grid gap-2.5 sm:grid-cols-2">
+          {tools.map((tool, i) => (
+            <li class="reveal card px-4 py-3.5 flex items-center justify-between text-[15px] font-medium text-ink" style={`--d:${i * 30}ms`}>
+              {tool}
+              <span class="text-[11px] font-semibold text-ink-faint tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Inside ───────────────────────────────────────────────────────── -->
+  <section id="inside" class="bg-cream">
+    <div class="wrap py-20 sm:py-28">
+      <div class="reveal max-w-[720px]">
+        <p class="eyebrow">What else is inside</p>
+        <h2 class="mt-4 text-[34px] sm:text-[48px] text-ink">The whole of InnerBoard, <em>in one place.</em></h2>
+      </div>
+      <ul class="mt-12 grid gap-4 md:grid-cols-2">
+        {inside.map((item, i) => (
+          <li class="reveal card p-7 sm:p-8 flex flex-col" style={`--d:${i * 80}ms`}>
+            <h3 class="text-[26px] text-ink">{item.name}</h3>
+            <p class="mt-3 text-[15.5px] leading-relaxed text-ink-muted flex-1">{item.body}</p>
+            <a href={item.href} class="link-arrow mt-5 text-[14.5px]" data-passthrough={item.passthrough ? true : undefined} rel={item.href.startsWith("http") ? "noopener" : undefined}>{item.cta} <Arrow /></a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Levels ───────────────────────────────────────────────────────── -->
+  <section id="levels" class="on-dark bg-navy text-cream">
+    <div class="wrap py-20 sm:py-28">
+      <div class="reveal max-w-[720px]">
+        <p class="eyebrow">Three levels</p>
+        <h2 class="mt-4 text-[34px] sm:text-[48px]">Start as a visitor. <em>Stay as long as it works.</em></h2>
+      </div>
+      <ol class="mt-12 grid gap-4 md:grid-cols-3">
+        {levels.map((level, i) => (
+          <li class="reveal card-dark p-7" style={`--d:${i * 90}ms`}>
+            <span class="font-display text-[40px] leading-none text-gold-2">{i + 1}</span>
+            <h3 class="mt-4 text-[26px] text-cream">{level.name}</h3>
+            <p class="mt-2 text-[15px] leading-relaxed text-on-dark-muted">{level.body}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="reveal mt-10 flex flex-col sm:flex-row gap-3 sm:items-center">
+        <a href={LINKS.practice} class="btn btn-gold" data-passthrough data-event="practice_click" data-event-location="levels">Start in Practice <Arrow /></a>
+        <p class="text-[14px] text-on-dark-faint">Current plans and prices are inside the app, under Membership.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Platforms ────────────────────────────────────────────────────── -->
+  <section id="platforms" class="bg-cream-2">
+    <div class="wrap py-16 sm:py-20">
+      <div class="reveal card p-8 sm:p-10 grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+        <div>
+          <p class="eyebrow">Where it runs</p>
+          <h2 class="mt-3 text-[28px] sm:text-[34px] text-ink">A web app, on the home screen of iPhone and Android.</h2>
+          <p class="mt-3 text-[15.5px] leading-relaxed text-ink-muted max-w-[560px]">Open it once in your browser and add it to your home screen. It loads offline, keeps your place, and there is nothing in the App Store or Google Play to find.</p>
+        </div>
+        <a href={LINKS.practice} class="btn btn-dark" data-passthrough data-event="practice_click" data-event-location="platforms">Open Practice <Arrow /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQ ──────────────────────────────────────────────────────────── -->
+  <section id="faq" class="bg-cream">
+    <div class="wrap py-20 sm:py-28">
+      <div class="grid gap-10 lg:grid-cols-[0.7fr_1.3fr]">
+        <div class="reveal">
+          <p class="eyebrow">Questions</p>
+          <h2 class="mt-4 text-[34px] sm:text-[44px] text-ink">Before you <em>start.</em></h2>
+        </div>
+        <div class="reveal" style="--d:100ms">
+          <Accordion items={faq} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Final ────────────────────────────────────────────────────────── -->
+  <section class="on-dark bg-forest text-cream">
+    <div class="wrap py-24 sm:py-32 text-center">
+      <div class="reveal mx-auto max-w-[760px]">
+        <h2 class="text-[38px] sm:text-[56px]">Start today, <em>as you are.</em></h2>
+        <p class="mt-5 text-[17px] leading-relaxed text-on-dark-muted">Open the app, take the quiz, or bring the Coach the thing that is on your mind. Nothing is asked of you first.</p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+          <a href={LINKS.practice} class="btn btn-gold" data-passthrough data-event="practice_click" data-event-location="final">Start in Practice <Arrow /></a>
+          <a href={LINKS.quiz} class="btn btn-outline-light" data-passthrough data-event="quiz_click" data-event-location="final">What's Holding You Back?</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .trio .trio-side { transform: scale(0.86) translateY(26px); opacity: 0.92; }
+  .trio .trio-main { transform: scale(1); }
+  .trio { margin-bottom: -40px; }
+  @media (max-width: 420px) { .trio .trio-main { transform: scale(0.88); transform-origin: bottom center; } }
+</style>

@@ -1,0 +1,346 @@
+---
+/**
+ * innerboardsuite.com/inq-certification
+ *
+ * Built to the INQ Certification Page Mock-up as the build tracker describes
+ * it (D9, rows INQ-01 to INQ-16): the Academy look, hero and four value
+ * columns, two audience cards, the teal "Why INQ works" section, what you
+ * get, Learn it / Live it / Lead it, the seven outcomes, the module grid
+ * (eight modules plus the bonus, from the INQ Certification Map), the
+ * business section, five audience cards, the investment card, three steps,
+ * nine FAQs, the close. Module names are the map's, verbatim.
+ */
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Accordion from "../components/Accordion.astro";
+import { LINKS } from "../config/links";
+
+const title = "INQ Certification · Coach the transformation that actually changes people";
+const description =
+  "INQ is the coaching certification for practitioners who are finished working the surface. Eight modules plus a bonus, worked on your own life first. Learn it. Live it. Lead it.";
+
+const values = [
+  { name: "A method, not a question bank", body: "Five tools and the framework that tells you which one to use, so a session has a spine." },
+  { name: "Source, not surface", body: "The thought under the feeling, the belief under the identity, the pattern that passes for personality." },
+  { name: "Lived before taught", body: "The methodology runs on you before it ever runs on a client. You finish as a different practitioner." },
+  { name: "Proof, every module", body: "Three written answers and one recorded coaching moment per module. Done on submit; nothing waits on a person." }
+];
+
+const outcomes = [
+  "Guide a person from a reactive story back to the observable situation, and help them name the thought driving it.",
+  "Help someone read a feeling as information rather than a verdict, and trace it to the sentence underneath.",
+  "Coach identity as a design decision, not a fixed description, and interrupt the pattern that keeps re-electing the old one.",
+  "Use a relationship as the mirror it is, and turn a repeated conflict into the exact place the work lives.",
+  "Treat energy as a leadership strategy: what fuels a person, what drains them, and what to do about it on a Tuesday.",
+  "Move a goal from wish to aligned plan, with the tool that fits the situation and the reason you chose it.",
+  "Combine two tools in one session, explain why in that order, and show how they moved the situation."
+];
+
+const modules = [
+  { n: 1, name: "Radical Awareness", tag: "Awaken potential. Lead from within. Empower the world." },
+  { n: 2, name: "Mastering Emotions", tag: "Master your emotions, or they'll master you." },
+  { n: 3, name: "Identity Design & Reinvention", tag: "Your next level requires a new story." },
+  { n: 4, name: "Relationships as the Mirror", tag: "The people around you show you the work." },
+  { n: 5, name: "Energy as a Leadership Strategy", tag: "What you run on decides what you can lead." },
+  { n: 6, name: "Alignment in Action", tag: "Goals that hold because they fit who you are becoming." },
+  { n: 7, name: "Coaching Others: Becoming the Work", tag: "Two tools, one session, and the reason you chose them." },
+  { n: 8, name: "Integration & Certification: Being the Work", tag: "The final session, live, with at least one INQ tool in real time." }
+];
+
+const business = [
+  "A niche statement and an audience you can describe in a sentence.",
+  "An offer, a price, and the ladder the two sit on.",
+  "A twelve month revenue plan and the handful of numbers that tell you it is working.",
+  "The tech stack, the SOPs and the self agreements that keep a practice running when a week gets loud.",
+  "A recorded pitch, under ten minutes, said the way you would say it across the table."
+];
+
+const audiences = [
+  { name: "Coaches", body: "You have the credential and the clients, and you want the architecture underneath the conversation." },
+  { name: "Future coaches", body: "You are building a practice and want one methodology deep enough to build a career on." },
+  { name: "Leaders and people developers", body: "You coach one on one inside the place you already lead, and you want more than a question bank." },
+  { name: "Therapists, healers, and practitioners", body: "You are adding identity and leadership work to what you already do." },
+  { name: "Teachers and trainers", body: "You stand in front of people for a living and want the change to hold after the room empties." }
+];
+
+const included = [
+  "Eight modules plus the Entrepreneurial Path bonus, worked in order",
+  "A teaching video, the full module text, and the worksheets for every module",
+  "Eighty two worksheets, each a fill-in tool inside Practice or a download",
+  "The Framework Book, Six Conversations, the INQ Dictionary, the Neuro-Myth Disruptor and the Triad Self-Scan",
+  "A Proof for every module: three written answers and one recorded coaching moment",
+  "The license to teach and coach from the frameworks on certification"
+];
+
+const steps = [
+  { name: "Talk with us", body: "A conversation first. INQ is application only, and the first step is finding out whether it fits you." },
+  { name: "Enroll", body: "Payment options are available. Your modules open inside Practice the day you enroll." },
+  { name: "Begin", body: "Module 1 opens first. Submit its Proof and Module 2 opens. Nothing waits on a person." }
+];
+
+const faq = [
+  { q: "What is INQ?", a: "INQ, Inner Neuro Quantum, is the methodology for practitioners who are finished working the surface. Most coaching works on what a person does. INQ teaches you to work on what produces it: the thought under the feeling, the belief under the identity, the pattern practiced so long it passes for personality." },
+  { q: "Who is it for?", a: "Coaches with the credential and the clients; practitioners building a practice; leaders and people developers who coach one on one; therapists, teachers and trainers adding identity and leadership work to what they already do." },
+  { q: "How is it delivered?", a: "Self-led and digital, inside Practice by InnerBoard. Every module runs Watch, Read, Worksheets, Resources, Proof. The Proof is three written answers and one recorded coaching moment. Submitting marks the module done and opens the next." },
+  { q: "How long does it take?", a: "It is self-paced. Most modules ask for a recorded coaching moment of twenty minutes or less; the final session in Module 8 is fifteen to thirty minutes. How quickly the modules move is up to you." },
+  { q: "Is it accredited?", a: "INQ Certification is accredited by [ACCREDITING BODY], and graduates hold the [CREDENTIAL NAME] credential. Confirm the current details on your conversation with us." },
+  { q: "What do I get when I finish?", a: "The INQ Certification, and the license to teach and coach from the frameworks: the five tools, the Framework Book, Six Conversations, and the method that tells you which to use." },
+  { q: "Do I need coaching experience?", a: "No. The methodology runs on you before it ever runs on a client. If you have never coached, Module 1 is where that starts. If you have coached for years, Module 1 is where the architecture under what you already do becomes visible." },
+  { q: "What does it cost, and are there payment options?", a: "The investment is $6,997, and payment options are available. The details are part of the conversation before you enroll." },
+  { q: "Can I talk to someone first?", a: `Yes, and we would rather you did. <a class="link-arrow" href="${LINKS.inqBook}">Book a conversation</a>.` }
+];
+---
+<Base title={title} description={description} path="/inq-certification" theme="teal" themeColor="#f7f4ee">
+  <!-- ── Hero ─────────────────────────────────────────────────────────── -->
+  <section class="bg-ac-cream relative overflow-hidden">
+    <div class="absolute -top-32 right-[-10%] w-[640px] h-[640px] rounded-full bg-teal/10 blur-3xl" aria-hidden="true"></div>
+    <div class="wrap relative pt-[120px] sm:pt-[160px] pb-16 sm:pb-24">
+      <div class="reveal is-in max-w-[860px]">
+        <p class="eyebrow">INQ Certification · Lead</p>
+        <h1 class="mt-5 text-[42px] sm:text-[60px] lg:text-[72px] leading-[1.0] text-ink">Coach the transformation that <em>actually changes people.</em></h1>
+        <p class="mt-6 max-w-[640px] text-[17px] sm:text-[20px] leading-relaxed text-ink-muted">
+          Work the surface and you create a session. Work the source and you create change. INQ is the certification for the second kind of practitioner.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-3">
+          <a href={LINKS.inqBook} class="btn btn-teal" data-event="inq_book_click" data-event-location="hero">Book a conversation <Arrow /></a>
+          <a href={LINKS.inqEnroll} class="btn btn-outline-teal" data-event="inq_enroll_click" data-event-location="hero">Enroll now</a>
+        </div>
+      </div>
+      <p class="reveal mt-16 font-display text-[26px] sm:text-[32px] text-ink">Learn it. <em>Live it.</em> Lead it.</p>
+      <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {values.map((v, i) => (
+          <li class="reveal card p-6" style={`--d:${i * 80}ms`}>
+            <h2 class="text-[20px] text-ink">{v.name}</h2>
+            <p class="mt-2 text-[14.5px] leading-relaxed text-ink-muted">{v.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Sound familiar ───────────────────────────────────────────────── -->
+  <section class="bg-ac-cream-2">
+    <div class="wrap py-20 sm:py-28">
+      <div class="reveal max-w-[720px]">
+        <p class="eyebrow">Sound familiar?</p>
+        <h2 class="mt-4 text-[36px] sm:text-[48px] text-ink">Two kinds of people <em>find INQ.</em></h2>
+      </div>
+      <div class="mt-12 grid gap-4 md:grid-cols-2">
+        <div class="reveal card p-8">
+          <p class="eyebrow">For existing coaches</p>
+          <p class="mt-4 font-display text-[24px] leading-[1.2] text-ink">"My clients leave the session lighter. Then the week happens."</p>
+          <ul class="mt-5 space-y-2 text-[15px] text-ink-muted">
+            <li>You can run a good session. You want the change to hold after the call ends.</li>
+            <li>You have a toolkit. You want the method that tells you which tool, and why.</li>
+            <li>You want the architecture underneath the conversation, not another question list.</li>
+          </ul>
+        </div>
+        <div class="reveal card p-8" style="--d:100ms">
+          <p class="eyebrow">For aspiring coaches</p>
+          <p class="mt-4 font-display text-[24px] leading-[1.2] text-ink">"People already come to me. I want to be worth coming to."</p>
+          <ul class="mt-5 space-y-2 text-[15px] text-ink-muted">
+            <li>You have done the work on yourself and want to carry it to other people.</li>
+            <li>You want one methodology deep enough to build a practice on.</li>
+            <li>You want the credential, the license, and the business to go with it.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Why INQ works ────────────────────────────────────────────────── -->
+  <section class="on-dark bg-teal text-white">
+    <div class="wrap py-20 sm:py-28">
+      <div class="reveal max-w-[860px]">
+        <p class="eyebrow">Why INQ works</p>
+        <h2 class="mt-4 text-[36px] sm:text-[56px]">Work the surface and you create a session. <em>Work the source and you create change.</em></h2>
+        <p class="mt-6 text-[17px] leading-relaxed text-white/80 max-w-[640px]">You learn it by living it. The methodology runs on you before it ever runs on a client, and you finish as a different practitioner. Your clients meet that person first.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── What you get ─────────────────────────────────────────────────── -->
+  <section class="bg-ac-cream">
+    <div class="wrap py-20 sm:py-28">
+      <div class="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-start">
+        <div class="reveal">
+          <p class="eyebrow">What you get</p>
+          <h2 class="mt-4 text-[36px] sm:text-[48px] text-ink">The tools, <em>and the method that tells you which one to use.</em></h2>
+          <p class="mt-5 text-[16.5px] leading-relaxed text-ink-muted">The Framework Book is the reference: every tool, what it is for, and the question it opens. Six Conversations shows the method in motion. The INQ Dictionary, the Neuro-Myth Disruptor and the Triad Self-Scan sit beside them, one copy of each, linked from every module.</p>
+        </div>
+        <div class="reveal grid gap-4 sm:grid-cols-3" style="--d:120ms">
+          {[
+            ["Learn it", "The module text and its teaching video, read and watched in full."],
+            ["Live it", "The worksheets, run on your own life first. You can't lead someone into what you haven't practiced yourself."],
+            ["Lead it", "A recorded coaching moment every module, with a real participant, using the tool you chose and the reason you chose it."]
+          ].map(([n, b]) => (
+            <div class="card p-6">
+              <h3 class="text-[22px] text-ink">{n}</h3>
+              <p class="mt-2 text-[14.5px] leading-relaxed text-ink-muted">{b}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── In the room ──────────────────────────────────────────────────── -->
+  <section class="bg-ac-cream-2">
+    <div class="wrap py-20 sm:py-28">
+      <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+        <div class="reveal">
+          <p class="eyebrow">In the room</p>
+          <h2 class="mt-4 text-[36px] sm:text-[48px] text-ink">What you'll be <em>able to do.</em></h2>
+        </div>
+        <ol class="reveal space-y-0 divide-y divide-ac-line" style="--d:100ms">
+          {outcomes.map((o, i) => (
+            <li class="flex gap-5 py-4">
+              <span class="font-display text-[22px] text-teal w-8 shrink-0">{i + 1}</span>
+              <p class="text-[16px] leading-relaxed text-ink-muted">{o}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── The certification ────────────────────────────────────────────── -->
+  <section id="modules" class="bg-ac-cream">
+    <div class="wrap py-20 sm:py-28">
+      <div class="reveal max-w-[720px]">
+        <p class="eyebrow">The certification</p>
+        <h2 class="mt-4 text-[36px] sm:text-[48px] text-ink">Eight modules. <em>One bonus.</em> Worked in order.</h2>
+        <p class="mt-5 text-[16.5px] leading-relaxed text-ink-muted">Every module runs Watch, Read, Worksheets, Resources, Proof. Submit the Proof and the next module opens.</p>
+      </div>
+      <ol class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {modules.map((m, i) => (
+          <li class="reveal card p-6 flex flex-col" style={`--d:${i * 60}ms`}>
+            <span class="font-display text-[34px] leading-none text-teal">{String(m.n).padStart(2, "0")}</span>
+            <h3 class="mt-4 text-[21px] leading-[1.15] text-ink">{m.name}</h3>
+            <p class="mt-2 text-[14px] leading-relaxed text-ink-muted flex-1">{m.tag}</p>
+          </li>
+        ))}
+        <li class="reveal rounded-[18px] bg-teal text-white p-6 flex flex-col sm:col-span-2 lg:col-span-4 lg:flex-row lg:items-center lg:gap-10" style="--d:500ms">
+          <div class="lg:w-[220px] shrink-0">
+            <span class="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70">Bonus</span>
+            <h3 class="mt-2 text-[26px] text-white">The Entrepreneurial Path</h3>
+          </div>
+          <p class="mt-3 lg:mt-0 text-[15px] leading-relaxed text-white/85">Building the business that mirrors your becoming. Twelve worksheets, from the niche statement to the twelve month revenue plan, and a recorded pitch said the way you would say it across the table.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── Your practice ────────────────────────────────────────────────── -->
+  <section class="on-dark bg-ink text-cream">
+    <div class="wrap py-20 sm:py-28">
+      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+        <div class="reveal">
+          <p class="eyebrow">Your practice</p>
+          <h2 class="mt-4 text-[36px] sm:text-[48px]">A certification is not a business. <em>The bonus is.</em></h2>
+          <p class="mt-5 text-[16.5px] leading-relaxed text-on-dark-muted max-w-[520px]">The Entrepreneurial Path closes the certification with the parts nobody teaches a coach: who it's for, what it costs, and how it runs without you holding it together.</p>
+        </div>
+        <ul class="reveal space-y-3" style="--d:120ms">
+          {business.map((b) => (
+            <li class="flex gap-3 text-[16px] text-on-dark-muted"><span class="mt-[10px] w-2 h-2 rounded-full bg-gold-2 shrink-0"></span>{b}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Who it's for ─────────────────────────────────────────────────── -->
+  <section class="bg-ac-cream-2">
+    <div class="wrap py-20 sm:py-28">
+      <div class="reveal max-w-[720px]">
+        <p class="eyebrow">Who it's for</p>
+        <h2 class="mt-4 text-[36px] sm:text-[48px] text-ink">Five kinds of people <em>carry this work.</em></h2>
+      </div>
+      <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        {audiences.map((a, i) => (
+          <li class="reveal card p-6" style={`--d:${i * 70}ms`}>
+            <h3 class="text-[21px] leading-[1.15] text-ink">{a.name}</h3>
+            <p class="mt-2 text-[14.5px] leading-relaxed text-ink-muted">{a.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Investment ───────────────────────────────────────────────────── -->
+  <section id="investment" class="bg-ac-cream">
+    <div class="wrap py-20 sm:py-28">
+      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <div class="reveal">
+          <p class="eyebrow">Investment</p>
+          <h2 class="mt-4 text-[36px] sm:text-[48px] text-ink">One certification. <em>Everything in it.</em></h2>
+          <p class="mt-5 text-[16.5px] leading-relaxed text-ink-muted">INQ is application only. The first step is a conversation, and the price is the same on every path in.</p>
+        </div>
+        <div class="reveal card p-8 sm:p-10 border-teal/30" style="--d:120ms">
+          <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+            <span class="font-display text-[56px] sm:text-[64px] leading-none text-ink">$6,997</span>
+            <span class="text-[14px] font-semibold uppercase tracking-[0.12em] text-teal">Payment options available</span>
+          </div>
+          <p class="mt-6 eyebrow">What's included</p>
+          <ul class="mt-4 space-y-3">
+            {included.map((x) => (
+              <li class="flex gap-3 text-[15px] text-ink-muted"><span class="mt-[6px] inline-flex w-4 h-4 rounded-full bg-teal-soft text-teal items-center justify-center shrink-0"><svg viewBox="0 0 16 16" class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg></span>{x}</li>
+            ))}
+          </ul>
+          <div class="mt-8 flex flex-col sm:flex-row gap-3">
+            <a href={LINKS.inqEnroll} class="btn btn-teal" data-event="inq_enroll_click" data-event-location="investment">Enroll now <Arrow /></a>
+            <a href={LINKS.inqBook} class="btn btn-outline-teal" data-event="inq_book_click" data-event-location="investment">Book a conversation</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Get started ──────────────────────────────────────────────────── -->
+  <section class="bg-ac-cream-2">
+    <div class="wrap py-20 sm:py-28">
+      <div class="reveal max-w-[720px]">
+        <p class="eyebrow">Get started</p>
+        <h2 class="mt-4 text-[36px] sm:text-[48px] text-ink">Three steps, <em>in order.</em></h2>
+      </div>
+      <ol class="mt-12 grid gap-4 md:grid-cols-3">
+        {steps.map((s, i) => (
+          <li class="reveal card p-7" style={`--d:${i * 90}ms`}>
+            <span class="inline-flex w-10 h-10 rounded-full bg-teal text-white items-center justify-center font-display text-[18px]">{i + 1}</span>
+            <h3 class="mt-4 text-[24px] text-ink">{s.name}</h3>
+            <p class="mt-2 text-[15px] leading-relaxed text-ink-muted">{s.body}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="reveal mt-10 text-[15.5px] text-ink-muted max-w-[720px]">Want to see the method before you decide? <a href={LINKS.certifiedMind} class="link-arrow" data-passthrough>The Certified Mind Method <Arrow /></a> is the Academy course behind INQ: five tools that create real follow-through, as one course.</p>
+    </div>
+  </section>
+
+  <!-- ── FAQ ──────────────────────────────────────────────────────────── -->
+  <section id="faq" class="bg-ac-cream">
+    <div class="wrap py-20 sm:py-28">
+      <div class="grid gap-10 lg:grid-cols-[0.7fr_1.3fr]">
+        <div class="reveal">
+          <p class="eyebrow">Questions</p>
+          <h2 class="mt-4 text-[36px] sm:text-[44px] text-ink">Before you <em>enroll.</em></h2>
+        </div>
+        <div class="reveal" style="--d:100ms">
+          <Accordion items={faq} theme="teal" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Close ────────────────────────────────────────────────────────── -->
+  <section class="on-dark bg-teal text-white">
+    <div class="wrap py-24 sm:py-32 text-center">
+      <div class="reveal mx-auto max-w-[760px]">
+        <h2 class="text-[38px] sm:text-[56px]">Awaken potential. Lead from within. <em>Empower the world.</em></h2>
+        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+          <a href={LINKS.inqEnroll} class="btn btn-cream" data-event="inq_enroll_click" data-event-location="close">Enroll now <Arrow /></a>
+          <a href={LINKS.inqBook} class="btn btn-outline-light" data-event="inq_book_click" data-event-location="close">Book a conversation</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

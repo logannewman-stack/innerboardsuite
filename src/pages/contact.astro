@@ -1,0 +1,21 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import { LINKS } from "../config/links";
+---
+<Base title="Contact · InnerBoard" description="Reach the InnerBoard team: a conversation about INQ Certification, InnerBoard IOS for your organization, or a question about Practice." path="/contact">
+  <section class="bg-cream">
+    <div class="wrap pt-[120px] sm:pt-[150px] pb-24">
+      <div class="reveal is-in max-w-[720px]">
+        <p class="eyebrow">Contact</p>
+        <h1 class="mt-4 text-[40px] sm:text-[56px] text-ink">Start with a <em>conversation.</em></h1>
+        <p class="mt-5 text-[17px] leading-relaxed text-ink-muted">Write to <a class="link-arrow" href={`mailto:${LINKS.contactEmail}`}>{LINKS.contactEmail}</a> and say which of these you are writing about. A person reads it.</p>
+      </div>
+      <ul class="mt-12 grid gap-4 md:grid-cols-3">
+        <li class="reveal card p-7"><h2 class="text-[24px] text-ink">INQ Certification</h2><p class="mt-2 text-[15px] text-ink-muted">A conversation is the first step of the application.</p><a href={LINKS.inqBook} class="link-arrow mt-5 text-[14.5px]">Book a conversation <Arrow /></a></li>
+        <li class="reveal card p-7" style="--d:80ms"><h2 class="text-[24px] text-ink">InnerBoard IOS</h2><p class="mt-2 text-[15px] text-ink-muted">For your organization. Start with the Company OS Score, or talk to the team.</p><a href={LINKS.ios} class="link-arrow mt-5 text-[14.5px]" rel="noopener">Explore InnerBoard IOS <Arrow /></a></li>
+        <li class="reveal card p-7" style="--d:160ms"><h2 class="text-[24px] text-ink">Practice</h2><p class="mt-2 text-[15px] text-ink-muted">Questions about the app, your account or a membership.</p><a href={`mailto:${LINKS.contactEmail}?subject=Practice`} class="link-arrow mt-5 text-[14.5px]">Email support <Arrow /></a></li>
+      </ul>
+    </div>
+  </section>
+</Base>

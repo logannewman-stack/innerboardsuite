@@ -1,0 +1,60 @@
+---
+/**
+ * The four recognition cards. Flip on click, tap, Enter and Space; never on
+ * their own. Forest green backs, cream and gold fronts, entering from
+ * alternate sides, with reduced motion honoured in the stylesheet.
+ *
+ * The four are four of the subscription quiz's own patterns, in the quiz's
+ * words, so the recognition on the front and the reframe on the back are the
+ * approved doctrine rather than new copy.
+ */
+import Arrow from "./Arrow.astro";
+import { LINKS } from "../config/links";
+const cards = [
+  {
+    front: "I can't relax until everything around me is handled.",
+    name: "Control",
+    back: "You're only okay when the world cooperates, and the world has its own plans. Sort what you can run from what you can only meet. How you meet it is yours every time.",
+    tag: "Sound familiar?"
+  },
+  {
+    front: "I say yes before I've checked with myself.",
+    name: "Approval",
+    back: "They'll be upset is a guess you made, not something they said. Take a beat to know what you actually want. Then say it, plainly and kindly.",
+    tag: "Sound familiar?"
+  },
+  {
+    front: "I finish one thing and I'm already on the next.",
+    name: "Proving",
+    back: "You never reach enough because you never stop long enough to feel good about any of it. Decide what done looks like before the day starts. When it's done, you're done.",
+    tag: "Sound familiar?"
+  },
+  {
+    front: "I'll go once I know how it turns out.",
+    name: "Certainty",
+    back: "The uneasy feeling comes before every move, every time. It was never a signal to wait. Take the smallest step you can and let what happens be your information.",
+    tag: "Sound familiar?"
+  }
+];
+---
+<ul class="grid gap-5 sm:grid-cols-2" role="list">
+  {cards.map((card, i) => (
+    <li class={`reveal ${i % 2 === 0 ? "slide-l" : "slide-r"}`} style={`--d:${i * 90}ms`}>
+      <button type="button" class="flip block w-full h-[300px] sm:h-[320px] text-left" aria-pressed="false" aria-label={`${card.front} Flip to read the ${card.name} pattern.`}>
+        <span class="flip-inner block">
+          <span class="flip-face flip-front card bg-cream-3 p-7 flex flex-col justify-between border-gold-soft">
+            <span class="eyebrow">{card.tag}</span>
+            <span class="font-display text-[26px] sm:text-[30px] leading-[1.1] tracking-[-0.02em] text-ink">"{card.front}"</span>
+            <span class="inline-flex items-center gap-2 text-[13px] font-semibold text-gold-ink">Flip it <Arrow /></span>
+          </span>
+          <span class="flip-face flip-back bg-forest text-cream p-7 flex flex-col justify-between on-dark">
+            <span class="eyebrow">{card.name}, on auto-renew</span>
+            <span class="text-[15.5px] leading-relaxed text-on-dark-muted">{card.back}</span>
+            <span class="text-[13px] font-semibold text-gold-2">Cancel it in Practice</span>
+          </span>
+        </span>
+      </button>
+    </li>
+  ))}
+</ul>
+<p class="reveal mt-6 text-[14.5px] text-ink-faint max-w-[620px]">None of these is a personality. They're practices, run so many times they feel like who you are. <a class="link-arrow" href={LINKS.quiz} data-passthrough data-event="quiz_click" data-event-location="cards">See which ones are yours <Arrow /></a></p>

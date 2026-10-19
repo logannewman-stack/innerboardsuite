@@ -1,0 +1,28 @@
+---
+import Base from "../layouts/Base.astro";
+import { LINKS } from "../config/links";
+const updated = "October 19, 2026";
+---
+<Base title="Privacy policy · InnerBoard" description="How innerboardsuite.com handles the information it collects." path="/privacy">
+  <article class="wrap pt-[120px] pb-24 max-w-[760px] prose-ib">
+    <p class="eyebrow">Privacy policy</p>
+    <h1 class="mt-4 text-[38px] sm:text-[48px] text-ink">What this site collects, and what it does with it.</h1>
+    <p class="mt-3 text-[14px] text-ink-faint">Last updated {updated}. This policy covers innerboardsuite.com. Practice by InnerBoard, the app, has its own policy inside the app.</p>
+    <h2>What we collect</h2>
+    <p>This site is a set of pages. It does not ask you to create an account and nothing is purchased on it directly. When you visit, our hosting provider records the standard technical details every web server sees: your IP address, browser, the pages you open and the time you opened them. We use these to keep the site running and to understand which pages people read.</p>
+    <p>If analytics is enabled on this site, it records which buttons are pressed (for example, that somebody opened the quiz or asked to book a conversation) so we can see what is useful. These events carry no name or email address.</p>
+    <h2>Campaign links</h2>
+    <p>Links that bring you here from an email, a post or a partner may carry campaign parameters. When you continue into Practice, those parameters travel with you so your start can be counted under the campaign that brought you. They identify the campaign, not you.</p>
+    <h2>What we do not do</h2>
+    <p>We do not sell personal information. We do not show advertising. We do not use tracking that follows you to other websites.</p>
+    <h2>When you contact us</h2>
+    <p>If you email us or book a conversation, we keep what you send so we can reply and so the conversation has a record. We do not add you to any list you did not ask to join.</p>
+    <h2>The quiz, the Academy and the app</h2>
+    <p>The quiz, the Academy and everything you write run inside Practice by InnerBoard. Its handling of your answers, and the account you may choose to create there, are covered by the app's own privacy policy and terms, which you can read inside the app.</p>
+    <h2>Your choices</h2>
+    <p>You can read this site without accepting anything. To ask what we hold about you, to correct it, or to have it deleted, write to <a href={`mailto:${LINKS.contactEmail}`}>{LINKS.contactEmail}</a>.</p>
+    <h2>Changes</h2>
+    <p>If this policy changes, the date at the top changes with it.</p>
+    <p class="text-[14px] text-ink-faint">Written in plain language; to be reviewed by counsel before launch.</p>
+  </article>
+</Base>

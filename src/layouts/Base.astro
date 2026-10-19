@@ -1,0 +1,63 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE } from "../config/links";
+
+interface Props {
+  title: string;
+  description?: string;
+  path?: string;
+  image?: string;
+  theme?: "cream" | "teal";
+  themeColor?: string;
+}
+const { title, description = SITE.description, path = "/", image = "/og-image.png", theme = "cream", themeColor = "#f4efe4" } = Astro.props;
+const canonical = new URL(path, SITE.url).toString();
+const imageUrl = new URL(image, SITE.url).toString();
+---
+<!doctype html>
+<html lang="en" class={`no-js ${theme === "teal" ? "theme-teal" : ""}`}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content={themeColor} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <link rel="preload" href="/fonts/fraunces-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/instrument-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "InnerBoard",
+      url: SITE.url,
+      founder: { "@type": "Person", name: SITE.founder },
+      sameAs: ["https://innerboardos.com", "https://practiceinnerboard.com"]
+    })} />
+  </head>
+  <body class={theme === "teal" ? "bg-ac-cream" : ""}>
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:bg-gold focus:text-ink focus:px-4 focus:py-2 focus:rounded-full">Skip to content</a>
+    <Header theme={theme} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <script src="../scripts/site.ts"></script>
+  </body>
+</html>

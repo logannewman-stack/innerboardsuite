@@ -1,0 +1,43 @@
+---
+import Wordmark from "./Wordmark.astro";
+import { LINKS, SITE } from "../config/links";
+const year = new Date().getFullYear();
+---
+<footer class="bg-charcoal text-cream on-dark">
+  <div class="wrap py-14">
+    <div class="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
+      <div>
+        <Wordmark class="text-cream" />
+        <p class="mt-4 max-w-[400px] text-[14.5px] text-on-dark-muted leading-relaxed">
+          Self-leadership from the inside out. The framework, the practice ground, and the community for the work of becoming yourself.
+        </p>
+        <p class="mt-5 text-[13px] text-on-dark-faint">Founded by {SITE.founder}.</p>
+      </div>
+      <nav aria-label="Footer">
+        <p class="eyebrow mb-4">InnerBoard</p>
+        <ul class="space-y-2.5 text-[14.5px]">
+          <li><a class="hover:text-gold-2" href={LINKS.practicePage}>Practice</a></li>
+          <li><a class="hover:text-gold-2" href={LINKS.academy}>Academy</a></li>
+          <li><a class="hover:text-gold-2" href={LINKS.inq}>INQ Certification</a></li>
+          <li><a class="hover:text-gold-2" href={LINKS.ios} rel="noopener">InnerBoard IOS</a></li>
+          <li><a class="hover:text-gold-2" href={LINKS.quiz} data-passthrough>Take the quiz</a></li>
+        </ul>
+      </nav>
+      <div>
+        <p class="eyebrow mb-4">Contact</p>
+        <ul class="space-y-2.5 text-[14.5px]">
+          <li><a class="hover:text-gold-2" href={LINKS.contact}>Contact</a></li>
+          <li><a class="hover:text-gold-2" href={`mailto:${LINKS.contactEmail}`}>{LINKS.contactEmail}</a></li>
+          <li><a class="hover:text-gold-2" href={LINKS.login}>Log in to Practice</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="hairline mt-12 pt-6 flex flex-col sm:flex-row gap-3 sm:items-center justify-between text-[13px] text-on-dark-faint">
+      <p>&copy; {year} InnerBoard. All rights reserved.</p>
+      <div class="flex gap-5">
+        <a class="hover:text-cream" href={LINKS.privacy}>Privacy policy</a>
+        <a class="hover:text-cream" href={LINKS.terms}>Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>

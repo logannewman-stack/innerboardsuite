@@ -1,0 +1,63 @@
+---
+import Wordmark from "./Wordmark.astro";
+import Arrow from "./Arrow.astro";
+import { LINKS } from "../config/links";
+interface Props { theme?: "cream" | "teal" }
+const { theme = "cream" } = Astro.props;
+const nav = [
+  { href: "/practice", label: "Practice", sub: "Live It" },
+  { href: "/academy", label: "Academy", sub: "Learn It" },
+  { href: "/inq-certification", label: "INQ Certification", sub: "Lead It" },
+  { href: LINKS.ios, label: "InnerBoard IOS", sub: "Scaling for Teams", external: true }
+];
+const current = Astro.url.pathname.replace(/\/$/, "");
+---
+<header data-header class={`site-header fixed inset-x-0 top-0 z-50 ${theme === "teal" ? "theme-teal" : ""}`}>
+  <div class="wrap">
+    <div class="flex items-center justify-between h-[72px]">
+      <Wordmark class="text-ink" />
+      <nav aria-label="Primary" class="hidden lg:flex items-center gap-1">
+        {nav.map((item) => (
+          <a
+            href={item.href}
+            class={`group px-3 py-2 rounded-full text-[14px] font-medium whitespace-nowrap transition-colors ${current === item.href ? "text-ink bg-cream-2" : "text-ink-muted hover:text-ink hover:bg-cream-2/70"}`}
+            aria-current={current === item.href ? "page" : undefined}
+            rel={item.external ? "noopener" : undefined}
+          >
+            {item.label}<span class="hidden xl:inline ml-1.5 text-[10.5px] uppercase tracking-[0.1em] text-gold font-semibold">{item.sub}</span>
+          </a>
+        ))}
+        <a href={LINKS.login} class="ml-2 px-2 text-[14px] font-medium text-ink-muted hover:text-ink whitespace-nowrap">Log in</a>
+        <a href={LINKS.practice} class="btn btn-sm btn-gold ml-3" data-passthrough data-event="practice_click" data-event-location="header">Start in Practice <Arrow /></a>
+      </nav>
+      <button type="button" class="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-full text-ink border border-line-strong" data-menu-button aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path class="bar-1" d="M4 7h16"/><path class="bar-2" d="M4 12h16"/><path class="bar-3" d="M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-menu" data-menu-panel class="menu-panel lg:hidden absolute inset-x-0 top-full bg-cream-3 border-t border-line shadow-float">
+    <nav aria-label="Primary, mobile" class="wrap py-4 flex flex-col">
+      {nav.map((item) => (
+        <a href={item.href} class="py-3.5 text-[17px] font-medium text-ink border-b border-line flex items-baseline justify-between" rel={item.external ? "noopener" : undefined}>
+          {item.label}<span class="text-[11px] uppercase tracking-[0.1em] text-gold font-semibold">{item.sub}</span>
+        </a>
+      ))}
+      <a href={LINKS.login} class="py-3.5 text-[17px] font-medium text-ink-muted">Log in</a>
+      <a href={LINKS.practice} class="btn btn-gold mt-3" data-passthrough data-event="practice_click" data-event-location="mobile-menu">Start in Practice <Arrow /></a>
+    </nav>
+  </div>
+</header>
+<style>
+  .site-header { transition: background-color 240ms var(--ease-out), box-shadow 240ms var(--ease-out); }
+  .site-header.is-scrolled, :global(.menu-open) .site-header {
+    background: rgba(244, 239, 228, 0.86);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 1px 0 var(--color-line);
+  }
+  .theme-teal.site-header.is-scrolled { background: rgba(247, 244, 238, 0.88); }
+  [data-menu-button][aria-expanded="true"] .bar-1 { transform: translateY(5px) rotate(45deg); }
+  [data-menu-button][aria-expanded="true"] .bar-2 { opacity: 0; }
+  [data-menu-button][aria-expanded="true"] .bar-3 { transform: translateY(-5px) rotate(-45deg); }
+  [data-menu-button] path { transform-origin: center; transition: transform 200ms var(--ease-out), opacity 150ms; }
+</style>
