@@ -7,6 +7,7 @@ export default defineConfig({
   output: "static",
   trailingSlash: "never",
   build: { format: "file" },
-  integrations: [sitemap()],
+  // The scratch page that exercises the system is never linked and never listed.
+  integrations: [sitemap({ filter: (page) => !page.includes("/system-demo") })],
   vite: { plugins: [tailwindcss()] }
 });

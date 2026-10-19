@@ -1,0 +1,15 @@
+---
+/**
+ * The toggle card on the home quiz still life: a drawn paper card with six
+ * rows and image only toggles. Not a control: aria-hidden, inert, no role,
+ * no focusable children, and no words beyond the six pattern names.
+ */
+interface Props { class?: string; style?: string }
+const { class: className = "", style } = Astro.props;
+const rows = [["Proving", true], ["Approval", true], ["Control", false], ["Pressure", false], ["Certainty", false], ["Old Identity", false]] as const;
+---
+<div class={`tcard paper ${className}`.trim()} style={style} aria-hidden="true" inert>
+  {rows.map(([name, on]) => (
+    <div class="tcard-row"><span>{name}</span><i class={`tg${on ? " on" : ""}`}></i></div>
+  ))}
+</div>

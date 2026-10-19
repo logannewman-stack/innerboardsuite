@@ -1,49 +1,58 @@
 ---
+/**
+ * The colophon (1.9). Painted linen on the Suite pages, the alternate cream on
+ * the Academy and INQ pages; it carries data-tone so the page returns to
+ * cream at the end. The locked blurb, the one founder mention on the site,
+ * the three columns, the legal row.
+ */
 import Wordmark from "./Wordmark.astro";
 import { LINKS, SITE } from "../config/links";
+interface Props { theme?: "cream" | "teal" }
+const { theme = "cream" } = Astro.props;
 const year = new Date().getFullYear();
 ---
-<footer class="bg-cream-2 text-ink border-t border-line">
-  <div class="wrap py-20 sm:py-24">
-    <div class="grid gap-10 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
-      <div>
-        <Wordmark class="text-ink" />
-        <p class="mt-4 max-w-[380px] text-[15px] text-ink-muted leading-relaxed">
-          Self-leadership from the inside out. The framework, the practice ground, and the community for the work of becoming yourself.
-        </p>
-        <p class="mt-5 text-[13px] text-ink-faint">Founded by {SITE.founder}.</p>
+<footer class={`site-footer ${theme === "teal" ? "theme-teal" : ""}`.trim()} data-tone={theme === "teal" ? "ac-cream" : "cream"}>
+  <div class="wrap">
+    <div class="ftr-top rise">
+      <div class="ftr-blurb-col">
+        <Wordmark />
+        <p class="ftr-blurb">Self-leadership from the inside out. The framework, the practice ground, and the community for the work of becoming yourself.</p>
       </div>
-      <nav aria-label="Footer, InnerBoard">
-        <p class="eyebrow mb-4">InnerBoard</p>
-        <ul class="text-[15px] leading-[2]">
-          <li><a class="hover:underline underline-offset-4" href={LINKS.academy}>Academy</a></li>
-          <li><a class="hover:underline underline-offset-4" href={LINKS.inq}>INQ Certification</a></li>
-          <li><a class="hover:underline underline-offset-4" href={LINKS.ios} rel="noopener">InnerBoard IOS</a></li>
-          <li><a class="hover:underline underline-offset-4" href={LINKS.contact}>Contact</a></li>
+      <p class="ftr-founder">Founded by {SITE.founder}.</p>
+    </div>
+    <div class="ftr-rule rule-draw" aria-hidden="true"></div>
+    <div class="ftr-cols">
+      <nav class="ftr-col" aria-label="Footer, InnerBoard">
+        <p class="eyebrow">InnerBoard</p>
+        <ul>
+          <li><a href={LINKS.academy}>Academy</a></li>
+          <li><a href={LINKS.inq}>INQ Certification</a></li>
+          <li><a href={LINKS.ios} rel="noopener">InnerBoard IOS</a></li>
+          <li><a href={LINKS.contact}>Contact</a></li>
         </ul>
       </nav>
-      <nav aria-label="Footer, Practice">
-        <p class="eyebrow mb-4">Practice</p>
-        <ul class="text-[15px] leading-[2]">
-          <li><a class="hover:underline underline-offset-4" href={LINKS.practicePage}>How it works</a></li>
-          <li><a class="hover:underline underline-offset-4" href={LINKS.practice} data-passthrough>Start in Practice</a></li>
-          <li><a class="hover:underline underline-offset-4" href={LINKS.quiz} data-passthrough>Take the quiz</a></li>
-          <li><a class="hover:underline underline-offset-4" href={LINKS.login}>Log in</a></li>
+      <nav class="ftr-col" aria-label="Footer, Practice">
+        <p class="eyebrow">Practice</p>
+        <ul>
+          <li><a href={LINKS.practicePage}>How it works</a></li>
+          <li><a href={LINKS.practice} data-passthrough>Start in Practice</a></li>
+          <li><a href={LINKS.quiz} data-passthrough>Take the quiz</a></li>
+          <li><a href={LINKS.login}>Log in</a></li>
         </ul>
       </nav>
-      <div>
-        <p class="eyebrow mb-4">Write to us</p>
-        <ul class="text-[15px] leading-[2]">
-          <li><a class="hover:underline underline-offset-4" href={`mailto:${LINKS.contactEmail}`}>{LINKS.contactEmail}</a></li>
+      <div class="ftr-col ftr-col-wide">
+        <p class="eyebrow">Write to us</p>
+        <ul>
+          <li><a href={`mailto:${LINKS.contactEmail}`}>{LINKS.contactEmail}</a></li>
         </ul>
       </div>
     </div>
-    <div class="hairline mt-16 pt-6 flex flex-col sm:flex-row gap-3 sm:items-center justify-between text-[12.5px] text-ink-faint">
+    <div class="ftr-legal">
       <p>&copy; {year} InnerBoard. All rights reserved.</p>
-      <div class="flex gap-5">
-        <a class="hover:underline underline-offset-4" href={LINKS.privacy}>Privacy policy</a>
-        <a class="hover:underline underline-offset-4" href={LINKS.terms}>Terms</a>
-      </div>
+      <nav aria-label="Legal">
+        <a href={LINKS.privacy}>Privacy policy</a>
+        <a href={LINKS.terms}>Terms</a>
+      </nav>
     </div>
   </div>
 </footer>

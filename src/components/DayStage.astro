@@ -1,0 +1,54 @@
+---
+/**
+ * The day stage (1.6, engine 1.7.9): a sticky mat with four sky layers, one
+ * phone holding every step's frames, a running caption, five progress bars,
+ * and the step column. Each step names its entry frame and may carry a flow.
+ * Under reduced motion or without the script the mat is hidden and each step
+ * shows its own phone with that step's end frame (the `.day-static` block).
+ */
+import PhoneFrame from "./PhoneFrame.astro";
+interface Frame { name: string; alt: string; w: 600 | 780; h: 1298 | 1688 }
+interface Step { label: string; name: string; body: string; caption: string; frames: Frame[]; flow?: string }
+interface Props { steps: Step[]; width: number; id?: string; class?: string }
+const { steps, width, id, class: className = "" } = Astro.props;
+/* The phone holds every distinct frame once, in order of first appearance. */
+const frames: Frame[] = [];
+const index = new Map<string, number>();
+for (const s of steps) for (const f of s.frames) if (!index.has(f.name)) { index.set(f.name, frames.length); frames.push(f); }
+const entryOf = (s: Step) => index.get(s.frames[0].name) ?? 0;
+/* The end frame of a step is the last frame its flow shows, else its entry. */
+const endOf = (s: Step) => {
+  let k = entryOf(s);
+  if (s.flow) { try { for (const st of JSON.parse(s.flow)) if (st[0] === "state") k = Number(st[1]); } catch { /* keep entry */ } }
+  return frames[k];
+};
+const skies = ["morning", "midday", "afternoon", "evening"];
+---
+<div class={`day ${className}`.trim()} data-story id={id} data-warm>
+  <ol class="day-steps">
+    {steps.map((s, i) => (
+      <li class={`day-step${i === 0 ? " is-current" : ""}`} data-step={i} data-step-screen={entryOf(s)} data-flow-entry={entryOf(s)} data-flow={s.flow}>
+        <div class="day-step-in">
+          <span class="eyebrow">{s.label}</span>
+          <h3 class="t-s">{s.name}</h3>
+          <p class="t-body" style="color: var(--fg-2); margin-top: 14px;">{s.body}</p>
+          <div class="day-static">
+            <PhoneFrame screens={[endOf(s)]} width={200} caption={s.caption} />
+          </div>
+        </div>
+      </li>
+    ))}
+  </ol>
+  <div class="day-stagecol">
+    <div class="day-stage">
+      {skies.map((k) => <i class="sky" data-sky={k} aria-hidden="true"></i>)}
+      <PhoneFrame class="floor-on" screens={frames} width={width} label="The day in Practice, screen by screen." />
+      <div class="day-caps" aria-hidden="true">
+        {steps.map((s, i) => <p class={`day-cap${i === 0 ? " on" : ""}`} data-cap={i}>{s.caption}</p>)}
+      </div>
+      <div class="day-tabs" role="tablist" aria-label="A day in Practice">
+        {steps.map((s, i) => <button type="button" role="tab" data-go={i} aria-label={s.name} aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1}><i></i></button>)}
+      </div>
+    </div>
+  </div>
+</div>

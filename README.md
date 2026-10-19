@@ -18,7 +18,7 @@ Vercel as a static site; `vercel.json` carries the cache and security headers.
 npm install
 npm run dev        # localhost:4321
 npm run build      # dist/
-npm run sweep      # after a build: fails on any em/en dash or "iOS" in the output
+npm run sweep      # after a build: fails on any em/en dash or the lowercase i spelling of IOS in the output
 ```
 
 ## Where things are
@@ -28,14 +28,29 @@ npm run sweep      # after a build: fails on any em/en dash or "iOS" in the outp
 | `src/config/links.ts` | Every destination on the site. `into(path, from)` builds a link into Practice that carries where it was handed out (`?from=suite`, `?from=academy`, `?from=inq`, `?from=innerlab`). |
 | `src/pages/*.astro` | One file per page, copy included. |
 | `src/components/FlipCards.astro` | The four recognition cards: click, tap, Enter and Space; never on their own; reduced motion honoured. |
-| `src/components/AppPhone.astro`, `AppDesktop.astro` | Real captures of the Practice app (`public/app/*.webp`), in a phone bezel and a browser frame. Taken from a local build of the app, unchanged, on October 19. Recapture when the app's screens change. |
-| `src/components/QuizPhone.astro` | The quiz phone with six auto renew toggles. Image only. |
-| `src/components/Accordion.astro` | The FAQ, on `details` and `summary`, so it works with a keyboard, a screen reader and no script. |
-| `src/styles/global.css` | Tokens: the Suite palette (cream, charcoal, antique gold, forest green, navy) and the Academy/INQ teal set. Section rhythm (`sec-s`, `sec-m`, `sec-l`), flat buttons, line cards. |
-| `src/styles/motion.css` | Word reveals, the scroll-driven product story, the scroll-lit paragraph, the horizontal rail. Reduced motion and high contrast honoured. |
+| `src/components/PhoneFrame.astro`, `WindowFrame.astro` | Real captures of the Practice app (`public/app/*.webp`) in a drawn phone and a drawn browser window, with stacked frames the scene engine plays. Taken from a local build of the app, unchanged, on October 19. Recapture when the app's screens change. |
+| `src/components/ToggleCard.astro` | The toggle card on the quiz still life: six pattern names and drawn toggles. Image only. |
+| `src/components/Accordion.astro` | The FAQ: a button with `aria-expanded` per question, the answer animated both ways, every answer open without the script. |
+| `src/styles/global.css` | The system: tokens, the seven themes, the type roles, pills, paper, mats, the plate, lamps and grain, and every component's structure. See The system below. |
+| `src/styles/motion.css` | The CSS half of every mechanic: reveals, line rise, lit statements, page tone, scenes, rails, the day stage, drawn lines, the floor. Reduced motion, no JS and high contrast honoured. |
 | `scripts/sweep.mjs` | The copy check run by `npm run sweep`. |
 | `brief/` | The source documents: Suite handoff and build brief, Academy directions, INQ mock-up, Practice documents. |
-| `src/scripts/site.ts` | Entrances, the header, the mobile menu, flip cards, analytics events, UTM passthrough. |
+| `src/scripts/site.ts` | The motion library: one scroll loop, reveals, line rise, lit statements, page tone, the header, the scene engine, the loop phone, the day stage, rails, previews, drawn lines, flips, the accordion, analytics events, UTM passthrough. |
+| `scripts/tiles.mjs`, `scripts/desk2x.mjs` | Build time image scripts (`npm run tiles`, `npm run desk2x`): the floor tiles and the two 2x hero windows. |
+
+## The system
+
+The rebuild's design system (BUILD_SPEC part 1), built by the system engineer before the pages. The full reference with every prop, slot, attribute and fallback is `SYSTEM_API.md` in the spec folder; this is the map.
+
+**Files.** `src/styles/global.css`: the `@theme` palette (unchanged), the role tokens and the seven themes (`cream`, `ac-cream`, `navy`, `forest`, `charcoal`, `ink`, `teal` on `[data-theme]`), the grid (`--gutter --max --max-wide --gap --nav-h --edge --colw`, `.wrap .wrap-wide .grid`), the type scale (`--fs-*` and the roles `.t-xl .t-l .t-m .t-s .t-state .t-title .t-lead .t-body .t-small .t-cap .t-cap-i .t-folio .t-price`), spacing and rhythm (`--sp-*`, `--sec --sec-l --sec-s --head-gap --eyebrow-gap --lead-gap --btn-gap`), radii, shadows and easings (`--r --r-lg --sh-paper --sh-object --sh-object-dark --sh-toast --line-gold --ease --slow --sheet --scene --pop`), and every component's structure: pills (`.btn` with `.btn-gold .btn-line .btn-cream .btn-teal .btn-line-teal .btn-lg .btn-sm`), `.link`, `.eyebrow`, `.paper`, `.paper-teal`, `.mat`, `.mat-blush`, `.plate`, `.panel-forest`, `.panel-navy`, `.lamp`, `.grain`, `.ladder`, `.tile`, `.phone`, `.win`, the rail, the day stage, the accordion, the flip cards, the toggle card, the geometry, the floor, the header and the footer. `src/styles/motion.css`: the CSS half of every mechanic, the reduced motion block (nothing moves, nothing hides, stages unpin), the no JS block and the high contrast block. `src/scripts/site.ts`: one scroll loop with exponential smoothing, reveals, line rise, lit statements, page tone, the header, the scene engine, the loop phone, the day stage, rails, the scroll screen, parallax, previews, drawn lines, run gates, image warming, tilt, flips, the accordion, `track()`, `passthrough()` and the `astro:page-load` lifecycle.
+
+**Components** (`src/components/`): `PhoneFrame` (a drawn phone in em of its screen width, frames stacked for the scene engine, no island), `WindowFrame` (a browser window in em of its width, the two 2x captures through `x2`), `Rail` (native snap plus arrows, tabs, keyboard and drag momentum), `DayStage` (the sticky sky mat with one phone and five steps; static with five phones under reduced motion), `ToggleCard` (image only), `Geo` (the mark geometry that draws itself), `FlipCards` (paper fronts, forest backs, both faces in one grid cell), `Accordion` (a button with `aria-expanded`, the answer a `0fr` to `1fr` row), `Header`, `Footer`, `FeatureIcon` (1.25 px stroke), `Arrow`, `Mark`, `Wordmark`. `AppPhone`, `AppDesktop` and `QuizPhone` remain only until the pages are migrated.
+
+**Hooks** (data attributes, each with a reduced motion and a no JS fallback): `.wipe .rise .rise-obj .seq .slide-l .slide-r .rule-draw .tcard-in`, `data-lines` (alias `data-words`), `data-lit` (alias `data-scrollwords`, `data-lit="lines"`), `data-tone`, `data-surface`, `data-flow` with `data-flow-loop` and `data-rest`, `data-loop` with `data-loop-step data-loop-frame data-loop-ms data-loop-tap`, `data-story`, `data-rail`, `data-scrollscreen`, `data-parallax`, `data-preview` with `data-preview-target`, `data-draw="enter|scroll"` with `.draw-line`, `data-run`, `data-warm`, `data-tilt`; kept from the first build: `data-passthrough data-event data-event-location data-header data-menu-button data-menu-panel data-count`.
+
+**Build time images.** `npm run tiles` writes the 18 floor tiles to `public/app/tiles/`; `npm run desk2x` writes the two 2880 px hero windows (`desk-coach-draft-2x.webp`, `desk-tools-home-2x.webp`). Both use `sharp` (a devDependency), run by hand, and their outputs are committed; `astro build` never runs them.
+
+**The scratch page** `src/pages/system-demo.astro` instantiates every component and mechanic with real captures and locked copy; it is excluded from the sitemap, never linked, and deleted before launch.
 
 ## Analytics events
 
@@ -81,7 +96,7 @@ moment an account is created, with no card. The site links straight to it with
 - **No prices for Practice.** The sales page says plans and prices are inside the app under Membership. INQ shows $6,997 with payment options, per the mock-up, pending confirmation.
 - **No testimonials** anywhere except the three the Academy doc approves, signed "Academy student".
 - **The three navy books** image is held, per the tracker; the Academy section uses a card instead.
-- **Design restraint.** No glows, blobs, textures or watermarks. Two dark fills per page at most (charcoal, forest or navy), the rest cream. Gold is for one button and the eyebrow rules. Flat 8px buttons, hairline cards, editorial lists in place of card grids. The footer is cream.
+- **Design restraint.** No glows, blobs or watermarks. Dark moments are full bleed sections the page cross fades into, never two in a row, each lit from one corner with one lamp and a grain; gold is for one filled button per section, the italic clauses and the hairlines on dark. Pill buttons, paper cards with a gradient border instead of a plain line, ruled lists in place of card grids. The footer is linen.
 - **Old URLs redirect** (`vercel.json`): the live site's `/human-foundations`, `/wisdom-collection`, `/certified-mind-method` go to the Academy inside Practice; `/innerlab-5011` and `/innerlab-lp` to the Lab; `/quiz-page` to the quiz; `/certification` to `/inq-certification`.
 - **The INQ accreditation FAQ** is in the page source as a comment until the accrediting body and credential name are supplied, so no placeholder ships.
 

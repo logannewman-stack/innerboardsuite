@@ -1,0 +1,73 @@
+---
+/**
+ * A drawn phone in em of its screen width (BUILD_SPEC 1.6). No island, no
+ * notch, no status strip: the capture fills the screen edge to edge and the
+ * app's own header reads as the top of the screen. Frames are stacked
+ * img.ds; the first is the rest frame. The scene engine (1.7.7) plays
+ * `flow`; `loop` replays it after that many ms of idle.
+ */
+import { existsSync } from "node:fs";
+interface Screen { name: string; alt: string; w: 600 | 780; h: 1298 | 1688 }
+interface Props {
+  screens: Screen[];
+  width: number;
+  eager?: boolean;
+  flow?: string;
+  loop?: number;
+  rest?: number;
+  shadow?: "light" | "dark";
+  floor?: boolean;
+  class?: string;
+  id?: string;
+  label?: string;
+  caption?: string;
+  parallax?: number;
+  tilt?: number;
+  style?: string;
+}
+const { screens, width, eager = false, flow, loop, rest = 0, shadow = "light", floor = true, class: className = "", id, label, caption, parallax, tilt, style = "" } = Astro.props;
+const hasJpg = (name: string) => existsSync(new URL(`../../public/app/${name}.jpg`, import.meta.url));
+---
+<figure
+  class={`phone ${shadow === "dark" ? "phone-dark" : ""} ${className}`.trim()}
+  id={id}
+  style={`--pw:${width}px;${style}`}
+  data-frames
+  data-flow={flow}
+  data-flow-loop={loop}
+  data-rest={rest || undefined}
+  data-parallax={parallax}
+  data-tilt={tilt}
+  role={label ? "img" : undefined}
+  aria-label={label}
+>
+  <div class="phone-screen">
+    <span class="slot" aria-hidden="true"></span>
+    <div class="cam">
+      {screens.map((s, i) => {
+        const img = (
+          <img
+            class={`ds${i === 0 ? " on" : ""}`}
+            src={hasJpg(s.name) ? `/app/${s.name}.jpg` : `/app/${s.name}.webp`}
+            alt={label ? "" : s.alt}
+            width={s.w}
+            height={s.h}
+            sizes={`${width}px`}
+            decoding="async"
+            loading={eager && i === 0 ? "eager" : "lazy"}
+            fetchpriority={eager && i === 0 ? "high" : undefined}
+          />
+        );
+        return hasJpg(s.name) ? (
+          <picture>
+            <source type="image/webp" srcset={`/app/${s.name}.webp`} />
+            {img}
+          </picture>
+        ) : img;
+      })}
+    </div>
+    <span class="tap" aria-hidden="true"></span>
+  </div>
+  {floor && <i class="phone-floor" aria-hidden="true"></i>}
+  {caption && <figcaption class="t-cap-i">{caption}</figcaption>}
+</figure>

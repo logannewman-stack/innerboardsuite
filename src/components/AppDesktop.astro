@@ -1,5 +1,5 @@
 ---
-/** A real screen from Practice on a desktop, inside a browser window. Taken at 1440 by 900 on a 2x display. */
+/** Legacy (deleted in stage three): a desktop capture in a plain window frame. Styles scoped here; use WindowFrame. */
 interface Props { screen: string; alt: string; class?: string; eager?: boolean }
 const { screen, alt, class: className = "", eager = false } = Astro.props;
 ---
@@ -11,3 +11,7 @@ const { screen, alt, class: className = "", eager = false } = Astro.props;
     </picture>
   </div>
 </figure>
+<style>
+  .browser { border-radius: 12px; overflow: hidden; background: #f2ece0; box-shadow: 0 0 0 1px rgba(31,29,26,.12), var(--sh-object); }
+  .browser-screen { background: #f2ece0; }
+</style>

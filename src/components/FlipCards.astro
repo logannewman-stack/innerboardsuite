@@ -1,39 +1,45 @@
 ---
 /**
- * The four recognition cards. Flip on click, tap, Enter and Space; never on
- * their own. Forest green backs, cream and gold fronts, entering from
- * alternate sides, with reduced motion honoured in the stylesheet.
- *
- * The four are four of the subscription quiz's own patterns, in the quiz's
- * words, so the recognition on the front and the reframe on the back are the
- * approved doctrine rather than new copy.
+ * The four recognition cards (1.6). Flip on click, tap, Enter and Space;
+ * never on their own. Paper fronts, forest backs with a lamp and grain, both
+ * faces in one grid cell so the card takes the taller face. The quotes and
+ * reframes are locked copy; our labels are the four cues and the sr sentence.
+ * The closing statement renders after the list, as before.
  */
 import Arrow from "./Arrow.astro";
 const cards = [
-  { front: "The conversation ended hours ago. You're still having it.", back: "You can't change what was said. But you can change what you keep telling yourself about it." },
-  { front: "On paper, it's a good life. So why doesn't it feel like one?", back: "Maybe your life doesn't need to change. Maybe the way you're experiencing it can." },
-  { front: "Everyone counts on you. You'd never let on what it costs.", back: "There's another way to show up for everyone without losing yourself in the process." },
-  { front: "Nothing about you needs fixing. How you meet life is a skill, and nobody ever taught it to you.", back: "The way you think, feel, and respond isn't fixed. It's something you can learn and practice." }
+  { front: "The conversation ended hours ago. You're still having it.", back: "You can't change what was said. But you can change what you keep telling yourself about it.", lead: "You can't change what was said." },
+  { front: "On paper, it's a good life. So why doesn't it feel like one?", back: "Maybe your life doesn't need to change. Maybe the way you're experiencing it can.", lead: "Maybe your life doesn't need to change." },
+  { front: "Everyone counts on you. You'd never let on what it costs.", back: "There's another way to show up for everyone without losing yourself in the process.", lead: "There's another way to show up for everyone without losing yourself in the process." },
+  { front: "Nothing about you needs fixing. How you meet life is a skill, and nobody ever taught it to you.", back: "The way you think, feel, and respond isn't fixed. It's something you can learn and practice.", lead: "The way you think, feel, and respond isn't fixed." }
 ];
+const split = (c: (typeof cards)[number]) => c.back.startsWith(c.lead) ? [c.lead, c.back.slice(c.lead.length)] : ["", c.back];
+interface Props { class?: string }
+const { class: className = "" } = Astro.props;
 ---
-<ul class="grid gap-5 sm:grid-cols-2" role="list">
-  {cards.map((card, i) => (
-    <li class={`reveal ${i % 2 === 0 ? "slide-l" : "slide-r"}`} style={`--d:${i * 90}ms`}>
-      <button type="button" class="flip block w-full h-[300px] sm:h-[320px] text-left" aria-pressed="false">
-        <span class="flip-inner block">
-          <span class="flip-face flip-front card bg-cream-3 p-7 flex flex-col justify-between border-gold-soft">
-            <span class="eyebrow">Sound familiar?</span>
-            <span class="font-display text-[26px] sm:text-[30px] leading-[1.1] tracking-[-0.02em] text-ink">"{card.front}"</span>
-            <span class="inline-flex items-center gap-2 text-[13px] font-semibold text-gold-ink">Flip it <Arrow /></span><span class="sr-only">Press to flip the card.</span>
+<ul class={`flips ${className}`.trim()} role="list">
+  {cards.map((card, i) => {
+    const [lead, rest] = split(card);
+    return (
+      <li class={`flip-item rise ${i % 2 === 0 ? "slide-l" : "slide-r"}`} style={`--d:${i * 90}ms`}>
+        <button type="button" class="flip" aria-pressed="false">
+          <span class="flip-inner">
+            <span class="flip-face flip-front paper">
+              <span class="eyebrow">Sound familiar?</span>
+              <span class="flip-quote">"{card.front}"</span>
+              <span class="flip-cue">Flip it <Arrow /></span><span class="sr-only">Press to flip the card.</span>
+            </span>
+            <span class="flip-face flip-back grain">
+              <i class="lamp" aria-hidden="true"></i>
+              <span class="eyebrow">Another way</span>
+              <span class="flip-reframe">{lead && <b>{lead}</b>}{rest}</span>
+              <span class="flip-cue">Flip it back</span>
+            </span>
           </span>
-          <span class="flip-face flip-back bg-forest text-cream p-7 flex flex-col justify-between on-dark">
-            <span class="eyebrow">Another way</span>
-            <span class="text-[15.5px] leading-relaxed text-on-dark-muted">{card.back}</span>
-            <span class="text-[13px] font-semibold text-gold-2">Flip it back</span>
-          </span>
-        </span>
-      </button>
-    </li>
-  ))}
+          <i class="sheen" aria-hidden="true"></i>
+        </button>
+      </li>
+    );
+  })}
 </ul>
-<p class="reveal mt-10 font-display text-[24px] sm:text-[30px] leading-[1.2] text-ink max-w-[720px]">Same life. <em>A different way to meet whatever life brings.</em></p>
+<p class="flip-close t-s-quote rise">Same life. <em>A different way to meet whatever life brings.</em></p>

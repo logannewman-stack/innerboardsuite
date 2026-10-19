@@ -1,0 +1,15 @@
+---
+/**
+ * The mark geometry (1.5 item 6): a circle, a crosshair past it, a dot at the
+ * centre, in a 1100 viewBox, drawn by stroke-dashoffset when it arrives.
+ * Position it from the page's CSS (it is absolute); its section clips it.
+ */
+interface Props { color?: string; opacity?: number; class?: string; style?: string; size?: number }
+const { color = "currentColor", opacity = 0.08, class: className = "", style = "", size = 1100 } = Astro.props;
+---
+<svg class={`geo ${className}`.trim()} viewBox="-550 -550 1100 1100" style={`color:${color};--geo-o:${opacity};--geo-size:${size}px;--dur:1600ms;${style}`} data-geo data-draw="enter" aria-hidden="true" focusable="false">
+  <circle class="ring draw-line" cx="0" cy="0" r="480"></circle>
+  <path class="draw-line" d="M-560 0H560" style="--d:.15s"></path>
+  <path class="draw-line" d="M0-560V560" style="--d:.3s"></path>
+  <circle class="dot" cx="0" cy="0" r="18"></circle>
+</svg>

@@ -1,0 +1,564 @@
+---
+/**
+ * The system scratch page (BUILD_SPEC 4.1 item 6). It instantiates every
+ * component and every mechanic once, with real captures and locked copy only,
+ * so the acceptance checks of 1.13 can be run against it. It is never linked,
+ * it is excluded from the sitemap, and the lead deletes it before launch.
+ */
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import FeatureIcon from "../components/FeatureIcon.astro";
+import PhoneFrame from "../components/PhoneFrame.astro";
+import WindowFrame from "../components/WindowFrame.astro";
+import Rail from "../components/Rail.astro";
+import DayStage from "../components/DayStage.astro";
+import ToggleCard from "../components/ToggleCard.astro";
+import Geo from "../components/Geo.astro";
+import FlipCards from "../components/FlipCards.astro";
+import Accordion from "../components/Accordion.astro";
+import { LINKS } from "../config/links";
+
+const features = [
+  { icon: "coach", name: "Daily Practice Coach", body: "Type what is happening, and think it through right when it matters.", step: 0, frame: "0", ms: 2600, tap: undefined },
+  { icon: "dare", name: "The Daily Dare", body: "One small thing to do before the day ends. A new one every day.", step: 1, frame: "1", ms: 3200, tap: "19,69,900,2" },
+  { icon: "courses", name: "Courses", body: "Go deeper on what you're living, from your thoughts and feelings to relationships and confidence.", step: 2, frame: "none", ms: 1800, tap: undefined },
+  { icon: "live", name: "Live Sessions and Community", body: "Monthly masterclasses, coaching labs, and a room where nobody has to figure it out alone.", step: 3, frame: "none", ms: 1800, tap: undefined },
+  { icon: "tools", name: "Tools for the Moment", body: "For when you're reacting right now: a breath, a reset, and your next move.", step: 4, frame: "3", ms: 3600, tap: "50,60,1200,4" }
+];
+
+const daySteps = [
+  { label: "Morning", name: "Open the app. The Coach is first.", body: "Home shows four things: the Coach's prompt, Set Up Your Day, the Dare of the Day, and your calendar. Nothing to configure. The Coach is trained on the InnerBoard method and says, on screen, that it is not a person.", caption: "The Coach home.", frames: [{ name: "home", alt: "The Coach home as a visitor.", w: 600, h: 1298 }], flow: '[["hold",500],["cam",1.14,50,18,1400],["hold",1800],["cam",1,50,50,1200],["end"]]' },
+  { label: "Morning", name: "Set up your day in a minute.", body: "How are you arriving? One thing you are grateful for. How you want to approach today. What would make today a win. Four fields, one line each, and the day has a shape.", caption: "Set Up Your Day.", frames: [{ name: "today", alt: "Set Up Your Day with the ten second read and two fields filled.", w: 600, h: 1298 }], flow: '[["cam",1.2,50,42,1300],["hold",1600],["cam",1.2,50,72,1200],["hold",1800],["cam",1,50,50,1000],["end"]]' },
+  { label: "Midday", name: "Something lands. You run STEAR.", body: "A business partner goes quiet after you send the numbers. Instead of rereading your message for an hour, you open STEAR: what happened, what you made it mean, what that thought created. Two minutes, and the story is separated from the fact.", caption: "STEAR, question one, then question two.", frames: [{ name: "stear1", alt: "STEAR, question one, with the fact written.", w: 600, h: 1298 }, { name: "stear2", alt: "STEAR, question two, with the thought written.", w: 600, h: 1298 }], flow: '[["hold",1200],["tap",50,95],["state",3,320],["hold",3000],["end"]]' },
+  { label: "Afternoon", name: "Do the Dare. Check it off.", body: "One small thing before the day ends, new every day. When you tap I did it, the app marks it with a star, asks how it went in one line, and never asks twice.", caption: "The Dare, done.", frames: [{ name: "home", alt: "The Coach home as a visitor.", w: 600, h: 1298 }, { name: "dare", alt: "The home after the Dare is checked, with the star line.", w: 600, h: 1298 }], flow: '[["cam",1.22,50,64,1200],["hold",600],["tap",19,69],["state",4,320],["hold",2400],["cam",1,50,50,1200],["end"]]' },
+  { label: "Evening", name: "Everything you did is in the Journal.", body: "Every tool you ran, every check-in, every quiz result, dated and yours. Saved on the device as a visitor. Kept in your account the moment you make one.", caption: "The Journal.", frames: [{ name: "journal", alt: "The Journal with one entry on this device.", w: 600, h: 1298 }], flow: '[["cam",1.1,50,14,1400],["hold",2400],["cam",1,50,50,1200],["end"]]' }
+];
+
+const stear = [
+  { n: "1 / 8", q: "What happened?", h: "Facts only. What a camera would record." },
+  { n: "2 / 8", q: "What did you make it mean?", h: "One sentence. Where did you inherit this one?" },
+  { n: "3 / 8", q: "What did that thought create?", h: "One word. The thought created it, not the situation." },
+  { n: "4 / 8", q: "What did you do, or avoid?", h: "Defend? Stall? Retaliate? Ruminate?" },
+  { n: "5 / 8", q: "What did that create?", h: "Notice how the result proves the original thought right." },
+  { n: "6 / 8", q: "What else might be true?", h: "How could you be wrong about this? What would your highest self see?" }
+];
+const readingCam = '[["hold",700],["cam",1.18,50,24,1200],["hold",2000],["cam",1,50,50,1000],["end"]]';
+
+const faq = [
+  { q: "Is it an app I download?", a: "Practice is a web app. Open it in your browser, add it to the home screen on iPhone or Android, and it opens like any other app. There is nothing to find in the App Store or Google Play." },
+  { q: "Do I need an account to start?", a: "No. The quiz, the book assessments, the quick tools and a first conversation with the Coach work without one. Every screen on this page was captured as a visitor with no account. Saving your results is the moment an account is created, and nothing asks for a card to do it." },
+  { q: "Is the Coach a person?", a: "No. The Daily Practice Coach is trained on the InnerBoard method and the material behind it. It is coaching, not therapy, and it says so before your first message." }
+];
+
+const loopRows = [["Situation", "What a camera would record."], ["Thought", "The sentence you added."], ["Emotion", "What the thought creates."], ["Action", "What that state makes available."], ["Result", "Which proves the thought right."]];
+
+const floorStems = ["coach-draft", "today", "tools-home", "energy", "sunday-quick-plan", "score-m1", "close-day", "wins-saved", "score-upstream-scored", "spark", "hear", "facts-vs-story", "quiz-results", "leader-blueprint", "friday-energy", "arriving-word", "discomfort-name", "score-m1-result"];
+
+const quotes = [
+  "I thought I just was not a patient person. Turns out I had no idea what was driving my reactions. Now I do.",
+  "I have tried every productivity system. None of it lasted. This was the first time I understood why, and what to actually do about it.",
+  "I came in looking for a tool. I walked out with a different way of seeing."
+];
+---
+<Base title="System" description="The system scratch page." path="/system-demo">
+  <!-- 1. Hero: the plate, the hanging phone, line rise, lamp, grain, tilt, parallax, scene -->
+  <section class="sd-hero lamp-host grain grain-cream" data-tone="cream">
+    <i class="lamp lamp-cream" aria-hidden="true" style="--lx:50%;--ly:0%"></i>
+    <div class="wrap sd-hero-wrap">
+      <div class="grid">
+        <div class="sd-hero-copy">
+          <p class="eyebrow rise" style="--d:.45s">Practice by InnerBoard</p>
+          <h1 data-lines class="t-xl sd-h1"><span class="hl">You don't need a different life,</span> <em class="hl">just a new way to meet this one.</em></h1>
+          <p class="t-lead sd-lead rise" style="--d:.52s">A few minutes a day to think more clearly, feel more confident, and choose what comes next with a coach in your pocket.</p>
+          <div class="sd-btns rise" style="--d:.6s">
+            <a href={LINKS.practice} class="btn btn-gold" data-passthrough data-event="practice_click" data-event-location="hero">Start in Practice <Arrow /></a>
+            <a href={LINKS.quiz} class="btn btn-line" data-passthrough data-event="quiz_click" data-event-location="hero">What's Holding You Back?</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="plate grain sd-plate" data-surface="dark" aria-hidden="true"><i class="lamp" aria-hidden="true" style="--lx:18%;--ly:0%"></i></div>
+    <div class="sd-hero-phone rise-obj floor-on" style="--d:.3s">
+      <PhoneFrame id="hero-phone" width={302} eager shadow="dark" tilt={3} parallax={-36} loop={2600}
+        flow='[["hold",900],["tap",50,27],["state",1,320],["hold",4200],["state",0,320],["end"]]'
+        screens={[
+          { name: "home", alt: "Practice on a phone: the Daily Practice Coach, the Dare of the Day and Set Up Your Day.", w: 600, h: 1298 },
+          { name: "coach-draft", alt: "The Daily Practice Coach with a sentence typed in the composer.", w: 780, h: 1688 }
+        ]} />
+    </div>
+  </section>
+
+  <!-- 2. Recognition: wipe, the flip cards on the grid -->
+  <section class="sd-sec sd-recognize" data-tone="cream" id="recognize">
+    <div class="wrap">
+      <h2 class="t-l wipe">On paper, <em>it all looks fine.</em></h2>
+      <FlipCards class="sd-flips" />
+    </div>
+  </section>
+
+  <!-- 3. The forest panel with the loop phone and the ladder -->
+  <section class="sd-sec-b" data-tone="cream" id="practice">
+    <div class="wrap-wide panel-forest grain surface-forest sd-panel" data-surface="dark" data-loop>
+      <i class="lamp" aria-hidden="true" style="--lx:18%;--ly:0%"></i>
+      <div class="sd-panel-grid">
+        <div class="sd-panel-left">
+          <p class="eyebrow">Practice by InnerBoard</p>
+          <h2 class="t-m wipe" style="color:#f4efe4">A different way to meet <em>whatever life brings.</em></h2>
+          <p class="t-lead rise" style="color:#cdc6b8;max-width:28em;margin-top:var(--lead-gap)">A daily practice coach with personalized insight, real-time support, and tools to help you think differently, feel differently, and choose what's next.</p>
+          <div class="sd-panel-phone rise-obj floor-on" style="--d:.2s">
+            <PhoneFrame width={300} shadow="dark" screens={[
+              { name: "coach-draft", alt: "The Daily Practice Coach with a sentence typed in the composer.", w: 780, h: 1688 },
+              { name: "home", alt: "The Coach home as a visitor.", w: 600, h: 1298 },
+              { name: "dare", alt: "The home after the Dare is checked, with the star line.", w: 600, h: 1298 },
+              { name: "tools-home", alt: "The Tools hub.", w: 780, h: 1688 },
+              { name: "pause-breath", alt: "Pause + Redirect, one breath.", w: 780, h: 1688 }
+            ]} />
+          </div>
+        </div>
+        <ul class="ladder ladder-gold sd-ladder" role="list">
+          {features.map((f, i) => (
+            <li class="rise" style={`--d:${i * 70}ms`} data-loop-step={f.step} data-loop-frame={f.frame} data-loop-ms={f.ms} data-loop-tap={f.tap}>
+              <span class="ring" aria-hidden="true"><FeatureIcon name={f.icon} class="w-[18px] h-[18px]" /></span>
+              <div><p class="ladder-name" style="color:#f4efe4">{f.name}</p><p class="ladder-body" style="color:#cdc6b8">{f.body}</p></div>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="rule-gold sd-panel-rule" aria-hidden="true"></div>
+      <div class="sd-panel-foot">
+        <div>
+          <p class="t-s" style="color:#f4efe4">Start today, <em>as you are.</em></p>
+          <p class="t-body" style="color:#cdc6b8;margin-top:12px">Bring what's happening in your life right now. We'll help you take the next step.</p>
+        </div>
+        <div class="sd-btns">
+          <a href={LINKS.practice} class="btn btn-gold" data-passthrough data-event="practice_click" data-event-location="practice">Start in Practice <Arrow /></a>
+          <a href={LINKS.practicePage} class="btn btn-line">See everything inside</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. The quiz still life: blush mat, scroll screen, toggle card -->
+  <section class="sd-sec" data-tone="cream" id="quiz">
+    <div class="wrap grid sd-quiz">
+      <div class="sd-quiz-still">
+        <div class="mat mat-blush sd-mat">
+          <ToggleCard class="sd-tcard tcard-in" />
+          <figure class="phone rise-obj floor-on sd-quiz-phone" style="--pw:268px">
+            <div class="phone-screen" data-scrollscreen style="--range:179.4">
+              <span class="slot" aria-hidden="true"></span>
+              <img class="ds-head" src="/app/quiz-results.webp" alt="" width="600" height="1298" decoding="async" loading="lazy" />
+              <div class="scroll-body" style="height:395.8em">
+                <img src="/app/quiz-results.webp" alt="The quiz result: Approval, what it is costing, where, and a first step." width="600" height="1298" decoding="async" loading="lazy" style="top:0" />
+                <img src="/app/quiz-results2.webp" alt="The quiz result's other five patterns: Pressure, Proving, Control, Old identity, Certainty." width="600" height="1298" decoding="async" loading="lazy" class="sd-quiz-2" />
+              </div>
+            </div>
+            <i class="phone-floor" aria-hidden="true"></i>
+          </figure>
+        </div>
+      </div>
+      <div class="sd-quiz-copy">
+        <p class="eyebrow">The subscription quiz</p>
+        <h2 class="t-m wipe">What's costing you <em>more than you think?</em></h2>
+        <div class="t-lead sd-stack" style="color:var(--fg-2);max-width:28em;margin-top:var(--lead-gap)">
+          <p class="rise">You know those subscriptions you forgot about, but they're still on auto-renew?</p>
+          <p class="rise" style="--d:.28s">What if you're doing the same thing in your life?</p>
+          <p class="rise" style="--d:.36s">Except these subscriptions aren't charging your credit card. They're costing you time, energy, confidence, peace, and connection.</p>
+        </div>
+        <div class="sd-benefits">
+          <div class="rise"><b class="t-title">4 minutes to complete</b><p class="t-body" style="color:var(--fg-2)">Quick, simple, and insightful.</p></div>
+          <div class="rise" style="--d:.27s"><b class="t-title">Personalized results</b><p class="t-body" style="color:var(--fg-2)">See what might be auto-renewing in your life.</p></div>
+        </div>
+        <div class="sd-btns rise" style="margin-top:36px;align-items:center">
+          <a href={LINKS.quiz} class="btn btn-gold" data-passthrough data-event="quiz_click" data-event-location="quiz">Take the Quiz <Arrow /></a>
+          <span class="sd-closing">It's time to cancel what's no longer serving you.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. INQ teaser: a navy bleed, the page cross fades, the geo draws -->
+  <section class="sd-bleed" data-tone="navy" id="inq">
+    <i class="lamp grain" aria-hidden="true" style="--lx:85%;--ly:0%"></i>
+    <Geo class="sd-geo-tr" color="#f4efe4" opacity={0.08} />
+    <div class="wrap grid">
+      <div class="sd-span8">
+        <p class="eyebrow">INQ Certification | Lead it</p>
+        <h2 class="t-l wipe">Coach the change that <em>actually changes people.</em></h2>
+        <p class="t-lead rise" style="color:var(--fg-2);max-width:28em;margin-top:var(--lead-gap)">A science-informed certification in human behavior, neuroscience, emotional intelligence, and habit change.</p>
+        <p class="t-lead rise" style="color:var(--fg-2);max-width:28em;margin-top:1em;--d:.3s">Gain the confidence to create meaningful results for your clients, apply the work to your own life, and build a coaching business around the impact you make.</p>
+      </div>
+      <div class="sd-span-btns rise" style="--d:.24s">
+        <a href={LINKS.inq} class="btn btn-gold" data-event="inq_click" data-event-location="teaser">Explore INQ Certification <Arrow /></a>
+        <a href={LINKS.inqBook} class="btn btn-line" data-event="inq_book_click" data-event-location="teaser">Book a Conversation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. The lit mission -->
+  <section class="sd-sec-l sd-center" data-tone="cream" id="mission">
+    <div class="wrap">
+      <div class="sd-mission">
+        <p class="eyebrow">Why InnerBoard exists</p>
+        <h2 class="t-l wipe" style="margin-inline:auto">We believe people are capable of more.</h2>
+        <p class="t-s-pull rise" style="color:var(--accent);margin:16px auto 0">Sometimes they just need a different way forward.</p>
+        <div class="t-state sd-lit" data-lit style="margin:48px auto 0">
+          <p><b class="lb">InnerBoard was built on a simple belief:</b> the way we think, feel, and respond shapes the way we experience our lives.</p>
+          <p><b class="lb">And those aren't things we're stuck with.</b> They're skills we can learn, strengthen, and practice.</p>
+          <p><b class="lb">Our mission</b> is to make that kind of growth accessible, practical, and part of everyday life, so more people can become who they're capable of being.</p>
+        </div>
+        <p class="t-s sd-closing-line" data-lit="lines" data-lit-step="120" style="margin:56px auto 0"><span class="lw">Learn it.</span> <span class="lw">Live it.</span> <span class="lw">Lead it.</span> <em class="lw">Practice it.</em></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. The day stage -->
+  <section class="sd-sec" data-tone="cream" id="day">
+    <div class="wrap">
+      <h2 class="t-l wipe">One day, <em>as it actually goes.</em></h2>
+      <p class="t-lead rise" style="color:var(--fg-2);margin-top:var(--lead-gap)">Scroll, and the phone follows the day. Each screen is the app, not a picture of it.</p>
+      <div class="sd-day">
+        <DayStage steps={daySteps} width={230} id="day-stage" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. The STEAR rail with the reading camera -->
+  <section class="sd-sec sd-stear" data-tone="cream" id="stear">
+    <div class="wrap">
+      <h2 class="t-l wipe">STEAR, <em>as the app asks it.</em></h2>
+    </div>
+    <div class="sd-band">
+      <Rail ariaLabel="STEAR, as the app asks it." labels={[...stear.map((s) => s.n), "Then"]} by="item">
+        {stear.map((s, i) => (
+          <li class="rail-slide">
+            <div class="rise-obj floor-on" style={`--d:${i * 90}ms`}>
+              <PhoneFrame width={232} flow={readingCam} screens={[{ name: `stear${i + 1}`, alt: `STEAR, ${s.q}`, w: 600, h: 1298 }]} />
+            </div>
+            <div class="rail-cap">
+              <p class="t-folio" style="color:var(--fg-3)">{s.n}</p>
+              <p class="t-title" style="margin-top:8px">{s.q}</p>
+              <p class="t-cap" style="margin-top:6px">{s.h}</p>
+            </div>
+          </li>
+        ))}
+        <li class="rail-slide sd-then">
+          <div class="paper sd-then-card">
+            <p class="eyebrow">Then</p>
+            <p class="t-title">A new thought, and the next move.</p>
+            <p class="t-body" style="color:var(--fg-2);margin-top:10px">Questions seven and eight. The run is saved to your Journal, and the Coach can talk it through.</p>
+            <a href={LINKS.practice} class="link" data-passthrough style="margin-top:18px">Run it yourself <Arrow /></a>
+          </div>
+        </li>
+      </Rail>
+    </div>
+    <div class="wrap"><p class="t-cap" style="margin-top:16px">Seven frames. Scroll sideways, or swipe.</p></div>
+  </section>
+
+  <!-- 9. Everything inside: the 792 window, previews, the pager, the ladder -->
+  <section class="sd-sec" data-tone="cream" id="inside">
+    <div class="wrap">
+      <h2 class="t-l wipe">One account. <em>One place.</em></h2>
+      <div class="grid sd-inside">
+        <div class="sd-inside-win rise-obj" data-warm>
+          <WindowFrame id="inside-win" ww={792} loop={5000}
+            flow='[["start",40,60],["hold",1200],["move",5,38.3,1300],["click"],["state",1,320],["hold",1800],["cam",1.22,62,18,1400],["hold",2200],["cam",1,50,50,1100],["move",5,23.6,1300],["click"],["state",2,320],["hold",2400],["move",5,9,1200],["click"],["state",0,320],["move",40,60,1100],["end"]]'
+            screens={[
+              { name: "desk-coach-draft", alt: "Practice on a desk: the Daily Practice Coach with a sentence typed, the Dare of the Day, Set Up Your Day and the October calendar." },
+              { name: "desk-score-upstream-result", alt: "A Company OS Score result, with The Book open in the rail." },
+              { name: "desk-track-home", alt: "The Track page, on a desk." }
+            ]} />
+          <div class="win-caps">
+            <p class="win-cap t-cap-i on" data-cap="0">The Coach home, on a desk.</p>
+            <p class="win-cap t-cap-i" data-cap="1">A Company OS Score result, with The Book open in the rail.</p>
+            <p class="win-cap t-cap-i" data-cap="2">The Track page, on a desk.</p>
+          </div>
+          <div class="win-pager" role="tablist" data-preview-target="#inside-win">
+            <button type="button" role="tab" data-go="0" aria-selected="true" aria-label="The Coach home, on a desk."><i></i></button>
+            <button type="button" role="tab" data-go="1" aria-selected="false" tabindex="-1" aria-label="A Company OS Score result, with The Book open in the rail."><i></i></button>
+            <button type="button" role="tab" data-go="2" aria-selected="false" tabindex="-1" aria-label="The Track page, on a desk."><i></i></button>
+          </div>
+        </div>
+        <ul class="ladder sd-inside-ladder" role="list">
+          <li class="rise"><a href={LINKS.academy}><p class="ladder-name">The Academy</p><p class="ladder-body">Every collection, read and practiced in the same place.</p></a></li>
+          <li class="rise" style="--d:70ms"><a href={LINKS.innerlab} data-passthrough><p class="ladder-name">Inner Lab</p><p class="ladder-body">Live sessions each month, the masterclass open to anybody, and a community.</p></a></li>
+          <li class="rise" style="--d:140ms" data-preview="1" data-preview-target="#inside-win"><a href={LINKS.book} data-passthrough><p class="ladder-name">The Book</p><p class="ladder-body">Replaceable: the book, the audiobook, its assessments and worksheets, with each chapter's door into the practice.</p></a></li>
+          <li class="rise" style="--d:210ms" data-preview="2" data-preview-target="#inside-win"><a href={LINKS.ios} rel="noopener"><p class="ladder-name">InnerBoard OS</p><p class="ladder-body">The Company OS Score, the Team OS Score and the Gap Audit, and the curriculum a team works through.</p></a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. The 1320 window with the 2x files and a cursor scene, two phones in front -->
+  <section class="sd-sec" data-tone="cream" id="hero-window">
+    <div class="wrap-wide sd-scene rise-obj" data-warm>
+      <WindowFrame id="hero-win" ww={1320} tilt={2} parallax={-22} loop={4000}
+        flow='[["start",40,60],["hold",1400],["move",5,33.4,1300],["click"],["state",1,320],["hold",2600],["cam",1.18,50,30,1200],["hold",1600],["cam",1,50,50,1000],["move",5,9,1200],["click"],["state",0,320],["hold",1200],["move",40,60,900],["end"]]'
+        screens={[
+          { name: "desk-coach-draft", alt: "Practice on a desk: the Daily Practice Coach with a sentence typed, the Dare of the Day, Set Up Your Day and the October calendar.", x2: true },
+          { name: "desk-tools-home", alt: "The Tools hub on a desk: start with the moment you're in, Set Up Your Day and the Right now prompts.", x2: true }
+        ]} />
+      <div class="sd-scene-phone sd-scene-l">
+        <PhoneFrame width={212} caption="The Tools hub." parallax={-10} screens={[{ name: "tools-home", alt: "The Tools hub.", w: 780, h: 1688 }]} />
+      </div>
+      <div class="sd-scene-phone sd-scene-r">
+        <PhoneFrame width={212} caption="Close the day." parallax={-10} screens={[{ name: "close-day", alt: "Close the day.", w: 780, h: 1688 }]} />
+      </div>
+      <p class="t-cap-i sd-scene-cap">The Coach home, on a desk, with a sentence typed.</p>
+    </div>
+  </section>
+
+  <!-- 11. The loop: a charcoal bleed, the scroll drawn line with the return stroke -->
+  <section class="sd-bleed" data-tone="charcoal" id="loop">
+    <i class="lamp grain" aria-hidden="true" style="--lx:80%;--ly:100%;--la:.1"></i>
+    <div class="wrap">
+      <h2 class="t-l wipe">A situation is neutral until you put a sentence on it. <em>Everything after that is downstream.</em></h2>
+      <div class="sd-loop">
+        <svg class="sd-loop-svg" viewBox="0 0 56 440" width="56" height="440" data-draw="scroll" data-draw-rows="5" data-draw-for="#loop-rows" aria-hidden="true" fill="none" stroke="#c9ab66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path class="draw-line" d="M40 44 V396 C40 410 28 418 18 410 C12 405 12 398 12 390 V132"/>
+          <path class="draw-head" d="M7 138 L12 132 L17 138" />
+        </svg>
+        <ol class="sd-loop-rows loop-rows" id="loop-rows">
+          {loopRows.map(([w, d]) => <li class="loop-row"><span class="t-s">{w}</span><em class="t-s-pull">{d}</em></li>)}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. Tiles with masked screens, the deck with drawn rules, a paper note -->
+  <section class="sd-sec" data-tone="cream" id="tiles">
+    <div class="wrap">
+      <div class="grid sd-tiles">
+        <div class="paper tile rise"><p class="tile-title">RAP when a feeling has you: name it in one word, find it in the body, and let it pass. Five steps.</p><p class="t-cap-i" style="margin-top:14px">RAP, step one of five.</p><div class="tile-media tile-media-ct"><img class="screen" src="/app/rap1.webp" alt="RAP, step one of five." width="600" height="1298" loading="lazy" decoding="async" /></div></div>
+        <div class="paper tile rise" style="--d:.3s"><p class="tile-title">Pause + Redirect when you are about to lose control. The ten-second read when you want to know how you are arriving.</p><p class="t-cap-i" style="margin-top:14px">Pause + Redirect, one breath.</p><div class="tile-media tile-media-ct"><img class="screen" src="/app/pause-breath.webp" alt="Pause + Redirect, one breath." width="780" height="1688" loading="lazy" decoding="async" /></div></div>
+        <div class="paper tile rise" style="--d:.4s"><p class="tile-title">Sixteen tools in all, each named for the moment it is for, with the method's name beside it. Run them without an account; a membership keeps them.</p><p class="t-cap-i" style="margin-top:14px">The ten-second read.</p><div class="tile-media tile-media-tr" style="--screen-w:150%"><img class="screen" src="/app/desk-arriving-quadrant.webp" alt="The ten-second read." width="1600" height="1000" loading="lazy" decoding="async" /></div></div>
+      </div>
+      <div class="grid sd-deck-row">
+        <div class="sd-deck rise">
+          <i class="rule-draw" aria-hidden="true"></i>
+          <p class="t-s-pull" style="color:var(--accent)">Explore courses in thinking, feeling, and leading differently.</p>
+          <i class="rule-draw" aria-hidden="true" style="--d:.15s"></i>
+        </div>
+        <div class="paper sd-note rise" style="--d:.2s">
+          <p class="eyebrow">Also included in Practice</p>
+          <p class="t-body" style="color:var(--fg-2)">Get access to these courses with a paid Practice subscription, alongside your daily coach, live sessions, and tools for the moment.</p>
+          <a href={LINKS.academy} class="link" style="margin-top:16px" data-event="academy_click" data-event-location="academy">Explore Academy <Arrow /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12b. Two phones at one --pw (a 600 x 1298 and a 780 x 1688 capture) and the scene test flow of 1.13.6 -->
+  <section class="sd-sec" data-tone="cream" id="frames">
+    <div class="wrap sd-frames">
+      <PhoneFrame id="frame-600" width={232} screens={[{ name: "home", alt: "The Coach home as a visitor.", w: 600, h: 1298 }]} />
+      <PhoneFrame id="frame-780" width={232} screens={[{ name: "tools-home", alt: "The Tools hub.", w: 780, h: 1688 }]} />
+      <PhoneFrame id="scene-test" width={232} flow='[["start",50,50],["hold",200],["cam",1.2,50,20,400],["tap",50,27],["state",1,300],["cam",1,50,50,400],["end"]]' screens={[{ name: "home", alt: "The Coach home as a visitor.", w: 600, h: 1298 }, { name: "dare", alt: "The home after the Dare is checked, with the star line.", w: 600, h: 1298 }]} />
+    </div>
+  </section>
+
+  <!-- 13. The accordion -->
+  <section class="sd-sec" data-tone="cream" id="levels">
+    <div class="wrap grid">
+      <div class="sd-span5">
+        <h2 class="t-m wipe">Three levels. <em>No card to start.</em></h2>
+      </div>
+      <div class="sd-span6">
+        <p class="eyebrow">Questions</p>
+        <Accordion items={faq} />
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. Yours: a navy bleed with a lit statement -->
+  <section class="sd-bleed" data-tone="navy" id="private">
+    <i class="lamp grain" aria-hidden="true" style="--lx:10%;--ly:0%;--la:.14"></i>
+    <div class="wrap">
+      <p class="eyebrow">Yours</p>
+      <p class="t-state" data-lit><b class="lb">Everything you write in Practice belongs to you.</b> It is kept under your own account, nobody at InnerBoard reads it, and inside InnerBoard OS a leader sees module completion, never your answers. There is nothing to install. Practice runs in your browser, sits on the home screen of iPhone and Android, keeps working when the signal drops, and picks up where you left off.</p>
+    </div>
+  </section>
+
+  <!-- 15. Alternate section, paper cards, the teal bordered card, the price -->
+  <section class="sd-sec sec-alt theme-teal" data-tone="cream" id="modules">
+    <div class="wrap">
+      <p class="eyebrow" style="color:#1e5b57">The certification</p>
+      <div class="sd-cards">
+        <div class="paper sd-card rise"><p class="t-title">Radical Awareness</p><p class="t-body" style="color:var(--fg-2);margin-top:10px">You can't lead what you can't see. Help people notice the thoughts and beliefs running their choices.</p></div>
+        <div class="paper-teal sd-card rise" style="--d:.25s"><p class="eyebrow" style="color:#1e5b57">Bonus</p><p class="t-title">The Entrepreneurial Path</p><p class="t-body" style="color:var(--fg-2);margin-top:10px">Turn the work into a practice: who you serve, your offers, your pricing, and how you talk about what you do.</p></div>
+        <div class="paper-teal paper-white sd-card rise" style="--d:.3s" data-tilt="1.5"><p class="eyebrow" style="color:#1e5b57">Your investment</p><p class="t-price"><span class="cur">$</span>6,997</p><p class="t-body" style="color:var(--fg-2);margin-top:10px">Payment options available</p><div class="sd-btns" style="margin-top:20px"><a href={LINKS.inqEnroll} class="btn btn-teal" data-event="inq_enroll_click" data-event-location="investment">Enroll now <Arrow /></a><a href={LINKS.inqBook} class="btn btn-line-teal" data-event="inq_book_click" data-event-location="investment">Book a conversation</a></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16. A teal bleed with ruled quote columns -->
+  <section class="sd-bleed theme-teal" data-tone="teal" id="possible">
+    <i class="lamp lamp-teal grain" aria-hidden="true" style="--lx:85%;--ly:100%;--ga:.2"></i>
+    <div class="wrap">
+      <p class="eyebrow">What becomes possible</p>
+      <h2 class="t-l wipe">Real shifts. <em>Real lives.</em></h2>
+      <div class="sd-quotes">
+        {quotes.map((q, i) => (
+          <div class="sd-quote rise" style={`--d:${i * 90}ms`}>
+            <p class="t-s-quote quote-hang">"{q}"</p>
+            <p class="eyebrow" style="margin:28px 0 0">Academy student</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 17. An ink bleed with the cream button -->
+  <section class="sd-bleed theme-teal" data-tone="ink" id="filter">
+    <i class="lamp grain" aria-hidden="true" style="--lx:15%;--ly:0%;--la:.1"></i>
+    <div class="wrap">
+      <p class="eyebrow">The filter</p>
+      <h2 class="t-l wipe">There is what you have <em>learned.</em> And what you were <em>never taught.</em></h2>
+      <p class="t-s-quote rise" style="color:var(--fg-2);margin-top:var(--lead-gap)">This is the curriculum.</p>
+      <div class="sd-btns rise" style="margin-top:var(--btn-gap)"><a href={LINKS.live.humanFoundations} class="btn btn-cream" data-event="academy_start_click" data-event-location="filter">Start with Human Foundations <Arrow /></a></div>
+    </div>
+  </section>
+
+  <!-- 18. The final: a forest bleed with the drifting floor -->
+  <section class="sd-final" data-tone="forest" data-run data-warm id="final">
+    <div class="floor" aria-hidden="true">
+      <div class="floor-plane">
+        <ul class="floor-strip">{floorStems.map((s) => <li><img src={`/app/tiles/${s}.webp`} alt="" width="390" height="844" loading="lazy" decoding="async" fetchpriority="low" /></li>)}</ul>
+        <ul class="floor-strip" aria-hidden="true">{floorStems.map((s) => <li><img src={`/app/tiles/${s}.webp`} alt="" width="390" height="844" loading="lazy" decoding="async" fetchpriority="low" /></li>)}</ul>
+      </div>
+      <div class="floor-fade grain"></div>
+    </div>
+    <Geo class="sd-geo-br" color="#f4efe4" opacity={0.06} />
+    <div class="wrap sd-final-copy">
+      <h2 class="t-l wipe" style="margin-inline:auto">Start today, <em>as you are.</em></h2>
+      <p class="t-lead rise" style="color:#cdc6b8;margin:var(--lead-gap) auto 0">Open the app, take the quiz, or bring the Coach the thing that is on your mind. Nothing is asked of you first.</p>
+      <div class="sd-btns rise" style="justify-content:center;margin-top:var(--btn-gap)">
+        <a href={LINKS.practice} class="btn btn-gold" data-passthrough data-event="practice_click" data-event-location="final">Start in Practice <Arrow /></a>
+        <a href={LINKS.quiz} class="btn btn-line" data-passthrough data-event="quiz_click" data-event-location="final">What's Holding You Back?</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style is:global>
+  /* Scratch page layout only; every value here is from part 2 of the spec. */
+  .sd-hero { min-height: max(640px, min(100svh, 980px)); padding-top: var(--nav-h); overflow: visible; }
+  .sd-hero > .lamp { z-index: 0; }
+  .sd-hero-wrap { position: relative; z-index: 2; }
+  .sd-hero-copy { grid-column: 1 / span 7; padding-top: 90px; }
+  .sd-h1 { max-width: 7.8em; margin-top: 0; }
+  .sd-lead { margin-top: 28px; }
+  .sd-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+  .sd-plate { --plate-l: calc(var(--edge) + 8 * (var(--colw) + var(--gap))); position: absolute; top: 120px; bottom: 0; left: var(--plate-l); right: 0; border-radius: var(--r-lg) 0 0 var(--r-lg); z-index: 1; }
+  .sd-hero-phone { --plate-l: calc(var(--edge) + 8 * (var(--colw) + var(--gap))); position: absolute; top: 300px; left: calc(var(--plate-l) + (100vw - var(--plate-l)) / 2 - 160px); z-index: 3; }
+  .sd-recognize { padding-top: calc(var(--sec) + 72px); padding-bottom: var(--sec); }
+  .sd-sec { padding-block: var(--sec); }
+  .sd-sec-l { padding-block: var(--sec-l); }
+  .sd-sec-b { padding-bottom: var(--sec); }
+  .sd-bleed { padding-block: var(--sec-l); overflow: hidden; }
+  .sd-center { text-align: center; }
+  .sd-mission { max-width: 792px; margin-inline: auto; }
+  .sd-mission .eyebrow { text-align: center; }
+  .sd-lit p + p { margin-top: 1em; }
+  .sd-closing-line { font-weight: 500; }
+  .sd-flips { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); margin-top: var(--head-gap); }
+  .sd-flips > li:nth-child(1) { grid-column: 1 / span 5; }
+  .sd-flips > li:nth-child(2) { grid-column: 7 / span 5; margin-top: 96px; }
+  .sd-flips > li:nth-child(3) { grid-column: 2 / span 5; margin-top: -24px; }
+  .sd-flips > li:nth-child(4) { grid-column: 8 / span 5; margin-top: 72px; }
+  .sd-panel { padding: 88px 80px 72px; }
+  .sd-panel-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 23px; }
+  .sd-panel-left { grid-column: 1 / span 6; }
+  .sd-panel-phone { margin-top: 48px; margin-left: calc((100% - 11 * 23px) / 12 + 23px); }
+  .sd-ladder { grid-column: 8 / span 5; align-self: center; }
+  .sd-ladder > li { grid-template-columns: 44px 1fr; }
+  .sd-ladder .ring { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--line-gold); color: #c9ab66; }
+  .sd-panel-rule { margin-block: 48px; }
+  .sd-panel-foot { display: grid; grid-template-columns: 7fr 5fr; gap: var(--gap); align-items: end; }
+  .sd-panel-foot .sd-btns { justify-content: flex-end; margin-top: 0; }
+  .sd-quiz-still { grid-column: 1 / span 6; }
+  .sd-quiz-copy { grid-column: 8 / span 5; }
+  .sd-mat { height: 640px; }
+  .sd-quiz-phone { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 2; }
+  .sd-tcard { position: absolute; left: calc(50% - 142px - 110px); bottom: 48px; z-index: 1; transform: rotate(-5deg); box-shadow: var(--sh-paper), 0 18px 30px -18px rgba(31,29,26,.35); }
+  .sd-quiz-2 { top: 179.4em; clip-path: inset(6.2% 0 0 0); mask-image: linear-gradient(to bottom, transparent 6.2%, #000 calc(6.2% + 2em)); -webkit-mask-image: linear-gradient(to bottom, transparent 6.2%, #000 calc(6.2% + 2em)); }
+  .sd-stack p + p { margin-top: 1em; }
+  .sd-benefits { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 18px; margin-top: 40px; }
+  .sd-benefits b { display: block; }
+  .sd-closing { font-family: var(--font-display); font-style: italic; font-size: 16px; color: var(--fg-2); }
+  .sd-span8 { grid-column: 1 / span 8; }
+  .sd-span5 { grid-column: 1 / span 5; }
+  .sd-span6 { grid-column: 7 / span 6; }
+  .sd-span-btns { grid-column: 10 / span 3; display: flex; flex-direction: column; gap: 12px; align-self: end; align-items: flex-start; }
+  .sd-geo-tr { right: -320px; top: -200px; }
+  .sd-geo-br { right: -260px; bottom: -420px; }
+  .sd-day { margin-top: var(--head-gap); }
+  .sd-band .rail-track { --rail-w: 250px; --rail-gap: 32px; background: #ebe4d5; padding-block: 64px 56px; box-shadow: inset 0 1px 0 var(--line), inset 0 -1px 0 var(--line); margin-top: var(--head-gap); }
+  .sd-band .rail-cap { margin-top: 20px; }
+  .sd-then { display: flex; align-items: center; }
+  .sd-then-card { width: 250px; min-height: 300px; padding: 28px; display: flex; flex-direction: column; }
+  .sd-inside { margin-top: var(--head-gap); }
+  .sd-inside-win { grid-column: 1 / span 8; }
+  .sd-inside-ladder { grid-column: 9 / span 4; }
+  .sd-inside-ladder > li { grid-template-columns: 1fr; }
+  .sd-inside-ladder .ladder-name { font-size: var(--fs-s); }
+  .sd-scene { position: relative; padding-bottom: 80px; }
+  .sd-scene-phone { position: absolute; bottom: 40px; }
+  .sd-scene-l { left: 24px; }
+  .sd-scene-r { right: 24px; }
+  .sd-scene-cap { text-align: center; margin: 14px auto 0; }
+  .sd-loop { display: grid; grid-template-columns: 56px 1fr; column-gap: 0; margin-top: var(--head-gap); max-width: 690px; }
+  .sd-loop-rows { list-style: none; margin: 0; padding: 0; }
+  .sd-loop-rows li { display: grid; grid-template-columns: 200px 1fr; align-items: baseline; min-height: 88px; padding-block: 26px; border-top: 1px solid var(--line); box-sizing: border-box; }
+  .sd-loop-rows li:last-child { border-bottom: 1px solid var(--line); }
+  .sd-loop-rows li .t-s-pull { color: var(--fg-2); }
+  .sd-frames { display: flex; gap: 48px; align-items: flex-start; flex-wrap: wrap; }
+  .sd-tiles { row-gap: 24px; }
+  .sd-tiles > .tile { grid-column: span 4; min-height: 360px; }
+  .sd-deck-row { margin-top: 64px; row-gap: 24px; }
+  .sd-deck { grid-column: 1 / span 5; padding-block: 20px; display: grid; gap: 20px; }
+  .sd-deck .rule-draw { display: block; height: 1px; background: var(--line); }
+  .sd-note { grid-column: 7 / span 4; padding: 28px; }
+  .sd-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .sd-card { padding: 32px; min-height: 220px; }
+  .sd-quotes { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: var(--gap); margin-top: var(--head-gap); }
+  .sd-quote { border-top: 1px solid var(--line); padding-top: 28px; }
+  .sd-final { position: relative; height: max(640px, 92svh); overflow: clip; isolation: isolate; display: flex; align-items: flex-start; }
+  .sd-final-copy { position: relative; z-index: 2; text-align: center; max-width: 792px; margin: 14vh auto 0; }
+  .sd-final-copy::before { content: ""; position: absolute; inset: -80px -120px; background: radial-gradient(50% 60% at 50% 40%, rgba(31,61,46,.85), transparent 75%); z-index: -1; }
+  .sd-final .floor { z-index: 0; }
+  @media (max-width: 1068px) {
+    .sd-panel { padding: 56px 40px; }
+    .sd-panel-left, .sd-ladder { grid-column: 1 / -1; }
+    .sd-quiz-still, .sd-quiz-copy, .sd-span8, .sd-span5, .sd-span6, .sd-inside-win, .sd-inside-ladder { grid-column: 1 / -1; }
+    .sd-span-btns { grid-column: 1 / -1; flex-direction: row; margin-top: 32px; }
+    .sd-flips > li { grid-column: span 6 !important; margin-top: 0 !important; }
+    .sd-tiles > .tile { grid-column: span 6; }
+  }
+  @media (max-width: 734px) {
+    .sd-hero { min-height: 0; padding-bottom: 56px; overflow-x: clip; position: relative; }
+    .sd-hero-copy { grid-column: 1 / -1; padding-top: 40px; }
+    .sd-btns { flex-direction: column; }
+    .sd-btns .btn { width: 100%; }
+    .sd-plate { position: relative; top: auto; left: auto; right: auto; bottom: auto; margin: 24px calc(-1 * var(--gutter)) 0; height: 496px; border-radius: 0; }
+    .sd-hero-phone { position: absolute; top: auto; left: 50%; transform: translateX(-50%); bottom: 0; }
+    .sd-panel-phone { margin-left: 0; display: flex; justify-content: center; margin-block: 40px; }
+    .sd-panel-phone .phone { --pw: 220px !important; }
+    .sd-span-btns { flex-direction: column; }
+    .sd-span-btns .btn { width: 100%; }
+    .sd-hero-phone .phone { --pw: 234px !important; }
+    .sd-flips > li { grid-column: 1 / -1 !important; }
+    .sd-mat { height: 520px; margin-inline: calc(-1 * var(--gutter)); border-radius: 0; }
+    .sd-quiz-phone .phone, .sd-quiz-phone { --pw: 220px !important; }
+    .sd-tcard { left: calc(50% - 110px - 60px); }
+    .sd-benefits { grid-template-columns: 1fr; }
+    .sd-panel-foot, .sd-cards, .sd-quotes { grid-template-columns: 1fr; }
+    .sd-tiles > .tile, .sd-deck, .sd-note { grid-column: 1 / -1; }
+    .sd-loop-rows li { grid-template-columns: 1fr; min-height: 0; padding-block: 18px; }
+    .sd-scene-phone { position: static; display: inline-block; margin: 24px 8px 0; }
+    .sd-scene-phone .phone { --pw: 150px !important; }
+    .sd-scene { padding-bottom: 0; text-align: center; }
+    .sd-band .rail-track { --rail-w: 232px; --rail-gap: 20px; }
+    .sd-band .rail-slide .phone { --pw: 212px !important; }
+  }
+</style>

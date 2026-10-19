@@ -1,0 +1,64 @@
+---
+/**
+ * A browser window for desktop captures, drawn in em of its width (1.6).
+ * `ww` is the cap; the script writes the rendered width back to --ww on
+ * measure so the chrome stays exact. `x2` on a screen serves the 2880 px file
+ * through srcset; its `sizes` is 1.5 times the cap so the 2880 candidate wins
+ * at 1x desktops too, and 100vw on phones so the 1600 file wins there at any
+ * pixel ratio. The scene engine moves `.cur`, the drawn cursor.
+ */
+interface Screen { name: string; alt: string; x2?: boolean }
+interface Props {
+  screens: Screen[];
+  ww: number;
+  eager?: boolean;
+  flow?: string;
+  loop?: number;
+  rest?: number;
+  chrome?: "light" | "dark";
+  class?: string;
+  id?: string;
+  parallax?: number;
+  tilt?: number;
+  style?: string;
+}
+const { screens, ww, eager = false, flow, loop, rest = 0, chrome = "light", class: className = "", id, parallax, tilt, style = "" } = Astro.props;
+---
+<figure
+  class={`win ${chrome === "dark" ? "win-dark" : ""} ${className}`.trim()}
+  id={id}
+  style={`--ww:${ww}px;${style}`}
+  data-ww={ww}
+  data-frames
+  data-flow={flow}
+  data-flow-loop={loop}
+  data-rest={rest || undefined}
+  data-parallax={parallax}
+  data-tilt={tilt}
+>
+  <div class="win-bar" aria-hidden="true">
+    <span class="win-dots"><i></i><i></i><i></i></span>
+    <span class="win-url"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><rect x="2.5" y="5.5" width="7" height="5" rx="1.2"/><path d="M4 5.5V4a2 2 0 0 1 4 0v1.5"/></svg>practiceinnerboard.com</span>
+    <span></span>
+  </div>
+  <div class="win-screen">
+    <span class="slot" aria-hidden="true"></span>
+    <div class="cam">
+      {screens.map((s, i) => (
+        <img
+          class={`ds${i === 0 ? " on" : ""}`}
+          src={`/app/${s.name}.webp`}
+          srcset={s.x2 ? `/app/${s.name}.webp 1600w, /app/${s.name}-2x.webp 2880w` : undefined}
+          sizes={s.x2 ? `(max-width: 734px) 100vw, ${Math.round(ww * 1.5)}px` : undefined}
+          alt={s.alt}
+          width="1600"
+          height="1000"
+          decoding="async"
+          loading={eager && i === 0 ? "eager" : "lazy"}
+          fetchpriority={eager && i === 0 ? "high" : undefined}
+        />
+      ))}
+    </div>
+    <span class="cur" aria-hidden="true"><svg viewBox="0 0 22 28" aria-hidden="true"><path d="M4 2.5v20.2l5.1-4.6 3.3 7.6 3.6-1.6-3.3-7.4h7Z" fill="#fff" stroke="#111" stroke-width="1.4" stroke-linejoin="round"/></svg></span>
+  </div>
+</figure>

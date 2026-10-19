@@ -1,63 +1,164 @@
-/* ── Motion and surface details shared by the InnerBoard sites ───────────── */
+/* ── Motion (BUILD_SPEC 1.7): every mechanic's CSS half ──────────────────
+ * Loaded after global.css and unlayered, so these rules win over the
+ * component layer. Everything that hides is prefixed .js so that without
+ * the script nothing is hidden; reduced motion shows end states.
+ */
 
-/* Headlines arrive a word at a time. */
-.words-ready .w { display: inline-block; opacity: 0; transform: translateY(0.4em); transform-origin: left bottom;
-  transition: opacity 520ms var(--ease-out), transform 620ms var(--ease-out); transition-delay: calc(var(--i, 0) * 30ms); }
-.words-ready.is-in .w { opacity: 1; transform: none; }
-.no-js .words-ready .w { opacity: 1; transform: none; }
+/* 1.7.2 Reveals */
+/* The wipe is a mask, not a clip-path: Chromium counts clip-path in
+ * IntersectionObserver geometry, so a clipped heading would never be seen. */
+.js .wipe { -webkit-mask-image: linear-gradient(to right, #000 0 49.5%, transparent 50.5%); mask-image: linear-gradient(to right, #000 0 49.5%, transparent 50.5%); -webkit-mask-size: 200% 100%; mask-size: 200% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: 100% 0; mask-position: 100% 0; padding-block: .2em; margin-block: -.2em; transition: -webkit-mask-position 1.15s var(--slow), mask-position 1.15s var(--slow); transition-delay: calc(var(--i, 0) * 110ms + var(--d, 0s)); }
+.js .wipe.in { -webkit-mask-position: 0% 0; mask-position: 0% 0; }
+.js .rise, .js .reveal { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--slow), transform .9s var(--slow); transition-delay: var(--d, .2s); }
+.js .rise.in, .js .reveal.in, .js .reveal.is-in { opacity: 1; transform: none; }
+.js .rise-obj { opacity: 0; translate: 0 28px; transition: opacity 1.2s var(--slow), translate 1.2s var(--slow); transition-delay: var(--d, .3s); }
+.js .rise-obj.in { opacity: 1; translate: 0 0; }
+.js .slide-l.rise, .js .slide-l.reveal { transform: translate(-40px, 16px); }
+.js .slide-r.rise, .js .slide-r.reveal { transform: translate(40px, 16px); }
+.js .slide-l.rise.in, .js .slide-r.rise.in, .js .slide-l.reveal.is-in, .js .slide-r.reveal.is-in { transform: none; }
+.js .seq > * { transition-delay: calc(var(--i, 0) * 90ms + var(--d, 0s)); }
+.js .rule-draw { transform: scaleX(0); transform-origin: left; transition: transform .9s var(--slow); transition-delay: var(--d, 0s); }
+.js .rule-draw.in, .js .in .rule-draw, .js .in > .rule-draw { transform: scaleX(1); }
+.js .rule-draw-v { transform: scaleY(0); transform-origin: top; transition: transform .9s var(--slow); transition-delay: var(--d, 0s); }
+.js .rule-draw-v.in, .js .in .rule-draw-v { transform: scaleY(1); }
+.js .tcard-in { transform: rotate(-9deg) translate(12px, 24px); opacity: 0; transition: transform 1.2s var(--slow), opacity 1.2s var(--slow); transition-delay: var(--d, .46s); }
+.js .tcard-in.in { transform: rotate(-5deg); opacity: 1; }
+.js .phone-floor { opacity: 0; transition: opacity 1.2s var(--slow) .3s, transform .4s var(--ease), background-color .4s var(--ease); }
+.js .in .phone-floor, .js .phone.in .phone-floor, .js .floor-on .phone-floor { opacity: 1; }
 
-/* The nav link for the section on screen. */
-[data-header] nav a { position: relative; }
-[data-header] nav a.is-active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 1px; background: currentColor; opacity: 0.7; }
+/* 1.7.3 Line rise */
+.hl { display: block; }
+.js .lines-ready .l { display: block; overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
+.js .lines-ready .w { display: inline-block; transform: translateY(110%); opacity: 0; transition: transform 1.1s var(--slow), opacity 1.1s var(--slow); transition-delay: calc(var(--l, 0) * 90ms + var(--d, 0s)); }
+.js .lines-ready.in .w { transform: none; opacity: 1; }
 
-/* Cards: a line on cream, a lift only over dark. */
-.card, .card-dark, .card-navy { transition: border-color 200ms var(--ease-out); }
-@media (hover: hover) and (pointer: fine) {
-  a.card:hover, .card.lift:hover { border-color: var(--color-line-strong); }
-  li.card-dark:hover, li.card-navy:hover, .card-navy.lift:hover { border-color: rgba(244,239,228,0.3); }
-}
+/* 1.7.4 Lit statement */
+/* Prefixed .js so a server rendered span.lw (a "lines" statement) reads in
+ * full colour without the script. An em unit lights to the accent. */
+.js .lw { color: var(--lit-off); transition: color .35s ease; }
+.js .lw.on { color: var(--fg-2); }
+.js .lw.lb.on { color: var(--fg); }
+.js [data-lit="lines"] > .lw, .js [data-lit="lines"] > li { color: var(--lit-off); transition: color .35s ease; }
+.js [data-lit="lines"] > .lw.on, .js [data-lit="lines"] > li.on { color: var(--fg); }
+.js em.lw.on, .js [data-lit="lines"] > em.lw.on { color: var(--accent); }
 
-/* The tilting hero visual. */
-[data-tilt] { transition: transform 500ms var(--ease-out); transform-style: preserve-3d; }
-.tilt-on { will-change: transform; }
-[data-tilt]:hover { transition-duration: 120ms; }
+/* 1.7.5 Page tone: a dark bleed section paints nothing itself; its lamp and
+ * grain live on a child that fades in with the theme. */
+[data-tone] { position: relative; }
+[data-tone="navy"] > .lamp, [data-tone="forest"] > .lamp, [data-tone="charcoal"] > .lamp, [data-tone="ink"] > .lamp, [data-tone="teal"] > .lamp { opacity: 0; transition: opacity .5s var(--ease); }
+html[data-theme="navy"] [data-tone="navy"] > .lamp,
+html[data-theme="forest"] [data-tone="forest"] > .lamp,
+html[data-theme="charcoal"] [data-tone="charcoal"] > .lamp,
+html[data-theme="ink"] [data-tone="ink"] > .lamp,
+html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
+[data-tone] > .lamp { z-index: 0; }
+[data-tone] > .wrap, [data-tone] > .wrap-wide { position: relative; z-index: 1; }
+.no-js [data-tone="navy"] { background: #0d1a2d; color: #f4efe4; --fg: #f4efe4; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(244,239,228,.14); --accent: #c9ab66; --btn-line: rgba(244,239,228,.32); --lit-off: rgba(244,239,228,.25); --focus: #c9ab66; }
+.no-js [data-tone="forest"] { background: #1f3d2e; color: #f4efe4; --fg: #f4efe4; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(201,171,102,.35); --accent: #c9ab66; --btn-line: rgba(244,239,228,.32); --lit-off: rgba(244,239,228,.25); --focus: #c9ab66; }
+.no-js [data-tone="charcoal"] { background: #26231f; color: #f4efe4; --fg: #f4efe4; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(244,239,228,.12); --accent: #c9ab66; --btn-line: rgba(244,239,228,.32); --lit-off: rgba(244,239,228,.25); --focus: #c9ab66; }
+.no-js [data-tone="ink"] { background: #1f1d1a; color: #f7f4ee; --fg: #f7f4ee; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(247,244,238,.12); --accent: #c9ab66; --btn-line: rgba(247,244,238,.32); --lit-off: rgba(247,244,238,.25); --focus: #c9ab66; }
+.no-js [data-tone="teal"] { background: #1e5b57; color: #fff; --fg: #fff; --fg-2: rgba(255,255,255,.78); --fg-3: rgba(255,255,255,.6); --line: rgba(255,255,255,.18); --accent: #fff; --btn-line: rgba(255,255,255,.4); --lit-off: rgba(255,255,255,.35); --focus: #fff; }
+.no-js [data-tone] > .lamp { opacity: 1; }
 
-/* The product story: screens crossfade, the current step brightens. */
-[data-story] .screens { position: relative; }
-[data-story] [data-screen] { position: absolute; inset: 0; opacity: 0; transform: translateY(10px); transition: opacity 480ms var(--ease-out), transform 560ms var(--ease-out); pointer-events: none; }
-[data-story] [data-screen]:first-child { opacity: 1; transform: none; }
-[data-story] [data-screen].is-active { opacity: 1; transform: none; }
-[data-story].js-ready [data-screen]:first-child:not(.is-active) { opacity: 0; }
-[data-story] [data-step] { opacity: 0.55; transition: opacity 400ms var(--ease-out); }
-[data-story] [data-step].is-current { opacity: 1; }
-.no-js [data-story] [data-step] { opacity: 1; }
+/* 1.7.7 Scene engine */
+.reset img.ds, .reset .win-screen .cur, .cam.cam-reset { transition: none !important; }
+.playing .cam { will-change: transform; }
+.no-js .win-screen .cur, .no-js .tap { display: none; }
 
-/* A paragraph that lights up as it is read. */
-.sw .w { display: inline-block; opacity: 0.45; transition: opacity 240ms var(--ease-out); }
-.sw .w.lit { opacity: 1; }
-.sw-done .w, .no-js .sw .w { opacity: 1; }
+/* 1.7.8 Loop phone: the current row's ring fills gold and its name turns gold. */
+[data-loop-step] .ring { transition: background-color 350ms var(--ease), border-color 350ms var(--ease); }
+[data-loop-step].is-on .ring { background: rgba(201,171,102,.12); }
+[data-loop-step] .ladder-name { transition: color 350ms var(--ease); }
+[data-loop-step].is-on .ladder-name { color: #c9ab66; }
+.no-js [data-loop-step="0"] .ring { background: rgba(201,171,102,.12); }
+.no-js [data-loop-step="0"] .ladder-name { color: #c9ab66; }
 
-/* A horizontal rail, with its edge fading so the overflow reads. */
-.rail { scrollbar-width: none; -webkit-overflow-scrolling: touch; }
-.rail::-webkit-scrollbar { display: none; }
-.rail-mask { mask-image: linear-gradient(to right, black calc(100% - 64px), transparent); -webkit-mask-image: linear-gradient(to right, black calc(100% - 64px), transparent); }
+/* 1.7.9 Day stage */
+.js .day:not(.static) .day-step.is-dim { opacity: .42; }
+.js .day:not(.static) .day-step.is-current { opacity: 1; }
 
-/* A browser window for the desktop app: a line and a shadow, nothing drawn. */
-.browser { border: 1px solid var(--color-line-strong); border-radius: 12px; overflow: hidden; background: var(--color-app-canvas); box-shadow: 0 30px 60px -40px rgba(31,29,26,0.45); }
-.browser-screen { background: var(--color-app-canvas); }
+/* 1.7.10 Rail */
+.js .rail-slide.off { opacity: .55; }
+.js .rail-slide.off .rail-cap { opacity: 0; }
+.js .rail-slide.on { opacity: 1; }
+.js .rail-slide.on .rail-cap { opacity: 1; }
+.no-js .rail-nav { display: none; }
 
-/* Accordions open smoothly where the browser can animate height. */
-.acc::details-content { block-size: 0; overflow: hidden; transition: block-size 320ms var(--ease-out), content-visibility 320ms allow-discrete; }
-.acc[open]::details-content { block-size: auto; }
-@supports (interpolate-size: allow-keywords) { :root { interpolate-size: allow-keywords; } }
+/* 1.7.11 Scroll screen */
+[data-scrollscreen] .ds-head { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; z-index: 3; clip-path: inset(0 0 93.8% 0); }
+[data-scrollscreen] .scroll-body { position: absolute; left: 0; top: 0; width: 100em; transform: translate3d(0, calc(-1 * var(--p, 0) * var(--range, 0) * 1em), 0); will-change: transform; }
+[data-scrollscreen] .scroll-body img { position: absolute; left: 0; width: 100em; height: 216.4em; object-fit: cover; object-position: top; max-width: none; }
 
+/* 1.7.12 Parallax: --hy is written on html by the loop, --py from the attribute. */
+.js [data-parallax] { transform: translate3d(0, calc(var(--hy, 0) * var(--py, 0) * 1px), 0); }
+
+/* 1.7.14 Drawn lines */
+.draw-line { transition: stroke-dashoffset var(--dur, 1400ms) var(--slow); transition-delay: var(--d, 0s); }
+[data-draw="scroll"] .draw-line { transition: none; }
+.draw-pop { transform-origin: center; transform: scale(0); transition: transform .5s var(--pop); transition-delay: var(--d, 0s); transform-box: fill-box; }
+.in .draw-pop, .draw-pop.in { transform: scale(1); }
+.draw-head { transform-box: fill-box; transform-origin: center; }
+.js [data-draw="scroll"] .draw-head { opacity: 0; transition: opacity .3s var(--ease); }
+.js [data-draw="scroll"].done .draw-head { opacity: 1; animation: pulse 600ms var(--ease); }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.25); } 100% { transform: scale(1); } }
+.no-js .draw-line { stroke-dashoffset: 0 !important; }
+.no-js .draw-pop { transform: none; }
+.loop-row { transition: color .4s var(--ease); }
+.js [data-draw="scroll"] ~ ol > li:not(.on), .js .loop-rows > li:not(.on) { color: rgba(244,239,228,.4); }
+
+/* 1.7.15 Run gates: see .run .floor-strip in global.css */
+
+/* Flip cards without the script: both faces in flow, the back under the
+ * front, so nothing is hidden (the script sets aria-hidden on the hidden face). */
+.no-js .flip-face { grid-area: auto; }
+.no-js .flip-back { transform: none; backface-visibility: visible; -webkit-backface-visibility: visible; margin-top: 12px; }
+
+/* 1.7.17 Tilt: variables, so a parallax transform composes with it. */
+.js [data-tilt] { transition: transform 500ms var(--ease); transform-style: preserve-3d; }
+.js [data-tilt].tilt-on { transform: perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
+.js [data-tilt].tilt-on:hover { transition-duration: 120ms; }
+.js [data-tilt][data-parallax].tilt-on { transform: translate3d(0, calc(var(--hy, 0) * var(--py, 0) * 1px), 0) perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
+
+/* Legacy attribute aliases kept alive: data-words (line rise) and
+ * data-scrollwords (lit) are handled by the script; .words-ready and .sw
+ * from the first build are no longer emitted. */
+
+/* ── Reduced motion: nothing moves, nothing is hidden, stages are static ── */
 @media (prefers-reduced-motion: reduce) {
-  .words-ready .w, [data-story] [data-step] { opacity: 1; transform: none; transition: none; }
-  .sw .w { opacity: 1; }
-  [data-tilt] { transition: none; transform: none !important; }
-  .acc::details-content { transition: none; }
+  .js .wipe, .js .rise, .js .reveal, .js .rise-obj, .js .seq > *, .js .rule-draw, .js .rule-draw-v, .js .tcard-in, .js .phone-floor, .js .lines-ready .w { opacity: 1; transform: none; translate: none; clip-path: none; -webkit-mask-image: none; mask-image: none; transition: none; }
+  .js [data-draw="scroll"] .draw-head { opacity: 1; }
+  .js .tcard-in { transform: rotate(-5deg); }
+  .js .lw, .js .lw.lb, .js [data-lit="lines"] > .lw, .js [data-lit="lines"] > li { color: var(--fg-2); }
+  .js .lw.lb, .js [data-lit="lines"] > .lw, .js [data-lit="lines"] > li { color: var(--fg); }
+  .js em.lw, .js [data-lit="lines"] > em.lw { color: var(--accent); }
+  .win-screen .cur, .tap { display: none; }
+  .cam { transform: none !important; }
+  .js .rail-slide.off { opacity: 1; }
+  .js .rail-slide.off .rail-cap { opacity: 1; }
+  .js .day:not(.static) .day-step.is-dim { opacity: 1; }
+  .draw-line { stroke-dashoffset: 0 !important; transition: none; }
+  .draw-pop { transform: none; transition: none; }
+  .js .loop-rows > li:not(.on), .js [data-draw="scroll"] ~ ol > li:not(.on) { color: inherit; }
+  .js [data-parallax] { transform: none; }
+  .js [data-tilt].tilt-on, .js [data-tilt][data-parallax].tilt-on { transform: none; transition: none; }
+  [data-scrollscreen] .scroll-body { transform: none; }
+  .floor-strip, .run .floor-strip { animation: none; }
+  .flip-inner { transition: none; }
+  .flip[aria-pressed="true"] .flip-inner { transform: none; }
+  .flip[aria-pressed="true"] .flip-front { visibility: hidden; }
+  .flip[aria-pressed="true"] .flip-back { transform: none; }
+  .flip:not([aria-pressed="true"]) .flip-back { visibility: hidden; }
+  .flip.flipping, .flip.flipping i.sheen, .flip.flipping .flip-front { animation: none; }
+  .flip i.sheen { display: none; }
+  .lamp-cream { animation: none; }
+  .site-header { transition: transform 450ms var(--sheet) !important; }
+  .menu-link { transition: none; }
 }
 
+/* ── High contrast: lit words at full colour, dimmed things at opacity 1 ── */
 @media (prefers-contrast: more) {
-  .sw .w, [data-story] [data-step], .words-ready .w { opacity: 1 !important; transform: none !important; }
+  .lw, .lw.on, [data-lit="lines"] > .lw, [data-lit="lines"] > li { color: var(--fg) !important; }
+  .js .rail-slide.off, .js .day:not(.static) .day-step.is-dim { opacity: 1 !important; }
+  .js .rail-slide.off .rail-cap { opacity: 1 !important; }
+  .js .loop-rows > li:not(.on), .js [data-draw="scroll"] ~ ol > li:not(.on) { color: inherit !important; }
 }

@@ -1,0 +1,34 @@
+---
+/**
+ * A native scroll snap rail with the engine of 1.7.10: arrows, growing bar
+ * tabs, keyboard, drag with momentum. The slides go in the default slot as
+ * li.rail-slide; the component renders the ol.rail-track with its carousel
+ * roles. `labels` renders the tabs (slot "tabs" replaces them); slot "arrows"
+ * replaces the default arrow pair. Set --rail-w and --rail-gap on the track
+ * from the page's CSS.
+ */
+interface Props { by?: "item" | "page"; labels?: string[]; ariaLabel: string; class?: string; trackClass?: string; id?: string }
+const { by = "item", labels = [], ariaLabel, class: className = "", trackClass = "", id } = Astro.props;
+---
+<div class={`rail ${className}`.trim()} data-rail data-by={by} id={id}>
+  <ol class={`rail-track ${trackClass}`.trim()} role="region" aria-roledescription="carousel" aria-label={ariaLabel} tabindex="0">
+    <slot />
+  </ol>
+  <div class="rail-nav wrap">
+    <slot name="tabs">
+      {labels.length > 0 && (
+        <div class="rail-tabs" role="tablist" aria-label={ariaLabel}>
+          {labels.map((l, i) => (
+            <button type="button" class="rail-tab" role="tab" aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1}><span class="bar"></span><span class="t">{l}</span></button>
+          ))}
+        </div>
+      )}
+    </slot>
+    <slot name="arrows">
+      <div class="rail-arrows">
+        <button type="button" class="rail-prev" aria-label="Previous" disabled><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>
+        <button type="button" class="rail-next" aria-label="Next"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button>
+      </div>
+    </slot>
+  </div>
+</div>
