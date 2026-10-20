@@ -35,7 +35,7 @@ const clamp01 = (t: number) => Math.min(1, Math.max(0, t));
 const sine = (t: number) => 0.5 - 0.5 * Math.cos(Math.PI * clamp01(t));
 const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 const qsa = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => Array.from(root.querySelectorAll<T>(sel));
-const DARK = new Set(["navy", "forest", "charcoal", "ink", "teal"]);
+const DARK = new Set(["navy", "practice", "charcoal", "ink", "teal"]);
 
 /** One event, sent to whichever analytics the page carries. Harmless with none. */
 export function track(name: string, props: Record<string, string> = {}) {

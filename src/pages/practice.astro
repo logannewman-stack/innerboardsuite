@@ -426,8 +426,8 @@ const faq = [
     </div>
   </section>
 
-  <!-- Final: a forest bleed, the floor that drifts with the scroll (S11) -->
-  <section class="pr-final" data-tone="forest" data-warm>
+  <!-- Final: a Practice navy bleed, the floor that drifts with the scroll (S11) -->
+  <section class="pr-final" data-tone="practice" data-warm>
     <PracticeFloor />
     <Geo class="pr-geo" color="#f4efe4" opacity={0.06} />
     <div class="wrap pr-final-wrap">
@@ -614,26 +614,26 @@ const faq = [
 
   /* 2.2.9 Final */
   .pr-final { position: relative; height: max(640px, 92svh); overflow: clip; isolation: isolate; display: flex; align-items: flex-start; }
-  /* The floor and the glow fade in with the forest tone, so the page never hard cuts at the section's top edge. */
+  /* The floor and the glow fade in with the Practice navy tone, so the page never hard cuts at the section's top edge. */
   .pr-final .floor { z-index: 0; opacity: 0; transition: opacity .5s var(--ease); }
-  html[data-theme="forest"] .pr-final .floor, .no-js .pr-final .floor { opacity: 1; }
-  /* The floor's grain starts under the section's top edge, so it never draws a line across the forest page there. */
+  html[data-theme="practice"] .pr-final .floor, .no-js .pr-final .floor { opacity: 1; }
+  /* The floor's grain starts under the section's top edge, so it never draws a line across the Practice navy page there. */
   .pr-final .floor-fade.grain::after { -webkit-mask-image: linear-gradient(to bottom, transparent, #000 200px); mask-image: linear-gradient(to bottom, transparent, #000 200px); }
   .pr-geo { right: -260px; bottom: -420px; z-index: 0; }
   .pr-final-wrap { position: relative; z-index: 2; margin-top: 14vh; }
   .pr-final-copy { grid-column: 3 / span 8; position: relative; text-align: center; }
-  .pr-final-copy::before { content: ""; position: absolute; inset: -80px -120px; background: radial-gradient(50% 60% at 50% 40%, rgba(31,61,46,.85), transparent 75%); z-index: -1; pointer-events: none; opacity: 0; transition: opacity .5s var(--ease); }
-  html[data-theme="forest"] .pr-final-copy::before, .no-js .pr-final-copy::before { opacity: 1; }
+  .pr-final-copy::before { content: ""; position: absolute; inset: -80px -120px; background: radial-gradient(50% 60% at 50% 40%, rgba(13,48,84,.85), transparent 75%); z-index: -1; pointer-events: none; opacity: 0; transition: opacity .5s var(--ease); }
+  html[data-theme="practice"] .pr-final-copy::before, .no-js .pr-final-copy::before { opacity: 1; }
   .pr-final-h2 { margin-inline: auto; }
   .pr-final-lead { color: var(--fg-2); margin: var(--lead-gap) auto 0; }
   /* The tone floor of this closing bleed starts under the copy (at 58%, which is below the fold for as long
-   * as the page is still cream), so the copy is never read in the cream ink on a forest ground, and the
-   * section's lower part is forest whatever the theme. */
+   * as the page is still cream), so the copy is never read in the cream ink on a Practice navy ground, and the
+   * section's lower part is Practice navy whatever the theme. */
   main .pr-final[data-tone] { background-image: linear-gradient(to bottom, transparent 0, transparent 58%, var(--tone-floor, transparent) calc(58% + 120px)); }
   .pr-final-btns { justify-content: center; }
-  /* The outline button stands on a solid forest ground, so no capture of the floor runs through its label (audit 2). */
-  html[data-theme="forest"] .pr-final .btn-line, .no-js .pr-final .btn-line { background-color: rgba(31,61,46,.92); }
-  @media (hover: hover) and (pointer: fine) { html[data-theme="forest"] .pr-final .btn-line:hover { background-color: #2b4a3b; } }
+  /* The outline button stands on a solid Practice navy ground, so no capture of the floor runs through its label (audit 2). */
+  html[data-theme="practice"] .pr-final .btn-line, .no-js .pr-final .btn-line { background-color: rgba(13,48,84,.92); }
+  @media (hover: hover) and (pointer: fine) { html[data-theme="practice"] .pr-final .btn-line:hover { background-color: #174270; } }
 
   @media (max-width: 1068px) {
     .pr-hero-copy { grid-column: 1 / -1; padding-top: 64px; }
@@ -699,7 +699,7 @@ const faq = [
     .pr-final-wrap { margin-top: 10vh; }
     .pr-final-copy { grid-column: 1 / -1; }
     /* Audit 2: the glow reaches under the buttons, and the floor starts under them, so no capture runs behind a label. */
-    .pr-final-copy::before { inset: -48px -40px -120px; background: radial-gradient(60% 65% at 50% 45%, rgba(31,61,46,.92), transparent 78%); }
+    .pr-final-copy::before { inset: -48px -40px -120px; background: radial-gradient(60% 65% at 50% 45%, rgba(13,48,84,.92), transparent 78%); }
     .pr-final .floor-plane { top: 50%; }
     .floor-strip li:nth-child(n + 13) { display: none; }
   }

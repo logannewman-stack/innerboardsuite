@@ -10,11 +10,11 @@
  * InnerBoard IOS panel. Every image is a real capture of Practice.
  *
  * The hero does not pin: the first notch of scroll moves the page, and the
- * forest panel's top edge shows at the bottom of the first screen. Two scroll
+ * Practice navy panel's top edge shows at the bottom of the first screen. Two scroll
  * stories (site.ts 1.7.19) show the app on the step layout (Story v2): the
  * device pinned on one side with a segmented rail and its "01 / 05" counter,
  * one step's copy at a time on the other, the copy and the screen changing
- * together. The forest panel pins for five steps (one per feature, the phone
+ * together. The Practice navy panel pins for five steps (one per feature, the phone
  * at the left) and the quiz still life for four (one per benefit, the mat at
  * the right, "Take the Quiz" pinned under the copy the whole time). The scroll
  * position alone moves them; scrolling back plays them backwards. Without the
@@ -37,7 +37,7 @@ const title = "InnerBoard · A new way to meet this life";
 const description =
   "A few minutes a day to think more clearly, feel more confident, and choose what comes next, with a coach in your pocket. Practice, Academy, INQ and InnerBoard IOS.";
 
-/* S2, the forest panel: the phone's frames, in the order the acts index them (STORY_V2 2.3). Frame 0 is the
+/* S2, the Practice navy panel: the phone's frames, in the order the acts index them (STORY_V2 2.3). Frame 0 is the
  * hero's own capture, so the story opens on the screen the reader has just scrolled away from. */
 const panelScreens = [
   { name: "home", alt: "The Coach home as a visitor.", w: 600, h: 1298 },
@@ -87,7 +87,7 @@ const quizBenefits = [
 ---
 <Base title={title} description={description} path="/">
   <!-- 1. Hero: the copy and the phone on the Coach home, one first screen. It does not pin; it ends 40 px above the
-       fold, so the forest panel's top edge shows under it (STORY_V2 2.2). -->
+       fold, so the Practice navy panel's top edge shows under it (STORY_V2 2.2). -->
   <section class="hm-hero grain grain-cream" data-tone="cream">
     <i class="lamp lamp-cream" aria-hidden="true" style="--lx:50%;--ly:0%"></i>
     <div class="wrap hm-hero-wrap">
@@ -106,10 +106,10 @@ const quizBenefits = [
     <HomeHeroPlate />
   </section>
 
-  <!-- 2. Practice: the forest panel. The phone pins at the left with the rail; one feature's copy at a time at the
+  <!-- 2. Practice: the Practice navy panel. The phone pins at the left with the rail; one feature's copy at a time at the
        right, five steps (STORY_V2 2.3). The buttons follow the story with the closing line. -->
   <section id="practice" class="hm-practice" data-tone="cream">
-    <div class="wrap-wide panel-forest grain surface-forest hm-panel" data-surface="dark">
+    <div class="wrap-wide panel-practice grain surface-practice hm-panel" data-surface="dark">
       <i class="lamp" aria-hidden="true" style="--lx:18%;--ly:0%;--la:.07"></i>
       <div class="hm-panel-in">
         <div class="hm-panel-grid">
@@ -119,7 +119,7 @@ const quizBenefits = [
           </div>
           <p class="t-lead hm-panel-lead rise" style="--d:.28s">A daily practice coach with personalized insight, real-time support, and tools to help you think differently, feel differently, and choose what's next.</p>
         </div>
-        <div class="story hm-panel-story" data-story="forest" data-story-ui="steps" data-side="left" data-kind="phone" data-warm style="--story-w:5.4;--step-l:64svh;--step-l-n:58svh">
+        <div class="story hm-panel-story" data-story="practice" data-story-ui="steps" data-side="left" data-kind="phone" data-warm style="--story-w:5.4;--step-l:64svh;--step-l-n:58svh">
           <div class="story-track">
             <div class="story-stage">
               <i class="lamp hm-stage-lamp" aria-hidden="true" style="--lx:30%;--ly:50%;--la:.16"></i>
@@ -333,7 +333,7 @@ const quizBenefits = [
   /* One composition in every case (script, no script, reduced motion). Laptops and landscape tablets (900 and up):
    * the first screen less 40 px, the copy in columns 1 to 7, the phone on the Coach home at the right, its right
    * edge on the content edge, centred between the header line and the hero's bottom (40 px kept for its floor
-   * shadow), so it no longer hangs past the fold and the forest panel's lit top edge shows in the last 40 px.
+   * shadow), so it no longer hangs past the fold and the Practice navy panel's lit top edge shows in the last 40 px.
    * Tablets and phones (under 900): the copy, then the phone under it, then the panel. The hero is its own
    * stacking context, so the phone's long shadow passes under the panel that follows. */
   .hm-hero { position: relative; isolation: isolate; padding: var(--nav-h) 0 40px; overflow: visible; }
@@ -360,7 +360,7 @@ const quizBenefits = [
       left: calc(100% - var(--edge) - var(--pw) * 1.06); }
   }
 
-  /* ── 2. The forest panel (STORY_V2 2.3) ───────────────────────────── */
+  /* ── 2. The Practice navy panel (STORY_V2 2.3) ───────────────────────────── */
   /* Row one: the h2 at the left, the lead beside it at the right on the same last baseline. Then the story: the
    * phone and its rail at the left, one feature at a time at the right, pinned while the reader scrolls through
    * the five. The panel's full width gold rule runs under the story, then the closing line and the buttons. The
@@ -376,7 +376,7 @@ const quizBenefits = [
   /* The panel's lamp, moved into the stage behind the pinned phone: shown only while the story is pinned. */
   .hm-panel-story .story-stage > .hm-stage-lamp { display: none; }
   .js .hm-panel-story.is-live:not(.static) .story-stage > .hm-stage-lamp { display: block; }
-  /* The features' icons (FeatureIcon, BRAND_FIX H3): gold-2 on the forest; in the static ladder each row leads
+  /* The features' icons (FeatureIcon, BRAND_FIX H3): gold-2 on the Practice navy; in the static ladder each row leads
    * with its icon, in the pinned step it sits on the eyebrow line in place of the dot. */
   .hm-ico { width: 22px; height: 22px; color: #c9ab66; flex: none; }
   /* Static: the ladder of five, icon led, between thin gold rules, each row with its own still screen (the Coach
@@ -649,15 +649,15 @@ const quizBenefits = [
 
   /* ── The two stories, pinned (the step layout, STORY_V2 1.4 and 1.5) ─────────────────────
    * The system lays out the stage (the device column and the copy column), the rail and its counter, the copy
-   * change and the roles (eyebrow, headline, body, button row). The page adds the forest's lamp and colours, the
+   * change and the roles (eyebrow, headline, body, button row). The page adds the Practice navy's lamp and colours, the
    * quiz mat's devices, and puts back what the static layout's grids would otherwise carry into the pinned one. */
   @media (prefers-reduced-motion: no-preference) and (min-width: 1069px) and (min-height: 600px),
          (prefers-reduced-motion: no-preference) and (max-width: 1068px) and (min-height: 560px) {
-    /* Forest: one step's copy at a time; the static ladder's columns and the row icon are the static layout's. */
+    /* Practice navy: one step's copy at a time; the static ladder's columns and the row icon are the static layout's. */
     .js .hm-panel-story:not(.static) .hm-ladder { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; column-gap: 0; }
     .js .hm-panel-story:not(.static) .hm-ladder > li { grid-area: 1 / 1; grid-template-rows: none; }
     .js .hm-panel-story:not(.static) .hm-row-ico { display: none; }
-    /* The headline keeps the forest's ivory under a pointer or focus (the ladder's hover gold is the static rows'). */
+    /* The headline keeps the Practice navy's ivory under a pointer or focus (the ladder's hover gold is the static rows'). */
     .js .hm-panel-story:not(.static) .hm-ladder > li .ladder-name { color: var(--fg); }
 
     /* Quiz: the mat shows its devices, the phone sized to the mat; the benefits share one cell. */
