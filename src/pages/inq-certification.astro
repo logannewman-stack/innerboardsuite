@@ -392,7 +392,7 @@ const faq = [
 
   <!-- ── The close: ink bleed (2.4.13) ────────────────────────────────── -->
   <section class="inq-close" data-tone="ink">
-    <i class="lamp grain" aria-hidden="true" style="--lx:50%;--ly:100%;--la:.1"></i>
+    <i class="lamp lamp-teal grain" aria-hidden="true" style="--lx:50%;--ly:100%;--la:.1"></i>
     <div class="wrap">
       <div class="grid">
         <div class="inq-close-in">
@@ -584,13 +584,13 @@ const faq = [
   .inq-link { padding-block: 12px; }
 
   /* 2.4.12 Questions people ask */
-  /* The page turns ink when the close's top passes 75% of the viewport (the
-   * system's line for a dark bleed, so the close's copy is never read on cream),
-   * which is while the questions are still on screen. So this one light section
-   * paints its own ground and keeps its own (light surface) inks: the rows stay
-   * cream and dark when the page goes ink, and the ground feathers into the
-   * close over the empty foot of the section, so they never read as part of the
-   * dark close. On a cream page the ground is the body's colour, so nothing shows. */
+  /* The page turns ink when the close's top passes the middle of the viewport
+   * (the system's tone line, BRAND_FIX S1), which is while the last questions
+   * can still be on screen. So this one light section paints its own ground and
+   * keeps its own (light surface) inks: the rows stay cream and dark when the
+   * page goes ink, and the ground feathers into the close over the empty foot of
+   * the section, so they never read as part of the dark close. On a cream page
+   * the ground is the body's colour, so nothing shows. */
   #faq.inq-faq-sec { background-image: linear-gradient(to bottom, #f7f4ee 0, #f7f4ee calc(100% - 96px), rgba(247,244,238,.86) calc(100% - 72px), rgba(247,244,238,.5) calc(100% - 48px), rgba(247,244,238,.14) calc(100% - 24px), rgba(247,244,238,0) 100%); }
   .inq-faq { align-items: start; }
   .inq-faq-head { grid-column: 1 / span 4; position: sticky; top: 120px; }
@@ -601,7 +601,8 @@ const faq = [
   .inq-close { padding-block: var(--sec-l); overflow: hidden; text-align: center; }
   /* The close's lamp and grain fade in over the section's first 200 px, with
    * its floor, so the grain never starts in a hard line under the questions'
-   * feathered ground; the gold lamp at its foot (50% 100%) is kept. */
+   * feathered ground. The lamp at its foot (50% 100%) is a white glow, never
+   * gold: the close's italics are ivory, as the mock-up sets them (BRAND_FIX S5). */
   .inq-close > .lamp { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 200px); mask-image: linear-gradient(to bottom, transparent 0, #000 200px); }
   .inq-close-in { grid-column: 3 / span 8; }
   .inq-close-h2 { margin: 0 auto; }
@@ -678,7 +679,7 @@ const faq = [
     .inq-dot { top: calc(.56em * 1.12 + 2px); top: 8px; }
     .inq-step-v { display: block; position: absolute; left: 4.5px; top: 18px; bottom: -8px; width: 1px; background: #1e5b57; }
     .inq-steps-close { margin-top: 40px; }
-    /* The list ends 96 px earlier than the section, so its last rows have left the screen before the close turns the page ink. */
+    /* The list ends 96 px earlier than the section, so its last rows sit on the questions' own ground, clear of the feather, when the close turns the page ink. */
     .inq-faq-list { margin-top: 32px; padding-bottom: 96px; }
     .inq-close-btns { align-items: stretch; }
   }

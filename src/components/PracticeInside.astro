@@ -1,15 +1,18 @@
 ---
 /**
- * Everything inside (SCROLL_SPEC S8) as a scroll story. Four steps, one per
- * ladder row. On laptops the 792 desk window pins beside the ladder: the
+ * Everything inside (SCROLL_SPEC S8, STORY_V2 3.5) as a scroll story on the
+ * step layout: four steps, one per ladder row, one row at a time beside the
+ * device (its name the headline, its line the body, both inside the row's
+ * link). On laptops the desk window pins at the left with the rail: the
  * cursor goes to that row's item in the app's own rail, and it clicks only
  * where the next capture shows that item open (The Book, InnerBoard OS). The
  * window never leans in: the Company OS Score frame carries a sample score,
  * so no camera ever makes it the focus. On tablets and phones a phone takes
  * the window's place, with the app's own bottom bar: each step rings that
  * row's tab (the Academy, Inner Lab, the header's book icon, InnerBoard OS),
- * then the Track wipes in. The caption follows the window's frame; the marks
- * replace the old dot pager. Nothing moves until the reader scrolls.
+ * then the Track wipes in. The caption follows the window's frame; the rail
+ * and its counter replace the old marks. Nothing moves until the reader
+ * scrolls.
  *
  * Static (no script, reduced motion, short screens): the four rows in order,
  * each followed by its own figure where it has one (a 640 window above 734,
@@ -54,50 +57,55 @@ const rows = [
 ];
 const W = rows.reduce((t, r) => t + (r.w ?? 1), 0);
 ---
-<div class="story pr-inside" data-story="inside" data-warm style={`--story-w:${W};--step-l:72svh;--step-l-n:64svh`}>
+<div class="story pr-inside" data-story="inside" data-story-ui="steps" data-side="left" data-kind="win" data-warm style={`--story-w:${W};--step-l:64svh;--step-l-n:58svh`}>
   <div class="story-track">
     <div class="story-stage">
-      <div class="story-device-box pr-inside-box">
-        <!-- Laptops: the desk window and its caption. -->
-        <div class="story-win pr-inside-win rise-obj">
-          <WindowFrame id="inside-win" device="win" ww={792} label="Practice on a desk, one rail item at a time." screens={win} />
-          <div class="win-caps">
-            {caps.map((c, i) => <p class={`win-cap t-cap-i${i === 0 ? " on" : ""}`} data-cap={i}>{c}</p>)}
+      <div class="story-device-col">
+        <StoryMarks variant="rail" labels={rows.map((r) => r.name)} label="Everything inside, row by row" />
+        <div class="story-device-box pr-inside-box">
+          <!-- Laptops: the desk window and its caption. -->
+          <div class="story-win pr-inside-win">
+            <WindowFrame id="inside-win" device="win" ww={900} label="Practice on a desk, one rail item at a time." screens={win} />
+            <div class="win-caps">
+              {caps.map((c, i) => <p class={`win-cap t-cap-i${i === 0 ? " on" : ""}`} data-cap={i}>{c}</p>)}
+            </div>
+          </div>
+          <!-- Tablets and phones: the phone with the app's own bottom bar. -->
+          <div class="story-phone pr-inside-phone" style="--pw-max-n:240px">
+            <PhoneFrame device="phone" width={240} style="--pw:inherit" label="Practice on a phone, one tab at a time."
+              halos={[{ x: 26.7, y: 95 }, { x: 42, y: 95 }, { x: 77, y: 3.4 }, { x: 57.7, y: 95 }]} screens={phone} />
           </div>
         </div>
-        <!-- Tablets and phones: the phone with the app's own bottom bar. -->
-        <div class="story-phone pr-inside-phone">
-          <PhoneFrame device="phone" width={240} style="--pw:inherit" label="Practice on a phone, one tab at a time."
-            halos={[{ x: 26.7, y: 95 }, { x: 42, y: 95 }, { x: 77, y: 3.4 }, { x: 57.7, y: 95 }]} screens={phone} />
-        </div>
       </div>
-      <StoryMarks class="pr-inside-marks" labels={rows.map((r) => r.name)} label="Everything inside, row by row" />
-      <ul class="story-steps ladder pr-inside-ladder" data-story-text="list" role="list">
-        {rows.map((r, i) => (
-          <li class="story-step" data-step={i} data-w={r.w} data-act={r.act}>
-            <a href={r.href} data-passthrough={r.pass ? true : undefined} rel={r.external ? "noopener" : undefined}>
-              <span class="pr-row">
-                <span class="ladder-name">{r.name}</span>
-                <span class="ladder-body">{r.body}</span>
-              </span>
-              <span class="pr-arrow" aria-hidden="true"><Arrow /></span>
-            </a>
-            <span class="sr-only story-alt pr-alt-w">{r.alt}</span>
-            <span class="sr-only story-alt pr-alt-n">{r.altN}</span>
-            {(r.win !== null || r.phone !== null) && (
-              <div class="story-static">
-                {r.win !== null && (
-                  <div class="static-desk">
-                    <WindowFrame ww={640} screens={[win[r.win]]} />
-                    <p class="t-cap-i pr-static-cap">{caps[r.win]}</p>
-                  </div>
-                )}
-                {r.phone !== null && <div class="static-phone"><PhoneFrame width={180} screens={[phone[r.phone]]} /></div>}
-              </div>
-            )}
-          </li>
-        ))}
-      </ul>
+      <div class="story-copy">
+        <ul class="story-steps ladder pr-inside-ladder" role="list">
+          {rows.map((r, i) => (
+            <li class="story-step" data-step={i} data-w={r.w} data-act={r.act}>
+              <p class="eyebrow story-eyebrow story-only story-repeat" aria-hidden="true">Everything inside</p>
+              <a href={r.href} data-passthrough={r.pass ? true : undefined} rel={r.external ? "noopener" : undefined}>
+                <span class="pr-row">
+                  <span class="ladder-name story-h">{r.name}</span>
+                  <span class="ladder-body story-body">{r.body}</span>
+                </span>
+                <span class="pr-arrow" aria-hidden="true"><Arrow /></span>
+              </a>
+              <span class="sr-only story-alt pr-alt-w">{r.alt}</span>
+              <span class="sr-only story-alt pr-alt-n">{r.altN}</span>
+              {(r.win !== null || r.phone !== null) && (
+                <div class="story-static">
+                  {r.win !== null && (
+                    <div class="static-desk">
+                      <WindowFrame ww={640} screens={[win[r.win]]} />
+                      <p class="t-cap-i pr-static-cap">{caps[r.win]}</p>
+                    </div>
+                  )}
+                  {r.phone !== null && <div class="static-phone"><PhoneFrame width={180} screens={[phone[r.phone]]} /></div>}
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
     <div class="story-run" aria-hidden="true"></div>
   </div>

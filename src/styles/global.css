@@ -24,7 +24,7 @@
   --color-gold: #b08d4f;
   --color-gold-2: #c9ab66;
   --color-gold-soft: #e6d7b3;
-  --color-gold-ink: #6e5724;
+  --color-gold-ink: #886020;
   --color-forest: #1f3d2e;
   --color-forest-2: #27493a;
   --color-forest-line: rgba(244, 239, 228, 0.14);
@@ -164,15 +164,17 @@
 :root, [data-theme="cream"] {
   --bg: #f4efe4; --fg: #1f1d1a; --fg-2: #3d3a35; --fg-3: #5c574f;
   --line: rgba(31,29,26,.12); --line-strong: rgba(31,29,26,.22);
-  --accent: #6e5724;
+  --accent: #886020;
   --btn-line: rgba(31,29,26,.24); --btn-hover: rgba(31,29,26,.05); --lit-off: rgba(31,29,26,.5);
-  --focus: #6e5724; --paper: #faf7f0; --dark: 0;
+  --focus: #886020; --paper: #faf7f0; --dark: 0;
 }
 [data-theme="ac-cream"] { --bg: #f7f4ee; --fg: #1f1d1a; --fg-2: #3d3a35; --fg-3: #5c574f; --line: #d8d1c4; --line-strong: #c9c0b0; --accent: #1e5b57; --btn-line: #1e5b57; --btn-hover: rgba(31,29,26,.05); --lit-off: rgba(31,29,26,.5); --focus: #1e5b57; --paper: #fbf9f5; --dark: 0; }
 [data-theme="navy"]     { --bg: #0d1a2d; --fg: #f4efe4; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(244,239,228,.14); --line-strong: rgba(244,239,228,.32); --accent: #c9ab66; --btn-line: rgba(244,239,228,.32); --btn-hover: rgba(244,239,228,.06); --lit-off: rgba(244,239,228,.4); --focus: #c9ab66; --dark: 1; }
 [data-theme="forest"]   { --bg: #1f3d2e; --fg: #f4efe4; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(201,171,102,.35); --line-strong: rgba(244,239,228,.32); --accent: #c9ab66; --btn-line: rgba(244,239,228,.32); --btn-hover: rgba(244,239,228,.06); --lit-off: rgba(244,239,228,.4); --focus: #c9ab66; --dark: 1; }
 [data-theme="charcoal"] { --bg: #26231f; --fg: #f4efe4; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(244,239,228,.12); --line-strong: rgba(244,239,228,.3); --accent: #c9ab66; --btn-line: rgba(244,239,228,.32); --btn-hover: rgba(244,239,228,.06); --lit-off: rgba(244,239,228,.4); --focus: #c9ab66; --dark: 1; }
 [data-theme="ink"]      { --bg: #1f1d1a; --fg: #f7f4ee; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(247,244,238,.12); --line-strong: rgba(247,244,238,.3); --accent: #c9ab66; --btn-line: rgba(247,244,238,.32); --btn-hover: rgba(244,239,228,.06); --lit-off: rgba(247,244,238,.4); --focus: #c9ab66; --dark: 1; }
+/* The Academy and INQ dark close (the ink theme on a teal page): ivory italics and eyebrow, no gold (S5). */
+.theme-teal[data-theme="ink"] { --accent: #f7f4ee; --focus: #f7f4ee; }
 [data-theme="teal"]     { --bg: #1e5b57; --fg: #ffffff; --fg-2: rgba(255,255,255,.78); --fg-3: rgba(255,255,255,.6); --line: rgba(255,255,255,.18); --line-strong: rgba(255,255,255,.4); --accent: #ffffff; --btn-line: rgba(255,255,255,.4); --btn-hover: rgba(255,255,255,.08); --lit-off: rgba(255,255,255,.55); --focus: #ffffff; --dark: 1; }
 
 /* Dark surfaces on cream pages (the plate, the forest and navy panels, flip
@@ -185,7 +187,7 @@
 .surface-forest { --line: rgba(201,171,102,.35); }
 [data-surface="light"], .surface-light {
   --fg: #1f1d1a; --fg-2: #3d3a35; --fg-3: #5c574f; --line: rgba(31,29,26,.12); --line-strong: rgba(31,29,26,.22);
-  --accent: #6e5724; --btn-line: rgba(31,29,26,.24); --btn-hover: rgba(31,29,26,.05); --lit-off: rgba(31,29,26,.5); --focus: #6e5724; --dark: 0;
+  --accent: #886020; --btn-line: rgba(31,29,26,.24); --btn-hover: rgba(31,29,26,.05); --lit-off: rgba(31,29,26,.5); --focus: #886020; --dark: 0;
   color: var(--fg);
 }
 .theme-teal [data-surface="light"], .theme-teal .surface-light { --accent: #1e5b57; --btn-line: #1e5b57; --focus: #1e5b57; --line: #d8d1c4; }
@@ -272,7 +274,7 @@
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
   /* ── 1.3 Type roles ─────────────────────────────────────────────────── */
-  .t-xl { font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 450; letter-spacing: -.028em; line-height: .96; text-wrap: balance; }
+  .t-xl { font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 500; letter-spacing: -.028em; line-height: .96; text-wrap: balance; }
   .t-l { font-family: var(--font-display); font-size: var(--fs-l); font-weight: 500; letter-spacing: -.022em; line-height: 1; text-wrap: balance; max-width: 12em; }
   .t-m { font-family: var(--font-display); font-size: var(--fs-m); font-weight: 500; letter-spacing: -.018em; line-height: 1.04; text-wrap: balance; max-width: 13em; }
   .t-s { font-family: var(--font-display); font-size: var(--fs-s); font-weight: 500; letter-spacing: -.012em; line-height: 1.12; text-wrap: balance; max-width: 18em; }
@@ -289,14 +291,10 @@
   .t-price { font-family: var(--font-display); font-size: var(--fs-price); font-weight: 500; letter-spacing: -.02em; line-height: 1; font-variant-numeric: tabular-nums lining-nums; }
   .t-price .cur { font-size: .6em; vertical-align: .32em; }
   @media (max-width: 734px) { .t-xl { line-height: .98; } .t-state { line-height: 1.28; } }
-  /* The italic. Every em stays Fraunces italic 400 (the emphasis is locked copy), but it is coloured only
-   * in the h1 and inside dark bleeds and dark panels; everywhere else it takes the heading's own ink, so the
-   * roman line with a coloured italic tail does not repeat down every page. */
-  :is(h1, h2, h3, .display, .t-xl, .t-l, .t-m, .t-s, .t-state) em { font-style: italic; font-weight: 400; color: inherit; }
-  :is(h1, .t-xl) em,
-  :where([data-surface="dark"], .surface-dark, .on-dark, main [data-tone="navy"], main [data-tone="forest"], main [data-tone="charcoal"], main [data-tone="ink"], main [data-tone="teal"]) :is(h2, h3, .display, .t-l, .t-m, .t-s, .t-state) em { color: var(--accent); }
-  :where(.paper, .card, .paper-teal, .mat, [data-surface="light"], .surface-light) :is(h2, h3, .display, .t-l, .t-m, .t-s, .t-state) em { color: inherit; }
-  .lead-phrase, .lb { color: var(--fg); }
+  /* The italic: Fraunces italic 400 in the section's accent (antique gold on cream, gold-2 on the dark grounds,
+   * teal on the Academy and INQ, white on teal, ivory on their dark close). BRAND_FIX S2. */
+  :is(h1, h2, h3, .display, .t-xl, .t-l, .t-m, .t-s, .t-state, .t-s-quote) em { font-style: italic; font-weight: 400; color: var(--accent); }
+  .lead-phrase, .lb { color: var(--fg); font-weight: 500; }
   .quote-hang { hanging-punctuation: first; }
   @supports not (hanging-punctuation: first) { .quote-hang { text-indent: -.38em; } }
   .amp { font-family: var(--font-display); font-style: italic; font-weight: 400; color: var(--accent); }
@@ -306,16 +304,17 @@
   .tabular { font-variant-numeric: tabular-nums; }
 
   /* ── Eyebrow ─────────────────────────────────────────────────────────── */
-  .eyebrow { display: block; font-family: var(--font-sans); font-size: var(--fs-eyebrow); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; line-height: 1; color: var(--fg-3); margin-bottom: var(--eyebrow-gap); }
+  .eyebrow { display: block; font-family: var(--font-sans); font-size: var(--fs-eyebrow); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; line-height: 1; color: var(--accent); margin-bottom: var(--eyebrow-gap); }
   @media (orientation: landscape) and (max-height: 500px) { .eyebrow { margin-bottom: 10px; } }
   .theme-teal .eyebrow { color: var(--accent); }
   [data-theme="teal"] .eyebrow, [data-theme="teal"] .theme-teal .eyebrow { color: rgba(255,255,255,.7); }
-  [data-theme="ink"] .eyebrow, [data-theme="navy"] .eyebrow, [data-theme="forest"] .eyebrow, [data-theme="charcoal"] .eyebrow { color: var(--fg-3); }
-  [data-surface="dark"] .eyebrow, .on-dark .eyebrow { color: #aaa396; }
+  .theme-teal[data-theme="ink"] .eyebrow { color: rgba(247,244,238,.7); }
   /* A light surface keeps its own eyebrow ink whatever the page tone is (the teal theme's white eyebrow
    * must never land on paper, a mat or the footer). */
-  :is(.paper, .card, .paper-teal, .mat, .mat-blush, .tile, [data-surface="light"], .surface-light, .site-footer) .eyebrow { color: var(--fg-3); }
+  :is(.paper, .card, .paper-teal, .mat, .mat-blush, .tile, [data-surface="light"], .surface-light, .site-footer) .eyebrow { color: var(--accent); }
   .theme-teal :is(.paper, .card, .paper-teal, [data-surface="light"], .surface-light, .site-footer) .eyebrow { color: var(--accent); }
+  /* Footer column labels and the mobile menu's labels keep the faint ink on the Suite pages (BRAND_FIX S4). */
+  .site-footer .eyebrow, .menu-panel .eyebrow { color: var(--fg-3); }
 
   /* ── Buttons, pills ──────────────────────────────────────────────────── */
   .btn {
@@ -375,22 +374,24 @@
     box-shadow: inset 0 1px 0 rgba(255,255,255,.9), inset 0 0 0 1px rgba(255,255,255,.5), var(--sh-paper);
     color: #1f1d1a;
   }
-  .paper, .card { --fg: #1f1d1a; --fg-2: #3d3a35; --fg-3: #5c574f; --line: rgba(31,29,26,.12); --lit-off: rgba(31,29,26,.5); --dark: 0; }
+  .paper, .card { --fg: #1f1d1a; --fg-2: #3d3a35; --fg-3: #5c574f; --line: rgba(31,29,26,.12); --lit-off: rgba(31,29,26,.5); --accent: #886020; --focus: #886020; --dark: 0; }
   .theme-teal .paper, .theme-teal .card { --paper: #fbf9f5; background-image: linear-gradient(var(--paper), var(--paper)), linear-gradient(180deg, #ffffff 0%, #e2ddd3 42%, #cdc6b8 100%); --accent: #1e5b57; --focus: #1e5b57; --btn-line: #1e5b57; }
   .paper-teal { position: relative; border-image: none; border: 1px solid rgba(30,91,87,.4); background: #e3ece9; border-radius: var(--r-lg); box-shadow: var(--sh-paper); color: #1f1d1a; --fg: #1f1d1a; --fg-2: #3d3a35; --fg-3: #5c574f; --accent: #1e5b57; --focus: #1e5b57; --btn-line: #1e5b57; --line: rgba(30,91,87,.25); --dark: 0; }
   .paper-teal.paper-white { background: #fbf9f5; border-color: rgba(30,91,87,.3); box-shadow: var(--sh-object); }
   .paper-lift { transition: transform 200ms var(--hover), box-shadow 200ms var(--hover); }
   .mat { position: relative; overflow: visible; background: #ebe4d5; border-radius: var(--r-lg); box-shadow: inset 0 1px 2px rgba(31,29,26,.06), inset 0 0 0 1px rgba(31,29,26,.05); }
-  .mat-blush { background: linear-gradient(160deg, #ebe4d5 0%, #ede1d8 100%); }
+  .mat-blush { background: radial-gradient(60% 55% at 88% 0%, rgba(201,171,102,.22), transparent 70%), linear-gradient(160deg, #efe6d6 0%, #f0e1d8 58%, #ece0c9 100%); }
   .plate { position: relative; overflow: hidden; background: #0d1a2d; border-radius: var(--r-lg); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); }
   .panel-forest { position: relative; overflow: clip; background: #1f3d2e; border-radius: var(--r-lg); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); --line: rgba(201,171,102,.35); }
-  .panel-navy { position: relative; overflow: clip; background: #132440; border-radius: var(--r-lg); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); }
+  .panel-navy { position: relative; overflow: clip; background: #071b30; border-radius: var(--r-lg); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); }
   .theme-teal .card { border-color: transparent; }
 
   /* ── Lamp, grain ─────────────────────────────────────────────────────── */
   .lamp { position: absolute; inset: 0; pointer-events: none; border-radius: inherit; z-index: 0;
     background: radial-gradient(55% 60% at var(--lx, 18%) var(--ly, 0%), rgba(201,171,102,var(--la, .16)), transparent 70%); }
   .lamp-teal { background: radial-gradient(55% 60% at var(--lx, 85%) var(--ly, 100%), rgba(255,255,255,var(--la, .08)), transparent 70%); }
+  /* The Academy and INQ dark close: a white glow, never gold (BRAND_FIX S5), whatever class its lamp carries. */
+  .theme-teal [data-tone="ink"] > .lamp { background: radial-gradient(55% 60% at var(--lx, 85%) var(--ly, 100%), rgba(255,255,255,var(--la, .08)), transparent 70%); }
   .lamp-cream { background: radial-gradient(50% 45% at var(--lx, 50%) var(--ly, 0%), rgba(255,255,255,.75), transparent 72%), linear-gradient(to top, rgba(176,141,79,.08), transparent 30%); animation: lights 2.2s var(--ease) both; }
   .lamp-sky { background: radial-gradient(60% 55% at var(--lx, 12%) var(--ly, 0%), rgba(201,171,102,.3), transparent 70%); }
   @keyframes lights { from { opacity: 0; } }
@@ -547,6 +548,13 @@
   @media (max-width: 734px) { .story-static .static-desk { display: none; } }
   @media (min-width: 735px) { .story-static .static-phone { display: none; } }
   :where(.story:not([data-story-static="device"])) .story-device-box { display: none; }
+  /* Story v2 (STORY_V2 1.11), static: the step layout's parts are plain blocks; an element that exists for the
+   * pinned layout only (.story-only: an eyebrow the static page does not have) is not shown; the button row
+   * (.story-cta) stays in flow after the steps, so the static page keeps its button where it always was. Page
+   * CSS must not set `display` on a .story-only element (the pinned layout shows it). */
+  .story-only { display: none; }
+  .story-device-col, .story-copy { display: block; }
+  .story-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: var(--btn-gap); }
   /* A system probe (site.ts): 100svh tall and the gutter wide, read on measure only. */
   .sys-probe { position: fixed; left: 0; top: 0; width: var(--gutter); height: 100vh; height: 100svh; visibility: hidden; pointer-events: none; z-index: -1; }
 
@@ -556,7 +564,7 @@
   .story-marks > button { position: relative; flex: 1 1 0; min-width: 0; height: 28px; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 2px; }
   .story-marks > button::before { content: ""; position: absolute; left: 0; right: 0; top: 13px; height: 2px; border-radius: 2px; background: var(--mark-track); }
   .story-marks > button::after { content: ""; position: absolute; inset: -8px 0; }
-  .story-marks > button > i { position: absolute; left: 0; right: 0; top: 13px; height: 2px; border-radius: 2px; background: var(--mark-fill); transform-origin: 0 50%; transform: scaleX(0); }
+  .story-marks > button > i { position: absolute; left: 0; right: 0; top: 13px; height: 2px; border-radius: 2px; background: var(--mark-fill); transform-origin: 0 50%; transform: scaleX(var(--f, 0)); }
   /* The words variant (the IOS workflow): the locked line itself, each word a button, the arrows text. */
   .story-marks-words { flex-direction: column; align-items: flex-start; gap: 10px; width: auto; }
   .story-words { margin: 0; color: var(--fg-3); }
@@ -571,8 +579,9 @@
   .story-bar > i { position: absolute; inset: 0; background: var(--fg); transform-origin: 0 50%; transform: scaleX(0); }
 
   /* ── The day (DayStage.astro, SCROLL_SPEC S5) ──────────────────────
-   * Static: each step with its own phone and caption, the evening step on navy. Pinned (motion.css): the slot
-   * beside the sky mat (wide) or under it (narrow); the mat is the device box. */
+   * Static: each step with its own phone and caption, the evening step on navy. Pinned (motion.css): the step
+   * layout (STORY_V2 3.2): the copy beside the sky mat (wide) or under it (narrow); the mat is the device box and
+   * the rail rides inside it. */
   .day-list .story-step + .story-step { margin-top: 0; }
   .day-item { padding: 40px 0; border-top: 1px solid var(--line); }
   .day-item:last-child { border-bottom: 1px solid var(--line); }
@@ -590,11 +599,9 @@
   .day-stage .sky[data-sky="evening"] { background: radial-gradient(60% 55% at 50% 100%, rgba(201,171,102,.14), transparent 70%), linear-gradient(180deg, #1b2740, #0d1a2d); }
   .day-stage .phone .phone-floor { transition: transform .4s var(--ease); }
   .day-stage.is-night .phone { box-shadow: inset 0 0 0 .55em #0c0b09, inset 0 0 0 .9em rgba(255,255,255,.06), var(--sh-object-dark); }
-  .day-caps { position: absolute; left: 24px; bottom: 24px; right: calc(var(--day-marks-w, 180px) + 48px); min-height: 1.4em; }
+  .day-caps { position: absolute; left: 24px; bottom: 24px; right: 128px; min-height: 1.4em; }
   .day-cap { position: absolute; left: 0; bottom: 0; margin: 0; opacity: 0; transition: opacity .14s var(--ease), color .4s var(--ease); color: var(--day-cap, #5c574f); font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 14px; line-height: 1.4; }
   .day-cap.on { opacity: 1; transition: opacity .26s var(--ease) .11s, color .4s var(--ease); }
-  .day-stage .story-marks { position: absolute; right: 24px; bottom: 18px; --marks-w: var(--day-marks-w, 180px); --mark-track: rgba(31,29,26,.2); --mark-fill: #1f1d1a; }
-  .day-stage.is-night .story-marks { --mark-track: rgba(244,239,228,.25); --mark-fill: #f4efe4; }
   .day-stage.is-night { --day-cap: #cdc6b8; }
 
   /* ── Accordion (1.6) ───────────────────────────────────────────────── */
@@ -624,7 +631,10 @@
   .flip-inner { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); width: 100%; min-height: 330px; height: auto; transform-style: preserve-3d; transition: transform 640ms var(--spring); border-radius: var(--r-lg); }
   .flip[aria-pressed="true"] .flip-inner { transform: rotateY(180deg); }
   .flip-face { grid-area: 1 / 1; display: flex; flex-direction: column; justify-content: space-between; gap: 24px; padding: 32px; border-radius: var(--r-lg); backface-visibility: hidden; -webkit-backface-visibility: hidden; min-height: 330px; }
-  .flip-front { color: #1f1d1a; }
+  /* A warm cream face with an antique gold edge (the handoff's "cream/gold fronts", BRAND_FIX S7); it follows
+   * .paper, so it wins at equal specificity. */
+  .flip-front { color: #1f1d1a; --accent: #886020;
+    background: linear-gradient(#fbf8f1, #f5ecda) padding-box, linear-gradient(180deg, #efe3c8 0%, #c9ab66 100%) border-box; }
   .flip-back { transform: rotateY(180deg); background: #1f3d2e; color: #cdc6b8; overflow: hidden; --fg: #f4efe4; --fg-2: #cdc6b8; --fg-3: #aaa396; box-shadow: inset 0 1px 0 rgba(255,255,255,.07), inset 0 0 0 1px rgba(255,255,255,.06), var(--sh-paper); }
   .flip-back .lamp { --lx: 0%; --ly: 0%; --la: .16; }
   .flip-back.grain::after { opacity: .25; }
@@ -635,7 +645,7 @@
   .flip-back .eyebrow { color: #c9ab66; margin-bottom: 0; }
   .flip-back .flip-reframe { font-family: var(--font-sans); font-size: var(--fs-lead); line-height: 1.45; color: #cdc6b8; max-width: 24em; }
   .flip-back .flip-reframe b { font-weight: inherit; color: #f4efe4; }
-  .flip-cue { display: inline-flex; align-items: center; gap: .45em; font-family: var(--font-sans); font-size: var(--fs-small); font-weight: 500; letter-spacing: -.005em; line-height: 1; color: #6e5724; }
+  .flip-cue { display: inline-flex; align-items: center; gap: .45em; font-family: var(--font-sans); font-size: var(--fs-small); font-weight: 500; letter-spacing: -.005em; line-height: 1; color: #886020; }
   .flip-back .flip-cue { color: #c9ab66; }
   .flip-cue svg { width: 14px; height: 14px; }
   .flip i.sheen { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; z-index: 2;
@@ -656,7 +666,7 @@
   .tcard-row span { line-height: 1; font-weight: 450; }
   .tcard .tg { position: relative; display: block; width: 38px; height: 22px; border-radius: 999px; background: #d9cfbe; box-shadow: inset 0 1px 2px rgba(31,29,26,.18); flex: none; }
   .tcard .tg::after { content: ""; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
-  .tcard .tg.on { background: #486786; }
+  .tcard .tg.on { background: #b08d4f; }
   .tcard .tg.on::after { left: 18px; }
 
   /* ── The mark geometry ─────────────────────────────────────────────── */
@@ -679,7 +689,7 @@
   @media (max-width: 734px) { .floor-plane { --floor-cols: 4; transform: rotateX(56deg) translate3d(-50%, 0, 0) scale(.72); } }
 
   /* ── Header (1.8) ──────────────────────────────────────────────────── */
-  .site-header { position: fixed; inset-inline: 0; top: 0; z-index: 50; height: var(--nav-h); color: #1f1d1a; --fg: #1f1d1a; --fg-2: #3d3a35; --fg-3: #5c574f; --focus: #6e5724;
+  .site-header { position: fixed; inset-inline: 0; top: 0; z-index: 50; height: var(--nav-h); color: #1f1d1a; --fg: #1f1d1a; --fg-2: #3d3a35; --fg-3: #5c574f; --focus: #886020;
     transition: background-color 240ms var(--ease), box-shadow 240ms var(--ease), color 240ms var(--ease), transform 450ms var(--sheet); }
   .site-header .hdr-row { display: flex; align-items: center; justify-content: space-between; height: var(--nav-h); view-transition-name: nav; }
   .site-header.is-scrolled { background: rgba(244,239,228,.82); -webkit-backdrop-filter: saturate(160%) blur(18px); backdrop-filter: saturate(160%) blur(18px); box-shadow: 0 1px 0 rgba(31,29,26,.08); }
@@ -702,10 +712,6 @@
   .hdr-link .sub { display: none; font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--fg-2); }
   @media (min-width: 1280px) { .hdr-link .sub { display: inline; } }
   .hdr-cta { margin-left: 8px; }
-  /* On the teal pages the header's pill is an ink outline (cream over a dark tone), so it does not
-   * compete with the teal button in the hero. */
-  .site-header.theme-teal .hdr-cta { background: transparent; color: var(--fg); box-shadow: inset 0 0 0 1px currentColor; }
-  .site-header.theme-teal .hdr-cta:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
   .hdr-burger { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-right: -10px; background: none; border: 0; cursor: pointer; color: inherit; border-radius: 999px; position: relative; }
   @media (min-width: 960px) { .hdr-burger { display: none; } }
   .hdr-burger i { position: absolute; left: 14px; width: 16px; height: 1.5px; background: currentColor; border-radius: 1px; transition: transform 350ms var(--sheet), top 350ms var(--sheet); }
@@ -713,7 +719,7 @@
   .hdr-burger i:last-child { top: 25px; }
   .hdr-burger[aria-expanded="true"] i:first-child { top: 21.5px; transform: rotate(45deg); }
   .hdr-burger[aria-expanded="true"] i:last-child { top: 21.5px; transform: rotate(-45deg); }
-  .menu-panel { position: fixed; inset: var(--nav-h) 0 0 0; z-index: 49; background: #faf7f0; color: #1f1d1a; --fg: #1f1d1a; --fg-2: #3d3a35; --fg-3: #5c574f; --focus: #6e5724; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .35s var(--ease), visibility 0s linear .35s; overflow: auto; }
+  .menu-panel { position: fixed; inset: var(--nav-h) 0 0 0; z-index: 49; background: #faf7f0; color: #1f1d1a; --fg: #1f1d1a; --fg-2: #3d3a35; --fg-3: #5c574f; --focus: #886020; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .35s var(--ease), visibility 0s linear .35s; overflow: auto; }
   .menu-panel.is-open { opacity: 1; visibility: visible; pointer-events: auto; transition-delay: 0s; }
   @media (min-width: 960px) { .menu-panel { display: none; } }
   .menu-nav { display: flex; flex-direction: column; min-height: 100%; padding-block: 24px max(24px, env(safe-area-inset-bottom, 0px)); }
@@ -736,8 +742,9 @@
   .skip:focus { transform: none; }
 
   /* ── Footer (1.9) ──────────────────────────────────────────────────── */
-  .site-footer { position: relative; background: #ebe4d5; color: #1f1d1a; --fg: #1f1d1a; --fg-2: #3d3a35; --fg-3: #5c574f; --line: rgba(31,29,26,.12); --accent: #6e5724; --focus: #6e5724; --dark: 0; border-top: 1px solid rgba(31,29,26,.12); padding: clamp(72px, 10vh, 120px) 0 calc(32px + env(safe-area-inset-bottom, 0px)); }
+  .site-footer { position: relative; background: #ebe4d5; color: #1f1d1a; --fg: #1f1d1a; --fg-2: #3d3a35; --fg-3: #5c574f; --line: rgba(31,29,26,.12); --accent: #886020; --focus: #886020; --dark: 0; border-top: 1px solid rgba(31,29,26,.12); padding: clamp(72px, 10vh, 120px) 0 calc(32px + env(safe-area-inset-bottom, 0px)); }
   .site-footer.theme-teal { background: #efeae1; --accent: #1e5b57; --focus: #1e5b57; }
+  .site-footer.theme-teal .ftr-rule { background: linear-gradient(90deg, transparent, rgba(30,91,87,.3) 12% 88%, transparent); }
   /* Row one: the statement in columns 1 to 6 with the founder line under it, the three link columns in
    * columns 7 to 12 beside it (their eyebrows on the statement's first line). Then the gold rule, then
    * the legal row. */

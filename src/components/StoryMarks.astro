@@ -2,30 +2,62 @@
 /**
  * A scroll story's progress marks (SCROLL_SPEC 1.3.5): a nav of buttons, one
  * per step, each named by its step's own locked text. The story engine sets
- * aria-current="step" on the current one and fills each bar from the left
- * with the scroll (past steps full, the current one by its progress). Enter,
- * Space or a click scrolls to that step; the arrow keys move between marks.
- * Hidden in the static layout (reduced motion, no script, short screens),
- * where every step is already on the page.
+ * aria-current="step" on the current one and fills each mark with the scroll
+ * (--f on its `i`: past steps 1, the current one by its progress, future 0).
+ * Enter, Space or a click scrolls to that step; the arrow keys move between
+ * marks. Hidden in the static layout (reduced motion, no script, short
+ * screens), where every step is already on the page.
  *
- * `variant="words"` (the IOS workflow): the visible label is each button's
- * own text, `sep` stays as text between them (aria-hidden), and a 1 px rule
- * under the line fills with the story; the words read as the locked line.
+ * `variant="rail"` (Story v2, STORY_V2 1.3 and 1.7): the segmented rail of the
+ * step layout, vertical beside the device on laptops and a row under it on
+ * tablets and phones, with the "01 / 05" counter (`count={false}` leaves it
+ * out, as STEAR does: the app's own folio is its eyebrow). The engine writes
+ * the counter on bind and at every step change.
+ *
+ * `variant="words"` (the legacy IOS workflow): the visible label is each
+ * button's own text, `sep` stays as text between them (aria-hidden), and a
+ * 1 px rule under the line fills with the story.
+ *
+ * `steps` gives each label's step (the step's data-step value; default the
+ * index), so a story whose steps differ by layout numbers its marks per layout;
+ * `only` writes data-only ("wide" or "narrow") on a mark whose step exists in
+ * one layout only.
  */
-interface Props { labels: string[]; label: string; variant?: "bars" | "words"; sep?: string; class?: string; style?: string }
-const { labels, label, variant = "bars", sep = "→", class: className = "", style } = Astro.props;
+interface Props {
+  labels: string[];
+  label: string;
+  variant?: "bars" | "words" | "rail";
+  sep?: string;
+  class?: string;
+  style?: string;
+  count?: boolean;
+  steps?: (string | number)[];
+  only?: (string | undefined)[];
+}
+const { labels, label, variant = "bars", sep = "→", class: className = "", style, count = true, steps, only } = Astro.props;
+const go = (i: number) => String(steps?.[i] ?? i);
+const pad = (n: number) => String(n).padStart(2, "0");
+/* The server's counter reads the wide layout's total; the engine rewrites it for the layout it binds. */
+const total = labels.filter((_, i) => only?.[i] !== "narrow").length;
 ---
 {variant === "words" ? (
   <nav class={`story-marks story-marks-words ${className}`.trim()} aria-label={label} style={style}>
     <p class="t-folio story-words">
       {labels.map((l, i) => (
-        <Fragment>{i > 0 && <span aria-hidden="true"> {sep} </span>}<button type="button" data-go={i}>{l}</button></Fragment>
+        <Fragment>{i > 0 && <span aria-hidden="true"> {sep} </span>}<button type="button" data-go={go(i)} data-only={only?.[i]}>{l}</button></Fragment>
       ))}
     </p>
     <span class="story-marks-rule" aria-hidden="true"><i></i></span>
   </nav>
+) : variant === "rail" ? (
+  <nav class={`story-marks story-rail ${className}`.trim()} aria-label={label} style={style}>
+    <div class="story-rail-bars">
+      {labels.map((l, i) => <button type="button" data-go={go(i)} data-only={only?.[i]} aria-label={l}><i></i></button>)}
+    </div>
+    {count && <p class="t-folio story-count" aria-hidden="true"><span class="story-count-k">01</span><span class="story-count-n"> / {pad(total)}</span></p>}
+  </nav>
 ) : (
   <nav class={`story-marks ${className}`.trim()} aria-label={label} style={style}>
-    {labels.map((l, i) => <button type="button" data-go={i} aria-label={l}><i></i></button>)}
+    {labels.map((l, i) => <button type="button" data-go={go(i)} data-only={only?.[i]} aria-label={l}><i></i></button>)}
   </nav>
 )}

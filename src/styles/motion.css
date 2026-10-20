@@ -44,15 +44,15 @@
 
 /* 1.7.4 Lit statement */
 /* Prefixed .js so a server rendered span.lw (a "lines" statement) reads in
- * full colour without the script. An em unit lights like its neighbours, and
- * to the accent only inside a dark bleed or a dark panel (the italic rule of
- * global.css). */
+ * full colour without the script. An em unit lights to the section's accent,
+ * as every heading and statement italic does (the italic rule of global.css,
+ * BRAND_FIX S2). */
 .js .lw { color: var(--lit-off); transition: color .35s ease; }
 .js .lw.on { color: var(--fg-2); }
 .js .lw.lb.on { color: var(--fg); }
 .js [data-lit="lines"] > .lw, .js [data-lit="lines"] > li { color: var(--lit-off); transition: color .35s ease; }
 .js [data-lit="lines"] > .lw.on, .js [data-lit="lines"] > li.on { color: var(--fg); }
-.js :where([data-surface="dark"], .surface-dark, .on-dark, main [data-tone="navy"], main [data-tone="forest"], main [data-tone="charcoal"], main [data-tone="ink"], main [data-tone="teal"]) em.lw.on, .js :where([data-surface="dark"], .surface-dark, .on-dark, main [data-tone="navy"], main [data-tone="forest"], main [data-tone="charcoal"], main [data-tone="ink"], main [data-tone="teal"]) [data-lit="lines"] > em.lw.on { color: var(--accent); }
+.js em.lw.on, .js [data-lit="lines"] > em.lw.on { color: var(--accent); }
 
 /* 1.7.5 Page tone: a dark bleed's own floor is in global.css (tone floors);
  * its lamp and grain live on a child that fades in with the theme. */
@@ -69,6 +69,7 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
 .no-js [data-tone="forest"] { background: #1f3d2e; color: #f4efe4; --fg: #f4efe4; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(201,171,102,.35); --accent: #c9ab66; --btn-line: rgba(244,239,228,.32); --lit-off: rgba(244,239,228,.25); --focus: #c9ab66; }
 .no-js [data-tone="charcoal"] { background: #26231f; color: #f4efe4; --fg: #f4efe4; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(244,239,228,.12); --accent: #c9ab66; --btn-line: rgba(244,239,228,.32); --lit-off: rgba(244,239,228,.25); --focus: #c9ab66; }
 .no-js [data-tone="ink"] { background: #1f1d1a; color: #f7f4ee; --fg: #f7f4ee; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(247,244,238,.12); --accent: #c9ab66; --btn-line: rgba(247,244,238,.32); --lit-off: rgba(247,244,238,.25); --focus: #c9ab66; }
+.theme-teal.no-js [data-tone="ink"] { --accent: #f7f4ee; --focus: #f7f4ee; }
 .no-js [data-tone="teal"] { background: #1e5b57; color: #fff; --fg: #fff; --fg-2: rgba(255,255,255,.78); --fg-3: rgba(255,255,255,.6); --line: rgba(255,255,255,.18); --accent: #fff; --btn-line: rgba(255,255,255,.4); --lit-off: rgba(255,255,255,.35); --focus: #fff; }
 .no-js [data-tone] > .lamp { opacity: 1; }
 
@@ -106,29 +107,22 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
  * on a landscape phone, on a short laptop window and whenever the engine sets .static, the page keeps the static
  * layout of global.css with nothing hidden. Every selector starts with :where(), so a page rule of one class plus
  * one element class (.my-story .story-stage) wins over these defaults.
- * Heights that set a scroll distance or a stage size are svh (stable when the address bar moves). */
+ * Heights that set a scroll distance or a stage size are svh (stable when the address bar moves).
+ *
+ * Two layouts share the mechanics. The step layout (Story v2, STORY_V2 part 1, `data-story-ui="steps"` on the
+ * root): the device pinned on one side with the segmented rail and its counter, one step's copy at a time on the
+ * other, the copy and the screen changing together. The legacy layouts (list and slot, any story without
+ * data-story-ui) keep their rules below, keyed :not([data-story-ui="steps"]), until their pages convert. */
 @media screen and (prefers-reduced-motion: no-preference) and (min-width: 1069px) and (min-height: 600px),
        screen and (prefers-reduced-motion: no-preference) and (max-width: 1068px) and (min-height: 560px) {
+  /* Both layouts: the run, the stick, the marks shown, the static figures and alts out of view. */
   :where(.js [data-story]:not(.static)) .story-run { display: block; height: calc(var(--story-w, 1) * var(--step-l, 75svh)); }
   :where(.js [data-story]:not(.static)) .story-stage { position: sticky; top: var(--story-stick, calc(var(--story-top) + var(--story-gap)));
     height: calc(100vh - var(--story-top) - var(--story-gap)); height: calc(100svh - var(--story-top) - var(--story-gap)); }
-  :where(.js [data-story]:not(.static)) .story-device-box { display: grid; place-items: center; position: relative; min-height: 0; container-type: size; }
-  /* A phone sized from its box (the box is the size container): add .story-phone to the box or a wrapper inside
-   * it, set --pw-max, and give the PhoneFrame style="--pw:inherit". A window: wrap it (and its caption) in
-   * .story-win inside the box; --cap-h is the caption row under the window. */
-  :where(.js [data-story]:not(.static)) .story-phone { --pw: min(var(--pw-max, 300px), calc((100cqh - 24px) / 2.224)); }
-  :where(.js [data-story]:not(.static)) .story-win { width: min(100%, calc((100cqh - var(--cap-h, 40px)) / .657)); }
   :where(.js [data-story]:not(.static)) .story-marks { display: flex; }
   :where(.js [data-story]:not(.static)) .story-bar { display: block; }
   :where(.js [data-story]:not(.static)) .story-static { display: none; }
   :where(.js [data-story]:not(.static)) .story-alt { display: block; position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
-  /* Slot mode: the steps share one grid cell (the slot is as tall as the tallest step and never changes
-   * height) and only the current one is shown, with the dip timing, so two texts are never both above .2.
-   * Hidden steps stay in the accessibility tree; a link in one is still focusable (focus makes it current). */
-  :where(.js [data-story]:not(.static)) [data-story-text="slot"] { display: grid; }
-  :where(.js [data-story]:not(.static)) [data-story-text="slot"] > .story-step { grid-area: 1 / 1; opacity: 0; pointer-events: none; transition: opacity .14s var(--ease); }
-  :where(.js [data-story]:not(.static)) [data-story-text="slot"] > .story-step.is-current { opacity: 1; pointer-events: auto; transition: opacity .26s var(--ease) .11s; }
-  :where(.js [data-story]:not(.static)) .story-sub { transition: opacity .35s var(--ease); }
   /* While pinned only: the layers that move get their own compositor layer. */
   :where(.js [data-story].is-pinned:not(.static)) :is(.cam, .scroll-body, .win-screen .cur) { will-change: transform; }
   /* An anchored stage (taller than the viewport, stuck by its anchor): everything above the anchor is masked
@@ -136,40 +130,131 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
   :where(.js [data-story].is-anchored.is-pinned:not(.static)) > .story-track > .story-stage {
     -webkit-mask-image: linear-gradient(to bottom, transparent calc(var(--anchor-y, 0px) - 8px), #000 var(--anchor-y, 0px));
     mask-image: linear-gradient(to bottom, transparent calc(var(--anchor-y, 0px) - 8px), #000 var(--anchor-y, 0px)); }
+
+  /* Legacy: the device box is the size container; a phone sized from its box (add .story-phone to the box or a
+   * wrapper inside it, set --pw-max, and give the PhoneFrame style="--pw:inherit"); a window wrapped (with its
+   * caption) in .story-win inside the box, --cap-h the caption row under it. */
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-device-box { display: grid; place-items: center; position: relative; min-height: 0; container-type: size; }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-phone { --pw: min(var(--pw-max, 300px), calc((100cqh - 24px) / 2.224)); }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-win { width: min(100%, calc((100cqh - var(--cap-h, 40px)) / .657)); }
+  /* Legacy slot mode: the steps share one grid cell (the slot is as tall as the tallest step and never changes
+   * height) and only the current one is shown, with the dip timing, so two texts are never both above .2.
+   * Hidden steps stay in the accessibility tree; a link in one is still focusable (focus makes it current). */
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) [data-story-text="slot"] { display: grid; }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) [data-story-text="slot"] > .story-step { grid-area: 1 / 1; opacity: 0; pointer-events: none; transition: opacity .14s var(--ease); }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) [data-story-text="slot"] > .story-step.is-current { opacity: 1; pointer-events: auto; transition: opacity .26s var(--ease) .11s; }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-sub { transition: opacity .35s var(--ease); }
+
+  /* ── Story v2, both layouts (STORY_V2 1.3 to 1.7) ───────────────────────
+   * The stage holds the device column (.story-device-col: the rail, then the device box) and the copy column
+   * (.story-copy: the slot .story-steps, then the optional pinned button row .story-cta). The device column is
+   * the size container; a phone or window box inside it is not, so the device is sized from the column. A mat
+   * (data-kind="mat") is the device box itself and stays a size container for the devices standing on it. */
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-only { display: revert; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-device-col { position: relative; display: flex; align-items: center; min-width: 0; min-height: 0; container-type: size; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-device-box { position: relative; display: block; min-width: 0; min-height: 0; flex: none; container-type: normal; }
+  :where(.js [data-story-ui="steps"][data-kind="mat"]:not(.static)) .story-device-box { container-type: size; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-phone { --pw: min(calc(var(--pw-max, 300px) * var(--zoom, 1)), calc((100cqh - 56px) / 2.224)); }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-device-box.story-phone { width: calc(var(--pw) * 1.06); }
+  /* A window: 92 px of the column are the rail and its gap; 32 px of its height are padding, --cap-h the caption
+   * row under the window; --win-max caps it on very wide screens. Pass the WindowFrame a `ww` at least this wide. */
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-win { width: min(var(--win-max, 4000px), calc(100cqw - 92px), calc((100cqh - 32px - var(--cap-h, 44px)) / .657)); }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-copy { position: relative; display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps { display: grid; align-items: center; width: 100%; margin: 0; padding: 0; }
+  /* The copy change (1.6): one step at a time. Steps after the current one rest 20 px below, steps before it 20 px
+   * above, both transparent; the current one at rest. Crossing a boundary going down, the outgoing step leaves
+   * upward (200 ms, ease in) and the incoming one rises from below 160 ms later (240 ms); going up, the mirror.
+   * The two are never both above .25. The scroll position alone triggers it (the engine's .is-current). Until the
+   * engine marks a step, the first one shows, so nothing is ever empty while the script loads. */
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps > .story-step { grid-area: 1 / 1; min-width: 0; opacity: 0; pointer-events: none; transform: translate3d(0, 20px, 0);
+    transition: opacity 200ms cubic-bezier(.4, 0, 1, 1), transform 200ms cubic-bezier(.4, 0, 1, 1); }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps > .story-step:has(~ .story-step.is-current) { transform: translate3d(0, -20px, 0); }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps > .story-step.is-current,
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps:not(:has(> .is-current)) > .story-step:first-child { opacity: 1; pointer-events: auto; transform: none;
+    transition: opacity 240ms var(--ease) 160ms, transform 240ms var(--ease) 160ms; }
+  /* A step is a block of copy while pinned: a ladder row's grid, padding, rules and hover line are the static
+   * layout's (the :is() lifts these over `.ladder > li:last-child`). */
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps > .story-step:is(*, :last-child) { display: block; margin: 0; padding: 0; border: 0; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps > .story-step:is(*, :last-child)::before,
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps > .story-step:is(*, :last-child)::after { content: none; }
+  /* Sub blocks swap in place the same way: direct children of the step, or of a .story-subs wrapper when the
+   * step has other content (they share one cell). */
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-subs,
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps > .story-step:has(> .story-sub) { display: grid; align-items: start; }
+  :where(.js [data-story-ui="steps"]:not(.static)) :is(.story-subs, .story-step) > .story-sub { grid-area: 1 / 1; min-width: 0; opacity: 0; pointer-events: none; transform: translate3d(0, 20px, 0);
+    transition: opacity 200ms cubic-bezier(.4, 0, 1, 1), transform 200ms cubic-bezier(.4, 0, 1, 1); }
+  :where(.js [data-story-ui="steps"]:not(.static)) :is(.story-subs, .story-step) > .story-sub:has(~ .story-sub.is-current) { transform: translate3d(0, -20px, 0); }
+  :where(.js [data-story-ui="steps"]:not(.static)) :is(.story-subs, .story-step) > .story-sub.is-current,
+  :where(.js [data-story-ui="steps"]:not(.static)) :is(.story-subs, .story-step):not(:has(> .story-sub.is-current)) > .story-sub:nth-child(1 of .story-sub) { opacity: 1; pointer-events: auto; transform: none;
+    transition: opacity 240ms var(--ease) 160ms, transform 240ms var(--ease) 160ms; }
+  /* The roles, added to the elements a step already has; only the pinned layout restyles them. The headline and
+   * body rules carry three classes, so a page's static rule of two (.my-ladder .ladder-name) does not leak into the
+   * pinned layout; a page's pinned rule (.js .my-story:not(.static) ...) still wins. */
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 18px; font-family: var(--font-sans); font-size: var(--fs-eyebrow); font-weight: 600;
+    letter-spacing: .16em; text-transform: uppercase; line-height: 1; color: var(--accent); }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: none; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-eyebrow:has(> svg)::before { content: none; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-eyebrow > svg { width: 20px; height: 20px; flex: none; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps > .story-step .story-h { display: block; font-family: var(--font-display); font-size: var(--fs-story-h, var(--fs-m)); font-weight: 500; font-style: normal;
+    letter-spacing: -.018em; line-height: 1.04; max-width: var(--story-h-max, 12em); color: var(--fg); margin: 0; text-wrap: balance; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps > .story-step .story-h em { font-style: italic; font-weight: 400; color: var(--accent); }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps > .story-step .story-body { display: block; font-family: var(--font-sans); font-size: var(--fs-story-b, var(--fs-lead)); font-weight: 450;
+    letter-spacing: 0; line-height: 1.5; color: var(--fg-2); max-width: 26em; margin: 18px 0 0; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 36px; }
+  /* Sentence stories (a headline longer than three lines at Display M in its column): every headline at Display S. */
+  :where(.js [data-story-ui="steps"][data-story-h="s"]:not(.static)) { --fs-story-h: var(--fs-s); }
+
+  /* The rail (StoryMarks variant="rail", 1.7): n segments and the "01 / 05" counter. Its fill is --f from the
+   * engine. Colours from the role tokens: on a light ground the fill is the ink and the track the ink at .14; on a
+   * dark ground (--dark: 1) the fill is the accent (gold-2) and the track the cream at .2. A page may set
+   * --rail-fill and --rail-track on the story. */
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail {
+    --rail-fill-c: color-mix(in srgb, var(--accent) calc(var(--dark, 0) * 100%), var(--fg));
+    --rail-track-c: color-mix(in srgb, var(--fg) calc(14% + var(--dark, 0) * 6%), transparent);
+    position: relative; z-index: 2; display: flex; flex: none; align-items: center; width: auto; margin: 0; padding: 0; gap: 16px; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars { display: flex; min-width: 0; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button { position: relative; flex: 1 1 0; min-width: 0; min-height: 0; padding: 0; margin: 0; border: 0; background: none; cursor: pointer; border-radius: 2px; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button::before { content: ""; position: absolute; border-radius: 1px; background: var(--rail-track, var(--rail-track-c)); }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button > i { position: absolute; border-radius: 1px; background: var(--rail-fill, var(--rail-fill-c)); }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button[hidden] { display: none; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-count { flex: none; margin: 0; font-family: var(--font-sans); font-size: 12px; font-weight: 500; letter-spacing: .16em; line-height: 1;
+    font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--fg-3); }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-count-k { color: var(--fg); }
 }
-/* Wide: a twelve column stage, the device box in 1 to 6, the step text in 8 to 12, the marks under the box.
+
+/* Legacy wide: a twelve column stage, the device box in 1 to 6, the step text in 8 to 12, the marks under the box.
  * Sections place their own; these are only the defaults. */
 @media screen and (prefers-reduced-motion: no-preference) and (min-width: 1069px) and (min-height: 600px) {
-  :where(.js [data-story]:not(.static)) .story-stage { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr) auto; column-gap: var(--gap); align-items: center; }
-  :where(.js [data-story]:not(.static)) .story-device-box { grid-column: 1 / span 6; grid-row: 1; align-self: stretch; }
-  :where(.js [data-story]:not(.static)) .story-steps { grid-column: 8 / span 5; grid-row: 1 / span 2; }
-  :where(.js [data-story]:not(.static)) .story-marks { grid-column: 1 / span 6; grid-row: 2; justify-self: center; margin-top: 16px; }
   :where(.js [data-story]:not(.static)) [data-only="narrow"] { display: none; }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-stage { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr) auto; column-gap: var(--gap); align-items: center; }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-device-box { grid-column: 1 / span 6; grid-row: 1; align-self: stretch; }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-steps { grid-column: 8 / span 5; grid-row: 1 / span 2; }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-marks { grid-column: 1 / span 6; grid-row: 2; justify-self: center; margin-top: 16px; }
   /* List mode (wide only; narrow is always a slot): every step in view, the current one at full colour, the rest dimmed. */
-  :where(.js [data-story]:not(.static)) [data-story-text="list"] > .story-step { transition: opacity .35s var(--ease); }
-  :where(.js [data-story]:not(.static)) [data-story-text="list"] > .story-step.is-dim { opacity: var(--story-dim, .42); }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) [data-story-text="list"] > .story-step { transition: opacity .35s var(--ease); }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) [data-story-text="list"] > .story-step.is-dim { opacity: var(--story-dim, .42); }
   /* Sub blocks: all in view, the current one lit. */
-  :where(.js [data-story]:not(.static)) .story-step.is-current .story-sub:not(.is-current) { opacity: var(--story-dim-sub, .55); }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-step.is-current .story-sub:not(.is-current) { opacity: var(--story-dim-sub, .55); }
 }
-/* Narrow: a column under the header: the device box (it takes what is left, up to 60svh), the marks, then the
- * slot with the current step, set a step smaller so the device keeps its size on a real phone (whose small
+/* Legacy narrow: a column under the header: the device box (it takes what is left, up to 60svh), the marks, then
+ * the slot with the current step, set a step smaller so the device keeps its size on a real phone (whose small
  * viewport is about 660 px tall). Every story uses slot mode here, whatever its wide mode; a step with sub
  * blocks shows one at a time. */
 @media screen and (prefers-reduced-motion: no-preference) and (max-width: 1068px) and (min-height: 560px) {
   :where(.js [data-story]:not(.static)) .story-run { height: calc(var(--story-w-n, var(--story-w, 1)) * var(--step-l-n, var(--step-l, 66svh))); }
-  :where(.js [data-story]:not(.static)) .story-stage { display: flex; flex-direction: column; justify-content: center; }
-  :where(.js [data-story]:not(.static)) .story-device-box { order: 1; flex: 1 1 0; max-height: 60vh; max-height: 60svh; }
-  :where(.js [data-story]:not(.static)) .story-marks { order: 2; flex: none; margin: 12px auto 0; }
-  :where(.js [data-story]:not(.static)) .story-steps { order: 3; flex: none; display: grid; margin-top: 12px; padding-bottom: 16px; }
-  :where(.js [data-story]:not(.static)) .story-steps > .story-step { grid-area: 1 / 1; opacity: 0; pointer-events: none; transition: opacity .14s var(--ease); }
-  :where(.js [data-story]:not(.static)) .story-steps > .story-step.is-current { opacity: 1; pointer-events: auto; transition: opacity .26s var(--ease) .11s; }
   :where(.js [data-story]:not(.static)) [data-only="wide"] { display: none; }
-  :where(.js [data-story]:not(.static)) .story-step:has(> .story-sub, > .story-subs) { display: grid; }
-  :where(.js [data-story]:not(.static)) .story-subs { display: contents; }
-  :where(.js [data-story]:not(.static)) :is(.story-step, .story-subs) > .story-sub { grid-area: 1 / 1; opacity: 0; transition: opacity .14s var(--ease); }
-  :where(.js [data-story]:not(.static)) :is(.story-step, .story-subs) > .story-sub.is-current { opacity: 1; transition: opacity .26s var(--ease) .11s; }
-  :where(.js [data-story]:not(.static)) .story-steps :is(.t-s, .t-m, .ladder-name, .story-name) { font-size: var(--fs-title); line-height: 1.2; }
-  :where(.js [data-story]:not(.static)) .story-steps :is(.t-body, .t-lead, .ladder-body, .story-body) { font-size: var(--fs-story, 15px); line-height: 1.5; color: var(--fg-2); }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-stage { display: flex; flex-direction: column; justify-content: center; }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-device-box { order: 1; flex: 1 1 0; max-height: 60vh; max-height: 60svh; }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-marks { order: 2; flex: none; margin: 12px auto 0; }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-steps { order: 3; flex: none; display: grid; margin-top: 12px; padding-bottom: 16px; }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-steps > .story-step { grid-area: 1 / 1; opacity: 0; pointer-events: none; transition: opacity .14s var(--ease); }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-steps > .story-step.is-current { opacity: 1; pointer-events: auto; transition: opacity .26s var(--ease) .11s; }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-step:has(> .story-sub, > .story-subs) { display: grid; }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-subs { display: contents; }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) :is(.story-step, .story-subs) > .story-sub { grid-area: 1 / 1; opacity: 0; transition: opacity .14s var(--ease); }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) :is(.story-step, .story-subs) > .story-sub.is-current { opacity: 1; transition: opacity .26s var(--ease) .11s; }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-steps :is(.t-s, .t-m, .ladder-name, .story-name) { font-size: var(--fs-title); line-height: 1.2; }
+  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-steps :is(.t-body, .t-lead, .ladder-body, .story-body) { font-size: var(--fs-story, 15px); line-height: 1.5; color: var(--fg-2); }
 }
 /* A real phone's small viewport (about 660 tall): the slot's bodies one step smaller (SCROLL_SPEC 1.4.3), so the
  * device keeps a readable size. */
@@ -177,30 +262,145 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
   :root { --fs-story: 14.5px; }
 }
 
-/* ── The day (DayStage.astro, SCROLL_SPEC S5): its pinned layout ── */
+/* ── Story v2, wide (1069 and up, at least 600 tall; STORY_V2 1.4) ─────────
+ * The stage is a twelve column grid, one row as tall as the stage. The device column stretches to the row; the
+ * copy column is centred in it, so the copy's centre is level with the device's. Inside the device column the
+ * rail and the device are a row packed against the column's inner edge (the one facing the copy), 40 px apart
+ * (36 for a window), so the rail is always on the device's outer side.
+ *   phone, side left:  device column 1 to 6, copy 8 to 12     phone, side right: copy 1 to 5, device column 8 to 12
+ *   mat, side left:    mat 1 to 6, copy 8 to 12               mat, side right:   copy 1 to 5, mat 6 (+32 px) to 12
+ *   win (side left):   device column 1 to 8, copy 9 to 12     hero (side right): copy 1 to 7, device column 8 to 12 */
+@media screen and (prefers-reduced-motion: no-preference) and (min-width: 1069px) and (min-height: 600px) {
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-stage { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr); column-gap: var(--gap); align-items: center; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-device-col { grid-row: 1; grid-column: 1 / span 6; align-self: stretch; flex-direction: row; justify-content: flex-end; gap: 40px; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-copy { grid-row: 1; grid-column: 8 / span 5; align-self: center; }
+  :where(.js [data-story-ui="steps"][data-side="right"]:not(.static)) .story-device-col { grid-column: 8 / span 5; flex-direction: row-reverse; }
+  :where(.js [data-story-ui="steps"][data-side="right"]:not(.static)) .story-copy { grid-column: 1 / span 5; }
+  /* Mats: the mat fills the column; the rail rides inside it, 32 px from its outer edge, centred; the mat's
+   * devices are centred in the rest of it (the rail side keeps --mat-rail, 32 + 56 + 40 = 128 px, of padding;
+   * set the mat's other paddings by side, never with the shorthand). --mat-h caps the mat's height. */
+  :where(.js [data-story-ui="steps"][data-kind="mat"]:not(.static)) .story-device-box { flex: 1 1 auto; align-self: center; height: min(var(--mat-h, 640px), calc(100cqh - 24px)); padding-left: var(--mat-rail, 128px); }
+  :where(.js [data-story-ui="steps"][data-kind="mat"]:not(.static)) .story-rail { position: absolute; top: 50%; left: 32px; translate: 0 -50%; }
+  :where(.js [data-story-ui="steps"][data-kind="mat"][data-side="right"]:not(.static)) .story-device-col { grid-column: 6 / span 7; margin-left: 32px; }
+  :where(.js [data-story-ui="steps"][data-kind="mat"][data-side="right"]:not(.static)) .story-device-box { padding-left: 0; padding-right: var(--mat-rail, 128px); }
+  :where(.js [data-story-ui="steps"][data-kind="mat"][data-side="right"]:not(.static)) .story-rail { left: auto; right: 32px; }
+  /* Windows: the window (and its caption) in .story-win; the rail centred on the window, not on its caption. A
+   * phone wrapper in the box (.story-phone, the tablet and phone variant) is not rendered here. */
+  :where(.js [data-story-ui="steps"][data-kind="win"]:not(.static)) .story-device-col { grid-column: 1 / span 8; gap: 36px; }
+  :where(.js [data-story-ui="steps"][data-kind="win"]:not(.static)) .story-copy { grid-column: 9 / span 4; }
+  :where(.js [data-story-ui="steps"][data-kind="win"]:not(.static)) .story-rail { margin-bottom: var(--rail-mb, var(--cap-h, 44px)); }
+  :where(.js [data-story-ui="steps"][data-kind="win"]:not(.static)) .story-device-box > .story-phone { display: none; }
+  /* The hero (InnerBoard IOS): the stage is the first screen, the header's height its top padding. */
+  :where(.js [data-story-ui="steps"][data-kind="hero"]:not(.static)) .story-stage { padding-top: var(--nav-h); }
+  :where(.js [data-story-ui="steps"][data-kind="hero"]:not(.static)) .story-copy { grid-column: 1 / span 7; }
+  :where(.js [data-story-ui="steps"][data-kind="hero"]:not(.static)) .story-device-col { grid-column: 8 / span 5; flex-direction: row-reverse; }
+  :where(.js [data-story-ui="steps"][data-kind="hero"]:not(.static)) .story-phone { --pw: clamp(240px, min(26.5vw, calc((100cqh - 96px) / 2.224)), 400px); }
+  /* The vertical rail: clamp(200px, 38% of the column, 320px) tall, segments 8 px apart, 2 px wide (each a 44 px
+   * wide button), filling from the top; the counter 16 px under it, centred on the rail's line. */
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail { flex-direction: column; width: 56px; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars { flex-direction: column; gap: 8px; width: 44px; height: clamp(200px, 38cqh, 320px); }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button::before,
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button > i { left: 21px; width: 2px; top: 0; bottom: 0; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button > i { transform-origin: 50% 0; transform: scaleY(var(--f, 0)); }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-count { padding-left: .16em; }
+}
+
+/* ── Story v2, narrow (1068 and down, at least 560 tall; STORY_V2 1.5) ─────
+ * Phones and portrait tablets: one column centred in the stage: the device column (the device, the rail as a
+ * horizontal row under it: column-reverse), the slot 14 px under the rail, the button row 16 px under the slot,
+ * 16 px to the stage's bottom. Window stories show their phone variant. Landscape tablets (900 to 1068) put the
+ * same device column at the left (1 to 6) and the copy at the right (7 to 12). */
+@media screen and (prefers-reduced-motion: no-preference) and (max-width: 1068px) and (min-height: 560px) {
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-device-col { flex-direction: column-reverse; justify-content: center; align-items: center; width: 100%; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-phone { --pw: min(var(--pw-max-n, 240px), calc((100cqh - 38px) / 2.224)); }
+  :where(.js [data-story-ui="steps"][data-kind="mat"]:not(.static)) .story-device-box { flex: 1 1 0; align-self: stretch; width: auto; }
+  :where(.js [data-story-ui="steps"][data-kind="win"]:not(.static)) .story-device-box > .story-win { display: none; }
+  /* The rail row: as wide as the copy column, segments 6 px apart, 2 px tall, filling from the left; the counter
+   * at the row's right end; 16 px tall with 10 px above it; 44 px hit areas. */
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail { flex-direction: row; width: min(100%, 560px); height: 16px; margin-top: 10px; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars { flex-direction: row; flex: 1 1 auto; gap: 6px; height: 16px; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button { height: 16px; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button::after { content: ""; position: absolute; inset: -14px 0; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button::before,
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button > i { left: 0; right: 0; top: 7px; height: 2px; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button > i { transform-origin: 0 50%; transform: scaleX(var(--f, 0)); }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-count { width: 56px; text-align: right; margin-right: -.16em; }
+  :where(.js [data-story-ui="steps"]:not(.static)) { --fs-story-h: clamp(30px, 4.2vw, 36px); }
+  :where(.js [data-story-ui="steps"][data-story-h="s"]:not(.static)) { --fs-story-h: clamp(24px, 3.2vw, 28px); }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-eyebrow { margin-bottom: 12px; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps > .story-step .story-body { margin-top: 14px; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-cta { margin-top: 16px; }
+}
+@media screen and (prefers-reduced-motion: no-preference) and (max-width: 899px) and (min-height: 560px) {
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-stage { display: flex; flex-direction: column; justify-content: center; align-items: stretch; padding-bottom: 16px; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-device-col { flex: 1 1 0; max-height: var(--dev-max, 52svh); }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-copy { flex: none; width: min(100%, 560px); margin: 14px auto 0; }
+}
+@media screen and (prefers-reduced-motion: no-preference) and (min-width: 900px) and (max-width: 1068px) and (min-height: 560px) {
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-stage { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr); column-gap: var(--gap); align-items: center; padding-block: 8px 16px; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-device-col { grid-row: 1; grid-column: 1 / span 6; align-self: stretch; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-copy { grid-row: 1; grid-column: 7 / span 6; align-self: center; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail { width: min(100%, 360px); }
+}
+/* Phones: the device column up to 56svh, the headline at Display M for a phone (30 at 390), bodies 15 px, the
+ * button full width. */
+@media screen and (prefers-reduced-motion: no-preference) and (max-width: 734px) and (min-height: 560px) {
+  :where(.js [data-story-ui="steps"]:not(.static)) { --dev-max: 56svh; --fs-story-h: clamp(28px, 7.7vw, 34px); --fs-story-b: var(--fs-story, 15px); }
+  :where(.js [data-story-ui="steps"][data-story-h="s"]:not(.static)) { --fs-story-h: 24px; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-eyebrow { margin-bottom: 10px; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-cta > :is(.btn, a) { flex: 1 1 100%; }
+}
+/* Short phones (a real 390 x 844 phone's small viewport is about 390 x 664): headlines a step down, bodies 14.5,
+ * the eyebrows that repeat the section's own eyebrow (.story-repeat) hidden, and the device column takes all that
+ * the copy leaves (no 56svh cap). A mat's vertical padding should be 10 here (page CSS). The fit guard and the
+ * 150 px floor still decide. */
+@media screen and (prefers-reduced-motion: no-preference) and (max-width: 734px) and (min-height: 560px) and (max-height: 720px) {
+  :where(.js [data-story-ui="steps"]:not(.static)) { --dev-max: none; --fs-story-h: 26px; --fs-story-b: 14.5px; }
+  :where(.js [data-story-ui="steps"][data-story-h="s"]:not(.static)) { --fs-story-h: 22px; }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-repeat { display: none; }
+}
+
+/* ── The day (DayStage.astro, STORY_V2 3.2): the step layout, a mat on the right ──
+ * The sky mat is the device box (the phone, the four skies, the running caption at its bottom left); the rail
+ * rides inside it at its right (wide) or its bottom right (narrow). */
 @media screen and (prefers-reduced-motion: no-preference) and (min-width: 1069px) and (min-height: 600px),
        screen and (prefers-reduced-motion: no-preference) and (max-width: 1068px) and (min-height: 560px) {
   :where(.js .day:not(.static)) .day-item { padding: 0; border: 0; }
   :where(.js .day:not(.static)) .day-item.is-evening { background: none; color: inherit; --fg: inherit; --fg-2: inherit; --fg-3: inherit; --line: inherit; padding-inline: 0; border-radius: 0; }
-  :where(.js .day:not(.static)) .day-stage { display: grid; place-items: center; padding: 24px 24px 64px; }
-  :where(.js .day:not(.static)) .day-stage { --pw: min(var(--day-pw, 230px), calc((100cqh - 12px) / 2.224)); }
-  :where(.js .day:not(.static)) .day-list .t-body { margin-top: 14px; }
+  :where(.js .day:not(.static)) .day-item-in { max-width: none; }
+  :where(.js .day:not(.static)) .day-stage { display: grid; place-items: center; padding-top: 24px; padding-bottom: 64px; padding-left: 24px;
+    --pw: min(var(--day-pw, 230px), calc((100cqh - 12px) / 2.224)); }
+  :where(.js .day:not(.static)) .day-caps { right: var(--mat-rail, 128px); }
 }
-@media screen and (prefers-reduced-motion: no-preference) and (min-width: 1069px) and (min-height: 600px) {
-  :where(.js .day:not(.static)) .story-stage { grid-template-rows: none; }
-  :where(.js .day:not(.static)) .day-list { grid-column: 1 / span 5; grid-row: 1; align-self: center; }
-  :where(.js .day:not(.static)) .day-stage { grid-column: 6 / span 7; grid-row: 1; align-self: center; height: min(640px, calc(100vh - var(--nav-h) - var(--story-gap) - 24px)); height: min(640px, calc(100svh - var(--nav-h) - var(--story-gap) - 24px)); }
-}
+/* Narrow: the rail stays vertical, inside the mat at its right and centred beside the phone (the phone is centred
+ * and narrower than the mat), so the running caption keeps the whole bottom line of the mat and never wraps onto
+ * the phone ("STEAR, question one, then question two." is 229 px at 13 px). */
 @media screen and (prefers-reduced-motion: no-preference) and (max-width: 1068px) and (min-height: 560px) {
+  :where(.js .day:not(.static)) .day-stage { padding: 10px 16px 42px; }
+  :where(.js .day:not(.static)) .day-rail { position: absolute; right: 16px; top: 50%; bottom: auto; translate: 0 -50%; flex-direction: column; width: 56px; height: auto; margin: 0; gap: 14px; }
+  :where(.js .day:not(.static)) .day-rail .story-rail-bars { flex: none; flex-direction: column; gap: 8px; width: 44px; height: clamp(160px, 38cqh, 320px); }
+  :where(.js .day:not(.static)) .day-rail .story-rail-bars > button { height: auto; }
+  :where(.js .day:not(.static)) .day-rail .story-rail-bars > button::after { inset: 0; }
+  :where(.js .day:not(.static)) .day-rail .story-rail-bars > button::before,
+  :where(.js .day:not(.static)) .day-rail .story-rail-bars > button > i { left: 21px; right: auto; width: 2px; top: 0; bottom: 0; height: auto; }
+  :where(.js .day:not(.static)) .day-rail .story-rail-bars > button > i { transform-origin: 50% 0; transform: scaleY(var(--f, 0)); }
+  :where(.js .day:not(.static)) .day-rail .story-count { width: auto; text-align: center; margin-right: 0; padding-left: .16em; }
+  :where(.js .day:not(.static)) .day-caps { left: 16px; bottom: 16px; right: 16px; }
+  :where(.js .day:not(.static)) .day-cap { font-size: 13px; }
+}
+@media screen and (prefers-reduced-motion: no-preference) and (max-width: 899px) and (min-height: 560px) {
   .day { --story-gap: 0px; }
   :where(.js .day:not(.static)) .story-stage { justify-content: flex-start; }
-  :where(.js .day:not(.static)) .day-stage { margin-inline: calc(-1 * var(--gutter)); border-radius: 0 0 20px 20px; padding: 10px 16px 42px; --day-marks-w: 120px; max-height: 62vh; max-height: 62svh; }
-  :where(.js .day:not(.static)) .day-stage .story-marks { right: 16px; bottom: 10px; }
-  :where(.js .day:not(.static)) .day-caps { left: 16px; bottom: 16px; }
-  :where(.js .day:not(.static)) .day-cap { font-size: 13px; }
-  :where(.js .day:not(.static)) .day-list { padding-top: 4px; }
-  :where(.js .day:not(.static)) .day-list .t-body { margin-top: 8px; }
-  :where(.js .day:not(.static)) .day-list .eyebrow { margin-bottom: 10px; }
+  :where(.js .day:not(.static)) { --dev-max: 56svh; }
+  :where(.js .day:not(.static)) .day-stage { margin-inline: calc(-1 * var(--gutter)); border-radius: 0 0 20px 20px; }
+  :where(.js .day:not(.static)) .day-rail { right: calc(12px - var(--gutter)); }
+}
+@media screen and (prefers-reduced-motion: no-preference) and (max-width: 734px) and (min-height: 560px) and (max-height: 720px) {
+  :where(.js .day:not(.static)) { --fs-story-h: var(--fs-title); --dev-max: none; }
+  :where(.js .day:not(.static)) .day-stage { padding-bottom: 36px; }
+  :where(.js .day:not(.static)) .story-copy { margin-top: 10px; }
+  :where(.js .day:not(.static)) .story-stage { padding-bottom: 8px; }
+  :where(.js .day:not(.static)) .story-steps > .story-step .story-h { line-height: 1.2; }
 }
 
 /* Flip cards without the script: both faces in flow, the back under the
@@ -227,7 +427,7 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
   .js .tcard-in { transform: rotate(-5deg); }
   .js .lw, .js .lw.lb, .js [data-lit="lines"] > .lw, .js [data-lit="lines"] > li { color: var(--fg-2); }
   .js .lw.lb, .js [data-lit="lines"] > .lw, .js [data-lit="lines"] > li { color: var(--fg); }
-  .js :where([data-surface="dark"], .surface-dark, .on-dark, main [data-tone="navy"], main [data-tone="forest"], main [data-tone="charcoal"], main [data-tone="ink"], main [data-tone="teal"]) em.lw, .js :where([data-surface="dark"], .surface-dark, .on-dark, main [data-tone="navy"], main [data-tone="forest"], main [data-tone="charcoal"], main [data-tone="ink"], main [data-tone="teal"]) [data-lit="lines"] > em.lw { color: var(--accent); }
+  .js em.lw, .js [data-lit="lines"] > em.lw { color: var(--accent); }
   .win-screen .cur, .tap, .halo { display: none; }
   .cam { transform: none !important; }
   .draw-line { stroke-dashoffset: 0 !important; transition: none; }

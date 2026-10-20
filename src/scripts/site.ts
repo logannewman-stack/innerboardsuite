@@ -339,15 +339,17 @@ function lit() {
 }
 
 /* ── 1.7.5 Page tone ────────────────────────────────────────────────────── */
-/* The theme is the tone of the last section whose top has passed its line: 75% of the viewport for a
- * dark bleed (so its copy is never read on the wrong ground), 50% for a light section (so a bleed holds
- * until the next light section is well in), or the section's own `data-tone-at` fraction. The footer
- * paints its own colour and is skipped, so the last section's tone holds to the end of the page. */
+/* The theme is the tone of the last section whose top has passed the middle of the viewport, or the
+ * section's own data-tone-at fraction (BRAND_FIX S1: a dark bleed no longer takes over at 75%, which painted
+ * the cream section above it dark while it was being read). Text inside a dark bleed follows the theme
+ * tokens, so a bleed entering below the middle reads as ink on cream until it takes over: nothing is ever
+ * read on the wrong ground. The footer paints its own colour and is skipped, so the last section's tone
+ * holds to the end of the page. */
 const themeHooks: Array<() => void> = [];
 function toneLine(s: HTMLElement) {
   const at = parseFloat(s.dataset.toneAt || "");
   if (at >= 0 && at <= 1) return at;
-  return DARK.has(s.dataset.tone || "") ? 0.75 : 0.5;
+  return 0.5;
 }
 function tone() {
   const sections = qsa("[data-tone]").filter((s) => !s.closest("footer, .site-footer"));
@@ -752,7 +754,11 @@ function tilt() {
  * markup contract, the act keys and the maths are SCROLL_SPEC section 1; the API is SYSTEM_API.md, Scroll
  * stories. Static (no pin, every step stacked with its own figure) is the default CSS; the pinned layout is
  * added by motion.css under STORY_MQ, and the engine adds `.static` (reason in data-static-reason: media, fit,
- * floor, act) when a story cannot be pinned on this viewport. */
+ * floor, act, layout) when a story cannot be pinned on this viewport.
+ * Story v2 (STORY_V2 part 1, SYSTEM_API "Story v2"): a root with data-story-ui="steps" is the step layout, the
+ * device pinned on one side with the segmented rail and its "01 / 05" counter, one step's copy at a time on the
+ * other. The engine's part is the same for both layouts (current step, --f on each mark, the counter); the
+ * copy change itself is CSS, keyed on .is-current. */
 const STORY_MQ =
   "(prefers-reduced-motion: no-preference) and (min-width: 1069px) and (min-height: 600px), " +
   "(prefers-reduced-motion: no-preference) and (max-width: 1068px) and (min-height: 560px)";
@@ -791,6 +797,7 @@ const storyApi: Record<string, unknown> = {};
 const parseAct = (s: string) => JSON.parse(s.replace(/([[,:]\s*-?)\.(\d)/g, "$10.$2"));
 const rendered = (el: Element | null | undefined): el is HTMLElement => !!el && el.getClientRects().length > 0;
 const num = (v: string | null | undefined, d = 0) => { const n = parseFloat(v || ""); return Number.isFinite(n) ? n : d; };
+const pad2 = (n: number) => String(n).padStart(2, "0");
 /* Write a style property only when its string changed since the last write. */
 function put(c: Cache, el: HTMLElement | SVGElement, prop: string, val: string) {
   let m = c.get(el);
@@ -818,6 +825,8 @@ class StoryRun {
   layout: "wide" | "narrow"; steps: HTMLElement[] = []; w: number[] = []; cum: number[] = []; W = 1; n = 0;
   acts: Record<string, Act>[] = []; devs: Dev[] = [];
   marks: { b: HTMLButtonElement; k: number; i: HTMLElement | null }[] = []; bars: HTMLElement[] = []; rule: HTMLElement | null = null;
+  /* Story v2 (STORY_V2 1.7): the rail's counter, "01" and " / 05", rewritten on bind and at every step change. */
+  countK: HTMLElement | null = null; countN: HTMLElement | null = null;
   subs: HTMLElement[][] = []; subIdx: number[] = []; gEls: HTMLElement[] = [];
   stick = 0; D = 0; navH = 72; svh = 0; k = -1; G = 0; p = 0; pinned = false; visible = false; ok = false; lastGs = "";
   off: Array<() => void> = []; c: Cache = new Map();
@@ -850,7 +859,20 @@ class StoryRun {
     this.W = acc;
     this.subs = this.steps.map((s) => qsa(".story-sub", s));
     this.subIdx = this.steps.map(() => -1);
-    this.marks = qsa<HTMLButtonElement>(".story-marks [data-go]", root).map((b) => ({ b, k: Number(b.dataset.go), i: b.querySelector<HTMLElement>(":scope > i") }));
+    /* E5: a mark goes to the step whose data-step equals its data-go (its index among this layout's steps), so a
+     * story whose steps differ by layout (data-only) numbers its marks per layout; a mark whose step is not in
+     * this layout is hidden. A step without data-step answers to its index. */
+    const keyOf = (s: HTMLElement, j: number) => (s.dataset.step ?? String(j)).trim();
+    const stepKeys = this.steps.map(keyOf);
+    this.marks = qsa<HTMLButtonElement>(".story-marks [data-go]", root).flatMap((b) => {
+      const k = stepKeys.indexOf((b.dataset.go || "").trim());
+      b.hidden = k < 0;
+      return k < 0 ? [] : [{ b, k, i: b.querySelector<HTMLElement>(":scope > i") }];
+    });
+    this.countK = root.querySelector<HTMLElement>(".story-count-k");
+    this.countN = root.querySelector<HTMLElement>(".story-count-n");
+    if (this.countN) this.countN.textContent = " / " + pad2(this.n);
+    if (this.countK) this.countK.textContent = pad2(1);
     this.bars = qsa(".story-bar > i", root);
     this.rule = root.querySelector<HTMLElement>(".story-marks-rule > i");
     this.gEls = qsa("[data-story-g]", root);
@@ -873,6 +895,7 @@ class StoryRun {
       get G() { return self.G; }, get k() { return self.k; }, get p() { return self.p; }, get pinned() { return self.pinned; },
       get static() { return self.root.classList.contains("static") ? self.root.dataset.staticReason || "media" : ""; },
       get stick() { return self.stick; }, get D() { return self.D; }, get n() { return self.n; },
+      get count() { return (self.countK?.textContent || "") + (self.countN?.textContent || ""); },
       layout: this.layout,
       frames: () => Object.fromEntries(this.devs.map((d) => [d.name, d.sc.index()]))
     };
@@ -977,7 +1000,8 @@ class StoryRun {
     this.steps.forEach((s) => s.classList.remove("is-current", "is-dim"));
     this.subs.flat().forEach((s) => s.classList.remove("is-current"));
     this.subIdx = this.steps.map(() => -1);
-    this.marks.forEach((m) => { m.b.removeAttribute("aria-current"); m.i?.style.removeProperty("transform"); });
+    this.marks.forEach((m) => { m.b.removeAttribute("aria-current"); m.i?.style.removeProperty("--f"); });
+    if (this.countK) this.countK.textContent = pad2(1);
     this.bars.forEach((b) => b.style.removeProperty("transform"));
     this.rule?.style.removeProperty("transform");
     this.gEls.forEach((e) => e.style.removeProperty("--g"));
@@ -1030,7 +1054,7 @@ class StoryRun {
     if (stick === null) { this.fail("fit", "the stage does not fit this viewport"); return; }
     /* Nothing the reader needs may be clipped by a stage of fixed height. */
     if (H <= svh + 1) {
-      const parts = [this.stage.querySelector(".story-steps"), this.stage.querySelector(".story-marks"), ...qsa(".story-device-box", this.stage)].filter(rendered);
+      const parts = [this.stage.querySelector(".story-steps"), this.stage.querySelector(".story-marks"), this.stage.querySelector(".story-copy"), this.stage.querySelector(".story-cta"), ...qsa(".story-device-box", this.stage)].filter(rendered);
       const bad = parts.find((el) => { const b = el.getBoundingClientRect(); return b.bottom > st.bottom + 1 || b.top < st.top - 1; });
       if (bad) { this.fail("fit", `.${bad.className.split(" ")[0]} overflows the stage`); return; }
     }
@@ -1137,7 +1161,8 @@ class StoryRun {
       for (const [st, i] of this.subKeys(kNow)) if (t >= st - 1e-9) si = i;
       if (si !== this.subIdx[kNow]) { this.subIdx[kNow] = si; subs.forEach((s) => s.classList.toggle("is-current", Number(s.dataset.sub) === si)); }
     }
-    for (const m of this.marks) if (m.i) put(this.c, m.i, "transform", `scaleX(${(m.k < kNow ? 1 : m.k > kNow ? 0 : t).toFixed(4)})`);
+    /* E1: each mark's fill is --f (0 to 1); the CSS maps it to scaleX (bars, the narrow rail) or scaleY (the wide rail). */
+    for (const m of this.marks) if (m.i) put(this.c, m.i, "--f", (m.k < kNow ? 1 : m.k > kNow ? 0 : t).toFixed(4));
     const prog = ((this.cum[kNow] + t * this.w[kNow]) / this.W).toFixed(4);
     for (const b of this.bars) put(this.c, b, "transform", `scaleX(${prog})`);
     if (this.rule) put(this.c, this.rule, "transform", `scaleX(${(G / n).toFixed(4)})`);
@@ -1157,6 +1182,7 @@ class StoryRun {
     this.root.dataset.k = String(k);
     this.steps.forEach((s, j) => { s.classList.toggle("is-current", j === k); s.classList.toggle("is-dim", j !== k); });
     this.marks.forEach((m) => { if (m.k === k) m.b.setAttribute("aria-current", "step"); else m.b.removeAttribute("aria-current"); });
+    if (this.countK) this.countK.textContent = pad2(k + 1);
     if (this.subs[k].length && this.subIdx[k] < 0) { this.subIdx[k] = 0; this.subs[k].forEach((s) => s.classList.toggle("is-current", Number(s.dataset.sub) === 0)); }
     if (this.day) {
       const last = k === this.n - 1;
@@ -1255,13 +1281,18 @@ function stories() {
     runs.forEach((r, i) => {
       r?.destroy();
       const el = els[i];
-      if (mq.matches) { runs[i] = new StoryRun(el, i); return; }
+      /* E3: data-story-layouts="wide" (a list of wide, narrow) keeps a story to those layouts; in any other it is
+       * static with the reason "layout" (the IOS hero under 1069 wide). */
+      const allowed = (el.dataset.storyLayouts || "").split(/[\s,]+/).filter(Boolean);
+      const layoutOk = !allowed.length || allowed.includes(wq.matches ? "wide" : "narrow");
+      if (mq.matches && layoutOk) { runs[i] = new StoryRun(el, i); return; }
       runs[i] = null;
+      const reason = mq.matches ? "layout" : "media";
       el.classList.add("static");
       el.classList.remove("is-live", "is-pinned", "is-anchored");
-      el.dataset.staticReason = "media";
+      el.dataset.staticReason = reason;
       delete el.dataset.layout;
-      (storyApi as any)[el.dataset.story || "story-" + i] = { static: "media", G: 0, k: -1, p: 0, pinned: false, layout: "static", frames: () => ({}) };
+      (storyApi as any)[el.dataset.story || "story-" + i] = { static: reason, G: 0, k: -1, p: 0, pinned: false, layout: "static", count: "", frames: () => ({}) };
     });
     kick();
   };

@@ -232,7 +232,7 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
 
   <!-- 2.3.8 The filter: an ink bleed -->
   <section class="ac-filter" data-tone="ink">
-    <i class="lamp grain" aria-hidden="true" style="--lx:15%;--ly:0%;--la:.1"></i>
+    <i class="lamp lamp-teal grain" aria-hidden="true" style="--lx:15%;--ly:0%;--la:.1"></i>
     <div class="wrap ac-filter-wrap">
       <i class="ac-rule ac-filter-rule rule-draw-v" aria-hidden="true" style="--d:.5s"></i>
       <div class="grid">
@@ -357,10 +357,13 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
 
   /* ── 2.3.8 The filter ───────────────────────────────────────────────── */
   .ac-filter { padding-block: var(--sec-l); overflow: hidden; }
-  /* The margin rule returns for the section's full height (the wrap's top and bottom reach past the section padding), at .35, fading in at the top. */
+  /* The margin rule returns for the section's full height (the wrap's top and bottom reach past the section padding), fading in at the top.
+   * Ivory, not gold: the close is cream, teal and ink only, its italics and eyebrow ivory and its lamp a white glow (BRAND_FIX S5). */
   .ac-filter-wrap { position: relative; }
-  .ac-filter-rule { top: calc(-1 * var(--sec-l)); bottom: calc(-1 * var(--sec-l)); background: linear-gradient(180deg, transparent, rgba(201,171,102,.35) 120px); }
+  .ac-filter-rule { top: calc(-1 * var(--sec-l)); bottom: calc(-1 * var(--sec-l)); background: linear-gradient(180deg, transparent, rgba(247,244,238,.3) 120px); }
   .ac-filter-line { margin-top: var(--lead-gap); color: var(--fg-2); }
+  /* Without the script the close keeps the eyebrow the scripted page gives it: ivory at .7, like the italics' ivory. */
+  html.no-js .ac-filter .eyebrow { color: rgba(247,244,238,.7); }
 
   /* ── Tablet ──────────────────────────────────────────────────────────── */
   @media (max-width: 1068px) {

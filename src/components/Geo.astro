@@ -1,6 +1,7 @@
 ---
 /**
- * The mark geometry (1.5 item 6): a ring, a crosshair trimmed to the ring, a 4 px point at the centre,
+ * The mark geometry (1.5 item 6): a ring, a crosshair run past the ring to the viewBox edge (as the brand
+ * mark runs it past its ring, BRAND_FIX I8), a 4 px point at the centre,
  * in a 1100 viewBox, drawn by stroke-dashoffset when it arrives. It sits at z-index 0, under the copy
  * (keep the copy in a positioned wrapper at z-index 1; a bleed's .wrap already is).
  *
@@ -32,7 +33,7 @@ const place = [
 ---
 <svg class={`geo ${ringsOnly ? "geo-rings" : ""} ${className}`.replace(/\s+/g, " ").trim()} viewBox="-550 -550 1100 1100" style={`color:${color};--geo-o:${opacity};--geo-size:${size}px;--dur:1600ms;${place}${style}`} data-geo data-draw="enter" aria-hidden="true" focusable="false">
   <circle class="ring draw-line" cx="0" cy="0" r="480"></circle>
-  {!ringsOnly && <path class="draw-line" d="M-480 0H480" style="--d:.15s"></path>}
-  {!ringsOnly && <path class="draw-line" d="M0-480V480" style="--d:.3s"></path>}
+  {!ringsOnly && <path class="draw-line" d="M-540 0H540" style="--d:.15s"></path>}
+  {!ringsOnly && <path class="draw-line" d="M0-540V540" style="--d:.3s"></path>}
   {!ringsOnly && <circle class="dot" cx="0" cy="0" r="4"></circle>}
 </svg>

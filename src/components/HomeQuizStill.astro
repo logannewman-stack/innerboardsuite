@@ -1,16 +1,19 @@
 ---
 /**
- * The quiz still life (BUILD_SPEC 2.1.4, SCROLL_SPEC S3): a linen mat with a
- * whisper of blush (the only blush on the site), the quiz phone standing on
- * it and the drawn toggle card leaning behind the phone's lower left. It is
- * the device box of the home quiz's scroll story: as the reader scrolls, the
+ * The quiz still life (BUILD_SPEC 2.1.4, STORY_V2 2.4): a warm blush mat with
+ * a touch of gold (BRAND_FIX S8), the quiz phone standing on it and the drawn
+ * toggle card tucked behind the phone's lower left, toward the copy. It is the
+ * device box of the home quiz's step layout story (data-kind="mat",
+ * data-side="right"): on laptops it stands at the right of the stage with the
+ * story's rail riding inside it at its right edge; on tablets and phones it is
+ * the top of the stage with the rail row under it. As the reader scrolls, the
  * phone shows question one, then the result, then the result scrolls inside
  * the phone to the other five patterns while the card's Approval switch turns
  * off (the mat carries data-story-g, so the switch reads the story's --g; the
  * page's CSS scrubs it). In the static layout (no script, reduced motion, a
- * short or landscape screen) the mat is not shown and each benefit carries
- * its own figure. The page passes the phone's frames (the benefits' static
- * figures use the same ones) and sizes the mat and the phone.
+ * short or landscape screen) the mat is not shown and each benefit carries its
+ * own figure. The page passes the phone's frames (the benefits' static figures
+ * use the same ones) and sizes the mat and the phone.
  */
 import ToggleCard from "./ToggleCard.astro";
 import PhoneFrame from "./PhoneFrame.astro";
