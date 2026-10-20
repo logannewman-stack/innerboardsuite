@@ -308,15 +308,25 @@ function lit() {
 }
 
 /* ── 1.7.5 Page tone ────────────────────────────────────────────────────── */
+/* The theme is the tone of the last section whose top has passed its line: 75% of the viewport for a
+ * dark bleed (so its copy is never read on the wrong ground), 50% for a light section (so a bleed holds
+ * until the next light section is well in), or the section's own `data-tone-at` fraction. The footer
+ * paints its own colour and is skipped, so the last section's tone holds to the end of the page. */
 const themeHooks: Array<() => void> = [];
+function toneLine(s: HTMLElement) {
+  const at = parseFloat(s.dataset.toneAt || "");
+  if (at >= 0 && at <= 1) return at;
+  return DARK.has(s.dataset.tone || "") ? 0.75 : 0.5;
+}
 function tone() {
-  const sections = qsa("[data-tone]");
+  const sections = qsa("[data-tone]").filter((s) => !s.closest("footer, .site-footer"));
   if (!sections.length) return;
   register({ frame() {
     let t = sections[0].dataset.tone || html.dataset.theme || "cream";
     for (const s of sections) {
-      if (s.getBoundingClientRect().top > vh * 0.5) break;
-      t = s.dataset.tone || t;
+      const top = s.getBoundingClientRect().top;
+      if (top > vh) break;
+      if (top <= vh * toneLine(s)) t = s.dataset.tone || t;
     }
     if (html.dataset.theme !== t) { html.dataset.theme = t; themeHooks.forEach((h) => h()); }
   } });
@@ -336,13 +346,26 @@ function header() {
 
   /* Tone: 21 samples along the bottom edge, majority wins, 110 ms debounce. */
   let debounce = 0;
-  /* A surface (plate, panel, paper, mat, tile, a device's screen or bezel)
-   * paints its own colour and decides for itself: `data-surface` when it says
-   * so, else by class. A bleed section paints nothing, so its tone is the
-   * page's current theme, which is what the body is actually showing under
-   * the bar (the day stage's sky follows its section, so it is not listed). */
-  const SURFACE = "[data-tone], [data-surface], .paper, .paper-teal, .mat, .mat-blush, .tile, .phone-screen, .win-screen, .phone, .win";
-  const LIGHT = ".paper, .paper-teal, .mat, .mat-blush, .tile, .phone-screen, .win-screen";
+  /* A surface (plate, panel, paper, mat, tile, a device's screen or bezel,
+   * the footer) paints its own colour and decides for itself: `data-surface`
+   * when it says so, else by class. A bleed section's tone is the page's
+   * current theme, which is what the body (and the section's floor) is
+   * actually showing under the bar (the day stage's sky follows its section,
+   * so it is not listed). */
+  const SURFACE = "[data-tone], [data-surface], .paper, .paper-teal, .mat, .mat-blush, .tile, .phone-screen, .win-screen, .phone, .win, .site-footer";
+  const LIGHT = ".paper, .paper-teal, .mat, .mat-blush, .tile, .phone-screen, .win-screen, .site-footer";
+  /* The colour a dark sample sits on: a bleed is the page's own tone (the bar then uses --bg, which cross
+   * fades with the page); a dark surface is its painted background colour, if it has a plain one. */
+  const paintOf = (src: Element): string => {
+    if (src.matches("[data-tone]") && !src.hasAttribute("data-surface")) return "";
+    for (let n: Element | null = src; n && n !== document.body; n = n.parentElement) {
+      const c = getComputedStyle(n).backgroundColor;
+      const a = /rgba?\(([^)]*)\)/.exec(c || "")?.[1].split(",").map((v) => parseFloat(v));
+      if (a && a.length >= 3 && (a.length < 4 || a[3] >= 0.5)) return c;
+      if (n.matches("[data-tone]")) break;
+    }
+    return DARK.has(html.dataset.theme || "") ? "" : "#0d1a2d";
+  };
   const isDark = (src: Element) => {
     const surface = src.getAttribute("data-surface");
     if (surface) return surface === "dark";
@@ -358,18 +381,27 @@ function header() {
     const y = (hidden ? el.offsetHeight : el.getBoundingClientRect().bottom) + 4;
     const w = html.clientWidth;
     let dark = 0;
+    const paints = new Map<string, number>(), memo = new Map<Element, string>();
     for (let i = 0; i < 21; i++) {
       const stack = document.elementsFromPoint(w * (0.1 + 0.04 * i), y);
       for (const node of stack) {
         if (el.contains(node) || (panel && panel.contains(node))) continue;
         const src = node.closest(SURFACE);
-        if (src && isDark(src)) dark++;
+        if (src && isDark(src)) {
+          dark++;
+          let p = memo.get(src);
+          if (p === undefined) { p = paintOf(src); memo.set(src, p); }
+          paints.set(p, (paints.get(p) || 0) + 1);
+        }
         break;
       }
     }
     const want = dark >= 11;
+    let paint = "", most = 0;
+    paints.forEach((n, p) => { if (n > most) { most = n; paint = p; } });
     clearTimeout(debounce);
     debounce = window.setTimeout(() => {
+      if (want) { if (paint) el.style.setProperty("--hdr-bg", paint); else el.style.removeProperty("--hdr-bg"); }
       if (el.classList.contains("is-dark") !== want) {
         el.classList.toggle("is-dark", want);
         try { sessionStorage.setItem("ib.nav", want ? "dark" : "light"); } catch { /* no storage */ }
@@ -433,10 +465,18 @@ function header() {
 /* ── 1.7.7 Scene engine ─────────────────────────────────────────────────── */
 type Step = (string | number)[];
 const scenes = new Map<Element, Scene>();
+/* The camera never crops a capture deeper than its side padding: the visible part always holds x 8% to 92%
+ * of the capture, which caps the scale at 1 / .84 (1.19) and clamps the origin; under 260 px of screen width
+ * the scale is capped at 1.08. */
+const CAM_MAX = 1.19, CAM_SMALL = 1.08, CAM_SMALL_W = 260, CAM_PAD = 8;
+const SCENE_EASE = "cubic-bezier(.45, 0, .2, 1)", OUT_EASE = "cubic-bezier(.22, .61, .36, 1)";
 class Scene {
   el: HTMLElement; screen: HTMLElement | null; cam: HTMLElement | null; cur: HTMLElement | null; tap: HTMLElement | null;
   frames: HTMLImageElement[]; steps: Step[] | null = null; loopMs = 0; rest = 0; auto = false; visible = false;
   run = 0; timers: number[] = []; io: IntersectionObserver | null = null; pending = 0; wasT = 0;
+  /* The running state change, the last tap or click (y in % of the screen, and when), the cursor's y, the
+   * camera's target (scale and vertical origin) and the edge mask's timer. */
+  anims: Animation[] = []; tapY = 0; tapT = -1e9; curY = 0; camS = 1; camOy = 50; camT = 0;
   /* data-flow-delay: the first play waits this many ms after the page bound (a hero scene that should
    * start 1.6 s after load); later entries wait the usual 300 ms. */
   delay = 0; born = performance.now();
@@ -492,11 +532,14 @@ class Scene {
     this.resetCam();
     if (resetFrames) this.show(this.rest, true);
   }
-  destroy() { this.halt(); this.io?.disconnect(); }
+  destroy() { this.halt(); this.settle(); cancel(this.camT); this.io?.disconnect(); }
   /* Only the camera is reset here, and only when it has moved, so a frame
-   * crossfade started in the same tick (a step change, a preview) still
-   * animates over its 320 ms instead of being cut by the reset class. */
+   * change started in the same tick (a step change, a preview) still plays
+   * its wipe or dip instead of being cut by the reset class. */
   resetCam() {
+    cancel(this.camT);
+    this.screen?.classList.remove("cam-on");
+    this.camS = 1; this.camOy = 50;
     if (!this.cam || !this.cam.style.transform) return;
     const cam = this.cam;
     cam.classList.add("cam-reset");
@@ -516,9 +559,11 @@ class Scene {
       case "hold": next(n(1)); break;
       case "cam": this.camTo(Math.min(1.3, n(1)), n(2), n(3), n(4)); next(n(4)); break;
       case "move": this.cur?.classList.add("on"); this.place(n(1), n(2), n(3)); next(n(3)); break;
-      case "click": this.cur?.classList.add("press"); this.later(150, () => this.cur?.classList.remove("press"), id); next(150); break;
+      case "click": this.cur?.classList.add("press"); this.tapY = this.curY; this.tapT = performance.now(); this.later(150, () => this.cur?.classList.remove("press"), id); next(150); break;
       case "tap": this.tapAt(n(1), n(2)); next(420); break;
-      case "state": this.show(n(1)); next(n(2)); break;
+      /* A state change wipes the new frame in: from the tap or click point's y when one came within the last
+       * 1.5 s (mapped through the camera), else from the top. */
+      case "state": this.show(n(1), false, performance.now() - this.tapT < 1500 ? this.toFrameY(this.tapY) : 0); next(n(2)); break;
       case "end": this.end(id); break;
       default: next(0);
     }
@@ -529,6 +574,7 @@ class Scene {
     if (this.loopMs > 0) this.later(this.loopMs, () => this.play(), id);
   }
   place(x: number, y: number, ms: number) {
+    this.curY = y;
     for (const t of [this.cur, this.tap]) {
       if (!t) continue;
       t.style.setProperty("--cd", ms + "ms");
@@ -536,12 +582,29 @@ class Scene {
       t.style.setProperty("--ty", y + "cqh");
     }
   }
+  /* The camera: scale s about the point (ox, oy) in % of the capture. Clamped so a crop only ever falls in
+   * the capture's side padding (CAM_MAX, CAM_SMALL, CAM_PAD above); while it is in, the screen's 14 px edge
+   * mask is on (.cam-on), and it goes off once the camera is back at 1. */
   camTo(s: number, ox: number, oy: number, ms: number) {
     if (!this.cam) return;
+    const w = this.screen ? this.screen.clientWidth : 0;
+    s = Math.max(1, Math.min(CAM_MAX, s));
+    if (w > 0 && w < CAM_SMALL_W) s = Math.min(s, CAM_SMALL);
+    if (s > 1) {
+      const k = 1 - 1 / s, lo = (100 - CAM_PAD - 100 / s) / k, hi = CAM_PAD / k;
+      ox = lo <= hi ? Math.min(hi, Math.max(lo, ox)) : 50;
+    }
+    this.camS = s; this.camOy = oy;
     this.cam.style.setProperty("--cd", ms + "ms");
     this.cam.style.transform = `translate(${(ox * (1 - s)).toFixed(3)}%, ${(oy * (1 - s)).toFixed(3)}%) scale(${s})`;
+    cancel(this.camT);
+    if (s > 1.001) this.screen?.classList.add("cam-on");
+    else this.camT = after(ms, () => this.screen?.classList.remove("cam-on"));
   }
+  /* A y on the screen (% of its height) as a y on the frame under the current camera. */
+  toFrameY(y: number) { const s = this.camS; return Math.min(100, Math.max(0, (y - (1 - s) * this.camOy) / s)); }
   tapAt(x: number, y: number) {
+    this.tapY = y; this.tapT = performance.now();
     if (!this.tap) return;
     this.tap.style.setProperty("--tx", x + "cqw");
     this.tap.style.setProperty("--ty", y + "cqh");
@@ -549,19 +612,40 @@ class Scene {
     void this.tap.offsetWidth;
     this.tap.classList.add("go");
   }
-  show(i: number, instant = false) {
+  /* Show frame i. Two captures are never both visible through each other:
+   * - `from` given (a y in % of the frame, 0 is the top): a wipe. The new frame is revealed by clip-path
+   *   from a zero height band at that y to the full frame over 380 ms (--scene), over the old one, which
+   *   stays opaque underneath until it is covered. Scene "state" steps and the loop phone's own cycle.
+   * - no `from`: a dip. The old frame is gone by 140 ms and the new one fades in from 110 ms (260 ms), so
+   *   they are never both above .2 at once. The day stage's step changes and the previews.
+   * - instant: a cut (rest frames, stops, reduced motion). */
+  show(i: number, instant = false, from?: number) {
     const target = this.frames[i];
     if (!target) return;
     const on = this.frames.find((f) => f.classList.contains("on"));
     if (on === target) return;
+    this.settle();
     if (instant) this.el.classList.add("reset");
-    cancel(this.wasT);
-    this.frames.forEach((f) => f.classList.remove("was"));
-    if (on) { on.classList.remove("on"); if (!instant) on.classList.add("was"); }
+    if (on) on.classList.remove("on");
     target.classList.add("on");
-    if (instant) requestAnimationFrame(() => this.el.classList.remove("reset"));
-    else this.wasT = after(400, () => on?.classList.remove("was"));
     this.syncCaps(i);
+    if (instant) { requestAnimationFrame(() => this.el.classList.remove("reset")); return; }
+    if (!on || reduced() || typeof target.animate !== "function") return;
+    on.classList.add("was");
+    if (from !== undefined) {
+      const y = Math.min(100, Math.max(0, from)).toFixed(2);
+      this.anims.push(target.animate([{ clipPath: `inset(${y}% 0% ${(100 - Number(y)).toFixed(2)}% 0%)` }, { clipPath: "inset(0% 0% 0% 0%)" }], { duration: 380, easing: SCENE_EASE }));
+    } else {
+      this.anims.push(on.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140, easing: OUT_EASE, fill: "forwards" }));
+      this.anims.push(target.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 260, delay: 110, easing: OUT_EASE, fill: "backwards" }));
+    }
+    this.wasT = after(420, () => this.settle());
+  }
+  /* End any running change at once: the shown frame whole, the old one hidden. */
+  settle() {
+    cancel(this.wasT);
+    if (this.anims.length) { this.anims.forEach((a) => a.cancel()); this.anims = []; }
+    this.frames.forEach((f) => f.classList.remove("was"));
   }
   /* The caption and the pager beside a window follow the frame it shows. */
   syncCaps(i: number) {
@@ -598,16 +682,17 @@ function loops() {
     let i = 0, active = false, inView = false, pinned: number | null = null, timer = 0, resume = 0;
     let stepTimers: number[] = [];
     const clear = () => { cancel(timer); stepTimers.forEach(cancel); stepTimers = []; };
-    const stepTo = (k: number) => {
+    /* The cycle wipes the phone (from the top, or from a tap's y); a row pinned by hover or focus dips. */
+    const stepTo = (k: number, user = false) => {
       i = k;
       light(k);
       const row = rows[k];
       const f = row.dataset.loopFrame;
-      if (f !== undefined && f !== "none") scene.show(Number(f));
+      if (f !== undefined && f !== "none") scene.show(Number(f), false, user ? undefined : 0);
       const tap = row.dataset.loopTap;
       if (tap) {
         const [x, y, delay, frame] = tap.split(",").map(Number);
-        stepTimers.push(after(delay, () => { scene.tapAt(x, y); stepTimers.push(after(220, () => scene.show(frame))); }));
+        stepTimers.push(after(delay, () => { scene.tapAt(x, y); stepTimers.push(after(220, () => scene.show(frame, false, scene.toFrameY(y)))); }));
       }
     };
     const schedule = () => {
@@ -632,7 +717,7 @@ function loops() {
     observe(io);
     listen(document, "visibilitychange", sync);
     rows.forEach((row, j) => {
-      const pin = () => { pinned = j; cancel(resume); clear(); stepTo(j); };
+      const pin = () => { pinned = j; cancel(resume); clear(); stepTo(j, true); };
       const unpin = () => { pinned = null; cancel(resume); resume = after(1500, () => { if (active && pinned === null) schedule(); }); };
       listen(row, "pointerenter", pin);
       listen(row, "focusin", pin);

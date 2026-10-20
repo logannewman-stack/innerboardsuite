@@ -9,8 +9,10 @@
  * the room, The certification, Your practice, Who INQ is for, Your
  * investment, How to get started, Questions people ask, the close. The cream
  * and teal system is the Academy page's. The page's object with depth is the
- * investment card; its drawn moments are the four rules of the hero, the
- * loop glyph on teal and the three dots on one line. No app captures here.
+ * investment card; its drawn moments are the loop glyph drawn in teal in the
+ * hero's right columns, the four rules under the hero, the loop glyph again on
+ * teal (stacked over its pull line) and the three dots on one line. No app
+ * captures here.
  * The module and step numerals of the first build are gone: the order is
  * the sequence, as the mock-up draws it.
  */
@@ -112,6 +114,9 @@ const faq = [
           </div>
           <p class="t-s-pull inq-motto rise" style="--d:.7s">Learn it. Live it. Lead it.</p>
         </div>
+        <div class="inq-hero-art" aria-hidden="true">
+          <InqLoopGlyph tone="teal" class="inq-hero-glyph" draw="load" delay={500} follow ease={[0.65, 0, 0.35, 1]} />
+        </div>
       </div>
       <ul class="inq-values grid" role="list">
         {values.map((v, i) => (
@@ -169,8 +174,8 @@ const faq = [
           <p class="t-state inq-why-state" data-lit><b class="lb">People don't stay stuck because they don't know what to do.</b> They stay stuck because of the thought they keep thinking, the feeling it creates, and the action that follows, until the result proves the thought right. INQ teaches you to see that loop, help someone see it for themselves, and help them change it.</p>
         </div>
         <div class="inq-why-aside" data-reveal-at="0.6">
-          <InqLoopGlyph />
-          <p class="t-s-pull inq-why-pull rise" style="--d:2s">More information doesn't change that loop. Neither does motivation.</p>
+          <InqLoopGlyph class="inq-why-glyph" />
+          <p class="t-s-pull inq-why-pull rise" style="--d:.9s">More information doesn't change that loop. Neither does motivation.</p>
         </div>
       </div>
     </div>
@@ -227,18 +232,19 @@ const faq = [
   <!-- ── In the room (2.4.6) ──────────────────────────────────────────── -->
   <section class="inq-sec" data-tone="ac-cream">
     <div class="wrap">
-      <div class="grid inq-two">
-        <div class="inq-two-head">
+      <div class="grid">
+        <div class="inq-head">
           <p class="eyebrow rise">In the room</p>
           <h2 class="t-m wipe">What you'll be able to do</h2>
           <p class="t-s-pull inq-room-pull rise" style="--d:.3s">Less guessing. More reps. Coaching you trust because you've done it.</p>
         </div>
-        <ul class="inq-two-body inq-outcomes" role="list">
-          <i class="rule-draw-v inq-outcomes-edge" aria-hidden="true"></i>
+      </div>
+      <div class="inq-outcomes-box">
+        <i class="rule-draw-v inq-outcomes-edge" aria-hidden="true"></i>
+        <ul class="grid inq-outcomes" role="list">
           {outcomes.map((o, i) => (
-            <li class="rise" style={`--d:${200 + i * 60}ms`}><i class="rule-draw inq-hair" aria-hidden="true"></i>{o}</li>
+            <li class="rise" style={`--d:${200 + i * 60}ms`}><i class="rule-draw inq-hair" aria-hidden="true"></i>{o}{(i === 3 || i === outcomes.length - 1) && <i class="rule-draw inq-hair inq-hair-b" aria-hidden="true" style={`--d:${260 + i * 60}ms`}></i>}</li>
           ))}
-          <i class="rule-draw inq-hair inq-hair-last" aria-hidden="true" style="--d:620ms"></i>
         </ul>
       </div>
     </div>
@@ -264,8 +270,10 @@ const faq = [
         ))}
         <li class="rise-obj" style="--d:600ms">
           <div class="paper-teal inq-module inq-module-bonus">
-            <p class="eyebrow">Bonus</p>
-            <h3 class="t-title inq-module-name">The Entrepreneurial Path</h3>
+            <div class="inq-module-head">
+              <p class="eyebrow">Bonus</p>
+              <h3 class="t-title inq-module-name">The Entrepreneurial Path</h3>
+            </div>
             <p class="t-body inq-module-body">Turn the work into a practice: who you serve, your offers, your pricing, and how you talk about what you do.</p>
           </div>
         </li>
@@ -369,7 +377,7 @@ const faq = [
   </section>
 
   <!-- ── Questions people ask (2.4.12) ────────────────────────────────── -->
-  <section id="faq" class="inq-sec" data-tone="ac-cream">
+  <section id="faq" class="inq-sec inq-faq-sec" data-tone="ac-cream" data-surface="light">
     <div class="wrap">
       <div class="grid inq-faq">
         <div class="inq-faq-head">
@@ -412,17 +420,28 @@ const faq = [
   .theme-teal b.lb { font-weight: inherit; }
 
   /* 2.4.1 Hero */
-  /* The h1 is four lines at every desktop width ("Coach the transformation"
-   * alone is 11.5em), so the copy starts 14 px above the spec's y 162, the
-   * motto sits 20 px under the buttons and the values row --head-gap + 8
-   * under it: at 1440 x 900 the four rules draw and the names rise inside
-   * the first screen; at 1280 x 800 the rules do. The rule's box reaches
-   * 47 px above its line so the row's entrance is observed while the line is
-   * still at the bottom edge of the viewport. */
-  .inq-hero { padding-top: calc(var(--nav-h) + 76px); padding-bottom: var(--sec); }
+  /* On this page the h1 sets at about 78 px in an 11.8em measure ("Coach the
+   * transformation" is 11.6em, so the copy column runs to column 10), so it is
+   * three lines at desktop ("Coach the transformation / that actually /
+   * changes people.", the italic clause still its own block), and the four
+   * value rules draw inside the first screen at 1440 x 900 and 1280 x 800.
+   * The eyebrow's top sits at y 150. The rule's box reaches 47 px above its
+   * line so the row's entrance is observed while the line is still at the
+   * bottom edge of the viewport.
+   *
+   * The drawn object of the first screen: the loop glyph in teal in columns
+   * 9 to 12, 400 px at 1440 and centred near x 1180, y 420 (its box ends one
+   * gutter past the wrap, and its ring's foot sits level with the buttons' foot), drawing on load at 500 ms over 1.8 s with its five dots
+   * popping as the pen reaches them. From 1068 down it sits top right, clear
+   * of the copy; on phones it goes behind the h1's right edge at low opacity,
+   * under the copy. */
+  .inq-hero { padding-top: calc(var(--nav-h) + 78px); padding-bottom: var(--sec); overflow-x: clip; }
   .inq-hero > .lamp { z-index: 0; }
-  .inq-hero-copy { grid-column: 1 / span 9; }
-  .inq-h1 { max-width: 10em; margin: 0; }
+  .inq-hero-copy { grid-column: 1 / span 10; grid-row: 1; position: relative; z-index: 1; isolation: isolate; }
+  .inq-h1 { max-width: 11.8em; margin: 0; }
+  @media (min-width: 735px) { .inq-h1 { font-size: clamp(44px, min(5.4vw, 9.4vh), 96px); } }
+  .inq-hero-art { grid-column: 9 / -1; grid-row: 1; align-self: end; justify-self: end; margin-right: calc(-1 * var(--gutter)); position: relative; z-index: 0; pointer-events: none; }
+  .inq-hero-glyph { display: block; width: clamp(300px, 27.8vw, 400px); height: auto; aspect-ratio: 1; overflow: visible; }
   .inq-lede { margin-top: var(--lead-gap); color: var(--fg-2); }
   .inq-motto { margin-top: 20px; color: var(--fg); }
   .inq-values { list-style: none; margin: calc(var(--head-gap) + 8px) 0 0; padding: 0; row-gap: 40px; }
@@ -453,10 +472,15 @@ const faq = [
   .inq-why { padding-block: var(--sec-l); overflow: hidden; }
   .inq-why-main { grid-column: 1 / span 8; }
   .inq-why-state { margin-top: var(--head-gap); }
+  /* The aside stacks, bottom aligned to the statement: the glyph at 220 px at
+   * the top of columns 10 to 12 (its ring's left edge on the column's left
+   * edge), the white hairline 28 px under it, the pull line 20 px under that.
+   * Nothing overlaps a word. The pull line arrives .9 s into the gate, while
+   * the arc is still closing, so the glyph never sits alone. */
   .inq-why-aside { grid-column: 10 / span 3; align-self: end; position: relative; }
-  .inq-why-pull { position: relative; z-index: 1; margin: 0; padding-top: 24px; border-top: 1px solid var(--line); color: var(--fg); }
-  .inq-glyph { position: absolute; left: 50%; top: 50%; width: 320px; height: 320px; translate: -50% -50%; z-index: 0; pointer-events: none;
-    -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 55%, transparent 80%); mask-image: radial-gradient(circle at 50% 50%, #000 55%, transparent 80%); }
+  .inq-why-glyph { display: block; width: 220px; height: 220px; margin-left: calc(-220px * 40 / 320); overflow: visible; pointer-events: none; }
+  .inq-why-glyph .draw-line { stroke-width: 1.45; }
+  .inq-why-pull { margin: 28px 0 0; padding-top: 20px; border-top: 1px solid var(--line); color: var(--fg); }
 
   /* 2.4.4, 2.4.6, 2.4.8: the two column sections */
   .inq-two { align-items: start; }
@@ -464,13 +488,20 @@ const faq = [
   .inq-two-body { grid-column: 7 / span 6; padding-top: calc(var(--fs-eyebrow) + var(--eyebrow-gap)); }
   .inq-get-body { color: var(--fg-2); }
   .inq-get-body p + p { margin-top: 1em; }
+  /* 2.4.6 In the room: the h2 and the italic across columns 1 to 8, then the
+   * seven outcomes under them as two ruled columns (1 to 6 and 7 to 12, four
+   * rows and three), rows shared so the hairlines run level across. The teal
+   * edge line belongs to the list's box, which has no padding, so it starts
+   * on the first hairline and ends on the fourth row's closing one. */
   .inq-room-pull { margin-top: var(--lead-gap); color: var(--fg-2); }
-  .inq-outcomes { list-style: none; margin: 0; position: relative; padding-left: 24px; }
-  .inq-outcomes li { position: relative; padding: 16px 0; font-family: var(--font-sans); font-size: var(--fs-lead); line-height: 1.45; color: var(--fg); text-wrap: pretty; }
-  .inq-hair { display: block; position: absolute; left: -24px; right: 0; top: 0; height: 1px; background: var(--line); }
-  .inq-hair-last { top: auto; bottom: 0; left: 0; }
-  .inq-outcomes-edge { display: block; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: #1e5b57; }
-  .inq-outcomes .inq-outcomes-edge.rule-draw-v { transition-duration: 1.3s; }
+  .inq-outcomes-box { position: relative; margin-top: var(--head-gap); }
+  .inq-outcomes { list-style: none; margin: 0; padding: 0; grid-template-rows: repeat(4, auto); grid-auto-flow: column; }
+  .inq-outcomes li { grid-column: 1 / span 6; position: relative; padding: 16px 0 16px 24px; font-family: var(--font-sans); font-size: var(--fs-lead); line-height: 1.45; color: var(--fg); text-wrap: pretty; }
+  .inq-outcomes li:nth-child(n + 5) { grid-column: 7 / span 6; }
+  .inq-hair { display: block; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--line); }
+  .inq-hair-b { top: auto; bottom: 0; }
+  .inq-outcomes-edge { display: block; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: #1e5b57; z-index: 1; }
+  .inq-outcomes-box .inq-outcomes-edge.rule-draw-v { transition-duration: 1.3s; transition-delay: .2s; }
   .inq-practice-head { grid-column: 1 / span 6; }
   .inq-practice-lead { margin-top: var(--lead-gap); max-width: 28em; color: var(--fg-2); }
   .inq-practice-list { grid-column: 8 / span 5; padding-top: calc(var(--fs-eyebrow) + var(--eyebrow-gap)); }
@@ -487,15 +518,19 @@ const faq = [
   .inq-method-body { margin-top: 18px; color: var(--fg-2); }
   .inq-method-close { margin-top: 72px; }
   .inq-statement { color: var(--fg); margin: 0; max-width: 22em; }
-  .inq-statement em { font-style: italic; font-weight: 400; color: var(--accent); }
+  .inq-statement em { font-style: italic; font-weight: 400; }
   .inq-statement-line { margin-top: 16px; color: var(--fg-2); }
 
   /* 2.4.7 The certification */
-  .inq-modules { list-style: none; margin: var(--head-gap) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-  .inq-modules > li { display: grid; }
-  .inq-module { padding: 32px; min-height: 220px; border-radius: 20px; transition: transform 200ms var(--hover), box-shadow 200ms var(--hover); }
-  .inq-module-name { margin: 0; color: var(--fg); }
-  .inq-module-body { margin-top: 10px; color: var(--fg-2); }
+  /* Each card takes two rows of the list's grid (name, body) and passes them
+   * through as a subgrid, so in every row of three the names share one track
+   * and the bodies start on one line; the cards end with their longest body,
+   * not at a fixed height. The bonus card's eyebrow sits in the name track. */
+  .inq-modules { list-style: none; margin: var(--head-gap) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: auto; gap: 20px; }
+  .inq-modules > li { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 10px; }
+  .inq-module { grid-row: 1 / -1; display: grid; grid-template-rows: subgrid; row-gap: 10px; padding: 32px 28px; border-radius: 20px; transition: transform 200ms var(--hover), box-shadow 200ms var(--hover); }
+  .inq-module-name { margin: 0; color: var(--fg); text-wrap: balance; }
+  .inq-module-body { margin: 0; color: var(--fg-2); }
   .inq-module-bonus .eyebrow { color: #1e5b57; margin-bottom: 12px; }
   @media (hover: hover) and (pointer: fine) {
     .inq-module:hover { transform: translateY(-2px); }
@@ -511,10 +546,17 @@ const faq = [
   .inq-who-line { grid-column: 1 / span 8; margin: 0; color: var(--fg); }
 
   /* 2.4.10 Your investment */
+  /* A lighter border (.18) and a lit top edge over the object shadow, so the
+   * card reads as a thing on the table rather than a bordered box. */
   .inq-invest { padding: 56px; border-radius: 20px; }
+  .inq-invest.paper-teal.paper-white { border-color: rgba(30,91,87,.18); box-shadow: inset 0 1px 0 rgba(255,255,255,.7), var(--sh-object); }
   .inq-invest-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 40px; align-items: start; }
   .inq-invest-l { grid-column: 1 / span 6; }
-  .inq-invest-r { grid-column: 8 / span 5; padding-top: calc(var(--fs-eyebrow) + var(--eyebrow-gap)); }
+  /* "What's included" shares the cap line of "INQ Certification": the eyebrow's
+   * line box and gap, plus the difference between the two cap offsets inside
+   * their line boxes (Display M at 1.04 against Title at 1.2, Fraunces; about
+   * 3 px at 1440, measured from the rendered ink). */
+  .inq-invest-r { grid-column: 8 / span 5; padding-top: calc(var(--fs-eyebrow) + var(--eyebrow-gap) + var(--fs-m) * .19 - var(--fs-title) * .27); }
   .inq-invest-name { margin: 0; color: var(--fg); }
   .inq-price { margin: 20px 0 0; color: var(--fg); }
   /* .wipe trades its .2em margin for .2em padding (net zero) and would swallow
@@ -540,6 +582,14 @@ const faq = [
   .inq-link { display: inline; font-size: inherit; font-weight: 500; line-height: inherit; letter-spacing: 0; color: var(--accent); }
 
   /* 2.4.12 Questions people ask */
+  /* The page turns ink when the close's top passes 75% of the viewport (the
+   * system's line for a dark bleed, so the close's copy is never read on cream),
+   * which is while the questions are still on screen. So this one light section
+   * paints its own ground and keeps its own (light surface) inks: the rows stay
+   * cream and dark when the page goes ink, and the ground feathers into the
+   * close over the empty foot of the section, so they never read as part of the
+   * dark close. On a cream page the ground is the body's colour, so nothing shows. */
+  #faq.inq-faq-sec { background-image: linear-gradient(to bottom, #f7f4ee 0, #f7f4ee calc(100% - 96px), rgba(247,244,238,.86) calc(100% - 72px), rgba(247,244,238,.5) calc(100% - 48px), rgba(247,244,238,.14) calc(100% - 24px), rgba(247,244,238,0) 100%); }
   .inq-faq { align-items: start; }
   .inq-faq-head { grid-column: 1 / span 4; position: sticky; top: 120px; }
   .inq-faq-head h2 { margin: 0; }
@@ -547,6 +597,10 @@ const faq = [
 
   /* 2.4.13 The close */
   .inq-close { padding-block: var(--sec-l); overflow: hidden; text-align: center; }
+  /* The close's lamp and grain fade in over the section's first 200 px, with
+   * its floor, so the grain never starts in a hard line under the questions'
+   * feathered ground; the gold lamp at its foot (50% 100%) is kept. */
+  .inq-close > .lamp { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 200px); mask-image: linear-gradient(to bottom, transparent 0, #000 200px); }
   .inq-close-in { grid-column: 3 / span 8; }
   .inq-close-h2 { margin: 0 auto; }
   .inq-close-line { margin: var(--lead-gap) auto 0; color: var(--fg); max-width: none; }
@@ -556,12 +610,14 @@ const faq = [
   /* Tablet */
   @media (max-width: 1068px) {
     .inq-hero-copy { grid-column: 1 / -1; }
+    /* Tablet: the glyph sits top right, its box ending at the viewport edge,
+     * clear of the h1 (11.6em at 44 to 58 px) and the lede. */
+    .inq-hero-art { position: absolute; right: calc(-1 * var(--gutter)); top: 0; margin: 0; }
+    .inq-hero-glyph { width: clamp(220px, 32vw, 340px); }
     .inq-value { grid-column: span 6; }
     .inq-head { grid-column: 1 / -1; }
     .inq-why-main { grid-column: 1 / -1; }
-    /* Under the statement the glyph reaches 95 px above the aside, so the aside sits 104 px below the statement's last line. */
-    .inq-why-aside { grid-column: 1 / span 7; margin-top: 104px; }
-    .inq-glyph { width: 280px; height: 280px; }
+    .inq-why-aside { grid-column: 1 / span 7; margin-top: 64px; }
     .inq-two-head, .inq-two-body, .inq-practice-head, .inq-practice-list { grid-column: 1 / -1; }
     .inq-two-body, .inq-practice-list { padding-top: 0; margin-top: 40px; }
     .inq-method-col { grid-column: span 12; }
@@ -583,6 +639,12 @@ const faq = [
   /* Phone */
   @media (max-width: 734px) {
     .inq-hero { padding-top: calc(var(--nav-h) + 56px); }
+    /* Phone: 220 px behind the h1's right edge, under the copy, its top at y
+     * 120 of the section (the wrap starts at y 116). The arc is already at .35
+     * and the dots at .7, so .45 here leaves a faint drawn ring (the arc at
+     * about .16) that reads as drawn without competing with the h1. */
+    .inq-hero-art { right: -60px; top: 4px; opacity: .45; }
+    .inq-hero-glyph { width: 220px; }
     .inq-btns { flex-direction: column; }
     .inq-btns .btn { width: 100%; }
     .inq-values { margin-top: calc(var(--head-gap) + 16px); row-gap: 32px; }
@@ -590,11 +652,12 @@ const faq = [
     .inq-panels { margin-top: var(--head-gap); }
     .inq-panel { padding: 28px 24px; }
     .inq-panel:nth-child(1), .inq-panel:nth-child(2) { grid-column: 1 / -1; }
-    .inq-why-aside { grid-column: 1 / -1; margin-top: 80px; }
-    .inq-glyph { width: 240px; height: 240px; }
+    .inq-why-aside { grid-column: 1 / -1; margin-top: 48px; }
     .inq-why-state { margin-top: 32px; }
     .inq-two-body, .inq-practice-list { margin-top: 32px; }
-    .inq-outcomes li { padding: 14px 0; }
+    .inq-outcomes { grid-template-rows: none; grid-auto-flow: row; }
+    .inq-outcomes li, .inq-outcomes li:nth-child(n + 5) { grid-column: 1 / -1; padding: 14px 0 14px 24px; }
+    .inq-outcomes li:nth-child(4) > .inq-hair-b { display: none; }
     .inq-method { padding-top: 24px; row-gap: 32px; }
     .inq-method-name { font-size: 26px; }
     .inq-method-close { margin-top: 56px; }
@@ -613,7 +676,8 @@ const faq = [
     .inq-dot { top: calc(.56em * 1.12 + 2px); top: 8px; }
     .inq-step-v { display: block; position: absolute; left: 4.5px; top: 18px; bottom: -8px; width: 1px; background: #1e5b57; }
     .inq-steps-close { margin-top: 40px; }
-    .inq-faq-list { margin-top: 32px; }
+    /* The list ends 96 px earlier than the section, so its last rows have left the screen before the close turns the page ink. */
+    .inq-faq-list { margin-top: 32px; padding-bottom: 96px; }
     .inq-close-btns { align-items: stretch; }
   }
 </style>

@@ -6,16 +6,18 @@
  * and plays the Coach scene (the ring presses the composer, the draft
  * appears, the home returns). Both are siblings of the copy inside the hero
  * section, which positions them; the section's CSS lives in index.astro.
+ * The phone's width comes from that CSS (about 338 at 1440); the lamp sits
+ * at .2 so the slab reads lit, not as a dark sidebar block.
  */
 import PhoneFrame from "./PhoneFrame.astro";
 ---
 <div class="plate grain hm-plate" data-surface="dark" aria-hidden="true">
-  <i class="lamp" aria-hidden="true" style="--lx:18%;--ly:0%" data-parallax="-48"></i>
+  <i class="lamp" aria-hidden="true" style="--lx:18%;--ly:0%;--la:.2" data-parallax="-48"></i>
 </div>
 <div class="hm-hero-phone rise-obj floor-on" style="--d:.3s">
   <PhoneFrame
     id="hero-phone"
-    width={302}
+    width={338}
     style="--pw:inherit"
     eager
     shadow="dark"

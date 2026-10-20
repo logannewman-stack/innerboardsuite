@@ -3,6 +3,8 @@
  * The stair line beside "How it works" (BUILD_SPEC 2.3.3): a teal hairline
  * running from row one's top to row three's bottom as three vertical
  * segments that step right at each row boundary, drawn as the list enters.
+ * It is a grid item beside the ladder (column 1 at desktop, a 40 px track
+ * below 1069), stretched to the ladder's height.
  *
  * The three segments are <line>s with percentage y coordinates, so they
  * follow the list's real height (the ladder forces equal rows, so the
@@ -23,10 +25,9 @@ const { class: className = "" } = Astro.props;
 </svg>
 
 <style is:global>
-  .ac-stair { position: absolute; left: calc(-1 * var(--stair-w, 80px) - 12px); top: 0; width: var(--stair-w, 80px); height: 100%; display: block; color: #1e5b57; opacity: .5; overflow: visible; pointer-events: none; }
+  .ac-stair { position: relative; width: 100%; max-width: var(--stair-w, 80px); height: auto; align-self: stretch; display: block; color: #1e5b57; opacity: .5; overflow: visible; pointer-events: none; }
   .ac-stair .draw-pop { transform: scaleX(0); transform-origin: 0 50%; transform-box: fill-box; transition: transform .22s var(--slow); transition-delay: var(--d, 0s); }
   .ac-stair.in .draw-pop { transform: scaleX(1); }
   .no-js .ac-stair .draw-pop { transform: none; }
   @media (prefers-reduced-motion: reduce) { .ac-stair .draw-pop { transform: none; transition: none; } }
-  @media (max-width: 1068px) { .ac-stair { position: static; left: auto; width: 40px; height: auto; align-self: stretch; } }
 </style>

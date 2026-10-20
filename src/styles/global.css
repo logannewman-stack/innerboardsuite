@@ -68,6 +68,9 @@
   --shadow-float: 0 20px 50px -30px rgba(31, 29, 26, 0.4);
 }
 
+/* The tone floor colour (1.7.5) is a registered colour so it cross fades with the body. */
+@property --tone-floor { syntax: "<color>"; inherits: false; initial-value: transparent; }
+
 /* ── The system (BUILD_SPEC part 1) ──────────────────────────────────────
  * 1.1 grid, 1.2 role tokens and themes, 1.3 type, 1.4 spacing, radii,
  * shadows, easings. Hand CSS; Tailwind utilities are not used for these.
@@ -192,7 +195,7 @@
     line-height: 1.05;
     text-wrap: balance;
   }
-  h1 em, h2 em, h3 em, .display em, .t-xl em, .t-l em, .t-m em, .t-s em, .t-state em { font-style: italic; font-weight: 400; color: var(--accent); }
+  h1 em, h2 em, h3 em, .display em, .t-xl em, .t-l em, .t-m em, .t-s em, .t-state em { font-style: italic; font-weight: 400; }
   p { text-wrap: pretty; }
   [id] { scroll-margin-top: 96px; }
   :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 6px; }
@@ -215,7 +218,37 @@
   .sec-lg, .sec-l { padding-block: var(--sec-l); }
   .sec-sm, .sec-s { padding-block: var(--sec-s); }
   .sec-m { padding-block: var(--sec); }
-  .sec-alt { background: rgba(110,87,36,.06); }
+  /* The alternate tint, feathered over 72 px at both edges so the bands never meet in a hard line. It is
+   * an image layer (--tone-tint) so the tone floor below composes with it. */
+  .sec-alt { --tone-tint: linear-gradient(to bottom, transparent, rgba(110,87,36,.06) 72px, rgba(110,87,36,.06) calc(100% - 72px), transparent); background-image: var(--tone-tint); }
+
+  /* ── Tone floors (1.7.5) ────────────────────────────────────────────
+   * Every section[data-tone] carries a floor: transparent at its top, its own tone's colour from 200 px
+   * down, so the top still cross fades with the body. The floor is painted while the page is in that
+   * section's tone (it then matches the body exactly) and always on the last tone section of the page, so
+   * the closing bleed can never revert under the footer. It fades with the body (--tone-floor is a
+   * registered colour). A floor on a section that is not current would put the current tone's text on the
+   * wrong ground, which is why the other sections let it go. Pages need no rule of their own. */
+  [data-tone="cream"] { --tone-bg: #f4efe4; }
+  [data-tone="ac-cream"] { --tone-bg: #f7f4ee; }
+  [data-tone="navy"] { --tone-bg: #0d1a2d; }
+  [data-tone="forest"] { --tone-bg: #1f3d2e; }
+  [data-tone="charcoal"] { --tone-bg: #26231f; }
+  [data-tone="ink"] { --tone-bg: #1f1d1a; }
+  [data-tone="teal"] { --tone-bg: #1e5b57; }
+  main [data-tone] { background-image: var(--tone-tint, none), linear-gradient(to bottom, transparent 0, var(--tone-floor) 200px); transition: --tone-floor .5s var(--ease); }
+  html[data-theme="cream"] main [data-tone="cream"], html[data-theme="ac-cream"] main [data-tone="ac-cream"],
+  html[data-theme="navy"] main [data-tone="navy"], html[data-theme="forest"] main [data-tone="forest"],
+  html[data-theme="charcoal"] main [data-tone="charcoal"], html[data-theme="ink"] main [data-tone="ink"],
+  html[data-theme="teal"] main [data-tone="teal"],
+  main > [data-tone]:not(:has(~ [data-tone])) { --tone-floor: var(--tone-bg); }
+
+  /* Atmosphere at a section's edges: a lamp or grain layer that is a direct child of a section (and a
+   * section's own grain) fades out over its lower half, so it never ends in a hard horizontal seam; below
+   * the first section it also fades in over the top 200 px (the band where the tone floor meets the body),
+   * so it never starts in one either. A page can override the mask on its own lamp. */
+  [data-tone] > .lamp, [data-tone] > i.grain, [data-tone].grain::after { -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent); mask-image: linear-gradient(to bottom, #000 55%, transparent); }
+  main > [data-tone]:not(:first-child) > :is(.lamp, i.grain), main > [data-tone].grain:not(:first-child)::after { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 200px, #000 55%, transparent); mask-image: linear-gradient(to bottom, transparent 0, #000 200px, #000 55%, transparent); }
   .hairline { border-top: 1px solid var(--line); }
   .dark-rule { border-top: 1px solid var(--line); }
   .rule-gold { height: 1px; border: 0; background: linear-gradient(90deg, transparent, var(--line-gold) 12% 88%, transparent); }
@@ -240,7 +273,13 @@
   .t-price { font-family: var(--font-display); font-size: var(--fs-price); font-weight: 500; letter-spacing: -.02em; line-height: 1; font-variant-numeric: tabular-nums lining-nums; }
   .t-price .cur { font-size: .6em; vertical-align: .32em; }
   @media (max-width: 734px) { .t-xl { line-height: .98; } }
-  .t-xl em, .t-l em, .t-m em, .t-s em, .t-state em { font-style: italic; font-weight: 400; color: var(--accent); }
+  /* The italic. Every em stays Fraunces italic 400 (the emphasis is locked copy), but it is coloured only
+   * in the h1 and inside dark bleeds and dark panels; everywhere else it takes the heading's own ink, so the
+   * roman line with a coloured italic tail does not repeat down every page. */
+  :is(h1, h2, h3, .display, .t-xl, .t-l, .t-m, .t-s, .t-state) em { font-style: italic; font-weight: 400; color: inherit; }
+  :is(h1, .t-xl) em,
+  :where([data-surface="dark"], .surface-dark, .on-dark, main [data-tone="navy"], main [data-tone="forest"], main [data-tone="charcoal"], main [data-tone="ink"], main [data-tone="teal"]) :is(h2, h3, .display, .t-l, .t-m, .t-s, .t-state) em { color: var(--accent); }
+  :where(.paper, .card, .paper-teal, .mat, [data-surface="light"], .surface-light) :is(h2, h3, .display, .t-l, .t-m, .t-s, .t-state) em { color: inherit; }
   .lead-phrase, .lb { color: var(--fg); }
   .quote-hang { hanging-punctuation: first; }
   @supports not (hanging-punctuation: first) { .quote-hang { text-indent: -.38em; } }
@@ -256,6 +295,10 @@
   [data-theme="teal"] .eyebrow, [data-theme="teal"] .theme-teal .eyebrow { color: rgba(255,255,255,.7); }
   [data-theme="ink"] .eyebrow, [data-theme="navy"] .eyebrow, [data-theme="forest"] .eyebrow, [data-theme="charcoal"] .eyebrow { color: var(--fg-3); }
   [data-surface="dark"] .eyebrow, .on-dark .eyebrow { color: #aaa396; }
+  /* A light surface keeps its own eyebrow ink whatever the page tone is (the teal theme's white eyebrow
+   * must never land on paper, a mat or the footer). */
+  :is(.paper, .card, .paper-teal, .mat, .mat-blush, .tile, [data-surface="light"], .surface-light, .site-footer) .eyebrow { color: var(--fg-3); }
+  .theme-teal :is(.paper, .card, .paper-teal, [data-surface="light"], .surface-light, .site-footer) .eyebrow { color: var(--accent); }
 
   /* ── Buttons, pills ──────────────────────────────────────────────────── */
   .btn {
@@ -328,9 +371,14 @@
   .lamp-sky { background: radial-gradient(60% 55% at var(--lx, 12%) var(--ly, 0%), rgba(201,171,102,.3), transparent 70%); }
   @keyframes lights { from { opacity: 0; } }
   .grain { position: relative; }
+  /* A lamp that also carries the grain stays an absolute layer over its section (.grain alone would make it
+   * position: relative, an empty inline box, and the lamp would never show). */
+  .lamp.grain { position: absolute; inset: 0; display: block; }
   .grain::after { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; background-image: var(--grain); background-size: 180px 180px; opacity: var(--ga, .32); mix-blend-mode: overlay; z-index: 0; }
   .grain-cream::after { opacity: .18; mix-blend-mode: multiply; }
-  .lamp.grain::after { z-index: auto; }
+  /* The lamp is its own layer (z-index, the theme fade, the bottom mask), so its grain cannot overlay the
+   * page beneath and would read as a grey haze at full strength: inside a lamp it runs at .3 of --ga. */
+  .lamp.grain::after { z-index: auto; opacity: calc(var(--ga, .32) * .3); }
 
   /* ── Ruled list ──────────────────────────────────────────────────────── */
   .ladder { list-style: none; margin: 0; padding: 0; }
@@ -378,9 +426,17 @@
   .phone-screen { position: relative; width: 100em; aspect-ratio: 390 / 844; border-radius: 14em; overflow: hidden; background: #f2ece0; container-type: size; z-index: 1; }
   .phone-screen .cam, .win-screen .cam { position: absolute; inset: 0; transform-origin: 0 0; transition: transform var(--cd, 0ms) var(--scene); }
   .phone-screen picture, .win-screen picture { display: contents; }
-  .phone-screen img.ds, .win-screen img.ds { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; opacity: 0; transition: opacity .32s var(--ease); margin: 0; max-width: none; }
+  /* Frames switch by class with no CSS crossfade: the scene engine wipes the incoming frame in (clip-path)
+   * or dips (the outgoing frame gone by 140 ms, the incoming from 110 ms), so two captures never show at
+   * once. See Scene.show() in site.ts. */
+  .phone-screen img.ds, .win-screen img.ds { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; opacity: 0; margin: 0; max-width: none; }
   .phone-screen img.ds.on, .win-screen img.ds.on { opacity: 1; z-index: 2; }
   .phone-screen img.ds.was, .win-screen img.ds.was { opacity: 1; z-index: 1; }
+  /* The edge mask: while the camera is in (scale above 1) the outer 14 px of the screen fade to the app
+   * canvas, so a crop at the frame edge reads as the capture's own padding, never a word cut mid letter. */
+  .phone-screen::after, .win-screen::after { content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; transition: opacity .45s var(--ease);
+    background: linear-gradient(90deg, #f2ece0 0, rgba(242,236,224,0) 14px, rgba(242,236,224,0) calc(100% - 14px), #f2ece0 100%); }
+  .phone-screen.cam-on::after, .win-screen.cam-on::after { opacity: 1; transition-duration: .2s; }
   .phone-floor { position: absolute; left: -10%; right: -10%; bottom: -5em; height: 10em; border-radius: 50%; z-index: -1; pointer-events: none;
     background: radial-gradient(50% 50% at 50% 50%, rgba(31,29,26,var(--floor-a, .3)), transparent 70%); filter: blur(1em); transform: translateX(var(--sx, 0px)); }
   .phone-dark .phone-floor { --floor-a: .55; }
@@ -413,8 +469,9 @@
   .win-dark .win-dots i { background: rgba(255,255,255,.22); }
   .win-dark .win-url { background: rgba(255,255,255,.08); color: rgba(244,239,228,.7); box-shadow: none; }
   .win-caps { position: relative; margin-top: 16px; min-height: 1.4em; }
-  .win-caps .win-cap { position: absolute; left: 0; top: 0; margin: 0; opacity: 0; transition: opacity .32s var(--ease); }
-  .win-caps .win-cap.on { opacity: 1; }
+  /* Stacked captions dip like the frames: the old one is gone by 140 ms, the new one starts at 110 ms. */
+  .win-caps .win-cap { position: absolute; left: 0; top: 0; margin: 0; opacity: 0; transition: opacity .14s var(--ease); }
+  .win-caps .win-cap.on { opacity: 1; transition: opacity .26s var(--ease) .11s; }
   .win-cap { margin-top: 16px; }
   .win-pager { display: flex; gap: 14px; margin-top: 14px; }
   .win-pager button { width: 28px; height: 28px; display: grid; place-items: center; background: none; border: 0; padding: 0; cursor: pointer; border-radius: 999px; }
@@ -460,8 +517,8 @@
   .day-stage .phone .phone-floor { transition: transform .4s var(--ease), background-color .4s var(--ease); }
   .day-stage.is-night .phone { box-shadow: inset 0 0 0 .55em #0c0b09, inset 0 0 0 .9em rgba(255,255,255,.06), var(--sh-object-dark); }
   .day-caps { position: absolute; left: 24px; right: 140px; bottom: 24px; min-height: 1.4em; }
-  .day-cap { position: absolute; left: 0; bottom: 0; margin: 0; opacity: 0; transition: opacity .32s var(--ease), color .4s var(--ease); color: var(--day-cap, #5c574f); font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 14px; line-height: 1.4; }
-  .day-cap.on { opacity: 1; }
+  .day-cap { position: absolute; left: 0; bottom: 0; margin: 0; opacity: 0; transition: opacity .14s var(--ease), color .4s var(--ease); color: var(--day-cap, #5c574f); font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 14px; line-height: 1.4; }
+  .day-cap.on { opacity: 1; transition: opacity .26s var(--ease) .11s, color .4s var(--ease); }
   .day-tabs { position: absolute; right: 24px; bottom: 24px; display: flex; gap: 10px; margin: 0; padding: 0; }
   .day-tabs button { display: grid; place-items: center; width: auto; height: 28px; padding: 0 2px; background: none; border: 0; cursor: pointer; }
   .day-tabs button i { display: block; width: 8px; height: 8px; border-radius: 999px; background: var(--day-tab, rgba(31,29,26,.22)); transition: width .45s var(--slow), background-color .45s var(--slow); }
@@ -559,8 +616,9 @@
   .tcard .tg.on::after { left: 18px; }
 
   /* ── The mark geometry ─────────────────────────────────────────────── */
-  .geo { position: absolute; width: var(--geo-size, 1100px); height: var(--geo-size, 1100px); max-width: none; max-height: none; pointer-events: none; color: currentColor; opacity: 1; }
-  .geo path, .geo circle.ring { fill: none; stroke: currentColor; stroke-width: 1; opacity: var(--geo-o, .08); }
+  /* z-index 0: under the copy, which sits in a positioned wrapper at z-index 1 (a bleed's .wrap already is). */
+  .geo { position: absolute; z-index: 0; width: var(--geo-size, 1100px); height: var(--geo-size, 1100px); max-width: none; max-height: none; pointer-events: none; color: currentColor; opacity: 1; }
+  .geo path, .geo circle.ring { fill: none; stroke: currentColor; stroke-width: var(--geo-sw, 1); opacity: var(--geo-o, .08); }
   .geo circle.dot { fill: currentColor; stroke: none; opacity: calc(var(--geo-o, .08) * 2); }
 
   /* ── The floor (Practice final only) ───────────────────────────────── */
@@ -583,7 +641,9 @@
   .site-header.is-scrolled { background: rgba(244,239,228,.82); -webkit-backdrop-filter: saturate(160%) blur(18px); backdrop-filter: saturate(160%) blur(18px); box-shadow: 0 1px 0 rgba(31,29,26,.08); }
   .site-header.theme-teal.is-scrolled { background: rgba(247,244,238,.86); }
   .site-header.is-dark { color: #f4efe4; --fg: #f4efe4; --fg-2: #cdc6b8; --fg-3: #aaa396; --focus: #c9ab66; }
-  .site-header.is-dark.is-scrolled { background: rgba(13,26,45,.62); box-shadow: 0 1px 0 rgba(244,239,228,.1); }
+  /* Dark state: the bar takes the colour of what it sits on (the page's tone, or the dark surface under it,
+   * which the script writes as --hdr-bg), at 90 percent with the blur, so nothing reads through it. */
+  .site-header.is-dark.is-scrolled { background: color-mix(in srgb, var(--hdr-bg, var(--bg)) 90%, transparent); box-shadow: 0 1px 0 rgba(244,239,228,.1); }
   .site-header.nav-hidden { transform: translateY(calc(-100% - 2px)); }
   /* Without the script the bar never learns it has scrolled, so it is painted from the start. */
   .no-js .site-header { background: rgba(244,239,228,.92); box-shadow: 0 1px 0 rgba(31,29,26,.08); }
@@ -592,9 +652,13 @@
   @media (min-width: 1069px) { .hdr-links { display: flex; } }
   .hdr-link { display: inline-flex; align-items: baseline; gap: 8px; padding: 8px 0; font-family: var(--font-sans); font-size: var(--fs-small); font-weight: 500; letter-spacing: -.005em; line-height: 1; white-space: nowrap; color: var(--fg-2); text-decoration: none; transition: color 180ms var(--hover); }
   .hdr-link:hover, .hdr-link[aria-current="page"] { color: var(--fg); }
-  .hdr-link .sub { display: none; font-size: 10.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--fg-3); }
+  .hdr-link .sub { display: none; font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--fg-3); }
   @media (min-width: 1280px) { .hdr-link .sub { display: inline; } }
   .hdr-cta { margin-left: 8px; }
+  /* On the teal pages the header's pill is an ink outline (cream over a dark tone), so it does not
+   * compete with the teal button in the hero. */
+  .site-header.theme-teal .hdr-cta { background: transparent; color: var(--fg); box-shadow: inset 0 0 0 1px currentColor; }
+  .site-header.theme-teal .hdr-cta:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
   .hdr-burger { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-right: -10px; background: none; border: 0; cursor: pointer; color: inherit; border-radius: 999px; position: relative; }
   @media (min-width: 1069px) { .hdr-burger { display: none; } }
   .hdr-burger i { position: absolute; left: 14px; width: 16px; height: 1.5px; background: currentColor; border-radius: 1px; transition: transform 350ms var(--sheet), top 350ms var(--sheet); }
@@ -619,30 +683,33 @@
   /* ── Footer (1.9) ──────────────────────────────────────────────────── */
   .site-footer { position: relative; background: #ebe4d5; color: #1f1d1a; --fg: #1f1d1a; --fg-2: #3d3a35; --fg-3: #5c574f; --line: rgba(31,29,26,.12); --accent: #6e5724; --focus: #6e5724; --dark: 0; border-top: 1px solid rgba(31,29,26,.12); padding: clamp(72px, 10vh, 120px) 0 32px; }
   .site-footer.theme-teal { background: #efeae1; --accent: #1e5b57; --focus: #1e5b57; }
-  .ftr-top { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 28px; align-items: end; }
-  .ftr-blurb-col { grid-column: 1 / span 7; }
+  /* Row one: the statement in columns 1 to 6 with the founder line under it, the three link columns in
+   * columns 7 to 12 beside it (their eyebrows on the statement's first line). Then the gold rule, then
+   * the legal row. */
+  .ftr-top { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 48px; align-items: start; }
+  .ftr-blurb-col { grid-column: 1 / span 6; }
   .ftr-blurb { margin-top: 28px; font-family: var(--font-display); font-size: var(--fs-s); font-weight: 400; letter-spacing: -.012em; line-height: 1.2; max-width: 22em; color: var(--fg); text-wrap: pretty; }
-  .ftr-founder { grid-column: 9 / span 4; justify-self: end; font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: var(--fs-cap-i); line-height: 1.4; color: var(--fg-3); margin: 0; }
-  .ftr-rule { height: 1px; margin-top: 40px; background: linear-gradient(90deg, transparent, var(--line-gold) 12% 88%, transparent); }
-  .ftr-cols { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 32px; margin-top: 56px; }
-  .ftr-col { grid-column: span 3; }
+  .ftr-founder { margin: 20px 0 0; font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: var(--fs-cap-i); line-height: 1.4; color: var(--fg-3); }
+  .ftr-rule { height: 1px; margin-top: 64px; background: linear-gradient(90deg, transparent, var(--line-gold) 12% 88%, transparent); }
+  .ftr-cols { grid-column: 7 / span 6; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; column-gap: var(--gap); row-gap: 32px; padding-top: calc(26px + 28px + .1em); }
+  .ftr-col { min-width: 0; }
   .ftr-col .eyebrow { margin-bottom: 14px; }
   .ftr-col ul { list-style: none; margin: 0; padding: 0; }
   .ftr-col a { font-family: var(--font-sans); font-size: var(--fs-body); font-weight: 450; line-height: 2; color: var(--fg); text-decoration: none; text-underline-offset: .18em; text-decoration-thickness: 1px; }
   .ftr-col a:hover { text-decoration: underline; }
-  .ftr-legal { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--line); font-family: var(--font-sans); font-size: var(--fs-cap); line-height: 1.45; color: var(--fg-3); }
+  .ftr-legal { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 0; padding-top: 20px; font-family: var(--font-sans); font-size: var(--fs-cap); line-height: 1.45; color: var(--fg-3); }
   .ftr-legal p { margin: 0; }
   .ftr-legal nav { display: flex; gap: 20px; }
   .ftr-legal a { color: inherit; text-decoration: none; text-underline-offset: .18em; }
   .ftr-legal a:hover { text-decoration: underline; }
-  @media (max-width: 1068px) { .ftr-blurb-col { grid-column: 1 / span 8; } .ftr-founder { grid-column: 9 / span 4; } .ftr-col { grid-column: span 4; } }
+  @media (max-width: 1068px) { .ftr-blurb-col { grid-column: 1 / span 9; } .ftr-cols { grid-column: 1 / -1; padding-top: 0; grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   @media (max-width: 734px) {
     .ftr-top { display: block; }
-    .ftr-founder { justify-self: start; margin-top: 18px; }
+    .ftr-founder { margin-top: 18px; }
     .ftr-cols { grid-template-columns: 1fr 1fr; margin-top: 48px; }
-    .ftr-col { grid-column: span 1; }
     .ftr-col-wide { grid-column: span 2; }
-    .ftr-legal { flex-direction: column; margin-top: 48px; }
+    .ftr-rule { margin-top: 48px; }
+    .ftr-legal { flex-direction: column; }
   }
 
   /* ── Legal pages ───────────────────────────────────────────────────── */

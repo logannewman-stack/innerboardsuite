@@ -1,15 +1,38 @@
 ---
 /**
- * The mark geometry (1.5 item 6): a circle, a crosshair past it, a dot at the
- * centre, in a 1100 viewBox, drawn by stroke-dashoffset when it arrives.
- * Position it from the page's CSS (it is absolute); its section clips it.
+ * The mark geometry (1.5 item 6): a ring, a crosshair trimmed to the ring, a 4 px point at the centre,
+ * in a 1100 viewBox, drawn by stroke-dashoffset when it arrives. It sits at z-index 0, under the copy
+ * (keep the copy in a positioned wrapper at z-index 1; a bleed's .wrap already is).
+ *
+ * Place it with your own class (absolute: right, bottom, left, top), or with `cx` and `cy`: CSS lengths
+ * for the centre of the ring relative to the positioned parent, so the centre can sit off canvas and only
+ * an arc enters, e.g. cx="calc(100% + 140px)" cy="-120px". With `cx`/`cy` set, leave left and top (and
+ * right and bottom) out of your class. `ringsOnly` (also `rings-only`) draws the ring alone: no crosshair
+ * and no point. `stroke` sets the stroke width in viewBox units (default 1, which is 1 px at size 1100).
  */
-interface Props { color?: string; opacity?: number; class?: string; style?: string; size?: number }
-const { color = "currentColor", opacity = 0.08, class: className = "", style = "", size = 1100 } = Astro.props;
+interface Props {
+  color?: string;
+  opacity?: number;
+  class?: string;
+  style?: string;
+  size?: number;
+  cx?: string;
+  cy?: string;
+  ringsOnly?: boolean;
+  "rings-only"?: boolean;
+  stroke?: number;
+}
+const { color = "currentColor", opacity = 0.08, class: className = "", style = "", size = 1100, cx, cy, stroke } = Astro.props;
+const ringsOnly = Boolean(Astro.props.ringsOnly ?? Astro.props["rings-only"] ?? false);
+const place = [
+  cx != null ? `left:calc(${cx} - var(--geo-size) / 2)` : "",
+  cy != null ? `top:calc(${cy} - var(--geo-size) / 2)` : "",
+  stroke != null ? `--geo-sw:${stroke}` : ""
+].filter(Boolean).map((d) => d + ";").join("");
 ---
-<svg class={`geo ${className}`.trim()} viewBox="-550 -550 1100 1100" style={`color:${color};--geo-o:${opacity};--geo-size:${size}px;--dur:1600ms;${style}`} data-geo data-draw="enter" aria-hidden="true" focusable="false">
+<svg class={`geo ${ringsOnly ? "geo-rings" : ""} ${className}`.replace(/\s+/g, " ").trim()} viewBox="-550 -550 1100 1100" style={`color:${color};--geo-o:${opacity};--geo-size:${size}px;--dur:1600ms;${place}${style}`} data-geo data-draw="enter" aria-hidden="true" focusable="false">
   <circle class="ring draw-line" cx="0" cy="0" r="480"></circle>
-  <path class="draw-line" d="M-560 0H560" style="--d:.15s"></path>
-  <path class="draw-line" d="M0-560V560" style="--d:.3s"></path>
-  <circle class="dot" cx="0" cy="0" r="18"></circle>
+  {!ringsOnly && <path class="draw-line" d="M-480 0H480" style="--d:.15s"></path>}
+  {!ringsOnly && <path class="draw-line" d="M0-480V480" style="--d:.3s"></path>}
+  {!ringsOnly && <circle class="dot" cx="0" cy="0" r="4"></circle>}
 </svg>

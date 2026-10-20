@@ -13,10 +13,12 @@ const src = join(root, "public", "app");
 const out = join(src, "tiles");
 mkdirSync(out, { recursive: true });
 
+/* No tile shows a score: stear2, rap1 and dare hold the places of the spec's
+ * score-m1, score-upstream-scored and score-m1-result. */
 const stems = [
-  "coach-draft", "today", "tools-home", "energy", "sunday-quick-plan", "score-m1",
-  "close-day", "wins-saved", "score-upstream-scored", "spark", "hear", "facts-vs-story",
-  "quiz-results", "leader-blueprint", "friday-energy", "arriving-word", "discomfort-name", "score-m1-result"
+  "coach-draft", "today", "tools-home", "energy", "sunday-quick-plan", "stear2",
+  "close-day", "wins-saved", "rap1", "spark", "hear", "facts-vs-story",
+  "quiz-results", "leader-blueprint", "friday-energy", "arriving-word", "discomfort-name", "dare"
 ];
 
 let total = 0;

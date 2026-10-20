@@ -2,7 +2,9 @@
 /**
  * Everything inside (BUILD_SPEC 2.2.7): the 792 desk window with three
  * stacked screens and an idle cursor scene that only clicks items whose
- * next frame shows them highlighted in the app's own rail; the caption and
+ * next frame shows them highlighted in the app's own rail. The scene holds
+ * the Company OS Score frame without a camera lean: a lean would make the
+ * capture's sample score the focus of the frame, so it never zooms; the caption and
  * the Folio dot pager that follow the frame; and the page's one ladder,
  * whose rows preview the frames on hover or focus (1.7.13).
  */
@@ -25,7 +27,7 @@ const items = [
 <div class="grid pr-inside">
   <div class="pr-inside-win rise-obj" data-warm>
     <WindowFrame id="inside-win" ww={792} loop={5000}
-      flow='[["start",40,60],["hold",1200],["move",5,38.3,1300],["click"],["state",1,320],["hold",1800],["cam",1.22,62,18,1400],["hold",2200],["cam",1,50,50,1100],["move",5,23.6,1300],["click"],["state",2,320],["hold",2400],["move",5,9,1200],["click"],["state",0,320],["move",40,60,1100],["end"]]'
+      flow='[["start",40,60],["hold",1200],["move",5,38.3,1300],["click"],["state",1,320],["hold",3400],["move",5,23.6,1300],["click"],["state",2,320],["hold",2400],["move",5,9,1200],["click"],["state",0,320],["move",40,60,1100],["end"]]'
       screens={[
         { name: "desk-coach-draft", alt: "Practice on a desk: the Daily Practice Coach with a sentence typed, the Dare of the Day, Set Up Your Day and the October calendar." },
         { name: "desk-score-upstream-result", alt: "A Company OS Score result on a desk, with The Book open in the rail." },

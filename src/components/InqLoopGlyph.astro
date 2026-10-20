@@ -1,25 +1,48 @@
 ---
 /**
  * The loop glyph (BUILD_SPEC 2.4.3): five unlabelled dots on a circle of
- * radius 120 joined by a 1 px white arc at .35 alpha with a 6 px arrowhead
- * closing the loop. It is the Practice page's loop, returning on teal without
- * its words: the words are in the lit statement beside it. The arc draws over
- * 1.8 s and the dots pop 80 ms apart as the section's centre passes 60% of
- * the viewport (the aside around it carries the data-reveal-at gate, so the
- * pull line follows the loop); under reduced motion and without the script
- * it is fully drawn.
+ * radius 120 joined by a 1 px arc with a 6 px arrowhead closing the loop. It
+ * is the Practice page's loop, returning without its words: the words are in
+ * the copy beside it. Two tones:
+ *
+ *  - "white" (default), on the teal bleed: arc white .35, dots white .9. The
+ *    arc draws over 1.8 s and the dots pop 80 ms apart as the section's centre
+ *    passes 60% of the viewport (the aside around it carries the
+ *    data-reveal-at gate, so the pull line arrives with the loop).
+ *  - "teal", the hero's drawn object on cream: arc teal .35, dots teal .7.
+ *    With `follow` each dot pops the moment the arc reaches it, so the five
+ *    points of the loop land in sequence as the pen passes them.
+ *
+ * `draw="enter"` (default) hands the drawing to the system's drawn lines
+ * (data-draw="enter", .draw-line, .draw-pop). `draw="load"` is for a glyph in
+ * the first screen: a CSS animation on a pathLength of 1, so it draws from
+ * page load without waiting for an observer (the system's enter mode sets the
+ * dash and its end state in the same frame for an SVG already in view, and the
+ * stroke would simply appear). `delay` (ms) holds the arc back (the hero draws
+ * at 500 ms), `ease` is the arc's timing function as four bezier numbers.
+ * Under reduced motion and without the script it is fully drawn.
  */
-interface Props { class?: string }
-const { class: className = "" } = Astro.props;
+interface Props {
+  class?: string;
+  tone?: "white" | "teal";
+  delay?: number;
+  dur?: number;
+  follow?: boolean;
+  ease?: [number, number, number, number];
+  draw?: "enter" | "load";
+}
+const { class: className = "", tone = "white", delay = 0, dur = 1800, follow = false, ease = [0.16, 1, 0.3, 1], draw = "enter" } = Astro.props;
 
 const cx = 160, cy = 160, r = 120;
 const rad = (deg: number) => (deg * Math.PI) / 180;
 const f = (n: number) => n.toFixed(2);
 // Situation, Thought, Emotion, Action, Result: five points, clockwise from the top.
-const dots = [-90, -18, 54, 126, 198].map((a) => [cx + r * Math.cos(rad(a)), cy + r * Math.sin(rad(a))]);
+const angles = [-90, -18, 54, 126, 198];
+const dots = angles.map((a) => [cx + r * Math.cos(rad(a)), cy + r * Math.sin(rad(a))]);
 // The arc runs clockwise from the first dot almost all the way round and stops
 // short of it, so the arrowhead lands just before the loop's start.
-const end = rad(-104);
+const endDeg = -104 + 360;
+const end = rad(endDeg);
 const ex = cx + r * Math.cos(end), ey = cy + r * Math.sin(end);
 const tx = -Math.sin(end), ty = Math.cos(end); // the clockwise tangent at the end
 const wing = (deg: number) => {
@@ -27,9 +50,49 @@ const wing = (deg: number) => {
   return [6 * (bx * Math.cos(t) - by * Math.sin(t)), 6 * (bx * Math.sin(t) + by * Math.cos(t))];
 };
 const [w1x, w1y] = wing(30), [w2x, w2y] = wing(-30);
-const d = `M${f(dots[0][0])} ${f(dots[0][1])} A${r} ${r} 0 1 1 ${f(ex)} ${f(ey)} l${f(w1x)} ${f(w1y)} M${f(ex)} ${f(ey)} l${f(w2x)} ${f(w2y)}`;
+// One subpath: the arc, out along one wing and back to the tip, then the other
+// wing, so the dash that draws it never shows a piece of the arrowhead early.
+const d = `M${f(dots[0][0])} ${f(dots[0][1])} A${r} ${r} 0 1 1 ${f(ex)} ${f(ey)} l${f(w1x)} ${f(w1y)} L${f(ex)} ${f(ey)} l${f(w2x)} ${f(w2y)}`;
+
+// When the dots follow the pen: the share of the stroke drawn when the arc
+// reaches each dot, turned into time through the arc's own easing curve.
+const arcLen = r * rad(endDeg - angles[0]);
+const total = arcLen + 18; // plus the arrowhead: a wing out and back, and the other wing
+const [x1, y1, x2, y2] = ease;
+const bez = (s: number, a: number, b: number) => 3 * (1 - s) * (1 - s) * s * a + 3 * (1 - s) * s * s * b + s * s * s;
+const timeAt = (p: number) => {
+  let lo = 0, hi = 1;
+  for (let k = 0; k < 40; k++) { const m = (lo + hi) / 2; if (bez(m, y1, y2) < p) lo = m; else hi = m; }
+  return bez((lo + hi) / 2, x1, x2);
+};
+const dotDelay = (i: number) => follow
+  ? Math.round(delay + dur * timeAt((r * rad(angles[i] - angles[0])) / total))
+  : delay + i * 80;
+
+const ink = tone === "teal" ? "#1e5b57" : "#ffffff";
+const arcO = ".35";
+const dotO = tone === "teal" ? ".7" : ".9";
+const easeCss = `cubic-bezier(${ease.join(",")})`;
 ---
-<svg class={`inq-glyph ${className}`.trim()} viewBox="0 0 320 320" width="320" height="320" data-draw="enter" aria-hidden="true" focusable="false" fill="none" style="--dur:1800ms">
-  <path class="draw-line" d={d} stroke="#ffffff" stroke-opacity=".35" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-  {dots.map(([x, y], i) => <circle class="draw-pop" cx={f(x)} cy={f(y)} r="3" fill="#ffffff" fill-opacity=".9" style={`--d:${i * 80}ms`}></circle>)}
-</svg>
+{draw === "load" ? (
+  <svg class={`inq-glyph inq-glyph-${tone} inq-glyph-load ${className}`.trim()} viewBox="0 0 320 320" width="320" height="320" aria-hidden="true" focusable="false" fill="none" style={`--dur:${dur}ms;--arc-ease:${easeCss}`}>
+    <path class="inq-arc" d={d} pathLength="1" stroke={ink} stroke-opacity={arcO} stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style={`--d:${delay}ms`}></path>
+    {dots.map(([x, y], i) => <circle class="inq-dot" cx={f(x)} cy={f(y)} r="3" fill={ink} fill-opacity={dotO} style={`--d:${dotDelay(i)}ms`}></circle>)}
+  </svg>
+) : (
+  <svg class={`inq-glyph inq-glyph-${tone} ${className}`.trim()} viewBox="0 0 320 320" width="320" height="320" data-draw="enter" aria-hidden="true" focusable="false" fill="none" style={`--dur:${dur}ms`}>
+    <path class="draw-line" d={d} stroke={ink} stroke-opacity={arcO} stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style={`--d:${delay}ms;transition-timing-function:${easeCss}`}></path>
+    {dots.map(([x, y], i) => <circle class="draw-pop" cx={f(x)} cy={f(y)} r="3" fill={ink} fill-opacity={dotO} style={`--d:${dotDelay(i)}ms`}></circle>)}
+  </svg>
+)}
+
+<style>
+  /* draw="load": the arc draws from page load and each dot pops in turn. */
+  .inq-glyph-load .inq-arc { stroke-dasharray: 1 1; stroke-dashoffset: 0; animation: inq-arc var(--dur, 1800ms) var(--arc-ease, ease) var(--d, 0ms) both; }
+  .inq-glyph-load .inq-dot { transform-box: fill-box; transform-origin: center; animation: inq-dot 500ms var(--pop) var(--d, 0ms) both; }
+  @keyframes inq-arc { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes inq-dot { from { transform: scale(0); } to { transform: scale(1); } }
+  @media (prefers-reduced-motion: reduce) {
+    .inq-glyph-load .inq-arc, .inq-glyph-load .inq-dot { animation: none; }
+  }
+</style>

@@ -39,16 +39,18 @@
 
 /* 1.7.4 Lit statement */
 /* Prefixed .js so a server rendered span.lw (a "lines" statement) reads in
- * full colour without the script. An em unit lights to the accent. */
+ * full colour without the script. An em unit lights like its neighbours, and
+ * to the accent only inside a dark bleed or a dark panel (the italic rule of
+ * global.css). */
 .js .lw { color: var(--lit-off); transition: color .35s ease; }
 .js .lw.on { color: var(--fg-2); }
 .js .lw.lb.on { color: var(--fg); }
 .js [data-lit="lines"] > .lw, .js [data-lit="lines"] > li { color: var(--lit-off); transition: color .35s ease; }
 .js [data-lit="lines"] > .lw.on, .js [data-lit="lines"] > li.on { color: var(--fg); }
-.js em.lw.on, .js [data-lit="lines"] > em.lw.on { color: var(--accent); }
+.js :where([data-surface="dark"], .surface-dark, .on-dark, main [data-tone="navy"], main [data-tone="forest"], main [data-tone="charcoal"], main [data-tone="ink"], main [data-tone="teal"]) em.lw.on, .js :where([data-surface="dark"], .surface-dark, .on-dark, main [data-tone="navy"], main [data-tone="forest"], main [data-tone="charcoal"], main [data-tone="ink"], main [data-tone="teal"]) [data-lit="lines"] > em.lw.on { color: var(--accent); }
 
-/* 1.7.5 Page tone: a dark bleed section paints nothing itself; its lamp and
- * grain live on a child that fades in with the theme. */
+/* 1.7.5 Page tone: a dark bleed's own floor is in global.css (tone floors);
+ * its lamp and grain live on a child that fades in with the theme. */
 [data-tone] { position: relative; }
 [data-tone="navy"] > .lamp, [data-tone="forest"] > .lamp, [data-tone="charcoal"] > .lamp, [data-tone="ink"] > .lamp, [data-tone="teal"] > .lamp { opacity: 0; transition: opacity .5s var(--ease); }
 html[data-theme="navy"] [data-tone="navy"] > .lamp,
@@ -74,9 +76,9 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
 [data-loop-step] .ring { transition: background-color 350ms var(--ease), border-color 350ms var(--ease); }
 [data-loop-step].is-on .ring { background: rgba(201,171,102,.12); }
 [data-loop-step] .ladder-name { transition: color 350ms var(--ease); }
-[data-loop-step].is-on .ladder-name { color: #c9ab66; }
+[data-loop-step].is-on .ladder-name { color: var(--accent); }
 .no-js [data-loop-step="0"] .ring { background: rgba(201,171,102,.12); }
-.no-js [data-loop-step="0"] .ladder-name { color: #c9ab66; }
+.no-js [data-loop-step="0"] .ladder-name { color: var(--accent); }
 
 /* 1.7.9 Day stage */
 .js .day:not(.static) .day-step.is-dim { opacity: .42; }
@@ -138,7 +140,7 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
   .js .tcard-in { transform: rotate(-5deg); }
   .js .lw, .js .lw.lb, .js [data-lit="lines"] > .lw, .js [data-lit="lines"] > li { color: var(--fg-2); }
   .js .lw.lb, .js [data-lit="lines"] > .lw, .js [data-lit="lines"] > li { color: var(--fg); }
-  .js em.lw, .js [data-lit="lines"] > em.lw { color: var(--accent); }
+  .js :where([data-surface="dark"], .surface-dark, .on-dark, main [data-tone="navy"], main [data-tone="forest"], main [data-tone="charcoal"], main [data-tone="ink"], main [data-tone="teal"]) em.lw, .js :where([data-surface="dark"], .surface-dark, .on-dark, main [data-tone="navy"], main [data-tone="forest"], main [data-tone="charcoal"], main [data-tone="ink"], main [data-tone="teal"]) [data-lit="lines"] > em.lw { color: var(--accent); }
   .win-screen .cur, .tap { display: none; }
   .cam { transform: none !important; }
   .js .rail-slide.off { opacity: 1; }

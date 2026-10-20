@@ -1,15 +1,17 @@
 ---
 /**
- * The drifting floor of the Practice final (BUILD_SPEC 2.2.9): the 18
- * derived tiles under /app/tiles/, in the spec's order, as a perspective
- * plane that drifts by its own height for a seamless loop. The strip is
- * duplicated once; `.run` on the section (1.7.15) plays it. On phones the
- * plane shows the first twelve tiles in four columns (global.css).
+ * The drifting floor of the Practice final (BUILD_SPEC 2.2.9): 18 derived
+ * tiles under /app/tiles/ (scripts/tiles.mjs) as a perspective plane that
+ * drifts by its own height for a seamless loop. The strip is duplicated
+ * once; `.run` on the section (1.7.15) plays it. On phones the plane shows
+ * the first twelve tiles in four columns (global.css). No tile shows a
+ * score: the spec's score-m1, score-upstream-scored and score-m1-result
+ * places hold stear2, rap1 and dare.
  */
 const stems = [
-  "coach-draft", "today", "tools-home", "energy", "sunday-quick-plan", "score-m1",
-  "close-day", "wins-saved", "score-upstream-scored", "spark", "hear", "facts-vs-story",
-  "quiz-results", "leader-blueprint", "friday-energy", "arriving-word", "discomfort-name", "score-m1-result"
+  "coach-draft", "today", "tools-home", "energy", "sunday-quick-plan", "stear2",
+  "close-day", "wins-saved", "rap1", "spark", "hear", "facts-vs-story",
+  "quiz-results", "leader-blueprint", "friday-energy", "arriving-word", "discomfort-name", "dare"
 ];
 ---
 <div class="floor" aria-hidden="true">

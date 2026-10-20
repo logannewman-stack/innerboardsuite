@@ -47,11 +47,11 @@ const loopRows: [string, string][] = [
  * state indices refer to that order. */
 const home = { name: "home", alt: "The Coach home as a visitor: the Daily Practice Coach, the Dare of the Day and Set Up Your Day.", w: 600 as const, h: 1298 as const };
 const daySteps = [
-  { label: "Morning", name: "Open the app. The Coach is first.", body: "Home shows four things: the Coach's prompt, Set Up Your Day, the Dare of the Day, and your calendar. Nothing to configure. The Coach is trained on the InnerBoard method and says, on screen, that it is not a person.", caption: "The Coach home.", frames: [home], flow: '[["hold",500],["cam",1.14,50,18,1400],["hold",1800],["cam",1,50,50,1200],["end"]]' },
-  { label: "Morning", name: "Set up your day in a minute.", body: "How are you arriving? One thing you are grateful for. How you want to approach today. What would make today a win. Four fields, one line each, and the day has a shape.", caption: "Set Up Your Day.", frames: [{ name: "today", alt: "Set Up Your Day, with the ten-second read and two fields filled.", w: 600 as const, h: 1298 as const }], flow: '[["cam",1.2,50,42,1300],["hold",1600],["cam",1.2,50,72,1200],["hold",1800],["cam",1,50,50,1000],["end"]]' },
+  { label: "Morning", name: "Open the app. The Coach is first.", body: "Home shows four things: the Coach's prompt, Set Up Your Day, the Dare of the Day, and your calendar. Nothing to configure. The Coach is trained on the InnerBoard method and says, on screen, that it is not a person.", caption: "The Coach home.", frames: [home], flow: '[["hold",500],["cam",1.04,50,14,1400],["hold",1800],["cam",1,50,50,1200],["end"]]' },
+  { label: "Morning", name: "Set up your day in a minute.", body: "How are you arriving? One thing you are grateful for. How you want to approach today. What would make today a win. Four fields, one line each, and the day has a shape.", caption: "Set Up Your Day.", frames: [{ name: "today", alt: "Set Up Your Day, with the ten-second read and two fields filled.", w: 600 as const, h: 1298 as const }], flow: '[["hold",3200],["end"]]' },
   { label: "Midday", name: "Something lands. You run STEAR.", body: "A business partner goes quiet after you send the numbers. Instead of rereading your message for an hour, you open STEAR: what happened, what you made it mean, what that thought created. Two minutes, and the story is separated from the fact.", caption: "STEAR, question one, then question two.", frames: [{ name: "stear1", alt: "STEAR, question one, with the fact written.", w: 600 as const, h: 1298 as const }, { name: "stear2", alt: "STEAR, question two, with the thought written.", w: 600 as const, h: 1298 as const }], flow: '[["hold",1200],["tap",50,95],["state",3,320],["hold",3000],["end"]]' },
-  { label: "Afternoon", name: "Do the Dare. Check it off.", body: "One small thing before the day ends, new every day. When you tap I did it, the app marks it with a star, asks how it went in one line, and never asks twice.", caption: "The Dare, done.", frames: [home, { name: "dare", alt: "The home after the Dare is checked, with the star line.", w: 600 as const, h: 1298 as const }], flow: '[["cam",1.22,50,64,1200],["hold",600],["tap",19,69],["state",4,320],["hold",2400],["cam",1,50,50,1200],["end"]]' },
-  { label: "Evening", name: "Everything you did is in the Journal.", body: "Every tool you ran, every check-in, every quiz result, dated and yours. Saved on the device as a visitor. Kept in your account the moment you make one.", caption: "The Journal.", frames: [{ name: "journal", alt: "The Journal, with one entry on this device.", w: 600 as const, h: 1298 as const }], flow: '[["cam",1.1,50,14,1400],["hold",2400],["cam",1,50,50,1200],["end"]]' }
+  { label: "Afternoon", name: "Do the Dare. Check it off.", body: "One small thing before the day ends, new every day. When you tap I did it, the app marks it with a star, asks how it went in one line, and never asks twice.", caption: "The Dare, done.", frames: [home, { name: "dare", alt: "The home after the Dare is checked, with the star line.", w: 600 as const, h: 1298 as const }], flow: '[["cam",1.04,50,30,1200],["hold",600],["tap",18,71],["state",4,320],["hold",2400],["cam",1,50,50,1200],["end"]]' },
+  { label: "Evening", name: "Everything you did is in the Journal.", body: "Every tool you ran, every check-in, every quiz result, dated and yours. Saved on the device as a visitor. Kept in your account the moment you make one.", caption: "The Journal.", frames: [{ name: "journal", alt: "The Journal, with one entry on this device.", w: 600 as const, h: 1298 as const }], flow: '[["hold",3200],["end"]]' }
 ];
 
 /* The STEAR run, as the app asks it. Frames are real captures of each step. */
@@ -63,11 +63,11 @@ const stear = [
   { screen: "stear5", step: "5 / 8", q: "What did that create?", note: "Notice how the result proves the original thought right." },
   { screen: "stear6", step: "6 / 8", q: "What else might be true?", note: "How could you be wrong about this? What would your highest self see?" }
 ];
-/* The camera's x origin is 20, not the spec's 50: the capture's text begins at
- * 4.7% of the screen width, and a 1.18 zoom about the centre crops 9% from
- * each side, cutting the first glyph of every line. About x 20 the left crop
- * is 3.6%, so the question stays whole and the crop falls on the right. */
-const readingCam = '[["hold",700],["cam",1.18,20,24,1200],["hold",2000],["cam",1,50,50,1000],["end"]]';
+/* The reading camera leans to 1.04 about the centre: the capture's content
+ * spans 3.9% to 96.1% of the screen width, so a 1.04 zoom crops 1.9% from
+ * each side and every word and control stays whole (the cap for phones under
+ * 260 px is 1.08, which would put the Back link on the frame edge). */
+const readingCam = '[["hold",700],["cam",1.04,50,24,1200],["hold",2000],["cam",1,50,50,1000],["end"]]';
 
 /* The three notes under the rail, each with its tile. */
 const notes = [
@@ -118,13 +118,17 @@ const faq = [
     <div class="wrap-wide pr-scene" data-warm>
       <div class="pr-scene-win rise-obj" style="--d:.3s">
         <WindowFrame id="hero-win" ww={1320} eager tilt={2} parallax={-22} loop={4000}
-          flow='[["start",40,60],["hold",1400],["move",5,33.4,1300],["click"],["state",1,320],["hold",2600],["cam",1.18,50,30,1200],["hold",1600],["cam",1,50,50,1000],["move",5,9,1200],["click"],["state",0,320],["hold",1200],["move",40,60,900],["end"]]'
+          flow='[["start",40,60],["hold",1400],["move",5,33.4,1300],["click"],["state",1,320],["hold",2600],["cam",1.08,0,20,1200],["hold",1600],["cam",1,50,50,1000],["move",5,9,1200],["click"],["state",0,320],["hold",1200],["move",40,60,900],["end"]]'
           screens={[
             { name: "desk-coach-draft", alt: "Practice on a desk: the Daily Practice Coach with a sentence typed, the Dare of the Day, Set Up Your Day and the October calendar.", x2: true },
             { name: "desk-tools-home", alt: "The Tools hub on a desk: start with the moment you're in, Set Up Your Day and the Right now prompts.", x2: true }
           ]} />
+        <!-- The caption follows the frame (the scene engine syncs .win-cap[data-cap] beside the window). -->
+        <div class="win-caps pr-scene-caps rise" style="--d:.7s">
+          <p class="win-cap t-cap-i on" data-cap="0">The Coach home, on a desk, with a sentence typed.</p>
+          <p class="win-cap t-cap-i" data-cap="1">The Tools hub.</p>
+        </div>
       </div>
-      <p class="t-cap-i pr-scene-cap rise" style="--d:.7s">The Coach home, on a desk, with a sentence typed.</p>
       <div class="pr-scene-phones">
         <div class="pr-scene-phone pr-scene-l rise-obj floor-on" style="--d:.48s">
           <PhoneFrame width={212} parallax={-10} caption="The Tools hub." screens={[{ name: "tools-home", alt: "The Tools hub on a phone, with Tools active in the bottom bar.", w: 780, h: 1688 }]} />
@@ -191,7 +195,7 @@ const faq = [
         <p slot="note" class="t-cap pr-rail-help">Seven frames. Scroll sideways, or swipe.</p>
         {stear.map((s, i) => (
           <li class="rail-slide">
-            <div class="rise-obj floor-on" style={`--d:${i * 90}ms`}>
+            <div class="pr-rail-crop rise-obj" style={`--d:${i * 90}ms`}>
               <PhoneFrame width={232} flow={readingCam} screens={[{ name: s.screen, alt: `STEAR, ${s.q}`, w: 600, h: 1298 }]} />
             </div>
             <div class="rail-cap pr-rail-cap">
@@ -231,7 +235,6 @@ const faq = [
   <!-- The quiz: two phones on linen (2.2.5) -->
   <section id="quiz" class="pr-quiz" data-tone="cream">
     <div class="wrap">
-      <i class="pr-rule-top" aria-hidden="true"></i>
       <div class="grid pr-quiz-grid">
         <div class="pr-quiz-copy">
           <p class="eyebrow rise">Where most people start</p>
@@ -248,7 +251,7 @@ const faq = [
               <PhoneFrame width={212} flow='[["hold",1200],["tap",50,56],["end"]]' screens={[{ name: "quiz-q1", alt: "The quiz, question one of eighteen: when I get less done than I planned, I'm disappointed in myself, from Never to Almost always.", w: 600, h: 1298 }]} />
             </div>
             <div class="pr-quiz-r rise-obj floor-on" style="--d:.42s">
-              <PhoneFrame width={260} parallax={-8} flow='[["cam",1.06,50,30,2400],["hold",3000],["cam",1,50,50,1600],["end"]]' screens={[{ name: "quiz-results", alt: "The quiz result: Approval, with what you're paying for, what it's actually costing you, where you're paying, and your first step.", w: 600, h: 1298 }]} />
+              <PhoneFrame width={244} parallax={-8} flow='[["cam",1.04,50,34,2400],["hold",3000],["cam",1,50,50,1600],["end"]]' screens={[{ name: "quiz-results", alt: "The quiz result: Approval, with what you're paying for, what it's actually costing you, where you're paying, and your first step.", w: 600, h: 1298 }]} />
             </div>
           </div>
         </div>
@@ -337,18 +340,27 @@ const faq = [
   .pr-hero { position: relative; display: flex; flex-direction: column; padding-top: var(--nav-h); padding-bottom: var(--sec); overflow-x: clip; }
   .pr-hero > .wrap, .pr-hero > .wrap-wide { flex: none; }
   .pr-hero > .lamp { z-index: 0; }
+  /* The cream lamp and grain belong to the cream page: once the page turns charcoal under #loop they fade with
+   * the body (the shared mask already feathers their bottom edge). */
+  .pr-hero > .lamp-cream, .pr-hero.grain-cream::after { transition: opacity .5s var(--ease); }
+  html:not([data-theme="cream"]) .pr-hero > .lamp-cream, html:not([data-theme="cream"]) .pr-hero.grain-cream::after { opacity: 0; }
   .pr-hero-wrap { position: relative; z-index: 2; }
   .pr-hero-copy { grid-column: 1 / span 9; padding-top: 90px; }
   .pr-h1 { max-width: 11em; margin: 0; }
   .pr-lead { margin-top: var(--lead-gap); color: var(--fg-2); }
   .pr-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: var(--btn-gap); }
-  .pr-scene { position: relative; z-index: 1; order: 1; margin-top: clamp(48px, 6vh, 96px); padding-bottom: 40px; }
+  .pr-scene { position: relative; z-index: 1; order: 1; margin-top: clamp(48px, 6vh, 96px); padding-bottom: 72px; }
   .pr-scene-win { position: relative; z-index: 1; }
-  .pr-scene-cap { text-align: center; margin: 14px auto 0; max-width: none; }
+  /* The window's caption follows its frame: (a) on the Coach home, (b) on the Tools hub. */
+  .pr-scene-caps { margin-top: 14px; }
+  .pr-scene-caps .win-cap { left: 0; right: 0; text-align: center; max-width: none; }
   .pr-scene-phones { position: absolute; left: 0; right: 0; top: 0; aspect-ratio: 1000 / 657; z-index: 2; pointer-events: none; }
-  .pr-scene-phone { position: absolute; bottom: -40px; pointer-events: auto; }
-  .pr-scene-l { left: 24px; }
-  .pr-scene-r { right: 24px; }
+  /* The phones stand 64 px below the window's edge. The left one covers the rail's footer line in the
+   * capture; the right one (right edge 1384) stands clear of the capture's "Close the day" link and covers
+   * only the cards' right ends and the margin beside them. */
+  .pr-scene-phone { position: absolute; bottom: -64px; pointer-events: auto; }
+  .pr-scene-l { left: 8px; }
+  .pr-scene-r { right: -4px; }
   /* The rise uses the translate property (the figure's own transform carries the parallax), so it is named in the transition list. */
   .js .pr-scene-phone.rise-obj { translate: 0 80px; transition-property: opacity, transform, translate; transition-duration: 1.3s; }
   .js .pr-scene-phone.rise-obj.in { translate: 0 0; }
@@ -388,18 +400,39 @@ const faq = [
   .pr-day > .lamp { opacity: 0; }
   .pr-day-head { grid-column: 1 / span 8; }
   .pr-day-stage { margin-top: var(--head-gap); }
+  /* The Morning step: the today capture was taken in the afternoon, so its greeting sits above the crop.
+   * This is a crop of the real capture (moved up 18.4% and set at 1.04, inside the capture's side padding);
+   * nothing is drawn or covered, and its lower edge fades out before the app's bottom bar. */
+  #day img.ds[src$="/today.jpg"], #day img.ds[src$="/today.webp"] { transform-origin: 50% 0; transform: translateY(-18.4%) scale(1.04);
+    -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent 91.5%); mask-image: linear-gradient(to bottom, #000 88%, transparent 91.5%); }
+  /* The page's small phones lean at most 1.04 about the centre, so a crop takes under 2% from each side and
+   * the capture's own padding (about 4%) still clears every word: the camera's edge feather is 3 px here,
+   * not 14, so it never lies over the first glyph of a line on a 230 px screen. */
+  .pr-day .day-stage .phone-screen::after, .pr-band .phone-screen::after, .pr-quiz-r .phone-screen::after { background: linear-gradient(90deg, #f2ece0 0, rgba(242,236,224,0) 3px, rgba(242,236,224,0) calc(100% - 3px), #f2ece0 100%); }
+  /* The Journal holds one entry, so on the evening step the phone fades into the night below the list
+   * instead of showing three quarters of an empty screen. */
+  .pr-day .day-stage.is-night .phone { -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 74%); mask-image: linear-gradient(to bottom, #000 40%, transparent 74%); }
 
   /* 2.2.4 STEAR */
-  .pr-stear { padding-block: var(--sec); }
+  .pr-stear { padding-block: var(--sec) calc(var(--sec) * .7); }
   .pr-stear-head { align-items: end; }
   .pr-stear-title { grid-column: 1 / span 6; }
   .pr-stear-intro { grid-column: 8 / span 5; color: var(--fg-2); max-width: none; padding-bottom: .15em; }
-  .pr-band .rail-track { --rail-w: 250px; --rail-gap: 32px; background: #ebe4d5; padding-block: 64px 56px; box-shadow: inset 0 1px 0 var(--line), inset 0 -1px 0 var(--line); margin-top: var(--head-gap); }
+  .pr-band .rail-track { --rail-w: 250px; --rail-gap: 32px; background: #ebe4d5; padding-block: 48px 40px; box-shadow: inset 0 1px 0 var(--line), inset 0 -1px 0 var(--line); margin-top: var(--head-gap); }
+  /* Each phone is cropped to its content: the top 70 percent (360 of 516 px), its empty lower screen fading
+   * out, no bottom bezel. The box reaches 28 px past the phone at the sides and 20 px above so the phone's
+   * own shadow is not cut. The caption sits 20 px under the fade. */
+  .pr-rail-crop { --crop: 360px; box-sizing: content-box; height: var(--crop); margin: -20px -28px 0; padding: 20px 28px 0; overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(20px + var(--crop) * .72), transparent calc(20px + var(--crop))); mask-image: linear-gradient(to bottom, #000 calc(20px + var(--crop) * .72), transparent calc(20px + var(--crop))); }
+  /* Quiet, not disabled: the neighbours sit at .82 with their colour lowered. */
+  .js .pr-band .rail-slide.off { opacity: .82; }
+  .pr-band .rail-slide .phone { transition: filter .6s var(--ease); }
+  .js .pr-band .rail-slide.off .phone { filter: saturate(.55); }
   .pr-rail-cap { margin-top: 20px; }
   .pr-folio { color: var(--fg-3); }
   .pr-rail-q { margin-top: 8px; max-width: none; }
   .pr-rail-h { margin-top: 6px; }
-  .pr-then { display: flex; align-items: center; height: calc(232px * 2.224); }
+  .pr-then { display: flex; align-items: center; height: 360px; }
   .pr-then-card { width: 250px; min-height: 300px; padding: 28px; display: flex; flex-direction: column; justify-content: center; }
   .pr-then-card .eyebrow { margin-bottom: 14px; }
   .pr-then-body { margin-top: 10px; }
@@ -409,20 +442,23 @@ const faq = [
   .pr-note { display: contents; }
   .pr-note-text { grid-row: 1; color: var(--fg-2); max-width: 24em; }
   .pr-note-text b { font-weight: inherit; }
-  .pr-tile { grid-row: 2; width: 282px; max-width: 100%; min-height: 360px; margin-top: 24px; }
+  /* Each tile takes its note's full measure, so the notes and the tiles share one column edge. */
+  .pr-tile { grid-row: 2; width: 100%; min-height: 360px; margin-top: 24px; }
+  .pr-tile .tile-media-ct { --screen-w: 62%; }
   .pr-tile figcaption { margin: 0; }
 
   /* 2.2.5 The quiz */
   .pr-quiz { padding-block: var(--sec); }
   .pr-rule-top { display: block; height: 1px; background: var(--line); }
-  .pr-quiz-grid { margin-top: var(--sec); }
+  .pr-quiz-grid { margin-top: 0; }
   .pr-quiz-copy { grid-column: 1 / span 5; align-self: center; }
   .pr-quiz-body { max-width: 28em; }
   .pr-quiz-note { margin-top: 16px; }
   .pr-quiz-still { grid-column: 6 / span 7; }
-  .pr-quiz-mat { height: 620px; }
-  .pr-quiz-q { position: absolute; left: 76px; bottom: 6px; z-index: 1; }
-  .pr-quiz-r { position: absolute; right: 60px; bottom: 30px; z-index: 2; }
+  /* The mat has room around both phones: the results phone's top sits 81 px under the mat's edge. */
+  .pr-quiz-mat { height: 664px; }
+  .pr-quiz-q { position: absolute; left: 76px; bottom: 64px; z-index: 1; }
+  .pr-quiz-r { position: absolute; right: 60px; bottom: 40px; z-index: 2; }
 
   /* 2.2.6 Yours */
   .pr-private { padding-block: var(--sec-l); }
@@ -448,11 +484,11 @@ const faq = [
   .pr-levels-grid { margin-top: var(--sec); }
   .pr-levels-copy { grid-column: 1 / span 6; }
   .pr-faq { grid-column: 8 / span 5; }
-  .pr-levels-cols { list-style: none; margin: var(--head-gap) 0 0; padding: 20px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 32px; border-top: 1px solid var(--line); }
-  .pr-levels-cols > li { position: relative; }
-  .pr-levels-cols > li + li::before { content: ""; position: absolute; left: -16px; top: 0; bottom: 0; width: 1px; background: var(--line); }
-  .pr-level-name { max-width: none; }
-  .pr-level-body { color: var(--fg-2); margin-top: 12px; }
+  /* The three levels as three rows under one hairline: the name in a 150 px column, the body beside it. */
+  .pr-levels-cols { list-style: none; margin: var(--head-gap) 0 0; padding: 0; border-top: 1px solid var(--line); }
+  .pr-levels-cols > li { display: grid; grid-template-columns: 150px minmax(0, 1fr); column-gap: 24px; align-items: baseline; padding-block: 22px 24px; border-bottom: 1px solid var(--line); }
+  .pr-level-name { max-width: none; margin: 0; }
+  .pr-level-body { color: var(--fg-2); margin: 0; max-width: 30em; }
   .nb { white-space: nowrap; }
 
   /* 2.2.9 Final */
@@ -460,13 +496,19 @@ const faq = [
   /* The floor and the glow fade in with the forest tone, so the page never hard cuts at the section's top edge. */
   .pr-final .floor { z-index: 0; opacity: 0; transition: opacity .5s var(--ease); }
   html[data-theme="forest"] .pr-final .floor, .no-js .pr-final .floor { opacity: 1; }
+  /* The floor's grain starts under the section's top edge, so it never draws a line across the forest page there. */
+  .pr-final .floor-fade.grain::after { -webkit-mask-image: linear-gradient(to bottom, transparent, #000 200px); mask-image: linear-gradient(to bottom, transparent, #000 200px); }
   .pr-geo { right: -260px; bottom: -420px; z-index: 0; }
   .pr-final-wrap { position: relative; z-index: 2; margin-top: 14vh; }
   .pr-final-copy { grid-column: 3 / span 8; position: relative; text-align: center; }
   .pr-final-copy::before { content: ""; position: absolute; inset: -80px -120px; background: radial-gradient(50% 60% at 50% 40%, rgba(31,61,46,.85), transparent 75%); z-index: -1; pointer-events: none; opacity: 0; transition: opacity .5s var(--ease); }
   html[data-theme="forest"] .pr-final-copy::before, .no-js .pr-final-copy::before { opacity: 1; }
   .pr-final-h2 { margin-inline: auto; }
-  .pr-final-lead { color: #cdc6b8; margin: var(--lead-gap) auto 0; }
+  .pr-final-lead { color: var(--fg-2); margin: var(--lead-gap) auto 0; }
+  /* The tone floor of this closing bleed starts under the copy (at 58%, which is below the fold for as long
+   * as the page is still cream), so the copy is never read in the cream ink on a forest ground, and the
+   * section's lower part is forest whatever the theme. */
+  main .pr-final[data-tone] { background-image: linear-gradient(to bottom, transparent 0, transparent 58%, var(--tone-floor, transparent) calc(58% + 120px)); }
   .pr-final-btns { justify-content: center; }
 
   @media (max-width: 1068px) {
@@ -496,10 +538,18 @@ const faq = [
     .pr-hero-copy { padding-top: 40px; }
     .pr-btns { flex-direction: column; }
     .pr-btns .btn { width: 100%; }
-    .pr-scene { margin-top: 40px; }
-    .pr-scene-phones { gap: 16px; margin-top: 28px; }
-    .pr-scene-phone .phone { --pw: 150px !important; }
+    /* The hero leads with the two phones at a readable size: Close the day in front at 224, the Tools hub
+     * behind it to the left at 196, tilted; then the window with its caption. */
+    .pr-scene { display: flex; flex-direction: column; margin-top: 36px; }
+    .pr-scene-phones { order: -1; position: relative; display: flex; justify-content: flex-end; gap: 0; margin-top: 0; padding: 28px 0 52px; }
+    .pr-scene-phone { inset: auto; }
+    .pr-scene-l { position: absolute; left: 4px; top: 0; z-index: 0; rotate: -4deg; }
+    .pr-scene-r { position: relative; z-index: 1; }
+    .pr-scene-l .phone { --pw: 196px !important; }
+    .pr-scene-r .phone { --pw: 224px !important; }
     .pr-scene-phone .phone figcaption { font-size: 12px; margin-top: 12px; }
+    .pr-scene-l .phone figcaption { text-align: left; transform-origin: 0 0; rotate: 4deg; }
+    .pr-scene-win { margin-top: 8px; }
     .pr-strap-rule { grid-column: 1 / -1; }
     .pr-strap-line { font-size: 12.5px; margin-top: 16px; }
     .pr-loop { padding-block: 152px; }
@@ -508,10 +558,10 @@ const faq = [
     .pr-loop-rows > li { grid-template-columns: 1fr; row-gap: 4px; min-height: 0; padding-block: 18px; }
     .pr-band .rail-track { --rail-w: 232px; --rail-gap: 20px; }
     .pr-band .rail-slide .phone { --pw: 212px !important; }
-    .pr-then { height: calc(212px * 2.224); }
+    .pr-rail-crop { --crop: 330px; }
+    .pr-then { height: 330px; }
     .pr-then-card { width: 232px; }
     .pr-notes { grid-template-columns: 1fr; row-gap: 40px; margin-top: 48px; }
-    .pr-tile { width: 100%; }
     .pr-tile .tile-media-ct { --screen-w: 60%; }
     .pr-quiz { overflow-x: clip; }
     .pr-quiz-grid { margin-top: var(--sec-s); }
@@ -520,12 +570,18 @@ const faq = [
     .pr-quiz-q .phone { --pw: 150px !important; }
     .pr-quiz-r { right: 16px; bottom: 22px; }
     .pr-quiz-r .phone { --pw: 170px !important; }
+    /* The day at 390. The engine makes current the step whose box centre is nearest the viewport's middle,
+     * which sits under the 44svh mat. Each step's box reaches up behind the mat by the mat's height (padding
+     * that a negative margin cancels, so the layout is unchanged), which moves that centre down to the
+     * middle of the readable band under the mat: the current step is the one with most of itself in view.
+     * Neighbours dim to .6, and the fade under the mat is 20 px, so a heading is in view or under the mat. */
+    .js .pr-day .day:not(.static) .day-step { --ov: calc(var(--nav-h) + 44svh); margin-top: calc(-1 * var(--ov)); padding-top: calc(var(--ov) + 32px); min-height: calc(var(--ov) + 50svh); scroll-margin-top: var(--ov); pointer-events: none; }
+    .js .pr-day .day:not(.static) .day-step-in { pointer-events: auto; }
+    .js .pr-day .day:not(.static) .day-step.is-dim { opacity: .6; }
+    .js .pr-day .day:not(.static) .day-steps { -webkit-mask-image: linear-gradient(to bottom, transparent var(--my, 0px), #000 calc(var(--my, 0px) + 20px)); mask-image: linear-gradient(to bottom, transparent var(--my, 0px), #000 calc(var(--my, 0px) + 20px)); }
     .pr-private { padding-block: 152px; }
     .pr-levels-grid { margin-top: var(--sec-s); }
-    .pr-levels-cols { grid-template-columns: 1fr; row-gap: 0; padding-top: 0; }
-    .pr-levels-cols > li { padding-block: 22px; }
-    .pr-levels-cols > li + li { border-top: 1px solid var(--line); }
-    .pr-levels-cols > li + li::before { display: none; }
+    .pr-levels-cols > li { grid-template-columns: 1fr; row-gap: 10px; padding-block: 22px; }
     .pr-faq { margin-top: 48px; }
     .pr-final { height: 88svh; }
     .pr-final-wrap { margin-top: 10vh; }
