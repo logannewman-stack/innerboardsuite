@@ -101,6 +101,9 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
 
 /* 1.7.14 Drawn lines */
 .draw-line { transition: stroke-dashoffset var(--dur, 1400ms) var(--slow); transition-delay: var(--d, 0s); }
+/* An enter line stays hidden until the script has undrawn it (.dl-ready), so a line in the first screen
+ * never flashes drawn before it draws. */
+.js :is([data-draw="enter"], .draw) .draw-line:not(.dl-ready) { visibility: hidden; }
 [data-draw="scroll"] .draw-line { transition: none; }
 .draw-pop { transform-origin: center; transform: scale(0); transition: transform .5s var(--pop); transition-delay: var(--d, 0s); transform-box: fill-box; }
 .in .draw-pop, .draw-pop.in { transform: scale(1); }

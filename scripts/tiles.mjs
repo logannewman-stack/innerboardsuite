@@ -7,10 +7,13 @@ import sharp from "sharp";
 import { mkdirSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { existsSync } from "node:fs";
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
-const src = join(root, "public", "app");
-const out = join(src, "tiles");
+const pub = join(root, "public", "app");
+const out = join(pub, "tiles");
+// Source captures live in public/app when a page shows them, otherwise in captures/ (kept in the repo, not deployed).
+const srcOf = (stem) => [join(pub, `${stem}.webp`), join(root, "captures", `${stem}.webp`)].find((f) => existsSync(f));
 mkdirSync(out, { recursive: true });
 
 /* No tile shows a score: stear2, rap1 and dare hold the places of the spec's
@@ -24,7 +27,7 @@ const stems = [
 let total = 0;
 for (const stem of stems) {
   const file = join(out, `${stem}.webp`);
-  await sharp(join(src, `${stem}.webp`)).resize(390, 844, { fit: "cover", position: "top" }).webp({ quality: 78 }).toFile(file);
+  await sharp(srcOf(stem)).resize(390, 844, { fit: "cover", position: "top" }).webp({ quality: 78 }).toFile(file);
   const kb = statSync(file).size / 1024;
   total += kb;
   console.log(`${stem}.webp ${kb.toFixed(1)} KB`);

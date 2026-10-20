@@ -634,7 +634,10 @@ class Scene {
     on.classList.add("was");
     if (from !== undefined) {
       const y = Math.min(100, Math.max(0, from)).toFixed(2);
-      this.anims.push(target.animate([{ clipPath: `inset(${y}% 0% ${(100 - Number(y)).toFixed(2)}% 0%)` }, { clipPath: "inset(0% 0% 0% 0%)" }], { duration: 380, easing: SCENE_EASE }));
+      const wipe = target.animate([{ clipPath: `inset(${y}% 0% ${(100 - Number(y)).toFixed(2)}% 0%)` }, { clipPath: "inset(0% 0% 0% 0%)" }], { duration: 380, easing: SCENE_EASE });
+      /* The old frame goes the moment the new one covers it, not a timer tick later. */
+      wipe.onfinish = () => { if (this.anims.includes(wipe)) this.settle(); };
+      this.anims.push(wipe);
     } else {
       this.anims.push(on.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140, easing: OUT_EASE, fill: "forwards" }));
       this.anims.push(target.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 260, delay: 110, easing: OUT_EASE, fill: "backwards" }));
@@ -988,25 +991,40 @@ function previews() {
 }
 
 /* ── 1.7.14 Drawn lines ─────────────────────────────────────────────────── */
+/* Draw on the next frame, so the undrawn state committed by prepLines() is what the stroke transitions
+ * from, also for a line that is already on screen when the page loads. */
 function drawIn(el: Element) {
-  qsa<SVGPathElement>(".draw-line", el).forEach((p) => { p.style.strokeDashoffset = "0"; });
+  const paths = qsa<SVGPathElement>(".draw-line", el);
+  if (!paths.length) return;
+  paths.forEach((p) => { if (!p.classList.contains("dl-ready")) prepLines([p]); });
+  requestAnimationFrame(() => paths.forEach((p) => { p.style.strokeDashoffset = "0"; }));
 }
-function prepLine(p: SVGGeometryElement) {
-  let L = 0;
-  try { L = p.getTotalLength(); } catch { L = 0; }
-  if (!L) return 0;
-  p.style.strokeDasharray = String(L);
-  p.style.strokeDashoffset = reduced() ? "0" : String(L);
-  return L;
+/* Undraw lines without a transition: set the dash with `transition: none`, flush the style, then give the
+ * transition back. Without this, a line painted before the script ran (drawn, no dash) would animate its
+ * own undrawing and the arrival would reverse it at once, so the stroke just appeared. .dl-ready lifts
+ * the guard in motion.css that keeps an enter line hidden until it is prepared. */
+function prepLines(paths: SVGGeometryElement[]) {
+  const lens = paths.map((p) => { try { return p.getTotalLength(); } catch { return 0; } });
+  paths.forEach((p, i) => {
+    if (!lens[i]) return;
+    p.style.transition = "none";
+    p.style.strokeDasharray = String(lens[i]);
+    p.style.strokeDashoffset = reduced() ? "0" : String(lens[i]);
+  });
+  paths.forEach((p) => { void getComputedStyle(p).strokeDashoffset; });
+  paths.forEach((p) => { p.style.transition = ""; p.classList.add("dl-ready"); });
+  return lens;
 }
 let drawN = 0;
 function draws() {
   qsa("[data-draw='enter'], .draw").forEach((svg) => {
-    qsa<SVGGeometryElement>(".draw-line", svg).forEach(prepLine);
+    prepLines(qsa<SVGGeometryElement>(".draw-line", svg));
     if (svg.classList.contains("in")) drawIn(svg);
   });
   qsa("[data-draw='scroll']").forEach((svg) => {
-    const lines = qsa<SVGGeometryElement>(".draw-line", svg).map((p) => ({ p, L: prepLine(p) }));
+    const paths = qsa<SVGGeometryElement>(".draw-line", svg);
+    const lens = prepLines(paths);
+    const lines = paths.map((p, i) => ({ p, L: lens[i] }));
     const rowsN = Number(svg.dataset.drawRows || 0);
     const host = svg.dataset.drawFor ? document.querySelector(svg.dataset.drawFor) : svg.parentElement;
     const rows = host ? qsa(":scope li", host).slice(0, rowsN || undefined) : [];

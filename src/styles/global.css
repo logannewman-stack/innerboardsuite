@@ -224,11 +224,12 @@
 
   /* ── Tone floors (1.7.5) ────────────────────────────────────────────
    * Every section[data-tone] carries a floor: transparent at its top, its own tone's colour from 200 px
-   * down, so the top still cross fades with the body. The floor is painted while the page is in that
-   * section's tone (it then matches the body exactly) and always on the last tone section of the page, so
-   * the closing bleed can never revert under the footer. It fades with the body (--tone-floor is a
-   * registered colour). A floor on a section that is not current would put the current tone's text on the
-   * wrong ground, which is why the other sections let it go. Pages need no rule of their own. */
+   * down, so the top still cross fades with the body. The floor is painted exactly while the page is in
+   * that section's tone, and fades with the body (--tone-floor is a registered colour), so text in the
+   * theme's --fg tokens and the ground under it always agree: a floor painted ahead of its tone would put
+   * the light page's ink on a dark floor (the close h2 before the switch). The page end holds because the
+   * tone engine skips the footer, so the closing bleed stays the theme, and its floor with it, to the
+   * bottom. Pages need no rule of their own. */
   [data-tone="cream"] { --tone-bg: #f4efe4; }
   [data-tone="ac-cream"] { --tone-bg: #f7f4ee; }
   [data-tone="navy"] { --tone-bg: #0d1a2d; }
@@ -240,8 +241,7 @@
   html[data-theme="cream"] main [data-tone="cream"], html[data-theme="ac-cream"] main [data-tone="ac-cream"],
   html[data-theme="navy"] main [data-tone="navy"], html[data-theme="forest"] main [data-tone="forest"],
   html[data-theme="charcoal"] main [data-tone="charcoal"], html[data-theme="ink"] main [data-tone="ink"],
-  html[data-theme="teal"] main [data-tone="teal"],
-  main > [data-tone]:not(:has(~ [data-tone])) { --tone-floor: var(--tone-bg); }
+  html[data-theme="teal"] main [data-tone="teal"] { --tone-floor: var(--tone-bg); }
 
   /* Atmosphere at a section's edges: a lamp or grain layer that is a direct child of a section (and a
    * section's own grain) fades out over its lower half, so it never ends in a hard horizontal seam; below
