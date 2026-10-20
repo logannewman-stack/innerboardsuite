@@ -246,15 +246,19 @@ const quizBenefits = [
   .hm-lead { margin-top: 28px; color: var(--fg-2); }
   .hm-btns { display: flex; flex-wrap: wrap; gap: 12px; }
   .hm-hero-btns { margin-top: 36px; }
-  .hm-plate, .hm-hero-phone { --plate-l: calc(var(--edge) + 8 * (var(--colw) + var(--gap))); }
-  /* The plate reads lit: the lamp at .2 (HomeHeroPlate) and a hairline of light along its top and left edges. */
-  .hm-plate { position: absolute; top: 120px; bottom: 0; left: var(--plate-l); right: 0; border-radius: var(--r-lg) 0 0 var(--r-lg); z-index: 1; box-shadow: inset 1px 1px 0 rgba(255,255,255,.08); }
-  /* The product shot dominates the plate: 338 wide at 1440 (outer 358 x 753),
-   * centred on the plate, its bottom 72 px under the plate's bottom edge (the
-   * section's bottom) at every height, so it stands on the cream of section 2. */
-  .hm-hero-phone { --pw: clamp(260px, min(23.5vw, 44vh), 360px); position: absolute; z-index: 3;
-    top: max(200px, calc(var(--hero-h) + 72px - var(--pw) * 2.224));
-    left: calc(var(--plate-l) + (100% - var(--plate-l)) / 2 - var(--pw) * .53); }
+  .hm-hero-phone { --col-r: calc(var(--edge) + 8 * (var(--colw) + var(--gap))); }
+  /* The product shot is the hero's object: the phone alone on the cream, about 380 wide at 1440
+   * (outer about 403 x 845), centred over columns 9 to 12, its top under the header and its foot
+   * hanging past the fold onto section 2, so the first screen is the product, not a block of colour. */
+  .hm-hero-phone { --pw: clamp(280px, min(26.5vw, 48vh), 400px); position: absolute; z-index: 3;
+    top: max(108px, calc(var(--hero-h) + 56px - var(--pw) * 2.224));
+    left: calc(100% - var(--edge) - var(--pw) * 1.06); }
+  /* A warm light behind the phone and a gold hairline ring at its edge: it reads lit and set apart from the cream. */
+  .hm-halo { position: absolute; z-index: -1; pointer-events: none; left: 50%; top: 42%; width: 190%; aspect-ratio: 1; transform: translate(-50%, -50%);
+    border-radius: 50%; background: radial-gradient(closest-side, rgba(201,171,102,.34), rgba(201,171,102,.12) 55%, rgba(201,171,102,0) 100%); }
+  .hm-hero-phone .phone { box-shadow: inset 0 0 0 .55em #0c0b09, inset 0 0 0 .9em rgba(255,255,255,.06), 0 0 0 1px rgba(110,87,36,.18),
+    0 2px 4px rgba(31,29,26,.14), 0 24px 40px -16px rgba(31,29,26,.34), 0 90px 120px -50px rgba(31,29,26,.5); }
+  .hm-hero-phone .phone-floor { --floor-a: .38; }
 
   /* ── 2.1.2 Recognition ────────────────────────────────────────────── */
   /* Top padding: 60% of a section plus the phone's 72 px overhang, so the h2 follows the first screen without a stall. */
@@ -456,13 +460,11 @@ const quizBenefits = [
     .hm-mission-in { margin-left: 0; }
   }
 
-  /* The hero stacks below 900: the plate becomes a band under the copy. */
+  /* The hero stacks below 900: the phone stands under the copy, centred, in its halo. */
   @media (max-width: 899px) {
     .hm-hero { min-height: 0; padding-bottom: 56px; overflow-x: clip; }
     .hm-hero-copy { grid-column: 1 / span 10; padding-top: 48px; }
-    .hm-plate { position: relative; top: auto; left: auto; right: auto; bottom: auto; margin: 32px 0 0; height: 560px; border-radius: 0; box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
-    .hm-plate .lamp { --lx: 50%; }
-    .hm-hero-phone { --pw: 272px; position: absolute; top: auto; left: calc(50% - var(--pw) * .53); bottom: 0; }
+    .hm-hero-phone { --pw: 300px; position: relative; top: auto; left: auto; width: calc(var(--pw) * 1.06); margin: 44px auto 0; }
     /* The hero's own bottom padding already holds the phone's overhang. */
     .hm-recognize { padding-top: calc(var(--sec) * .8); }
   }
@@ -474,8 +476,7 @@ const quizBenefits = [
     .hm-btns { flex-direction: column; gap: 10px; }
     .hm-btns .btn { width: 100%; }
     .hm-hero-btns { margin-top: 28px; }
-    .hm-plate { margin-top: 24px; height: 512px; }
-    .hm-hero-phone { --pw: 234px; }
+    .hm-hero-phone { --pw: min(286px, calc(100vw - 88px)); margin-top: 36px; }
     .hm-recognize-h2 { max-width: none; }
     /* "On paper," then the italic clause whole on its own line. */
     .hm-recognize-h2 em { display: block; }

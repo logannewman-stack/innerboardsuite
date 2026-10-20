@@ -169,6 +169,13 @@ function reveals() {
   }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
   items.forEach((el) => revealIO!.observe(el));
   observe(revealIO);
+  /* Keyboard focus that lands inside content that has not been revealed yet reveals it at once. */
+  listen(document, "focusin", (e: FocusEvent) => {
+    const t = e.target as Element | null;
+    for (let el = t && t.closest ? t.closest(REVEAL) : null; el; el = el.parentElement ? el.parentElement.closest(REVEAL) : null) {
+      if (!el.classList.contains("in")) { arrive(el); revealIO?.unobserve(el); }
+    }
+  });
 }
 
 /* ── Word splitting shared by line rise (1.7.3) and lit (1.7.4) ─────────── */
@@ -382,8 +389,8 @@ function header() {
     const w = html.clientWidth;
     let dark = 0;
     const paints = new Map<string, number>(), memo = new Map<Element, string>();
-    for (let i = 0; i < 21; i++) {
-      const stack = document.elementsFromPoint(w * (0.1 + 0.04 * i), y);
+    for (let i = 0; i < 11; i++) {
+      const stack = document.elementsFromPoint(w * (0.1 + 0.08 * i), y);
       for (const node of stack) {
         if (el.contains(node) || (panel && panel.contains(node))) continue;
         const src = node.closest(SURFACE);
@@ -396,7 +403,7 @@ function header() {
         break;
       }
     }
-    const want = dark >= 11;
+    const want = dark >= 6;
     let paint = "", most = 0;
     paints.forEach((n, p) => { if (n > most) { most = n; paint = p; } });
     clearTimeout(debounce);
@@ -411,7 +418,7 @@ function header() {
   themeHooks.push(() => after(110, sample));
 
   /* Hide on scroll. */
-  let acc = 0, lastY = window.scrollY, sampledY = -1e9, hidden = false;
+  let acc = 0, lastY = window.scrollY, sampledY = -1e9, sampledAt = -1e9, hidden = false;
   const loadAt = performance.now();
   let resizeAt = -1e9;
   listen(window, "resize", () => { resizeAt = performance.now(); }, { passive: true });
@@ -422,7 +429,8 @@ function header() {
     const d = y - lastY;
     lastY = y;
     el.classList.toggle("is-scrolled", y > 24);
-    if (Math.abs(y - sampledY) > 2) { sampledY = y; sample(); }
+    /* Sample at most every 120 ms while scrolling, and once more when the scroll settles. */
+    if (Math.abs(y - sampledY) > 2 && (now - sampledAt > 120 || d === 0)) { sampledY = y; sampledAt = now; sample(); }
     const locked = now - loadAt < 1200 || now - resizeAt < 500 || menuOpen() || el.contains(document.activeElement);
     if (y < 120 || locked) { acc = 0; if (hidden && (y < 120 || locked)) show(); return; }
     if ((d > 0) !== (acc > 0)) acc = 0;
@@ -939,8 +947,15 @@ function scrollScreens() {
 function parallax() {
   const els = qsa("[data-parallax]");
   els.forEach((el) => el.style.setProperty("--py", el.dataset.parallax || "0"));
-  if (!els.length || reduced()) { html.style.setProperty("--hy", "0"); return; }
-  register({ frame() { html.style.setProperty("--hy", smooth("hy", clamp01(window.scrollY / vh), 0.1).toFixed(4)); } });
+  if (!els.length || reduced()) { els.forEach((el) => el.style.setProperty("--hy", "0")); return; }
+  /* Written on the moving elements only (not on html, which restyles the whole page), and only when it changes. */
+  let last = "";
+  register({ frame() {
+    const v = smooth("hy", clamp01(window.scrollY / vh), 0.1).toFixed(3);
+    if (v === last) return;
+    last = v;
+    els.forEach((el) => el.style.setProperty("--hy", v));
+  } });
 }
 
 /* ── 1.7.13 Previews ────────────────────────────────────────────────────── */

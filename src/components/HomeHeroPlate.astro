@@ -1,26 +1,22 @@
 ---
 /**
- * The home hero's object (BUILD_SPEC 2.1.1): the navy plate that starts at
- * column 9 and runs to the right edge, lit from its top left corner, and the
- * phone that stands in front of it, hangs past its bottom edge onto the cream
- * and plays the Coach scene (the ring presses the composer, the draft
- * appears, the home returns). Both are siblings of the copy inside the hero
- * section, which positions them; the section's CSS lives in index.astro.
- * The phone's width comes from that CSS (about 338 at 1440); the lamp sits
- * at .2 so the slab reads lit, not as a dark sidebar block.
+ * The home hero's object: the phone alone on the cream, large, in a soft
+ * warm halo with its own floor shadow, playing the Coach scene (the ring
+ * presses the composer, the draft appears, the home returns). The navy plate
+ * that stood behind it is gone by the client's direction (it sat where a
+ * photograph used to be). It is a sibling of the copy inside the hero
+ * section, which positions it; the section's CSS lives in index.astro.
  */
 import PhoneFrame from "./PhoneFrame.astro";
 ---
-<div class="plate grain hm-plate" data-surface="dark" aria-hidden="true">
-  <i class="lamp" aria-hidden="true" style="--lx:18%;--ly:0%;--la:.2" data-parallax="-48"></i>
-</div>
 <div class="hm-hero-phone rise-obj floor-on" style="--d:.3s">
+  <i class="hm-halo" aria-hidden="true"></i>
   <PhoneFrame
     id="hero-phone"
-    width={338}
+    width={380}
     style="--pw:inherit"
     eager
-    shadow="dark"
+    shadow="light"
     tilt={3}
     parallax={-36}
     loop={1400}
