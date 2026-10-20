@@ -16,6 +16,11 @@
 .js .slide-l.rise, .js .slide-l.reveal { transform: translate(-40px, 16px); }
 .js .slide-r.rise, .js .slide-r.reveal { transform: translate(40px, 16px); }
 .js .slide-l.rise.in, .js .slide-r.rise.in, .js .slide-l.reveal.is-in, .js .slide-r.reveal.is-in { transform: none; }
+/* Narrower than the full grid the side offset stays inside the gutter (31 px at 735, 32 at 768), so nothing reports overflow. */
+@media (max-width: 1068px) {
+  .js .slide-l.rise, .js .slide-l.reveal { transform: translate(-24px, 16px); }
+  .js .slide-r.rise, .js .slide-r.reveal { transform: translate(24px, 16px); }
+}
 .js .seq > * { transition-delay: calc(var(--i, 0) * 90ms + var(--d, 0s)); }
 .js .rule-draw { transform: scaleX(0); transform-origin: left; transition: transform .9s var(--slow); transition-delay: var(--d, 0s); }
 .js .rule-draw.in, .js .in .rule-draw, .js .in > .rule-draw { transform: scaleX(1); }
@@ -104,7 +109,8 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
 .no-js .draw-line { stroke-dashoffset: 0 !important; }
 .no-js .draw-pop { transform: none; }
 .loop-row { transition: color .4s var(--ease); }
-.js [data-draw="scroll"] ~ ol > li:not(.on), .js .loop-rows > li:not(.on) { color: rgba(244,239,228,.4); }
+/* The dim follows the page tone (the rows sit on a bleed that cross fades), so they never vanish on cream. */
+.js [data-draw="scroll"] ~ ol > li:not(.on), .js .loop-rows > li:not(.on) { color: color-mix(in srgb, var(--fg) 40%, transparent); }
 
 /* 1.7.15 Run gates: see .run .floor-strip in global.css */
 
@@ -125,7 +131,9 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
 
 /* ── Reduced motion: nothing moves, nothing is hidden, stages are static ── */
 @media (prefers-reduced-motion: reduce) {
-  .js .wipe, .js .rise, .js .reveal, .js .rise-obj, .js .seq > *, .js .rule-draw, .js .rule-draw-v, .js .tcard-in, .js .phone-floor, .js .lines-ready .w { opacity: 1; transform: none; translate: none; clip-path: none; -webkit-mask-image: none; mask-image: none; transition: none; }
+  .js .wipe, .js .rise, .js .reveal, .js .seq > *, .js .rule-draw, .js .rule-draw-v, .js .tcard-in, .js .phone-floor, .js .lines-ready .w { opacity: 1; transform: none; translate: none; clip-path: none; -webkit-mask-image: none; mask-image: none; transition: none; }
+  /* .rise-obj rises with `translate`, so only that is reset: a transform a page uses for layout (centring) survives. */
+  .js .rise-obj { opacity: 1; translate: none; transition: none; }
   .js [data-draw="scroll"] .draw-head { opacity: 1; }
   .js .tcard-in { transform: rotate(-5deg); }
   .js .lw, .js .lw.lb, .js [data-lit="lines"] > .lw, .js [data-lit="lines"] > li { color: var(--fg-2); }

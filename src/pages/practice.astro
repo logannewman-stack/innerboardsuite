@@ -168,14 +168,6 @@ const faq = [
         <DayStage steps={daySteps} width={230} id="day-stage" />
       </div>
     </div>
-    <!-- Interim for a race in site.ts: when a scroll jumps two or more steps the stage snaps (no smoothing frames follow), so the page tone engine never re-reads this section's data-tone until the next scroll event. A synthetic scroll kicks one frame. Remove once setIdx() kicks the loop itself. -->
-    <script is:inline data-astro-rerun>
-      (function () {
-        var day = document.getElementById("day");
-        if (!day || !("MutationObserver" in window)) return;
-        new MutationObserver(function () { window.dispatchEvent(new Event("scroll")); }).observe(day, { attributes: true, attributeFilter: ["data-tone"] });
-      })();
-    </script>
   </section>
 
   <!-- One tool, start to finish: the STEAR rail with the reading camera (2.2.4) -->
@@ -191,14 +183,12 @@ const faq = [
     </div>
     <div class="pr-band" data-warm>
       <Rail ariaLabel="STEAR, as the app asks it." by="item">
-        <div slot="tabs" class="pr-rail-tabs">
-          <p class="t-cap pr-rail-help">Seven frames. Scroll sideways, or swipe.</p>
-          <div class="rail-tabs" role="tablist" aria-label="STEAR, as the app asks it.">
-            {[...stear.map((x) => x.step), "Then"].map((l, i) => (
-              <button type="button" class="rail-tab" role="tab" aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1}><span class="bar"></span><span class="t">{l}</span></button>
-            ))}
-          </div>
+        <div slot="tabs" class="rail-tabs" role="tablist" aria-label="STEAR, as the app asks it.">
+          {[...stear.map((x) => x.step), "Then"].map((l, i) => (
+            <button type="button" class="rail-tab" role="tab" aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1}><span class="bar"></span><span class="t">{l}</span></button>
+          ))}
         </div>
+        <p slot="note" class="t-cap pr-rail-help">Seven frames. Scroll sideways, or swipe.</p>
         {stear.map((s, i) => (
           <li class="rail-slide">
             <div class="rise-obj floor-on" style={`--d:${i * 90}ms`}>
@@ -398,8 +388,6 @@ const faq = [
   .pr-day > .lamp { opacity: 0; }
   .pr-day-head { grid-column: 1 / span 8; }
   .pr-day-stage { margin-top: var(--head-gap); }
-  /* The spec's mat is 690 x 640 (seven columns, x 630 to 1320 beside the five column step list); the shared stage column spans six. */
-  @media (min-width: 1069px) { .pr-day-stage .day-stagecol { grid-column: 6 / span 7; } }
 
   /* 2.2.4 STEAR */
   .pr-stear { padding-block: var(--sec); }
@@ -416,11 +404,7 @@ const faq = [
   .pr-then-card .eyebrow { margin-bottom: 14px; }
   .pr-then-body { margin-top: 10px; }
   .pr-then-link { margin-top: 18px; }
-  .pr-band .rail-nav { align-items: flex-start; }
-  .pr-rail-tabs { display: flex; flex-direction: column; gap: 14px; }
-  .pr-rail-help { order: 2; margin: 0; }
-  .no-js .pr-band .rail-nav { display: flex; }
-  .no-js .pr-band .rail-tabs, .no-js .pr-band .rail-arrows { display: none; }
+  .pr-rail-help { margin: 0; }
   .pr-notes { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: var(--gap); margin-top: 64px; padding-top: 28px; border-top: 1px solid var(--line); }
   .pr-note { display: contents; }
   .pr-note-text { grid-row: 1; color: var(--fg-2); max-width: 24em; }

@@ -246,6 +246,8 @@
   @supports not (hanging-punctuation: first) { .quote-hang { text-indent: -.38em; } }
   .amp { font-family: var(--font-display); font-style: italic; font-weight: 400; color: var(--accent); }
   .grad { background: linear-gradient(100deg, #e6d7b3 0%, #c9ab66 48%, #b08d4f 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .08em; }
+  /* The gradient wins over the heading em colour rules above (0,1,1 against 0,1,0). */
+  h1 em.grad, h2 em.grad, h3 em.grad, .t-xl em.grad, .t-l em.grad, .t-m em.grad, .t-s em.grad, .t-state em.grad { color: transparent; -webkit-text-fill-color: transparent; }
   .tabular { font-variant-numeric: tabular-nums; }
 
   /* ── Eyebrow ─────────────────────────────────────────────────────────── */
@@ -428,6 +430,7 @@
   .rail-track.drag { scroll-snap-type: none; cursor: grabbing; }
   .rail-track.drag > * { pointer-events: none; }
   .rail-nav { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-top: 24px; }
+  .rail-note { margin-top: 14px; }
   .rail-tabs { display: flex; gap: clamp(14px, 2.2vw, 48px); margin: 0; padding: 0; list-style: none; }
   .rail-tab { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; background: none; border: 0; padding: 8px 0; cursor: pointer; color: var(--fg-3); }
   .rail-tab .bar { display: block; width: 8px; height: 8px; border-radius: 999px; background: var(--lit-off); transition: width .45s var(--slow), background-color .45s var(--slow); }
@@ -445,7 +448,8 @@
   /* ── Day stage (1.6, engine 1.7.9) ─────────────────────────────────── */
   .day { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: stretch; }
   .day-steps { grid-column: 1 / span 5; list-style: none; margin: 0; padding: 0; }
-  .day-stagecol { grid-column: 7 / span 6; }
+  /* Seven columns (6 to 12): the spec's 690 x 640 mat beside the five column step list. */
+  .day-stagecol { grid-column: 6 / span 7; }
   .day-stage { position: sticky; top: calc((100vh - 640px) / 2); top: calc((var(--vh, 100vh) - 640px) / 2); height: 640px; border-radius: var(--r-lg); overflow: hidden; background: #ebe4d5; box-shadow: inset 0 1px 2px rgba(31,29,26,.06), inset 0 0 0 1px rgba(31,29,26,.05); }
   .day-stage .sky { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
   .day-stage .sky[data-sky="morning"] { opacity: 1; background: radial-gradient(60% 55% at 12% 0%, rgba(201,171,102,.3), transparent 70%), linear-gradient(180deg, #f7efdd, #ebe4d5); }
@@ -555,7 +559,7 @@
   .tcard .tg.on::after { left: 18px; }
 
   /* ── The mark geometry ─────────────────────────────────────────────── */
-  .geo { position: absolute; width: var(--geo-size, 1100px); height: var(--geo-size, 1100px); pointer-events: none; color: currentColor; opacity: 1; }
+  .geo { position: absolute; width: var(--geo-size, 1100px); height: var(--geo-size, 1100px); max-width: none; max-height: none; pointer-events: none; color: currentColor; opacity: 1; }
   .geo path, .geo circle.ring { fill: none; stroke: currentColor; stroke-width: 1; opacity: var(--geo-o, .08); }
   .geo circle.dot { fill: currentColor; stroke: none; opacity: calc(var(--geo-o, .08) * 2); }
 

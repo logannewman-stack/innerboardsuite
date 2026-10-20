@@ -4,8 +4,10 @@
  * radius 120 joined by a 1 px white arc at .35 alpha with a 6 px arrowhead
  * closing the loop. It is the Practice page's loop, returning on teal without
  * its words: the words are in the lit statement beside it. The arc draws over
- * 1.8 s and the dots pop 80 ms apart when the glyph arrives (1.7.14, enter
- * mode); under reduced motion and without the script it is fully drawn.
+ * 1.8 s and the dots pop 80 ms apart as the section's centre passes 60% of
+ * the viewport (the aside around it carries the data-reveal-at gate, so the
+ * pull line follows the loop); under reduced motion and without the script
+ * it is fully drawn.
  */
 interface Props { class?: string }
 const { class: className = "" } = Astro.props;

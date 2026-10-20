@@ -94,7 +94,10 @@ function measure() {
   const docW = html.clientWidth;
   html.style.setProperty("--vh", vh + "px");
   const gutter = Math.min(120, Math.max(20, docW * 0.042));
-  const max = parseFloat(getComputedStyle(html).getPropertyValue("--max")) || 1200;
+  /* --max is calc(1200px * var(--zoom)), which computed style returns unresolved (NaN when parsed),
+   * so read --zoom (1, 1.12 from 1800 px, 1.25 from 2200 px) and compute the column from it. */
+  const zoom = parseFloat(getComputedStyle(html).getPropertyValue("--zoom")) || 1;
+  const max = 1200 * zoom;
   const gap = Math.min(32, Math.max(16, docW * 0.016));
   const wrapW = Math.min(docW - 2 * gutter, max);
   html.style.setProperty("--edge", Math.max(gutter, (docW - max) / 2) + "px");
@@ -130,8 +133,31 @@ function arrive(el: Element) {
   if (el.classList.contains("reveal")) el.classList.add("is-in");
   if (el.matches(".draw, [data-draw='enter'], [data-geo]")) drawIn(el);
 }
+/* A reveal gate: data-reveal-at="0.6" (alias data-draw-at) on any element arrives it, and every reveal
+ * hook inside it, when the centre of its section (or of the element named by data-reveal-host) passes
+ * that fraction of the viewport height, as one sequence timed by their own --d values, instead of each
+ * at the observer's 12% visibility. The INQ loop glyph and its pull line use it. */
+const GATE = "[data-reveal-at], [data-draw-at]";
+function gates() {
+  qsa<HTMLElement>(GATE).forEach((el) => {
+    const fire = () => { arrive(el); qsa(REVEAL, el).forEach(arrive); };
+    if (el.classList.contains("in")) return;
+    if (reduced() || !("IntersectionObserver" in window)) { fire(); return; }
+    const at = Math.min(1, Math.max(0, parseFloat(el.dataset.revealAt || el.dataset.drawAt || "") || 0.6));
+    const sel = el.dataset.revealHost || el.dataset.drawHost;
+    const host = (sel && document.querySelector<HTMLElement>(sel)) || el.closest<HTMLElement>("section") || el.parentElement || el;
+    let fired = false;
+    register({ frame() {
+      if (fired) return;
+      const r = host.getBoundingClientRect();
+      if ((r.top + r.bottom) / 2 <= vh * at) { fired = true; fire(); }
+    } });
+  });
+}
 function reveals() {
-  const items = qsa(REVEAL);
+  /* Anything under a gate fires from the loop, not from this observer. */
+  const items = qsa(REVEAL).filter((el) => !el.closest(GATE));
+  gates();
   qsa(".seq").forEach((seq) => Array.from(seq.children).forEach((c, i) => (c as HTMLElement).style.setProperty("--i", String(i))));
   if (!("IntersectionObserver" in window)) { items.forEach(arrive); revealIO = null; return; }
   revealIO = new IntersectionObserver((entries) => {
@@ -310,24 +336,33 @@ function header() {
 
   /* Tone: 21 samples along the bottom edge, majority wins, 110 ms debounce. */
   let debounce = 0;
-  /* A surface (plate, panel, paper, mat) paints its own colour and decides for
-   * itself; a bleed section paints nothing, so its tone is the page's current
-   * theme, which is what the body is actually showing under the bar. */
+  /* A surface (plate, panel, paper, mat, tile, a device's screen or bezel)
+   * paints its own colour and decides for itself: `data-surface` when it says
+   * so, else by class. A bleed section paints nothing, so its tone is the
+   * page's current theme, which is what the body is actually showing under
+   * the bar (the day stage's sky follows its section, so it is not listed). */
+  const SURFACE = "[data-tone], [data-surface], .paper, .paper-teal, .mat, .mat-blush, .tile, .phone-screen, .win-screen, .phone, .win";
+  const LIGHT = ".paper, .paper-teal, .mat, .mat-blush, .tile, .phone-screen, .win-screen";
   const isDark = (src: Element) => {
     const surface = src.getAttribute("data-surface");
     if (surface) return surface === "dark";
+    if (src.matches(LIGHT)) return false;
+    if (src.matches(".win")) return src.classList.contains("win-dark");
+    if (src.matches(".phone")) return true;
     return DARK.has(html.dataset.theme || "");
   };
   const sample = () => {
     if (menuOpen()) return;
-    const y = el.getBoundingClientRect().bottom + 4;
+    /* Sample where the bar's bottom edge is, or will be once it slides back in: a hidden bar must not
+     * reappear with the tone of the strip above it. */
+    const y = (hidden ? el.offsetHeight : el.getBoundingClientRect().bottom) + 4;
     const w = html.clientWidth;
     let dark = 0;
     for (let i = 0; i < 21; i++) {
       const stack = document.elementsFromPoint(w * (0.1 + 0.04 * i), y);
       for (const node of stack) {
         if (el.contains(node) || (panel && panel.contains(node))) continue;
-        const src = node.closest("[data-tone], [data-surface]");
+        const src = node.closest(SURFACE);
         if (src && isDark(src)) dark++;
         break;
       }
@@ -402,6 +437,9 @@ class Scene {
   el: HTMLElement; screen: HTMLElement | null; cam: HTMLElement | null; cur: HTMLElement | null; tap: HTMLElement | null;
   frames: HTMLImageElement[]; steps: Step[] | null = null; loopMs = 0; rest = 0; auto = false; visible = false;
   run = 0; timers: number[] = []; io: IntersectionObserver | null = null; pending = 0; wasT = 0;
+  /* data-flow-delay: the first play waits this many ms after the page bound (a hero scene that should
+   * start 1.6 s after load); later entries wait the usual 300 ms. */
+  delay = 0; born = performance.now();
   constructor(el: HTMLElement) {
     this.el = el;
     this.screen = el.querySelector(".phone-screen, .win-screen");
@@ -411,6 +449,7 @@ class Scene {
     this.frames = qsa<HTMLImageElement>("img.ds", el);
     this.rest = Number(el.dataset.rest || 0);
     this.loopMs = Number(el.dataset.flowLoop || 0);
+    this.delay = Number(el.dataset.flowDelay || 0);
     this.auto = !!el.dataset.flow && !el.closest("[data-rail], [data-story], [data-loop]");
     if (this.auto) { try { this.steps = JSON.parse(el.dataset.flow || "null"); } catch { this.steps = null; } }
     const first = this.frames[0];
@@ -431,7 +470,13 @@ class Scene {
       this.io.observe(el);
     } else this.visible = true;
   }
-  onEnter() { if (this.steps && !document.hidden) { cancel(this.pending); this.pending = after(300, () => this.play()); } }
+  onEnter() {
+    if (!this.steps || document.hidden) return;
+    cancel(this.pending);
+    const wait = Math.max(300, this.delay - (performance.now() - this.born));
+    this.delay = 0;
+    this.pending = after(wait, () => this.play());
+  }
   set(steps: Step[] | null, loopMs = 0) { this.steps = steps; this.loopMs = loopMs; }
   play() {
     if (!this.steps || !this.visible || document.hidden || reduced()) return;
@@ -629,6 +674,9 @@ function stories() {
       if (flow) { try { scene.set(JSON.parse(flow), 0); scene.play(); } catch { scene.set(null); } } else scene.set(null);
       if (section) section.dataset.tone = k === lastIdx ? "navy" : baseTone;
       stage.classList.toggle("is-night", k === lastIdx);
+      /* The tone pass ran earlier in this frame and the sky smoothing may have snapped (a jump of two or
+       * more steps), so ask for one more frame: the page tone then re-reads this section's data-tone. */
+      need = true;
     };
     const goTo = (k: number) => {
       const r = steps[k].getBoundingClientRect();
@@ -885,7 +933,10 @@ function draws() {
       const p = smooth(key, clamp01((0.75 * vh - r.top) / Math.max(1, r.height)), 0.1);
       lines.forEach(({ p: path, L }) => { path.style.strokeDashoffset = (L * (1 - p)).toFixed(2); });
       if (rowsN) rows.forEach((row, i) => row.classList.toggle("on", p >= (i + 0.5) / rowsN));
-      if (p >= 0.999 && !done) { done = true; svg.classList.add("done"); }
+      /* .done follows the line: it is set when the stroke completes and removed when the reader scrolls
+       * back and the line undraws, so an arrowhead shown by .done never floats over an unfinished stroke. */
+      const complete = p >= 0.999;
+      if (complete !== done) { done = complete; svg.classList.toggle("done", complete); }
     } });
   });
 }

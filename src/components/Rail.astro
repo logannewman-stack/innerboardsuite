@@ -4,8 +4,9 @@
  * tabs, keyboard, drag with momentum. The slides go in the default slot as
  * li.rail-slide; the component renders the ol.rail-track with its carousel
  * roles. `labels` renders the tabs (slot "tabs" replaces them); slot "arrows"
- * replaces the default arrow pair. Set --rail-w and --rail-gap on the track
- * from the page's CSS.
+ * replaces the default arrow pair; slot "note" renders a helper line under the
+ * nav row, outside it, so it stays visible without the script. Set --rail-w
+ * and --rail-gap on the track from the page's CSS.
  */
 interface Props { by?: "item" | "page"; labels?: string[]; ariaLabel: string; class?: string; trackClass?: string; id?: string }
 const { by = "item", labels = [], ariaLabel, class: className = "", trackClass = "", id } = Astro.props;
@@ -31,4 +32,5 @@ const { by = "item", labels = [], ariaLabel, class: className = "", trackClass =
       </div>
     </slot>
   </div>
+  {Astro.slots.has("note") && <div class="rail-note wrap"><slot name="note" /></div>}
 </div>
