@@ -77,7 +77,8 @@
  */
 :root {
   --zoom: 1;
-  --gutter: clamp(20px, 4.2vw, 120px);
+  /* The gutter clears the sensor housing of a phone in landscape (viewport-fit=cover in Base.astro). */
+  --gutter: max(clamp(20px, 4.2vw, 120px), env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
   --max: calc(1200px * var(--zoom));
   --max-wide: calc(1320px * var(--zoom));
   --gap: clamp(16px, 1.6vw, 32px);
@@ -101,8 +102,8 @@
   --fs-state: clamp(24px, min(2.7vw, 4.6vh), 48px);
   --fs-title: clamp(19px, 1.5vw, 24px);
   --fs-lead: clamp(17px, .5vw + 10.5px, 22px);
-  --fs-body: clamp(15.5px, .35vw + 11px, 18px);
-  --fs-small: clamp(13.5px, .25vw + 10.5px, 15px);
+  --fs-body: clamp(16px, .35vw + 11px, 18px);
+  --fs-small: clamp(14.5px, .25vw + 11px, 15px);
   --fs-eyebrow: clamp(11px, .15vw + 9.5px, 12.5px);
   --fs-cap: 13px;
   --fs-cap-i: 14px;
@@ -128,15 +129,30 @@
   --line-gold: rgba(201,171,102,.35);
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-@media (max-width: 1068px) { :root { --nav-h: 60px; } }
+/* The header keeps its inline links down to 960 (audit 2, finding 10); below, the bar is 60 high. */
+@media (max-width: 959px) { :root { --nav-h: 60px; } }
 @media (max-width: 734px) {
   :root {
     --fs-xl: clamp(36px, 9.8vw, 44px);
     --fs-l: clamp(32px, 9.2vw, 44px);
     --fs-m: clamp(28px, 7.7vw, 36px);
-    --fs-state: clamp(24px, 6.4vw, 30px);
+    /* A lit statement on a phone reads at about 22 px, so it is a paragraph, not a wall (finding 13). */
+    --fs-state: clamp(21px, 5.6vw, 24px);
     --fs-price: 56px;
+    --fs-cap: 14px;
+    --fs-eyebrow: 12px;
+    /* Phone rhythm (finding 8): about a third less blank space between sections than the desktop tokens. */
+    --sec: 64px;
+    --sec-l: 88px;
+    --sec-s: 44px;
+    --head-gap: 32px;
+    --btn-gap: 28px;
   }
+}
+/* A phone in landscape: about 330 px of usable height, so the first screen carries the headline, the lead and
+ * the buttons (finding 2). Pages bring their hero's top padding down to 16 px in the same query. */
+@media (orientation: landscape) and (max-height: 500px) {
+  :root { --nav-h: 52px; --fs-xl: clamp(30px, 8.6vh, 40px); --lead-gap: 12px; --btn-gap: 16px; }
 }
 @media (min-width: 1800px) { :root { --zoom: 1.12; --r: calc(clamp(12px, .9vw, 20px) * 1.12); --r-lg: calc(clamp(20px, 1.7vw, 32px) * 1.12); } }
 @media (min-width: 2200px) { :root { --zoom: 1.25; --r: calc(clamp(12px, .9vw, 20px) * 1.25); --r-lg: calc(clamp(20px, 1.7vw, 32px) * 1.25); } }
@@ -210,7 +226,7 @@
 @layer components {
   /* ── 1.1 Containers and the twelve column grid ─────────────────────── */
   .wrap { width: min(100% - 2 * var(--gutter), var(--max)); margin-inline: auto; }
-  .wrap-wide { width: min(100% - 2 * max(20px, 2.8vw), var(--max-wide)); margin-inline: auto; }
+  .wrap-wide { width: min(100% - 2 * max(20px, 2.8vw, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px)), var(--max-wide)); margin-inline: auto; }
   /* The twelve column grid. The :not() guard keeps it off the legacy pages'
    * Tailwind `grid gap-* md:grid-cols-*` usage until stage three removes them. */
   .grid:not([class*="grid-cols-"]):not([class*="gap-"]) { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
@@ -272,7 +288,7 @@
   .t-folio { font-family: var(--font-sans); font-size: var(--fs-folio); font-weight: 500; letter-spacing: .04em; line-height: 1; font-variant-numeric: tabular-nums; }
   .t-price { font-family: var(--font-display); font-size: var(--fs-price); font-weight: 500; letter-spacing: -.02em; line-height: 1; font-variant-numeric: tabular-nums lining-nums; }
   .t-price .cur { font-size: .6em; vertical-align: .32em; }
-  @media (max-width: 734px) { .t-xl { line-height: .98; } }
+  @media (max-width: 734px) { .t-xl { line-height: .98; } .t-state { line-height: 1.28; } }
   /* The italic. Every em stays Fraunces italic 400 (the emphasis is locked copy), but it is coloured only
    * in the h1 and inside dark bleeds and dark panels; everywhere else it takes the heading's own ink, so the
    * roman line with a coloured italic tail does not repeat down every page. */
@@ -291,6 +307,7 @@
 
   /* ── Eyebrow ─────────────────────────────────────────────────────────── */
   .eyebrow { display: block; font-family: var(--font-sans); font-size: var(--fs-eyebrow); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; line-height: 1; color: var(--fg-3); margin-bottom: var(--eyebrow-gap); }
+  @media (orientation: landscape) and (max-height: 500px) { .eyebrow { margin-bottom: 10px; } }
   .theme-teal .eyebrow { color: var(--accent); }
   [data-theme="teal"] .eyebrow, [data-theme="teal"] .theme-teal .eyebrow { color: rgba(255,255,255,.7); }
   [data-theme="ink"] .eyebrow, [data-theme="navy"] .eyebrow, [data-theme="forest"] .eyebrow, [data-theme="charcoal"] .eyebrow { color: var(--fg-3); }
@@ -309,38 +326,45 @@
     transition: transform 120ms var(--hover), background-color 180ms var(--hover), color 180ms var(--hover), box-shadow 180ms var(--hover);
   }
   .btn svg { width: 14px; height: 14px; flex: none; transition: transform 200ms var(--hover); }
-  .btn:hover svg { transform: translateX(3px); }
   .btn:active { transform: scale(.98); }
   .btn-gold { background: #b08d4f; color: #1f1d1a; }
-  .btn-gold:hover { background: #c9ab66; }
   .btn-line { box-shadow: inset 0 0 0 1px var(--btn-line); color: var(--fg); }
-  .btn-line:hover { background: var(--btn-hover); }
   .btn-cream { background: #f7f4ee; color: #1f1d1a; }
-  .btn-cream:hover { background: #ffffff; }
   .btn-teal { background: #1e5b57; color: #ffffff; }
-  .btn-teal:hover { background: #174845; }
   .btn-line-teal { box-shadow: inset 0 0 0 1px #1e5b57; color: #1e5b57; }
-  .btn-line-teal:hover { background: #e3ece9; }
+  /* Hover states only where a pointer can hover: a tapped button or link on a touch screen does not stay lit
+   * (finding 14). :active and :focus-visible still answer every input. */
+  @media (hover: hover) and (pointer: fine) {
+    .btn:hover svg { transform: translateX(3px); }
+    .btn-gold:hover { background: #c9ab66; }
+    .btn-line:hover { background: var(--btn-hover); }
+    .btn-cream:hover { background: #ffffff; }
+    .btn-teal:hover { background: #174845; }
+    .btn-line-teal:hover { background: #e3ece9; }
+    .btn-outline:hover { background: var(--btn-hover); }
+    .btn-outline-light:hover { background: rgba(244,239,228,.06); }
+    .btn-outline-teal:hover { background: #e3ece9; }
+    .btn-dark:hover { background: #1f1d1a; }
+    .btn-forest:hover { background: #27493a; }
+    .link:hover, .link-arrow:hover { text-decoration: underline; }
+    .link:hover svg, .link-arrow:hover svg { transform: translateX(3px); }
+    .q-btn:hover .q-ico { color: var(--accent); }
+    .ftr-col a:hover, .ftr-legal a:hover { text-decoration: underline; }
+    }
   .btn-lg { height: 56px; font-size: 17px; padding: 0 30px; }
   .btn-sm { height: 40px; padding: 0 18px; font-size: 14px; }
   @media (max-width: 734px) { .btn { height: 48px; } .btn-lg { height: 56px; } .btn-sm { height: 40px; } }
+  @media (pointer: coarse) { .btn-sm { height: 44px; } }
   /* Legacy names from the first build, mapped onto the pill system. */
   .btn-outline { box-shadow: inset 0 0 0 1px var(--btn-line); color: var(--fg); }
-  .btn-outline:hover { background: var(--btn-hover); }
   .btn-outline-light { box-shadow: inset 0 0 0 1px rgba(244,239,228,.32); color: #f4efe4; }
-  .btn-outline-light:hover { background: rgba(244,239,228,.06); }
   .btn-outline-teal { box-shadow: inset 0 0 0 1px #1e5b57; color: #1e5b57; }
-  .btn-outline-teal:hover { background: #e3ece9; }
   .btn-dark { background: #26231f; color: #f4efe4; }
-  .btn-dark:hover { background: #1f1d1a; }
   .btn-forest { background: #1f3d2e; color: #f4efe4; }
-  .btn-forest:hover { background: #27493a; }
 
   /* ── Text link ───────────────────────────────────────────────────────── */
   .link, .link-arrow { display: inline-flex; align-items: center; gap: .45em; font-family: var(--font-sans); font-size: var(--fs-small); font-weight: 500; letter-spacing: -.005em; line-height: 1; color: var(--accent); text-decoration: none; text-underline-offset: .22em; text-decoration-thickness: 1px; }
-  .link:hover, .link-arrow:hover { text-decoration: underline; }
   .link svg, .link-arrow svg { width: 14px; height: 14px; flex: none; transition: transform 200ms var(--hover); }
-  .link:hover svg, .link-arrow:hover svg { transform: translateX(3px); }
 
   /* ── Paper, mats, the plate ──────────────────────────────────────────── */
   .paper, .card {
@@ -359,8 +383,8 @@
   .mat { position: relative; overflow: visible; background: #ebe4d5; border-radius: var(--r-lg); box-shadow: inset 0 1px 2px rgba(31,29,26,.06), inset 0 0 0 1px rgba(31,29,26,.05); }
   .mat-blush { background: linear-gradient(160deg, #ebe4d5 0%, #ede1d8 100%); }
   .plate { position: relative; overflow: hidden; background: #0d1a2d; border-radius: var(--r-lg); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); }
-  .panel-forest { position: relative; overflow: hidden; background: #1f3d2e; border-radius: var(--r-lg); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); --line: rgba(201,171,102,.35); }
-  .panel-navy { position: relative; overflow: hidden; background: #132440; border-radius: var(--r-lg); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); }
+  .panel-forest { position: relative; overflow: clip; background: #1f3d2e; border-radius: var(--r-lg); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); --line: rgba(201,171,102,.35); }
+  .panel-navy { position: relative; overflow: clip; background: #132440; border-radius: var(--r-lg); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); }
   .theme-teal .card { border-color: transparent; }
 
   /* ── Lamp, grain ─────────────────────────────────────────────────────── */
@@ -426,12 +450,28 @@
   .phone-screen { position: relative; width: 100em; aspect-ratio: 390 / 844; border-radius: 14em; overflow: hidden; background: #f2ece0; container-type: size; z-index: 1; }
   .phone-screen .cam, .win-screen .cam { position: absolute; inset: 0; transform-origin: 0 0; transition: transform var(--cd, 0ms) var(--scene); }
   .phone-screen picture, .win-screen picture { display: contents; }
-  /* Frames switch by class with no CSS crossfade: the scene engine wipes the incoming frame in (clip-path)
-   * or dips (the outgoing frame gone by 140 ms, the incoming from 110 ms), so two captures never show at
-   * once. See Scene.show() in site.ts. */
-  .phone-screen img.ds, .win-screen img.ds { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; opacity: 0; margin: 0; max-width: none; }
-  .phone-screen img.ds.on, .win-screen img.ds.on { opacity: 1; z-index: 2; }
-  .phone-screen img.ds.was, .win-screen img.ds.was { opacity: 1; z-index: 1; }
+  /* Frames switch by class with no CSS crossfade: the story engine wipes the incoming frame in (clip-path, from
+   * the y of the tap or click that caused it) over the outgoing one, which is dropped the moment it is covered,
+   * so two captures never show through each other. See Scene.show() in site.ts. A frame is any `.ds` in the
+   * camera: a plain capture (img.ds), a capture with type lines (div.ds.ds-group), a scroll strip (div.ds.ds-strip). */
+  .phone-screen .ds, .win-screen .ds { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; margin: 0; max-width: none; }
+  .phone-screen img.ds, .win-screen img.ds, .ds-group img { object-fit: cover; object-position: top; }
+  .phone-screen .ds.on, .win-screen .ds.on { opacity: 1; z-index: 2; }
+  .phone-screen .ds.was, .win-screen .ds.was { opacity: 1; z-index: 1; }
+  /* A capture with type lines: each line is a patch of the composer's own fill laid over a typed line, scaled
+   * away from the left as the draft types (--m: 1 covers the line, 0 shows it; the engine writes it). */
+  .ds-group { overflow: hidden; }
+  .ds-group img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+  .type-line { position: absolute; left: calc(var(--x) * 1%); top: calc(var(--y) * 1%); width: calc(var(--w) * 1%); height: calc(var(--h) * 1%); background: var(--fill); transform-origin: 100% 50%; transform: scaleX(var(--m, 0)); z-index: 1; }
+  /* A scroll strip: the first capture's header band stays put (and its bottom bar, with --foot) while the
+   * stitched body scrolls under it by --off em (the engine writes it; a static figure sets it inline). */
+  .ds-strip { overflow: hidden; }
+  .ds-strip .ds-head, .ds-strip .ds-foot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; max-width: none; z-index: 3; }
+  .ds-strip .ds-head { clip-path: inset(0 0 calc(100% - var(--head, 6.2%)) 0); }
+  .ds-strip .ds-foot { clip-path: inset(var(--foot) 0 0 0); }
+  .ds-strip .scroll-body { position: absolute; left: 0; top: 0; width: 100em; transform: translate3d(0, calc(-1 * var(--off, 0) * 1em), 0); }
+  .ds-strip .scroll-body img { position: absolute; left: 0; width: 100em; height: auto; max-width: none; }
+  .ds-strip .scroll-body .ds-next { clip-path: inset(var(--head, 6.2%) 0 0 0); -webkit-mask-image: linear-gradient(to bottom, transparent var(--head, 6.2%), #000 calc(var(--head, 6.2%) + 2em)); mask-image: linear-gradient(to bottom, transparent var(--head, 6.2%), #000 calc(var(--head, 6.2%) + 2em)); }
   /* The edge mask: while the camera is in (scale above 1) the outer 14 px of the screen fade to the app
    * canvas, so a crop at the frame edge reads as the capture's own padding, never a word cut mid letter. */
   .phone-screen::after, .win-screen::after { content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; transition: opacity .45s var(--ease);
@@ -443,10 +483,18 @@
   .phone figcaption { position: absolute; top: 100%; left: 0; right: 0; margin-top: 14px; font-size: 14px; text-align: center; max-width: none; }
   .slot { position: absolute; inset: 10px; border: 1px dashed rgba(31,29,26,.14); border-radius: 10px; pointer-events: none; z-index: 0; }
   .has-frame .slot { display: none; }
-  .tap { position: absolute; left: 0; top: 0; width: 9cqw; height: 9cqw; border-radius: 50%; border: 1.5px solid #f4efe4; background: rgba(72,103,134,.5); opacity: 0; pointer-events: none; z-index: 4;
-    transform: translate(var(--tx, 0px), var(--ty, 0px)) translate(-50%, -50%) scale(.6); }
-  .tap.go { animation: tap 420ms var(--ease) forwards; }
-  @keyframes tap { 0% { opacity: .9; transform: translate(var(--tx), var(--ty)) translate(-50%, -50%) scale(.6); } 100% { opacity: 0; transform: translate(var(--tx), var(--ty)) translate(-50%, -50%) scale(1.15); } }
+  /* The ring: scrubbed by the story engine (arrive, press, release around each press point), never on a
+   * timer. Its fill deepens while it presses (--fill). Positioned in capture coordinates through the camera. */
+  .tap { position: absolute; left: 0; top: 0; width: 9cqw; height: 9cqw; border-radius: 50%; border: 1.5px solid #f4efe4; opacity: 0; pointer-events: none; z-index: 4;
+    box-shadow: 0 1px 3px rgba(31,29,26,.25); transform: translate(0, 0) translate(-50%, -50%) scale(.6); }
+  .tap::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #486786; opacity: calc(var(--fill, .5) * .7); }
+  /* The halo: a soft gold ring on one of the app's own controls (a tab in its bottom bar), lit for a step. */
+  .halo { position: absolute; left: 0; top: 0; width: 15cqw; aspect-ratio: 1; border-radius: 50%; pointer-events: none; z-index: 4; opacity: 0;
+    background: radial-gradient(closest-side, rgba(201,171,102,.42), rgba(201,171,102,.18) 62%, transparent); box-shadow: 0 0 0 1px rgba(201,171,102,.38);
+    transform: translate(calc(var(--x, 50) * 1cqw), calc(var(--y, 50) * 1cqh)) translate(-50%, -50%) scale(.86); }
+  /* The lift: a device rises 10 px (and its floor shadow deepens) as a story step reaches it (--lift 0 to 1). */
+  [data-device] { translate: 0 calc(var(--lift, 0) * -10px); }
+  [data-device] .phone-floor { background: radial-gradient(50% 50% at 50% 50%, rgba(31,29,26,calc(var(--floor-a, .3) + var(--lift, 0) * .1)), transparent 70%); }
 
   /* ── Window: a browser window for desktop captures ─────────────────── */
   .win { --ww: 1200px; font-size: calc(var(--ww) / 100); width: min(100%, var(--ww)); border-radius: 1em; overflow: hidden; position: relative; margin: 0;
@@ -464,7 +512,8 @@
     transform: translate(var(--tx, 0px), var(--ty, 0px)) translate(-23%, -12%); transition: transform var(--cd, 0ms) var(--scene), opacity .25s; }
   .win-screen .cur svg { width: 100%; height: auto; display: block; }
   .win-screen .cur.on { opacity: 1; }
-  .win-screen .cur.press svg { transform: scale(.8); transform-origin: 23% 12%; transition: transform 150ms; }
+  .win-screen .cur svg { transform-origin: 23% 12%; transition: transform 100ms var(--ease); }
+  .win-screen .cur.press svg { transform: scale(.8); }
   .win-dark { background: #1b1916; box-shadow: 0 0 0 1px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.1), var(--sh-object-dark); }
   .win-dark .win-dots i { background: rgba(255,255,255,.22); }
   .win-dark .win-url { background: rgba(255,255,255,.08); color: rgba(244,239,228,.7); box-shadow: none; }
@@ -478,82 +527,75 @@
   .win-pager button i { display: block; width: 8px; height: 8px; border-radius: 999px; background: var(--lit-off); transition: width .45s var(--slow), background-color .45s var(--slow); }
   .win-pager button[aria-selected="true"] i { width: 22px; background: var(--fg); }
 
-  /* ── Rail (1.6, engine 1.7.10) ─────────────────────────────────────── */
-  .rail-track { --rail-w: 250px; --rail-gap: 32px; list-style: none; margin: 0; display: flex; gap: var(--rail-gap); overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: var(--edge); padding-left: var(--edge); padding-right: calc(100vw - var(--edge) - var(--rail-w)); scrollbar-width: none; cursor: grab; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
-  .rail-track::-webkit-scrollbar { display: none; }
-  .rail-track:focus-visible { outline-offset: -3px; }
-  .rail-slide { flex: none; width: var(--rail-w); scroll-snap-align: start; transition: opacity .6s var(--ease); }
-  .rail-slide .rail-cap { transition: opacity .6s var(--ease); }
-  .rail-track.drag { scroll-snap-type: none; cursor: grabbing; }
-  .rail-track.drag > * { pointer-events: none; }
-  .rail-nav { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-top: 24px; }
-  .rail-note { margin-top: 14px; }
-  .rail-tabs { display: flex; gap: clamp(14px, 2.2vw, 48px); margin: 0; padding: 0; list-style: none; }
-  .rail-tab { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; background: none; border: 0; padding: 8px 0; cursor: pointer; color: var(--fg-3); }
-  .rail-tab .bar { display: block; width: 8px; height: 8px; border-radius: 999px; background: var(--lit-off); transition: width .45s var(--slow), background-color .45s var(--slow); }
-  .rail-tab[aria-selected="true"] .bar { width: 30px; background: var(--fg); }
-  .rail-tab[aria-selected="true"] { color: var(--fg); }
-  .rail-tab .t { font-family: var(--font-sans); font-size: var(--fs-folio); font-weight: 500; letter-spacing: .04em; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .rail-arrows { display: flex; gap: 10px; flex: none; }
-  .rail-prev, .rail-next { width: 44px; height: 44px; border-radius: 999px; border: 0; display: grid; place-items: center; cursor: pointer; color: var(--fg); background: rgba(31,29,26,.08); transition: background-color 180ms var(--hover), opacity 180ms var(--hover); }
-  .rail-prev:hover, .rail-next:hover { background: rgba(31,29,26,.14); }
-  [data-surface="dark"] .rail-prev, [data-surface="dark"] .rail-next, [data-theme="navy"] .rail-prev, [data-theme="navy"] .rail-next, [data-theme="forest"] .rail-prev, [data-theme="forest"] .rail-next, [data-theme="charcoal"] .rail-prev, [data-theme="charcoal"] .rail-next, [data-theme="ink"] .rail-prev, [data-theme="ink"] .rail-next, [data-theme="teal"] .rail-prev, [data-theme="teal"] .rail-next { background: rgba(244,239,228,.12); }
-  .rail-prev:disabled, .rail-next:disabled { opacity: .3; cursor: default; }
-  .rail-prev svg, .rail-next svg { width: 16px; height: 16px; }
-  @media (max-width: 734px) { .rail-tab .t { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; } .rail-tab { padding: 12px 0; } .rail-tabs { gap: 18px; } }
+  /* ── Scroll stories (SCROLL_SPEC 1.3, 1.10): the static layout ─────
+   * Static is the default: no pin, the run hidden, every step in document order at full colour with its own
+   * figure (.story-static), the stage's device box and marks hidden (their lazy images are never fetched).
+   * The pinned layout is motion.css, under STORY_MQ, for `.js [data-story]:not(.static)`. These rules are in
+   * the components layer, so any page rule wins over them. */
+  .story { --story-top: var(--nav-h); --story-gap: 16px; position: relative; }
+  .story-track { position: relative; }
+  .story-stage { position: relative; }
+  .story-run, .story-beat, .story-marks, .story-bar { display: none; }
+  .story-steps { list-style: none; margin: 0; padding: 0; }
+  .story-alt { display: none; }
+  .story-static { margin-top: 24px; }
+  .story-static .phone { --pw: 200px; }
+  .story-static .win { --ww: 640px; }
+  @media (max-width: 734px) { .story-static .phone { --pw: 180px; } }
+  .story-static .phone:has(figcaption) { margin-bottom: 44px; }
+  /* A window story's static figure: the window (ww 640) above 734, its phone variant at 734 and below. */
+  @media (max-width: 734px) { .story-static .static-desk { display: none; } }
+  @media (min-width: 735px) { .story-static .static-phone { display: none; } }
+  :where(.story:not([data-story-static="device"])) .story-device-box { display: none; }
+  /* A system probe (site.ts): 100svh tall and the gutter wide, read on measure only. */
+  .sys-probe { position: fixed; left: 0; top: 0; width: var(--gutter); height: 100vh; height: 100svh; visibility: hidden; pointer-events: none; z-index: -1; }
 
-  /* ── Day stage (1.6, engine 1.7.9) ─────────────────────────────────── */
-  .day { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: stretch; }
-  .day-steps { grid-column: 1 / span 5; list-style: none; margin: 0; padding: 0; }
-  /* Seven columns (6 to 12): the spec's 690 x 640 mat beside the five column step list. */
-  .day-stagecol { grid-column: 6 / span 7; }
-  .day-stage { position: sticky; top: calc((100vh - 640px) / 2); top: calc((var(--vh, 100vh) - 640px) / 2); height: 640px; border-radius: var(--r-lg); overflow: hidden; background: #ebe4d5; box-shadow: inset 0 1px 2px rgba(31,29,26,.06), inset 0 0 0 1px rgba(31,29,26,.05); }
+  /* The progress marks (StoryMarks.astro): equal bars in a row, 2 px high, 6 px apart, each button 28 px
+   * high with a 44 px hit area; the engine scales each bar's fill from the left with the scroll. */
+  .story-marks { --mark-track: var(--lit-off); --mark-fill: var(--fg); align-items: center; gap: 6px; width: min(100%, var(--marks-w, 320px)); margin: 0; padding: 0; }
+  .story-marks > button { position: relative; flex: 1 1 0; min-width: 0; height: 28px; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 2px; }
+  .story-marks > button::before { content: ""; position: absolute; left: 0; right: 0; top: 13px; height: 2px; border-radius: 2px; background: var(--mark-track); }
+  .story-marks > button::after { content: ""; position: absolute; inset: -8px 0; }
+  .story-marks > button > i { position: absolute; left: 0; right: 0; top: 13px; height: 2px; border-radius: 2px; background: var(--mark-fill); transform-origin: 0 50%; transform: scaleX(0); }
+  /* The words variant (the IOS workflow): the locked line itself, each word a button, the arrows text. */
+  .story-marks-words { flex-direction: column; align-items: flex-start; gap: 10px; width: auto; }
+  .story-words { margin: 0; color: var(--fg-3); }
+  .story-words > button { padding: 6px 0; border: 0; background: none; font: inherit; letter-spacing: inherit; color: inherit; cursor: pointer; transition: color .35s var(--ease); }
+  .story-words > button[aria-current="step"] { color: var(--accent); }
+  .story-words > button { position: relative; }
+  .story-words > button::after { content: ""; position: absolute; inset: -4px -4px; }
+  .story-marks-rule { position: relative; display: block; width: 100%; height: 1px; background: var(--line); }
+  .story-marks-rule > i { position: absolute; inset: 0; background: #c9ab66; transform-origin: 0 50%; transform: scaleX(0); }
+  /* The single bar of a hero (no step text): 72 px, centred under the device. */
+  .story-bar { position: relative; width: 72px; height: 2px; border-radius: 2px; background: var(--lit-off); margin-inline: auto; overflow: hidden; }
+  .story-bar > i { position: absolute; inset: 0; background: var(--fg); transform-origin: 0 50%; transform: scaleX(0); }
+
+  /* ── The day (DayStage.astro, SCROLL_SPEC S5) ──────────────────────
+   * Static: each step with its own phone and caption, the evening step on navy. Pinned (motion.css): the slot
+   * beside the sky mat (wide) or under it (narrow); the mat is the device box. */
+  .day-list .story-step + .story-step { margin-top: 0; }
+  .day-item { padding: 40px 0; border-top: 1px solid var(--line); }
+  .day-item:last-child { border-bottom: 1px solid var(--line); }
+  .day-item-in { max-width: 30em; }
+  .day-item .t-body { color: var(--fg-2); margin-top: 14px; }
+  .day-item .story-static { margin-top: 28px; }
+  .day-item.is-evening { background: #0d1a2d; color: #f4efe4; --fg: #f4efe4; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(244,239,228,.14); padding-inline: 24px; border-radius: var(--r-lg); border-top: 0; border-bottom: 0; }
+  .day-item.is-evening .phone { box-shadow: inset 0 0 0 .55em #0c0b09, inset 0 0 0 .9em rgba(255,255,255,.06), var(--sh-object-dark); }
+  .day-item.is-evening .t-cap-i { color: #cdc6b8; }
+  .day-stage { position: relative; border-radius: var(--r-lg); overflow: hidden; background: #ebe4d5; box-shadow: inset 0 1px 2px rgba(31,29,26,.06), inset 0 0 0 1px rgba(31,29,26,.05); }
   .day-stage .sky { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
   .day-stage .sky[data-sky="morning"] { opacity: 1; background: radial-gradient(60% 55% at 12% 0%, rgba(201,171,102,.3), transparent 70%), linear-gradient(180deg, #f7efdd, #ebe4d5); }
   .day-stage .sky[data-sky="midday"] { background: radial-gradient(55% 50% at 50% -10%, rgba(255,255,255,.6), transparent 70%), linear-gradient(180deg, #faf7f0, #f1ebdf); }
   .day-stage .sky[data-sky="afternoon"] { background: radial-gradient(55% 55% at 88% 10%, rgba(176,141,79,.28), transparent 70%), linear-gradient(180deg, #f3e9d6, #e8dcc6); }
   .day-stage .sky[data-sky="evening"] { background: radial-gradient(60% 55% at 50% 100%, rgba(201,171,102,.14), transparent 70%), linear-gradient(180deg, #1b2740, #0d1a2d); }
-  .day-stage .phone { position: absolute; left: 50%; top: 64px; transform: translateX(-50%); }
-  .day-stage .phone .phone-floor { transition: transform .4s var(--ease), background-color .4s var(--ease); }
+  .day-stage .phone .phone-floor { transition: transform .4s var(--ease); }
   .day-stage.is-night .phone { box-shadow: inset 0 0 0 .55em #0c0b09, inset 0 0 0 .9em rgba(255,255,255,.06), var(--sh-object-dark); }
-  .day-caps { position: absolute; left: 24px; right: 140px; bottom: 24px; min-height: 1.4em; }
+  .day-caps { position: absolute; left: 24px; bottom: 24px; right: calc(var(--day-marks-w, 180px) + 48px); min-height: 1.4em; }
   .day-cap { position: absolute; left: 0; bottom: 0; margin: 0; opacity: 0; transition: opacity .14s var(--ease), color .4s var(--ease); color: var(--day-cap, #5c574f); font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 14px; line-height: 1.4; }
   .day-cap.on { opacity: 1; transition: opacity .26s var(--ease) .11s, color .4s var(--ease); }
-  .day-tabs { position: absolute; right: 24px; bottom: 24px; display: flex; gap: 10px; margin: 0; padding: 0; }
-  .day-tabs button { display: grid; place-items: center; width: auto; height: 28px; padding: 0 2px; background: none; border: 0; cursor: pointer; }
-  .day-tabs button i { display: block; width: 8px; height: 8px; border-radius: 999px; background: var(--day-tab, rgba(31,29,26,.22)); transition: width .45s var(--slow), background-color .45s var(--slow); }
-  .day-tabs button[aria-selected="true"] i { width: 30px; background: var(--day-tab-on, #1f1d1a); }
-  .day-stage.is-night { --day-cap: #cdc6b8; --day-tab: rgba(244,239,228,.25); --day-tab-on: #f4efe4; }
-  .day-step { min-height: 72vh; min-height: 72svh; display: flex; align-items: center; opacity: 1; transition: opacity .4s var(--ease); }
-  .day-step:last-child { margin-bottom: 14vh; }
-  .day-step-in { max-width: 30em; }
-  .day-step .day-static { display: none; }
-  .day-stage-wrap { grid-column: 7 / span 6; }
-  @media (max-width: 1068px) { .day-steps { grid-column: 1 / span 6; } .day-stagecol { grid-column: 7 / span 6; } }
-  @media (max-width: 734px) {
-    .day { display: flex; flex-direction: column; }
-    .day-stagecol { order: -1; position: sticky; top: var(--nav-h); z-index: 5; margin-inline: calc(-1 * var(--gutter)); }
-    .day-stage { position: relative; top: auto; height: 44svh; border-radius: 0 0 20px 20px; }
-    /* 140 rather than the spec's 150: a 334 px phone fills a 44svh mat and
-     * leaves no row for the caption and the bars; 311 px leaves 46 px. */
-    .day-stage .phone { --pw: 140px !important; top: 14px; }
-    .day-caps { left: 16px; right: 110px; bottom: 16px; }
-    .day-cap { font-size: 12px; }
-    .day-tabs { right: 16px; bottom: 16px; }
-    /* --my is written per frame: the mat's bottom edge in the column's own space, so the fade follows the sticky mat. */
-    .day-steps { -webkit-mask-image: linear-gradient(to bottom, transparent var(--my, 0px), #000 calc(var(--my, 0px) + 36px)); mask-image: linear-gradient(to bottom, transparent var(--my, 0px), #000 calc(var(--my, 0px) + 36px)); }
-    .day-step { min-height: 50svh; padding-top: 24px; }
-    .day-step:last-child { margin-bottom: 8svh; }
-  }
-  /* Static layout: reduced motion and no JS. Five phones, the mat hidden. */
-  .day.static .day-stagecol, .no-js .day .day-stagecol { display: none; }
-  .day.static .day-steps, .no-js .day .day-steps { grid-column: 1 / -1; mask-image: none; -webkit-mask-image: none; }
-  .day.static .day-step, .no-js .day .day-step { min-height: 0; display: block; opacity: 1; margin-bottom: 0; padding: 40px 0; border-top: 1px solid var(--line); }
-  .day.static .day-step .day-static, .no-js .day .day-step .day-static { display: block; margin-top: 28px; }
-  .day.static .day-step .day-static .phone, .no-js .day .day-step .day-static .phone { margin-bottom: 44px; }
-  .day.static .day-step[data-step="4"], .no-js .day .day-step[data-step="4"] { background: #0d1a2d; color: #f4efe4; --fg: #f4efe4; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(244,239,228,.14); padding-inline: 24px; border-radius: var(--r-lg); border-top: 0; }
-  .day.static .day-step[data-step="4"] .day-static .phone, .no-js .day .day-step[data-step="4"] .day-static .phone { box-shadow: inset 0 0 0 .55em #0c0b09, inset 0 0 0 .9em rgba(255,255,255,.06), var(--sh-object-dark); }
-  .day.static .day-step[data-step="4"] .t-cap-i, .no-js .day .day-step[data-step="4"] .t-cap-i { color: #cdc6b8; }
+  .day-stage .story-marks { position: absolute; right: 24px; bottom: 18px; --marks-w: var(--day-marks-w, 180px); --mark-track: rgba(31,29,26,.2); --mark-fill: #1f1d1a; }
+  .day-stage.is-night .story-marks { --mark-track: rgba(244,239,228,.25); --mark-fill: #f4efe4; }
+  .day-stage.is-night { --day-cap: #cdc6b8; }
 
   /* ── Accordion (1.6) ───────────────────────────────────────────────── */
   .q { border-top: 1px solid var(--line); }
@@ -564,7 +606,7 @@
   .q-ico { position: relative; width: 14px; height: 14px; margin-top: .3em; color: var(--fg-3); transition: color 200ms var(--hover); }
   .q-ico::before, .q-ico::after { content: ""; position: absolute; left: 0; top: 6.25px; width: 14px; height: 1.5px; background: currentColor; border-radius: 1px; transition: transform .35s var(--sheet), opacity .3s var(--ease); }
   .q-ico::after { transform: rotate(90deg); }
-  .q-btn:hover .q-ico, .q-btn[aria-expanded="true"] .q-ico { color: var(--accent); }
+  .q-btn[aria-expanded="true"] .q-ico { color: var(--accent); }
   .q-btn[aria-expanded="true"] .q-ico::after { transform: rotate(90deg) scaleX(0); opacity: 0; }
   .q .a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .45s var(--slow); }
   .q .a > div { overflow: hidden; }
@@ -625,16 +667,16 @@
 
   /* ── The floor (Practice final only) ───────────────────────────────── */
   .floor { position: absolute; inset: 0; perspective: 1100px; perspective-origin: 50% 28%; overflow: hidden; pointer-events: none; }
-  .floor-plane { --tile-w: 172px; --tile-h: 372px; --tile-gap: 28px; --floor-cols: 6; --floor-rows: 3; --floor-shift: calc(var(--floor-rows) * (var(--tile-h) + var(--tile-gap))); --floor-dur: calc(var(--floor-rows) * 24s);
+  .floor-plane { --tile-w: 172px; --tile-h: 372px; --tile-gap: 28px; --floor-cols: 6; --floor-rows: 3; --floor-shift: calc(var(--floor-rows) * (var(--tile-h) + var(--tile-gap)));
     position: absolute; left: 50%; top: 30%; width: calc(var(--floor-cols) * var(--tile-w) + (var(--floor-cols) - 1) * var(--tile-gap));
     transform: rotateX(56deg) translate3d(-50%, 0, 0) scale(.92); transform-origin: 50% 0;
     mask-image: linear-gradient(to bottom, transparent, #000 18%); -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%); }
-  .floor-strip { display: grid; grid-template-columns: repeat(var(--floor-cols), var(--tile-w)); gap: var(--tile-gap); padding-bottom: var(--tile-gap); margin: 0; list-style: none; animation: floor var(--floor-dur) linear infinite; animation-play-state: paused; }
+  /* The strip drifts with the scroll only (SCROLL_SPEC S11): the engine writes --fp from 0 to 1 over the
+   * section's way to the end of the page. With the scroll still, the floor is still. */
+  .floor-strip { display: grid; grid-template-columns: repeat(var(--floor-cols), var(--tile-w)); gap: var(--tile-gap); padding-bottom: var(--tile-gap); margin: 0; list-style: none; transform: translate3d(0, calc(-1 * var(--fp, 0) * var(--floor-shift)), 0); }
   .floor-strip img { width: var(--tile-w); height: var(--tile-h); object-fit: cover; object-position: top; border-radius: var(--sp-2); box-shadow: 0 0 0 1px rgba(255,255,255,.08); opacity: .9; background: #f2ece0; }
-  .run .floor-strip { animation-play-state: running; will-change: transform; }
-  @keyframes floor { to { transform: translate3d(0, calc(-1 * var(--floor-shift)), 0); } }
   .floor-fade { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(60% 60% at 50% 45%, transparent 60%, #1f3d2e 100%), linear-gradient(to bottom, #1f3d2e 0%, rgba(31,61,46,.9) 22%, transparent 48%); }
-  @media (max-width: 734px) { .floor-plane { --floor-cols: 4; transform: rotateX(56deg) translate3d(-50%, 0, 0) scale(.72); --floor-dur: calc(var(--floor-rows) * 16s); } }
+  @media (max-width: 734px) { .floor-plane { --floor-cols: 4; transform: rotateX(56deg) translate3d(-50%, 0, 0) scale(.72); } }
 
   /* ── Header (1.8) ──────────────────────────────────────────────────── */
   .site-header { position: fixed; inset-inline: 0; top: 0; z-index: 50; height: var(--nav-h); color: #1f1d1a; --fg: #1f1d1a; --fg-2: #3d3a35; --fg-3: #5c574f; --focus: #6e5724;
@@ -651,9 +693,12 @@
   .no-js .site-header { background: rgba(244,239,228,.92); box-shadow: 0 1px 0 rgba(31,29,26,.08); }
   .no-js .site-header.theme-teal { background: rgba(247,244,238,.92); }
   .hdr-links { display: none; align-items: center; gap: 28px; }
-  @media (min-width: 1069px) { .hdr-links { display: flex; } }
+  @media (min-width: 960px) { .hdr-links { display: flex; } }
+  @media (min-width: 960px) and (max-width: 1068px) { .hdr-links { gap: 22px; } }
   .hdr-link { display: inline-flex; align-items: baseline; gap: 8px; padding: 8px 0; font-family: var(--font-sans); font-size: var(--fs-small); font-weight: 500; letter-spacing: -.005em; line-height: 1; white-space: nowrap; color: var(--fg-2); text-decoration: none; transition: color 180ms var(--hover); }
-  .hdr-link:hover, .hdr-link[aria-current="page"] { color: var(--fg); }
+  @media (pointer: coarse) { .hdr-link { padding-block: max(8px, calc((44px - 1em) / 2)); } }
+  .hdr-link[aria-current="page"] { color: var(--fg); }
+  @media (hover: hover) and (pointer: fine) { .hdr-link:hover { color: var(--fg); } }
   .hdr-link .sub { display: none; font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--fg-2); }
   @media (min-width: 1280px) { .hdr-link .sub { display: inline; } }
   .hdr-cta { margin-left: 8px; }
@@ -662,7 +707,7 @@
   .site-header.theme-teal .hdr-cta { background: transparent; color: var(--fg); box-shadow: inset 0 0 0 1px currentColor; }
   .site-header.theme-teal .hdr-cta:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
   .hdr-burger { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-right: -10px; background: none; border: 0; cursor: pointer; color: inherit; border-radius: 999px; position: relative; }
-  @media (min-width: 1069px) { .hdr-burger { display: none; } }
+  @media (min-width: 960px) { .hdr-burger { display: none; } }
   .hdr-burger i { position: absolute; left: 14px; width: 16px; height: 1.5px; background: currentColor; border-radius: 1px; transition: transform 350ms var(--sheet), top 350ms var(--sheet); }
   .hdr-burger i:first-child { top: 18px; }
   .hdr-burger i:last-child { top: 25px; }
@@ -670,20 +715,28 @@
   .hdr-burger[aria-expanded="true"] i:last-child { top: 21.5px; transform: rotate(-45deg); }
   .menu-panel { position: fixed; inset: var(--nav-h) 0 0 0; z-index: 49; background: #faf7f0; color: #1f1d1a; --fg: #1f1d1a; --fg-2: #3d3a35; --fg-3: #5c574f; --focus: #6e5724; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .35s var(--ease), visibility 0s linear .35s; overflow: auto; }
   .menu-panel.is-open { opacity: 1; visibility: visible; pointer-events: auto; transition-delay: 0s; }
-  @media (min-width: 1069px) { .menu-panel { display: none; } }
-  .menu-nav { display: flex; flex-direction: column; min-height: 100%; padding-block: 24px 24px; }
+  @media (min-width: 960px) { .menu-panel { display: none; } }
+  .menu-nav { display: flex; flex-direction: column; min-height: 100%; padding-block: 24px max(24px, env(safe-area-inset-bottom, 0px)); }
   .menu-link { display: flex; flex-direction: column; gap: 6px; padding: 18px 0; border-top: 1px solid rgba(31,29,26,.12); color: #1f1d1a; text-decoration: none; font-family: var(--font-display); font-size: var(--fs-s); font-weight: 500; letter-spacing: -.012em; line-height: 1.12; opacity: 0; transform: translateY(-8px); transition: opacity .3s var(--ease), transform .3s var(--sheet); }
   .menu-link .sub { font-family: var(--font-sans); font-size: var(--fs-eyebrow); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #5c574f; }
   .menu-panel.is-open .menu-link { opacity: 1; transform: none; transition-delay: calc(.06s + var(--i, 0) * .03s); }
   .menu-cta { margin-top: auto; padding-top: 24px; }
   .menu-cta .btn { width: 100%; }
+  /* A phone in landscape: three rows with their sub label beside the name, and the button in view (finding 3). */
+  @media (max-height: 500px) {
+    .menu-nav { padding-block: 8px max(8px, env(safe-area-inset-bottom, 0px)); }
+    .menu-link { padding: 10px 0; font-size: 22px; flex-direction: row; align-items: baseline; gap: 12px; }
+    .menu-cta { padding-top: 12px; }
+  }
+  /* The wordmark home link is 44 px tall without moving (finding 7). */
+  .hdr-row > a, .ftr-blurb-col > a { padding-block: 9px; margin-block: -9px; }
   html.menu-open .site-header { background: #faf7f0; box-shadow: none; color: #1f1d1a; }
   html.menu-open { overflow: hidden; }
-  .skip { position: absolute; left: 12px; top: 12px; z-index: 100; padding: 10px 16px; border-radius: 999px; background: #b08d4f; color: #1f1d1a; font-family: var(--font-sans); font-size: var(--fs-small); font-weight: 500; transform: translateY(-200%); }
+  .skip { position: absolute; left: 12px; top: 12px; z-index: 100; padding: 11px 16px; min-height: 44px; border-radius: 999px; background: #b08d4f; color: #1f1d1a; font-family: var(--font-sans); font-size: var(--fs-small); font-weight: 500; transform: translateY(-200%); }
   .skip:focus { transform: none; }
 
   /* ── Footer (1.9) ──────────────────────────────────────────────────── */
-  .site-footer { position: relative; background: #ebe4d5; color: #1f1d1a; --fg: #1f1d1a; --fg-2: #3d3a35; --fg-3: #5c574f; --line: rgba(31,29,26,.12); --accent: #6e5724; --focus: #6e5724; --dark: 0; border-top: 1px solid rgba(31,29,26,.12); padding: clamp(72px, 10vh, 120px) 0 32px; }
+  .site-footer { position: relative; background: #ebe4d5; color: #1f1d1a; --fg: #1f1d1a; --fg-2: #3d3a35; --fg-3: #5c574f; --line: rgba(31,29,26,.12); --accent: #6e5724; --focus: #6e5724; --dark: 0; border-top: 1px solid rgba(31,29,26,.12); padding: clamp(72px, 10vh, 120px) 0 calc(32px + env(safe-area-inset-bottom, 0px)); }
   .site-footer.theme-teal { background: #efeae1; --accent: #1e5b57; --focus: #1e5b57; }
   /* Row one: the statement in columns 1 to 6 with the founder line under it, the three link columns in
    * columns 7 to 12 beside it (their eyebrows on the statement's first line). Then the gold rule, then
@@ -696,22 +749,25 @@
   .ftr-cols { grid-column: 7 / span 6; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; column-gap: var(--gap); row-gap: 32px; padding-top: calc(26px + 28px + .1em); }
   .ftr-col { min-width: 0; }
   .ftr-col .eyebrow { margin-bottom: 14px; }
-  .ftr-col ul { list-style: none; margin: 0; padding: 0; }
-  .ftr-col a { font-family: var(--font-sans); font-size: var(--fs-body); font-weight: 450; line-height: 2; color: var(--fg); text-decoration: none; text-underline-offset: .18em; text-decoration-thickness: 1px; }
-  .ftr-col a:hover { text-decoration: underline; }
+  /* Each link is a 44 px target (12 px above and below a 20 px line); the list pulls up by the padding so the
+   * column keeps its place under the eyebrow (finding 7). */
+  .ftr-col ul { list-style: none; margin: -12px 0 0; padding: 0; }
+  .ftr-col a { display: inline-block; padding-block: 12px; font-family: var(--font-sans); font-size: var(--fs-body); font-weight: 450; line-height: 20px; color: var(--fg); text-decoration: none; text-underline-offset: .18em; text-decoration-thickness: 1px; }
   .ftr-legal { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 0; padding-top: 20px; font-family: var(--font-sans); font-size: var(--fs-cap); line-height: 1.45; color: var(--fg-3); }
   .ftr-legal p { margin: 0; }
-  .ftr-legal nav { display: flex; gap: 20px; }
-  .ftr-legal a { color: inherit; text-decoration: none; text-underline-offset: .18em; }
-  .ftr-legal a:hover { text-decoration: underline; }
+  .ftr-legal nav { display: flex; gap: 24px; }
+  .ftr-legal a { display: inline-block; min-height: 44px; padding-block: 12px; padding-inline: 6px; margin-inline: -6px; color: inherit; text-decoration: none; text-underline-offset: .18em; }
   @media (max-width: 1068px) { .ftr-blurb-col { grid-column: 1 / span 9; } .ftr-cols { grid-column: 1 / -1; padding-top: 0; grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  /* Phones (finding 12): a shorter footer, the same words; the founder line exactly as it is. */
   @media (max-width: 734px) {
+    .site-footer { padding-top: 56px; }
     .ftr-top { display: block; }
+    .ftr-blurb { margin-top: 20px; font-size: 20px; }
     .ftr-founder { margin-top: 18px; }
-    .ftr-cols { grid-template-columns: 1fr 1fr; margin-top: 48px; }
+    .ftr-cols { grid-template-columns: 1fr 1fr; margin-top: 36px; row-gap: 24px; }
     .ftr-col-wide { grid-column: span 2; }
-    .ftr-rule { margin-top: 48px; }
-    .ftr-legal { flex-direction: column; }
+    .ftr-rule { margin-top: 32px; }
+    .ftr-legal { flex-direction: row; justify-content: space-between; align-items: center; column-gap: 16px; row-gap: 0; padding-top: 8px; }
   }
 
   /* ── Legal pages ───────────────────────────────────────────────────── */

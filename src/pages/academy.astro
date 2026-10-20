@@ -276,7 +276,7 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
   /* Greedy wrap, not balance: with the 8.6em measure the break is "The curriculum / school never / offered." at every width (balance set "school" alone on a line at tablet). */
   .ac-h1 { max-width: 8.6em; margin: 0; text-wrap: wrap; }
   .ac-lead { margin-top: var(--lead-gap); color: var(--fg-2); }
-  .ac-hero-note { margin-top: 20px; font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 15px; line-height: 1.4; color: var(--fg-3); max-width: 40em; }
+  .ac-hero-note { margin-top: 20px; font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 16px; line-height: 1.4; color: var(--fg-3); max-width: 40em; }
 
   /* ── 2.3.2 The gap ──────────────────────────────────────────────────── */
   .ac-gap-wrap { border-top: 1px solid var(--line); padding-block: var(--sec-l); }
@@ -311,7 +311,7 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
   .ac-card-rule { display: block; height: 2px; background: #1e5b57; margin-bottom: 26px; }
   .ac-card-title { margin: 0; max-width: 12em; text-wrap: balance; align-self: end; }
   .ac-card-body { margin: 12px 0 0; color: var(--fg-2); }
-  .ac-card-link { margin-top: 0; padding-top: 28px; justify-self: start; align-self: end; }
+  .ac-card-link { margin-top: 0; padding-top: 28px; justify-self: start; align-self: end; min-height: 44px; display: inline-flex; align-items: center; }
   @media (hover: hover) and (pointer: fine) {
     .ac-card:hover { transform: translateY(-2px); background-image: linear-gradient(var(--paper), var(--paper)), linear-gradient(180deg, #ffffff 0%, #ebe7df 42%, #d9d3c7 100%); }
   }
@@ -347,7 +347,10 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
   .ac-door .eyebrow { margin-bottom: var(--eyebrow-gap); }
   .ac-door-name { margin: 0; }
   .ac-door-body { margin-top: 14px; color: var(--fg-2); }
-  .ac-door-link { margin-top: auto; padding-top: 28px; align-self: flex-start; }
+  .ac-door-link { margin-top: auto; padding-top: 28px; align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; }
+  /* Each card holds one link, so the whole card is its tap target (audit 2): the link's box stretches over the card, same href. */
+  .ac-card, .ac-door { position: relative; }
+  .ac-card-link::after, .ac-door-link::after { content: ""; position: absolute; inset: 0; border-radius: var(--r-lg); }
   @media (hover: hover) and (pointer: fine) {
     .ac-door:hover { transform: translateY(-4px); box-shadow: inset 0 1px 0 rgba(255,255,255,.9), inset 0 0 0 1px rgba(255,255,255,.5), var(--sh-object); }
   }
@@ -361,7 +364,9 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
 
   /* ── Tablet ──────────────────────────────────────────────────────────── */
   @media (max-width: 1068px) {
-    .ac-hero-copy { grid-column: 1 / span 11; padding-top: 64px; }
+    /* The hero is as tall as its copy on tablets: a full-screen hero left about 360 px of empty cream under the note (audit 2). */
+    .ac-hero { min-height: 0; }
+    .ac-hero-copy { grid-column: 1 / span 11; padding-top: 64px; padding-bottom: 72px; }
     .ac-gap-left, .ac-gap-right { grid-column: 1 / -1; }
     .ac-gap-right { padding-top: 40px; }
     .ac-head7, .ac-head8, .ac-head9 { grid-column: 1 / span 10; }
@@ -383,10 +388,29 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
     .ac-door { padding: 32px; min-height: 0; }
   }
 
+  /* Tablets only (735 to 1068): the core cards in two columns, the third across both, still sharing the subgrid rows
+   * (rule, title, body, link) so titles, bodies and links line up; a 16 px row between the two card rows. The gap above
+   * the litany is the standard section padding, not the large one. */
+  @media (min-width: 735px) and (max-width: 1068px) {
+    /* The copy stays left of the margin rule (column 10's edge): at 768 the note ran through it. */
+    .ac-hero-copy { grid-column: 1 / span 9; }
+    .ac-hero-note { text-wrap: balance; }
+    .ac-gap-wrap { padding-block: var(--sec); }
+    .ac-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(4, auto) 16px repeat(4, auto); }
+    .ac-card:last-child { grid-column: 1 / -1; grid-row: 6 / span 4; }
+    .ac-card:last-child .ac-card-title { max-width: none; }
+    /* Each ledger keeps the desktop row: the body fills its column and "Coming soon" sits just past it. */
+    .ac-ledger-l, .ac-ledger-r { max-width: 600px; }
+  }
+  /* 900 to 1068: the two ledgers side by side, as on desktop. */
+  @media (min-width: 900px) and (max-width: 1068px) {
+    .ac-ledger-l { grid-column: 1 / span 6; padding-right: 32px; max-width: none; }
+    .ac-ledger-r { grid-column: 7 / span 6; max-width: none; }
+  }
+
   /* ── Phone ───────────────────────────────────────────────────────────── */
   @media (max-width: 734px) {
-    .ac-hero { min-height: 0; }
-    .ac-hero-copy { grid-column: 1 / -1; padding-top: 48px; padding-bottom: 64px; }
+    .ac-hero-copy { grid-column: 1 / -1; padding-top: 48px; padding-bottom: 40px; }
     /* The ring alone at .08 behind the h1's right half: centre 30 px past the right edge, 300 px down the section, 700 px box. */
     .ac-hero .ac-hero-geo { width: 700px; height: 700px; left: calc(100% + var(--gutter) + 30px - 350px); top: calc(300px - var(--nav-h) - 350px); }
     .ac-hero .ac-hero-geo circle.ring { opacity: .08; stroke-width: 1.6; }
@@ -409,4 +433,6 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
     .ac-door { padding: 24px; min-height: 0; }
     .ac-door-link { padding-top: 24px; }
   }
+  /* A phone in landscape: the buttons in the first screen (audit 2, finding 2). */
+  @media (orientation: landscape) and (max-height: 500px) { .ac-hero-copy { padding-top: 16px; } }
 </style>

@@ -1,29 +1,37 @@
 ---
 /**
- * The home hero's object: the phone alone on the cream, large, in a soft
- * warm halo with its own floor shadow, playing the Coach scene (the ring
- * presses the composer, the draft appears, the home returns). The navy plate
- * that stood behind it is gone by the client's direction (it sat where a
- * photograph used to be). It is a sibling of the copy inside the hero
- * section, which positions it; the section's CSS lives in index.astro.
+ * The home hero's object (SCROLL_SPEC S1): the phone alone on the cream,
+ * large, with its own floor shadow, as the device of the hero's scroll story.
+ * Nothing moves on its own: the story engine (site.ts 1.7.19) presses the
+ * ring on the composer, wipes the draft composer in and types the draft as
+ * the reader scrolls through the hero's one beat, then the page continues.
+ * Without the pin (no script, reduced motion, a short or landscape screen)
+ * it rests on the Coach home, exactly as the hero has always shown it.
+ *
+ * The wrapper is the narrow layout's anchor (the phone sticks 12 px under
+ * the header there, the copy above it masked); the entrance slide lives on
+ * an inner wrapper so the anchor is measured where it really sits. The
+ * section's CSS (index.astro) places it.
  */
 import PhoneFrame from "./PhoneFrame.astro";
 ---
-<div class="hm-hero-phone rise-obj floor-on" style="--d:.3s">
-  <i class="hm-halo" aria-hidden="true"></i>
-  <PhoneFrame
-    id="hero-phone"
-    width={380}
-    style="--pw:inherit"
-    eager
-    shadow="light"
-    tilt={3}
-    parallax={-36}
-    loop={1400}
-    flow='[["hold",1000],["tap",50,27],["state",1,320],["hold",6200],["state",0,320],["end"]]'
-    screens={[
-      { name: "home", alt: "Practice on a phone: the Daily Practice Coach, the Dare of the Day and Set Up Your Day.", w: 600, h: 1298 },
-      { name: "coach-draft", alt: "The Daily Practice Coach with a sentence typed in the composer.", w: 780, h: 1688 }
-    ]}
-  />
+<div class="hm-hero-phone" data-story-anchor="narrow">
+  <div class="hm-hero-device rise-obj floor-on" style="--d:.3s">
+    <PhoneFrame
+      id="hero-phone"
+      device="hero"
+      width={400}
+      style="--pw:inherit"
+      eager
+      shadow="light"
+      tilt={3}
+      label="Practice on a phone: the Daily Practice Coach."
+      screens={[
+        { name: "home", alt: "Practice on a phone: the Daily Practice Coach, the Dare of the Day and Set Up Your Day.", w: 600, h: 1298 },
+        { name: "coach-draft", alt: "The Daily Practice Coach with a sentence typed in the composer.", w: 780, h: 1688,
+          type: [{ x: 7.8, y: 25.8, w: 55.4, h: 2.55, fill: "#f9f6ee" }, { x: 7.8, y: 28.6, w: 38.8, h: 2.45, fill: "#f9f6ee" }] }
+      ]}
+    />
+  </div>
+  <span class="story-bar hm-hero-bar" aria-hidden="true"><i></i></span>
 </div>

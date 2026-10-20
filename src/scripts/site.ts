@@ -1,13 +1,20 @@
+/// <reference types="astro/client" />
 /**
  * The site's one script: one scroll loop, one set of observers, no
  * dependencies. Every mechanic of BUILD_SPEC 1.7 lives here, numbered as
  * there: the loop and smoothing (1.7.1), reveals (1.7.2), line rise (1.7.3),
- * lit statements (1.7.4), page tone (1.7.5), the header (1.7.6), the scene
- * engine (1.7.7), the loop phone (1.7.8), the day stage (1.7.9), rails
- * (1.7.10), the scroll screen (1.7.11), parallax (1.7.12), previews (1.7.13),
- * drawn lines (1.7.14), run gates (1.7.15), image warming (1.7.16), tilt
- * (1.7.17) and the lifecycle (1.7.18). Kept from the first build: track(),
- * passthrough(), the header menu and flips().
+ * lit statements (1.7.4), page tone (1.7.5), the header (1.7.6), the passive
+ * scene (1.7.7), parallax (1.7.12), drawn lines (1.7.14), the scroll driven
+ * floor (1.7.15, SCROLL_SPEC S11), image warming (1.7.16), tilt (1.7.17), the
+ * lifecycle (1.7.18) and scroll stories (1.7.19, SCROLL_SPEC section 1).
+ * Kept from the first build: track(), passthrough(), the header menu, flips().
+ *
+ * Nothing in a device moves on a timer: every app demonstration is a scroll
+ * story, and the scene only shows what the story's scroll position says.
+ * Legacy, until the pages that still use them convert to stories: rails
+ * (1.7.10, /practice STEAR), the scroll screen (1.7.11, the home quiz) and
+ * previews (1.7.13, /practice Everything inside). The loop phone (1.7.8), the
+ * old day stage (1.7.9), scene autoplay and run gates are gone.
  *
  * Everything is progressive: without it the page is complete, readable and
  * every link works. With reduced motion on, nothing moves and nothing hides.
@@ -89,11 +96,23 @@ function frame(now: number) {
   for (const m of mods) m.frame(now);
   if (need) { queued = true; raf = requestAnimationFrame(frame); }
 }
+/* One hidden fixed probe, read on measure only: its height is 100svh (the story engine's viewport, which does
+ * not change when a phone's address bar collapses) and its width is the CSS gutter, safe area included. */
+let probe: HTMLElement | null = null;
+function sysProbe() {
+  if (!probe || !probe.isConnected) {
+    probe = document.createElement("div");
+    probe.className = "sys-probe";
+    probe.setAttribute("aria-hidden", "true");
+    document.body.appendChild(probe);
+  }
+  return probe;
+}
 function measure() {
   vh = window.innerHeight;
   const docW = html.clientWidth;
   html.style.setProperty("--vh", vh + "px");
-  const gutter = Math.min(120, Math.max(20, docW * 0.042));
+  const gutter = sysProbe().offsetWidth || Math.min(120, Math.max(20, docW * 0.042));
   /* --max is calc(1200px * var(--zoom)), which computed style returns unresolved (NaN when parsed),
    * so read --zoom (1, 1.12 from 1800 px, 1.25 from 2200 px) and compute the column from it. */
   const zoom = parseFloat(getComputedStyle(html).getPropertyValue("--zoom")) || 1;
@@ -120,7 +139,7 @@ function loopSetup() {
   document.fonts?.ready.then(() => measure());
   listen(document, "load", (e: Event) => {
     const t = e.target as HTMLElement;
-    if (t && t.tagName === "IMG" && t.closest("[data-frames], [data-rail], [data-story], .floor, .tile")) kick();
+    if (t && t.tagName === "IMG" && t.closest("[data-frames], [data-story], .floor, .tile")) kick();
   }, true);
   listen(window, "load", measure);
 }
@@ -160,14 +179,19 @@ function reveals() {
   gates();
   qsa(".seq").forEach((seq) => Array.from(seq.children).forEach((c, i) => (c as HTMLElement).style.setProperty("--i", String(i))));
   if (!("IntersectionObserver" in window)) { items.forEach(arrive); revealIO = null; return; }
+  /* Whatever already starts above the viewport's bottom arrives at once (a tall object that only peeks into
+   * the first screen of a short laptop must not wait for 12% of itself to be in view); the rest arrive as soon
+   * as any of them crosses into the band above the bottom 8% of the viewport (audit 2, finding 1). */
+  const h = window.innerHeight;
+  const later = items.filter((el) => { if (el.getBoundingClientRect().top < h) { arrive(el); return false; } return true; });
   revealIO = new IntersectionObserver((entries) => {
     for (const entry of entries) {
       if (!entry.isIntersecting) continue;
       arrive(entry.target);
       revealIO?.unobserve(entry.target);
     }
-  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
-  items.forEach((el) => revealIO!.observe(el));
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0 });
+  later.forEach((el) => revealIO!.observe(el));
   observe(revealIO);
   /* Keyboard focus that lands inside content that has not been revealed yet reveals it at once. */
   listen(document, "focusin", (e: FocusEvent) => {
@@ -431,7 +455,10 @@ function header() {
     el.classList.toggle("is-scrolled", y > 24);
     /* Sample at most every 120 ms while scrolling, and once more when the scroll settles. */
     if (Math.abs(y - sampledY) > 2 && (now - sampledAt > 120 || d === 0)) { sampledY = y; sampledAt = now; sample(); }
-    const locked = now - loadAt < 1200 || now - resizeAt < 500 || menuOpen() || el.contains(document.activeElement);
+    /* While a story is pinned the bar stays shown: the stage sticks under it, so a hidden bar would leave a
+     * dead band of page above the stage (audit 2, finding 4). Read now, not from the story pass of the last
+     * frame, so a scroll that jumps into a pin never hides the bar for a frame. */
+    const locked = now - loadAt < 1200 || now - resizeAt < 500 || menuOpen() || el.contains(document.activeElement) || storyPinnedNow();
     if (y < 120 || locked) { acc = 0; if (hidden && (y < 120 || locked)) show(); return; }
     if ((d > 0) !== (acc > 0)) acc = 0;
     acc += d;
@@ -464,192 +491,73 @@ function header() {
       else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
     }
   });
-  const mq = window.matchMedia("(min-width: 1069px)");
+  const mq = window.matchMedia("(min-width: 960px)");
   const onChange = (e: MediaQueryListEvent) => e.matches && set(false);
   mq.addEventListener("change", onChange);
   cleanups.push(() => { mq.removeEventListener("change", onChange); html.classList.remove("menu-open"); });
 }
 
-/* ── 1.7.7 Scene engine ─────────────────────────────────────────────────── */
-type Step = (string | number)[];
+/* ── 1.7.7 Scene (passive) ──────────────────────────────────────────────── */
+/* A Scene is one device, a PhoneFrame or a WindowFrame: its frames (every `.ds` directly in its `.cam`: a
+ * plain capture `img.ds`, a capture with type lines `div.ds.ds-group`, a scroll strip `div.ds.ds-strip`), its
+ * camera, its cursor and its ring. It never moves on its own: the scroll story engine (1.7.19) tells it which
+ * frame to show and where the camera, the cursor and the ring are. A device outside any story shows its
+ * data-rest frame. The 380 ms wipe is the only clock in a device, and the scroll starts it. */
 const scenes = new Map<Element, Scene>();
 /* The camera never crops a capture deeper than its side padding: the visible part always holds x 8% to 92%
  * of the capture, which caps the scale at 1 / .84 (1.19) and clamps the origin; under 260 px of screen width
  * the scale is capped at 1.08. */
 const CAM_MAX = 1.19, CAM_SMALL = 1.08, CAM_SMALL_W = 260, CAM_PAD = 8;
-const SCENE_EASE = "cubic-bezier(.45, 0, .2, 1)", OUT_EASE = "cubic-bezier(.22, .61, .36, 1)";
+const SCENE_EASE = "cubic-bezier(.45, 0, .2, 1)";
 class Scene {
-  el: HTMLElement; screen: HTMLElement | null; cam: HTMLElement | null; cur: HTMLElement | null; tap: HTMLElement | null;
-  frames: HTMLImageElement[]; steps: Step[] | null = null; loopMs = 0; rest = 0; auto = false; visible = false;
-  run = 0; timers: number[] = []; io: IntersectionObserver | null = null; pending = 0; wasT = 0;
-  /* The running state change, the last tap or click (y in % of the screen, and when), the cursor's y, the
-   * camera's target (scale and vertical origin) and the edge mask's timer. */
-  anims: Animation[] = []; tapY = 0; tapT = -1e9; curY = 0; camS = 1; camOy = 50; camT = 0;
-  /* data-flow-delay: the first play waits this many ms after the page bound (a hero scene that should
-   * start 1.6 s after load); later entries wait the usual 300 ms. */
-  delay = 0; born = performance.now();
+  el: HTMLElement; screen: HTMLElement | null; cam: HTMLElement | null; cur: HTMLElement | null; curSvg: SVGElement | null; tap: HTMLElement | null;
+  frames: HTMLElement[]; rest: number; anims: Animation[] = []; wasT = 0;
+  /* The camera as last written (scale, origin), its transform string, the edge mask state, the screen width. */
+  camS = 1; camOx = 50; camOy = 50; camKey = ""; camOn = false; sw = 0;
   constructor(el: HTMLElement) {
     this.el = el;
-    this.screen = el.querySelector(".phone-screen, .win-screen");
-    this.cam = el.querySelector(".cam");
-    this.cur = el.querySelector(".cur");
-    this.tap = el.querySelector(".tap");
-    this.frames = qsa<HTMLImageElement>("img.ds", el);
-    this.rest = Number(el.dataset.rest || 0);
-    this.loopMs = Number(el.dataset.flowLoop || 0);
-    this.delay = Number(el.dataset.flowDelay || 0);
-    this.auto = !!el.dataset.flow && !el.closest("[data-rail], [data-story], [data-loop]");
-    if (this.auto) { try { this.steps = JSON.parse(el.dataset.flow || "null"); } catch { this.steps = null; } }
-    const first = this.frames[0];
-    if (first && this.screen) {
+    this.screen = el.querySelector<HTMLElement>(".phone-screen, .win-screen");
+    this.cam = this.screen ? this.screen.querySelector<HTMLElement>(":scope > .cam") : null;
+    this.cur = this.screen ? this.screen.querySelector<HTMLElement>(":scope > .cur") : null;
+    this.curSvg = this.cur ? this.cur.querySelector("svg") : null;
+    this.tap = this.screen ? this.screen.querySelector<HTMLElement>(":scope > .tap") : null;
+    this.frames = this.cam ? qsa(":scope > .ds, :scope > picture > .ds", this.cam) : [];
+    this.rest = Math.min(Math.max(0, Number(el.dataset.rest || 0) || 0), Math.max(0, this.frames.length - 1));
+    if (!this.frames.some((f) => f.classList.contains("on"))) this.show(this.rest, true);
+    /* The dashed slot under the screen goes once the frame on screen has loaded. */
+    const on = this.frames[this.index()];
+    const img = on ? (on.tagName === "IMG" ? (on as HTMLImageElement) : on.querySelector<HTMLImageElement>("img")) : null;
+    if (img && this.screen) {
       const done = () => this.screen?.classList.add("has-frame");
-      if (first.complete && first.naturalWidth) done(); else first.addEventListener("load", done, { once: true });
+      if (img.complete && img.naturalWidth) done(); else img.addEventListener("load", done, { once: true });
     }
-    if (reduced()) { this.show(this.rest, true); return; }
-    if ("IntersectionObserver" in window) {
-      this.io = new IntersectionObserver((entries) => {
-        for (const e of entries) {
-          const v = e.isIntersecting && e.intersectionRatio >= 0.25;
-          if (v === this.visible) continue;
-          this.visible = v;
-          if (v) this.onEnter(); else this.stop();
-        }
-      }, { threshold: [0, 0.25, 0.5] });
-      this.io.observe(el);
-    } else this.visible = true;
+    this.measure();
   }
-  onEnter() {
-    if (!this.steps || document.hidden) return;
-    cancel(this.pending);
-    const wait = Math.max(300, this.delay - (performance.now() - this.born));
-    this.delay = 0;
-    this.pending = after(wait, () => this.play());
-  }
-  set(steps: Step[] | null, loopMs = 0) { this.steps = steps; this.loopMs = loopMs; }
-  play() {
-    if (!this.steps || !this.visible || document.hidden || reduced()) return;
-    this.halt();
-    const id = ++this.run;
-    this.el.classList.add("playing");
-    this.step(0, id);
-  }
-  halt() { this.run++; this.timers.forEach((t) => cancel(t)); this.timers = []; cancel(this.pending); this.el.classList.remove("playing"); }
-  stop(resetFrames = this.auto) {
-    this.halt();
-    this.cur?.classList.remove("on", "press");
-    this.resetCam();
-    if (resetFrames) this.show(this.rest, true);
-  }
-  destroy() { this.halt(); this.settle(); cancel(this.camT); this.io?.disconnect(); }
-  /* Only the camera is reset here, and only when it has moved, so a frame
-   * change started in the same tick (a step change, a preview) still plays
-   * its wipe or dip instead of being cut by the reset class. */
-  resetCam() {
-    cancel(this.camT);
-    this.screen?.classList.remove("cam-on");
-    this.camS = 1; this.camOy = 50;
-    if (!this.cam || !this.cam.style.transform) return;
-    const cam = this.cam;
-    cam.classList.add("cam-reset");
-    cam.style.setProperty("--cd", "0ms");
-    cam.style.transform = "";
-    requestAnimationFrame(() => cam.classList.remove("cam-reset"));
-  }
-  later(ms: number, fn: () => void, id: number) { const t = after(ms, () => { if (id === this.run) fn(); }); this.timers.push(t); }
-  step(i: number, id: number) {
-    if (id !== this.run) return;
-    const s = this.steps?.[i];
-    if (!s) return this.end(id);
-    const next = (ms: number) => this.later(ms, () => this.step(i + 1, id), id);
-    const n = (k: number) => Number(s[k]) || 0;
-    switch (s[0]) {
-      case "start": this.place(n(1), n(2), 0); next(0); break;
-      case "hold": next(n(1)); break;
-      case "cam": this.camTo(Math.min(1.3, n(1)), n(2), n(3), n(4)); next(n(4)); break;
-      case "move": this.cur?.classList.add("on"); this.place(n(1), n(2), n(3)); next(n(3)); break;
-      case "click": this.cur?.classList.add("press"); this.tapY = this.curY; this.tapT = performance.now(); this.later(150, () => this.cur?.classList.remove("press"), id); next(150); break;
-      case "tap": this.tapAt(n(1), n(2)); next(420); break;
-      /* A state change wipes the new frame in: from the tap or click point's y when one came within the last
-       * 1.5 s (mapped through the camera), else from the top. */
-      case "state": this.show(n(1), false, performance.now() - this.tapT < 1500 ? this.toFrameY(this.tapY) : 0); next(n(2)); break;
-      case "end": this.end(id); break;
-      default: next(0);
-    }
-  }
-  end(id: number) {
-    if (id !== this.run) return;
-    this.el.classList.remove("playing");
-    if (this.loopMs > 0) this.later(this.loopMs, () => this.play(), id);
-  }
-  place(x: number, y: number, ms: number) {
-    this.curY = y;
-    for (const t of [this.cur, this.tap]) {
-      if (!t) continue;
-      t.style.setProperty("--cd", ms + "ms");
-      t.style.setProperty("--tx", x + "cqw");
-      t.style.setProperty("--ty", y + "cqh");
-    }
-  }
-  /* The camera: scale s about the point (ox, oy) in % of the capture. Clamped so a crop only ever falls in
-   * the capture's side padding (CAM_MAX, CAM_SMALL, CAM_PAD above); while it is in, the screen's 14 px edge
-   * mask is on (.cam-on), and it goes off once the camera is back at 1. */
-  camTo(s: number, ox: number, oy: number, ms: number) {
-    if (!this.cam) return;
-    const w = this.screen ? this.screen.clientWidth : 0;
-    s = Math.max(1, Math.min(CAM_MAX, s));
-    if (w > 0 && w < CAM_SMALL_W) s = Math.min(s, CAM_SMALL);
-    if (s > 1) {
-      const k = 1 - 1 / s, lo = (100 - CAM_PAD - 100 / s) / k, hi = CAM_PAD / k;
-      ox = lo <= hi ? Math.min(hi, Math.max(lo, ox)) : 50;
-    }
-    this.camS = s; this.camOy = oy;
-    this.cam.style.setProperty("--cd", ms + "ms");
-    this.cam.style.transform = `translate(${(ox * (1 - s)).toFixed(3)}%, ${(oy * (1 - s)).toFixed(3)}%) scale(${s})`;
-    cancel(this.camT);
-    if (s > 1.001) this.screen?.classList.add("cam-on");
-    else this.camT = after(ms, () => this.screen?.classList.remove("cam-on"));
-  }
-  /* A y on the screen (% of its height) as a y on the frame under the current camera. */
-  toFrameY(y: number) { const s = this.camS; return Math.min(100, Math.max(0, (y - (1 - s) * this.camOy) / s)); }
-  tapAt(x: number, y: number) {
-    this.tapY = y; this.tapT = performance.now();
-    if (!this.tap) return;
-    this.tap.style.setProperty("--tx", x + "cqw");
-    this.tap.style.setProperty("--ty", y + "cqh");
-    this.tap.classList.remove("go");
-    void this.tap.offsetWidth;
-    this.tap.classList.add("go");
-  }
+  measure() { this.sw = this.screen ? this.screen.clientWidth : 0; }
+  /* The index of the frame on screen. */
+  index() { const i = this.frames.findIndex((f) => f.classList.contains("on")); return i < 0 ? this.rest : i; }
   /* Show frame i. Two captures are never both visible through each other:
-   * - `from` given (a y in % of the frame, 0 is the top): a wipe. The new frame is revealed by clip-path
-   *   from a zero height band at that y to the full frame over 380 ms (--scene), over the old one, which
-   *   stays opaque underneath until it is covered. Scene "state" steps and the loop phone's own cycle.
-   * - no `from`: a dip. The old frame is gone by 140 ms and the new one fades in from 110 ms (260 ms), so
-   *   they are never both above .2 at once. The day stage's step changes and the previews.
-   * - instant: a cut (rest frames, stops, reduced motion). */
-  show(i: number, instant = false, from?: number) {
+   * - a wipe (default): the new frame is revealed by clip-path from a zero height band at `from` (a y in % of
+   *   the capture, 0 is the top) to the full frame over 380 ms (--scene), over the old frame, which stays opaque
+   *   underneath until it is covered and is dropped the moment it is. Type lines and strips live inside their
+   *   frame, so the clip takes them with it.
+   * - instant: a cut (rest frames, a fling across several changes, a story that was off screen). */
+  show(i: number, instant = false, from = 0) {
     const target = this.frames[i];
     if (!target) return;
     const on = this.frames.find((f) => f.classList.contains("on"));
-    if (on === target) return;
+    if (on === target) { if (instant) this.settle(); return; }
     this.settle();
-    if (instant) this.el.classList.add("reset");
     if (on) on.classList.remove("on");
     target.classList.add("on");
     this.syncCaps(i);
-    if (instant) { requestAnimationFrame(() => this.el.classList.remove("reset")); return; }
-    if (!on || reduced() || typeof target.animate !== "function") return;
+    if (instant || !on || reduced() || typeof target.animate !== "function") return;
     on.classList.add("was");
-    if (from !== undefined) {
-      const y = Math.min(100, Math.max(0, from)).toFixed(2);
-      const wipe = target.animate([{ clipPath: `inset(${y}% 0% ${(100 - Number(y)).toFixed(2)}% 0%)` }, { clipPath: "inset(0% 0% 0% 0%)" }], { duration: 380, easing: SCENE_EASE });
-      /* The old frame goes the moment the new one covers it, not a timer tick later. */
-      wipe.onfinish = () => { if (this.anims.includes(wipe)) this.settle(); };
-      this.anims.push(wipe);
-    } else {
-      this.anims.push(on.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140, easing: OUT_EASE, fill: "forwards" }));
-      this.anims.push(target.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 260, delay: 110, easing: OUT_EASE, fill: "backwards" }));
-    }
+    const y = Math.min(100, Math.max(0, from));
+    const wipe = target.animate([{ clipPath: `inset(${y.toFixed(2)}% 0% ${(100 - y).toFixed(2)}% 0%)` }, { clipPath: "inset(0% 0% 0% 0%)" }], { duration: 380, easing: SCENE_EASE });
+    /* The old frame goes the moment the new one covers it, not a timer tick later. */
+    wipe.onfinish = () => { if (this.anims.includes(wipe)) this.settle(); };
+    this.anims.push(wipe);
     this.wasT = after(420, () => this.settle());
   }
   /* End any running change at once: the shown frame whole, the old one hidden. */
@@ -658,7 +566,34 @@ class Scene {
     if (this.anims.length) { this.anims.forEach((a) => a.cancel()); this.anims = []; }
     this.frames.forEach((f) => f.classList.remove("was"));
   }
-  /* The caption and the pager beside a window follow the frame it shows. */
+  /* The camera: scale s about the point (ox, oy) in % of the capture, written at once (the story engine eases
+   * it with the scroll). Clamped so a crop only ever falls in the capture's side padding; while it is in, the
+   * screen's 14 px edge mask is on (.cam-on). */
+  camTo(s: number, ox: number, oy: number) {
+    if (!this.cam) return;
+    s = Math.max(1, Math.min(CAM_MAX, s));
+    if (this.sw > 0 && this.sw < CAM_SMALL_W) s = Math.min(s, CAM_SMALL);
+    if (s > 1) {
+      const k = 1 - 1 / s, lo = (100 - CAM_PAD - 100 / s) / k, hi = CAM_PAD / k;
+      ox = lo <= hi ? Math.min(hi, Math.max(lo, ox)) : 50;
+    }
+    this.camS = s; this.camOx = ox; this.camOy = oy;
+    const t = s > 1.0004 ? `translate(${(ox * (1 - s)).toFixed(3)}%, ${(oy * (1 - s)).toFixed(3)}%) scale(${s.toFixed(4)})` : "";
+    if (t !== this.camKey) { this.camKey = t; this.cam.style.transform = t; }
+    const camOn = s > 1.001;
+    if (camOn !== this.camOn) { this.camOn = camOn; this.screen?.classList.toggle("cam-on", camOn); }
+  }
+  /* A point of the capture (% of its width and height) on the screen under the current camera. */
+  toScreen(x: number, y: number): [number, number] { const s = this.camS; return [this.camOx * (1 - s) + s * x, this.camOy * (1 - s) + s * y]; }
+  /* The device back on its rest frame with nothing written: the static layout. */
+  reset() {
+    this.settle();
+    this.show(this.rest, true);
+    this.camTo(1, 50, 50);
+    for (const t of [this.cur, this.tap]) if (t) { t.style.removeProperty("transform"); t.style.removeProperty("opacity"); t.style.removeProperty("--fill"); }
+    this.curSvg?.style.removeProperty("transform");
+  }
+  /* The caption beside a window follows the frame it shows (and a legacy pager, until its page converts). */
   syncCaps(i: number) {
     const host = this.el.parentElement;
     if (!host) return;
@@ -666,282 +601,15 @@ class Scene {
     qsa<HTMLButtonElement>(".win-pager [data-go]", host).forEach((b) => { const on = Number(b.dataset.go) === i; b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; });
   }
 }
-/* The registries are exposed for QA scripts (read only). */
-(window as any).__ib = { scenes, S };
+/* The registries are exposed for QA scripts (read only): window.__ib.stories[id] is SCROLL_SPEC 1.6 item 8. */
+(window as any).__ib = { scenes, S, get stories() { return storyApi; } };
 function sceneFor(el: HTMLElement) {
   let s = scenes.get(el);
   if (!s) { s = new Scene(el); scenes.set(el, s); }
   return s;
 }
-function scenesBind() {
-  qsa("[data-frames]").forEach((el) => sceneFor(el));
-  listen(document, "visibilitychange", () => {
-    scenes.forEach((s) => { if (document.hidden) s.stop(); else if (s.visible) s.onEnter(); });
-  });
-}
-function scenesTeardown() { scenes.forEach((s) => s.destroy()); scenes.clear(); }
-
-/* ── 1.7.8 Loop phone ───────────────────────────────────────────────────── */
-function loops() {
-  qsa("[data-loop]").forEach((panel) => {
-    const phone = panel.querySelector<HTMLElement>("[data-frames]");
-    const rows = qsa("[data-loop-step]", panel);
-    if (!phone || !rows.length) return;
-    const scene = sceneFor(phone);
-    const light = (k: number) => rows.forEach((r, j) => r.classList.toggle("is-on", j === k));
-    if (reduced()) { light(0); scene.show(0, true); return; }
-    let i = 0, active = false, inView = false, pinned: number | null = null, timer = 0, resume = 0;
-    let stepTimers: number[] = [];
-    const clear = () => { cancel(timer); stepTimers.forEach(cancel); stepTimers = []; };
-    /* The cycle wipes the phone (from the top, or from a tap's y); a row pinned by hover or focus dips. */
-    const stepTo = (k: number, user = false) => {
-      i = k;
-      light(k);
-      const row = rows[k];
-      const f = row.dataset.loopFrame;
-      if (f !== undefined && f !== "none") scene.show(Number(f), false, user ? undefined : 0);
-      const tap = row.dataset.loopTap;
-      if (tap) {
-        const [x, y, delay, frame] = tap.split(",").map(Number);
-        stepTimers.push(after(delay, () => { scene.tapAt(x, y); stepTimers.push(after(220, () => scene.show(frame, false, scene.toFrameY(y)))); }));
-      }
-    };
-    const schedule = () => {
-      cancel(timer);
-      if (!active || pinned !== null) return;
-      timer = after(Number(rows[i].dataset.loopMs || 2400), () => { clear(); stepTo((i + 1) % rows.length); schedule(); });
-    };
-    /* Runs while the panel is 35% visible and the tab is visible; stops on
-     * either and resumes where it stopped when both hold again. */
-    const sync = () => {
-      const v = inView && !document.hidden;
-      if (v === active) return;
-      active = v;
-      if (active) { stepTo(i); schedule(); } else clear();
-    };
-    const io = new IntersectionObserver((entries) => {
-      const e = entries[entries.length - 1];
-      inView = e.isIntersecting && e.intersectionRatio >= 0.35;
-      sync();
-    }, { threshold: [0, 0.35, 0.7] });
-    io.observe(panel);
-    observe(io);
-    listen(document, "visibilitychange", sync);
-    rows.forEach((row, j) => {
-      const pin = () => { pinned = j; cancel(resume); clear(); stepTo(j, true); };
-      const unpin = () => { pinned = null; cancel(resume); resume = after(1500, () => { if (active && pinned === null) schedule(); }); };
-      listen(row, "pointerenter", pin);
-      listen(row, "focusin", pin);
-      listen(row, "pointerleave", unpin);
-      listen(row, "focusout", unpin);
-    });
-  });
-}
-
-/* ── 1.7.9 Day stage ────────────────────────────────────────────────────── */
-let storyN = 0;
-function stories() {
-  qsa("[data-story]").forEach((story) => {
-    const steps = qsa("[data-step]", story);
-    const stage = story.querySelector<HTMLElement>(".day-stage");
-    const phone = stage?.querySelector<HTMLElement>("[data-frames]");
-    if (!steps.length || !stage || !phone) { story.classList.add("static"); return; }
-    if (reduced()) { story.classList.add("static"); return; }
-    const key = "day:" + storyN++;
-    const section = story.closest<HTMLElement>("[data-tone]");
-    const baseTone = section?.dataset.tone || "cream";
-    const scene = sceneFor(phone);
-    const skies = { morning: stage.querySelector<HTMLElement>('[data-sky="morning"]'), midday: stage.querySelector<HTMLElement>('[data-sky="midday"]'), afternoon: stage.querySelector<HTMLElement>('[data-sky="afternoon"]'), evening: stage.querySelector<HTMLElement>('[data-sky="evening"]') };
-    const caps = qsa(".day-cap", stage);
-    const tabs = qsa<HTMLButtonElement>("[data-go]", stage);
-    const stepsCol = story.querySelector<HTMLElement>(".day-steps");
-    const stageCol = story.querySelector<HTMLElement>(".day-stagecol");
-    const lastIdx = steps.length - 1;
-    let idx = -1, lastMy = -1, phoneLayout = false;
-    const setIdx = (k: number) => {
-      idx = k;
-      steps.forEach((s, j) => { s.classList.toggle("is-current", j === k); s.classList.toggle("is-dim", j !== k); });
-      const entry = Number(steps[k].dataset.flowEntry ?? steps[k].dataset.stepScreen ?? 0);
-      scene.stop(false);
-      scene.show(entry);
-      caps.forEach((c) => c.classList.toggle("on", Number(c.dataset.cap) === k));
-      tabs.forEach((t, j) => { t.setAttribute("aria-selected", String(j === k)); t.tabIndex = j === k ? 0 : -1; });
-      const flow = steps[k].dataset.flow;
-      if (flow) { try { scene.set(JSON.parse(flow), 0); scene.play(); } catch { scene.set(null); } } else scene.set(null);
-      if (section) section.dataset.tone = k === lastIdx ? "navy" : baseTone;
-      stage.classList.toggle("is-night", k === lastIdx);
-      /* The tone pass ran earlier in this frame and the sky smoothing may have snapped (a jump of two or
-       * more steps), so ask for one more frame: the page tone then re-reads this section's data-tone. */
-      need = true;
-    };
-    const goTo = (k: number) => {
-      const r = steps[k].getBoundingClientRect();
-      window.scrollTo({ top: window.scrollY + r.top - (vh - r.height) / 2, behavior: "smooth" });
-    };
-    tabs.forEach((t, j) => {
-      listen(t, "click", () => goTo(j));
-      listen(t, "keydown", (e: KeyboardEvent) => {
-        const n = e.key === "ArrowRight" || e.key === "ArrowDown" ? j + 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? j - 1 : -1;
-        if (n < 0 || n >= tabs.length) return;
-        e.preventDefault(); tabs[n].focus(); goTo(n);
-      });
-    });
-    register({ measure() { phoneLayout = !!stageCol && getComputedStyle(stageCol).position === "sticky"; if (!phoneLayout) { stepsCol?.style.removeProperty("--my"); lastMy = -1; } }, frame() {
-      const c = vh / 2;
-      let best = 0, bd = Infinity;
-      steps.forEach((s, j) => { const r = s.getBoundingClientRect(); const d = Math.abs((r.top + r.bottom) / 2 - c); if (d < bd - 0.5) { bd = d; best = j; } });
-      if (best !== idx) setIdx(best);
-      if (phoneLayout && stepsCol) {
-        const my = Math.max(0, stage.getBoundingClientRect().bottom - stepsCol.getBoundingClientRect().top);
-        if (Math.abs(my - lastMy) > 0.5) { lastMy = my; stepsCol.style.setProperty("--my", my.toFixed(1) + "px"); }
-      }
-      const s = smooth(key, idx / Math.max(1, lastIdx), 0.1);
-      let wM = 1 - clamp01((s - 0.25) / 0.25), wD = 1 - clamp01(Math.abs(s - 0.5) / 0.25), wA = 1 - clamp01(Math.abs(s - 0.75) / 0.25), wE = clamp01((s - 0.75) / 0.25);
-      const sum = wM + wD + wA + wE || 1;
-      wM /= sum; wD /= sum; wA /= sum; wE /= sum;
-      if (skies.morning) skies.morning.style.opacity = wM.toFixed(3);
-      if (skies.midday) skies.midday.style.opacity = wD.toFixed(3);
-      if (skies.afternoon) skies.afternoon.style.opacity = wA.toFixed(3);
-      if (skies.evening) skies.evening.style.opacity = wE.toFixed(3);
-      const sx = -26 * wM + 26 * wA;
-      phone.style.setProperty("--sx", sx.toFixed(1) + "px");
-      phone.style.setProperty("--floor-a", (0.3 + 0.25 * wE).toFixed(3));
-      stage.style.setProperty("--day-cap", `color-mix(in srgb, #5c574f, #cdc6b8 ${(wE * 100).toFixed(1)}%)`);
-    } });
-  });
-}
-
-/* ── 1.7.10 Rail engine ─────────────────────────────────────────────────── */
-function rails() {
-  qsa("[data-rail]").forEach((rail) => {
-    const track = rail.querySelector<HTMLElement>(".rail-track");
-    const slides = track ? qsa(".rail-slide", track) : [];
-    if (!track || !slides.length) return;
-    const tabs = qsa<HTMLButtonElement>(".rail-tab", rail);
-    const prev = rail.querySelector<HTMLButtonElement>(".rail-prev");
-    const next = rail.querySelector<HTMLButtonElement>(".rail-next");
-    const byPage = rail.dataset.by === "page";
-    if (!track.hasAttribute("tabindex")) track.tabIndex = 0;
-    if (!track.getAttribute("role")) track.setAttribute("role", "region");
-    if (!track.getAttribute("aria-roledescription")) track.setAttribute("aria-roledescription", "carousel");
-    let cur = -1, settleT = 0, settling = false, dragging = false, dragged = false, animRaf = 0;
-    const edge = () => parseFloat(getComputedStyle(track).paddingLeft) || 0;
-    const starts = () => slides.map((s) => s.offsetLeft - edge());
-    const maxLeft = () => track.scrollWidth - track.clientWidth;
-    const indexAt = (x: number) => { const st = starts(); let b = 0, bd = Infinity; st.forEach((s, i) => { const d = Math.abs(s - x); if (d < bd) { bd = d; b = i; } }); return b; };
-    const perPage = () => Math.max(1, Math.floor((track.clientWidth - edge()) / (slides[0].offsetWidth + (parseFloat(getComputedStyle(track).columnGap) || 0))));
-    const set = (i: number, go: boolean) => {
-      i = Math.max(0, Math.min(slides.length - 1, i));
-      const changed = i !== cur;
-      cur = i;
-      slides.forEach((s, j) => { s.classList.toggle("on", j === i); s.classList.toggle("off", j !== i); });
-      tabs.forEach((t, j) => { t.setAttribute("aria-selected", String(j === i)); t.tabIndex = j === i ? 0 : -1; });
-      if (prev) prev.disabled = i === 0;
-      if (next) next.disabled = i === slides.length - 1;
-      if (changed) slides.forEach((s, j) => {
-        const f = s.querySelector<HTMLElement>("[data-frames][data-flow]");
-        if (!f) return;
-        const sc = sceneFor(f);
-        if (j === i) { try { sc.set(JSON.parse(f.dataset.flow || "null"), Number(f.dataset.flowLoop || 0)); sc.play(); } catch { /* bad flow */ } }
-        else sc.stop(false);
-      });
-      if (go) {
-        settling = true; clearTimeout(settleT);
-        settleT = window.setTimeout(() => { settling = false; }, 900);
-        track.scrollTo({ left: Math.min(maxLeft(), starts()[i]), behavior: reduced() ? "auto" : "smooth" });
-      }
-    };
-    let scrollRaf = 0;
-    listen(track, "scroll", () => { if (settling || dragging || animRaf) return; if (!scrollRaf) scrollRaf = requestAnimationFrame(() => { scrollRaf = 0; const i = indexAt(track.scrollLeft); if (i !== cur) set(i, false); }); }, { passive: true });
-    if (prev) listen(prev, "click", () => set(cur - (byPage ? perPage() : 1), true));
-    if (next) listen(next, "click", () => set(cur + (byPage ? perPage() : 1), true));
-    tabs.forEach((t, j) => {
-      listen(t, "click", () => set(j, true));
-      listen(t, "keydown", (e: KeyboardEvent) => {
-        const n = e.key === "ArrowRight" ? j + 1 : e.key === "ArrowLeft" ? j - 1 : e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 : -1;
-        if (n < 0 || n >= tabs.length) return;
-        e.preventDefault(); tabs[n].focus(); set(n, true);
-      });
-    });
-    listen(track, "keydown", (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") { e.preventDefault(); set(cur + 1, true); }
-      else if (e.key === "ArrowLeft") { e.preventDefault(); set(cur - 1, true); }
-    });
-    slides.forEach((s, j) => listen(s, "click", (e: MouseEvent) => { if (dragged) { e.preventDefault(); return; } if (j !== cur) { e.preventDefault(); set(j, true); } }));
-    listen(track, "dragstart", (e: Event) => e.preventDefault());
-    /* Drag with momentum (fine pointers only). */
-    if (finePointer() && !reduced()) {
-      let startX = 0, startLeft = 0, samples: { t: number; x: number }[] = [], pid = -1;
-      const animateTo = (target: number, v: number) => {
-        const start = track.scrollLeft, delta = target - start;
-        const dur = Math.min(600, Math.max(320, 300 + 0.2 * Math.abs(delta)));
-        const dir = v !== 0 ? -Math.sign(v) : Math.sign(delta);
-        const overshoot = Math.min(Math.abs(v) * dur, 3 * Math.abs(delta)) * dir;
-        const t0 = performance.now();
-        const tick = (now: number) => {
-          const s = Math.min(1, (now - t0) / dur);
-          track.scrollLeft = start + overshoot * (s * s * s - 2 * s * s + s) + delta * (3 * s * s - 2 * s * s * s);
-          if (s < 1) animRaf = requestAnimationFrame(tick);
-          else { animRaf = 0; track.scrollLeft = target; track.classList.remove("drag"); set(indexAt(target), false); }
-        };
-        if (animRaf) cancelAnimationFrame(animRaf);
-        animRaf = requestAnimationFrame(tick);
-      };
-      listen(track, "pointerdown", (e: PointerEvent) => {
-        if (e.button !== 0 || e.pointerType === "touch") return;
-        if (animRaf) { cancelAnimationFrame(animRaf); animRaf = 0; track.classList.remove("drag"); }
-        pid = e.pointerId; startX = e.clientX; startLeft = track.scrollLeft; samples = [{ t: performance.now(), x: e.clientX }]; dragging = false; dragged = false;
-      });
-      listen(track, "pointermove", (e: PointerEvent) => {
-        if (e.pointerId !== pid) return;
-        const dx = e.clientX - startX;
-        if (!dragging) { if (Math.abs(dx) < 5) return; dragging = true; dragged = true; track.classList.add("drag"); track.setPointerCapture(pid); }
-        track.scrollLeft = startLeft - dx;
-        samples.push({ t: performance.now(), x: e.clientX }); if (samples.length > 12) samples.shift();
-      });
-      const release = (e: PointerEvent) => {
-        if (e.pointerId !== pid) return;
-        pid = -1;
-        if (!dragging) return;
-        dragging = false;
-        const now = performance.now();
-        const recent = samples.filter((s) => now - s.t <= 100);
-        const a = recent[0], b = samples[samples.length - 1];
-        const v = a && b && b.t > a.t ? (b.x - a.x) / (b.t - a.t) : 0; /* px per ms, pointer direction */
-        const projected = track.scrollLeft - 180 * v;
-        const st = starts();
-        let i = indexAt(projected);
-        if (!byPage) {
-          const dragDx = e.clientX - startX;
-          i = Math.max(cur - 1, Math.min(cur + 1, i));
-          if (i === cur && Math.abs(v) < 0.05 && Math.abs(dragDx) >= 60) i = cur - Math.sign(dragDx);
-          i = Math.max(0, Math.min(slides.length - 1, i));
-        }
-        animateTo(Math.min(maxLeft(), st[i]), v);
-        after(50, () => { dragged = false; });
-      };
-      listen(track, "pointerup", release);
-      listen(track, "pointercancel", release);
-    }
-    set(indexAt(track.scrollLeft), false);
-    register({ measure() { if (cur >= 0 && !dragging && !animRaf) track.scrollLeft = Math.min(maxLeft(), starts()[cur]); }, frame() { /* nothing per frame */ } });
-  });
-}
-
-/* ── 1.7.11 Scroll screen ───────────────────────────────────────────────── */
-let qsN = 0;
-function scrollScreens() {
-  qsa("[data-scrollscreen]").forEach((screen) => {
-    const sec = screen.closest<HTMLElement>("section") || screen.parentElement!;
-    if (reduced()) { screen.style.setProperty("--p", "0"); return; }
-    const key = "qs:" + qsN++;
-    register({ frame() {
-      const r = sec.getBoundingClientRect();
-      const p = smooth(key, clamp01((vh * 0.85 - r.top) / (r.height + vh * 0.35)), 0.12);
-      screen.style.setProperty("--p", p.toFixed(4));
-    } });
-  });
-}
+function scenesBind() { qsa("[data-frames]").forEach((el) => sceneFor(el)); }
+function scenesTeardown() { scenes.forEach((s) => s.settle()); scenes.clear(); }
 
 /* ── 1.7.12 Parallax ────────────────────────────────────────────────────── */
 function parallax() {
@@ -956,53 +624,6 @@ function parallax() {
     last = v;
     els.forEach((el) => el.style.setProperty("--hy", v));
   } });
-}
-
-/* ── 1.7.13 Previews ────────────────────────────────────────────────────── */
-function previews() {
-  const rows = qsa("[data-preview]");
-  const pagers = qsa(".win-pager[data-preview-target]");
-  const hosts = new Map<HTMLElement, { scene: Scene; resume: number }>();
-  const hostFor = (sel: string | undefined) => {
-    const win = sel ? document.querySelector<HTMLElement>(sel) : null;
-    if (!win) return null;
-    let h = hosts.get(win);
-    if (!h) {
-      h = { scene: sceneFor(win), resume: 0 };
-      hosts.set(win, h);
-    }
-    return h;
-  };
-  const showFrame = (h: NonNullable<ReturnType<typeof hostFor>>, k: number, resumeMs: number) => {
-    cancel(h.resume);
-    h.scene.stop(false);
-    h.scene.show(k);
-    h.resume = after(resumeMs, () => { if (h.scene.steps) h.scene.play(); });
-  };
-  rows.forEach((row) => {
-    const h = hostFor(row.dataset.previewTarget);
-    if (!h) return;
-    const k = Number(row.dataset.preview);
-    const enter = () => { cancel(h.resume); h.scene.stop(false); h.scene.show(k); };
-    const leave = () => { cancel(h.resume); h.resume = after(1500, () => { if (h.scene.steps) h.scene.play(); }); };
-    listen(row, "pointerenter", (e: PointerEvent) => { if (e.pointerType !== "touch") enter(); });
-    listen(row, "focusin", enter);
-    listen(row, "pointerleave", leave);
-    listen(row, "focusout", leave);
-  });
-  pagers.forEach((pager) => {
-    const h = hostFor(pager.dataset.previewTarget);
-    if (!h) return;
-    const buttons = qsa<HTMLButtonElement>("[data-go]", pager);
-    buttons.forEach((b, j) => {
-      listen(b, "click", () => showFrame(h, Number(b.dataset.go), 6000));
-      listen(b, "keydown", (e: KeyboardEvent) => {
-        const n = e.key === "ArrowRight" ? j + 1 : e.key === "ArrowLeft" ? j - 1 : -1;
-        if (n < 0 || n >= buttons.length) return;
-        e.preventDefault(); buttons[n].focus(); showFrame(h, Number(buttons[n].dataset.go), 6000);
-      });
-    });
-  });
 }
 
 /* ── 1.7.14 Drawn lines ─────────────────────────────────────────────────── */
@@ -1059,16 +680,29 @@ function draws() {
   });
 }
 
-/* ── 1.7.15 Run gates ───────────────────────────────────────────────────── */
-function runGates() {
-  const els = qsa("[data-run]");
+/* ── 1.7.15 The floor drifts with the scroll (SCROLL_SPEC S11) ───────────── */
+/* The Practice final's tile plane no longer loops on a timer: --fp on each .floor-strip goes from 0 when the
+ * floor's section top reaches the viewport's bottom to 1 at the end of the page, and the CSS moves the strip
+ * by --fp times its shift. With the scroll still, the floor is still. Reduced motion: --fp stays 0. */
+let floorN = 0;
+function floors() {
+  const els = qsa(".floor");
   if (!els.length || reduced()) return;
-  const seen = new Map<Element, boolean>();
-  const apply = () => els.forEach((el) => el.classList.toggle("run", !!seen.get(el) && !document.hidden));
-  const io = new IntersectionObserver((entries) => { entries.forEach((e) => seen.set(e.target, e.isIntersecting && e.intersectionRatio >= 0.35)); apply(); }, { threshold: [0, 0.35, 0.7] });
-  els.forEach((el) => io.observe(el));
-  observe(io);
-  listen(document, "visibilitychange", apply);
+  els.forEach((floor) => {
+    const host = floor.closest<HTMLElement>("section") || floor.parentElement || floor;
+    const strips = qsa(".floor-strip", floor);
+    const key = "floor:" + floorN++;
+    let last = "";
+    register({ frame() {
+      const r = host.getBoundingClientRect();
+      const y = window.scrollY, y0 = r.top + y - vh, y1 = Math.max(y0 + 1, html.scrollHeight - vh);
+      if (r.top > vh * 1.5 && last === "0.0000") return;
+      const v = smooth(key, clamp01((y - y0) / (y1 - y0)), 0.1).toFixed(4);
+      if (v === last) return;
+      last = v;
+      strips.forEach((s) => s.style.setProperty("--fp", v));
+    } });
+  });
 }
 
 /* ── 1.7.16 Image warming ───────────────────────────────────────────────── */
@@ -1078,7 +712,9 @@ function warming() {
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) {
       if (!e.isIntersecting) continue;
-      qsa<HTMLImageElement>("img[loading='lazy']", e.target).forEach((img) => (img.loading = "eager"));
+      /* Rendered images only: a story's static figures (display: none while pinned) and a device variant for the
+       * other layout are never fetched by warming. */
+      qsa<HTMLImageElement>("img[loading='lazy']", e.target).forEach((img) => { if (img.getClientRects().length) img.loading = "eager"; });
       io.unobserve(e.target);
     }
   }, { rootMargin: "200% 0px 200% 0px" });
@@ -1105,6 +741,550 @@ function tilt() {
       });
     });
     listen(el, "pointerleave", () => { el.style.setProperty("--rx", "0deg"); el.style.setProperty("--ry", "0deg"); });
+  });
+}
+
+/* ── 1.7.19 Scroll stories ─────────────────────────────────────────────── */
+/* A story is a tall track whose stage sticks under the header while the reader scrolls through its run. The
+ * scroll position alone decides the current step, the frame each device shows, where the ring presses, how far
+ * a draft has typed, where the camera leans, where the cursor is and what it clicks, and how far a long result
+ * has scrolled inside a phone. Scrolling back plays it backwards; nothing in a device moves on a timer. The
+ * markup contract, the act keys and the maths are SCROLL_SPEC section 1; the API is SYSTEM_API.md, Scroll
+ * stories. Static (no pin, every step stacked with its own figure) is the default CSS; the pinned layout is
+ * added by motion.css under STORY_MQ, and the engine adds `.static` (reason in data-static-reason: media, fit,
+ * floor, act) when a story cannot be pinned on this viewport. */
+const STORY_MQ =
+  "(prefers-reduced-motion: no-preference) and (min-width: 1069px) and (min-height: 600px), " +
+  "(prefers-reduced-motion: no-preference) and (max-width: 1068px) and (min-height: 560px)";
+const WIDE_MQ = "(min-width: 1069px)";
+type K3 = [number, number, number];
+type K4 = [number, number, number, number];
+type Act = {
+  f?: number; in?: [number, number]; tap?: K3; next?: [number, number]; cur?: K3[]; click?: number; cam?: K4[];
+  type?: [number, number]; scroll?: K4; halo?: number; haloEnd?: number; lift?: [number, number]; sub?: [number, number][];
+  static?: number | [number, number] | null;
+};
+type Change = { g: number; from: number; to: number; y: number };
+type Cache = Map<Element, Record<string, string>>;
+type Dev = {
+  name: string; el: HTMLElement; sc: Scene; win: boolean;
+  first: number; changes: Change[]; rings: K3[]; clicks: number[]; cur: K3[]; cams: (K4[] | null)[];
+  types: { lines: HTMLElement[]; starts: number[]; lens: number[] }[];
+  strips: { body: HTMLElement; ranges: K4[] }[];
+  halos: { el: HTMLElement; x: number; y: number; on: { k: number; end: number }[] }[];
+  lift: [number, number] | null; warm: Set<number>[];
+  shown: number; prevG: number;
+};
+/* The live stories, for the header: it stays shown while one is pinned, so a pinned stage never has a dead
+ * band of page above it (audit 2, finding 4). One rect per live story, read before any write of the frame. */
+let storyRuns: (StoryRun | null)[] = [];
+function storyPinnedNow() {
+  for (const r of storyRuns) {
+    if (!r || !r.ok || r.D < 1 || !r.root.classList.contains("is-live")) continue;
+    const p = (r.stick - r.track.getBoundingClientRect().top) / r.D;
+    if (p > 0 && p < 1) return true;
+  }
+  return false;
+}
+const storyApi: Record<string, unknown> = {};
+/* An act is JSON, except that numbers may start with a point (.42, -.5), as SCROLL_SPEC writes them. */
+const parseAct = (s: string) => JSON.parse(s.replace(/([[,:]\s*-?)\.(\d)/g, "$10.$2"));
+const rendered = (el: Element | null | undefined): el is HTMLElement => !!el && el.getClientRects().length > 0;
+const num = (v: string | null | undefined, d = 0) => { const n = parseFloat(v || ""); return Number.isFinite(n) ? n : d; };
+/* Write a style property only when its string changed since the last write. */
+function put(c: Cache, el: HTMLElement | SVGElement, prop: string, val: string) {
+  let m = c.get(el);
+  if (!m) { m = {}; c.set(el, m); }
+  if (m[prop] === val) return;
+  m[prop] = val;
+  if (prop.startsWith("--")) el.style.setProperty(prop, val); else (el.style as any)[prop] = val;
+}
+/* Piecewise sine between keyframes [g, ...values]; holds the ends. */
+function keyed(keys: number[][], g: number): number[] {
+  if (g <= keys[0][0]) return keys[0].slice(1);
+  for (let i = 1; i < keys.length; i++) {
+    if (g <= keys[i][0]) {
+      const a = keys[i - 1], b = keys[i];
+      const u = sine((g - a[0]) / Math.max(1e-6, b[0] - a[0]));
+      return a.slice(1).map((v, j) => v + (b[j + 1] - v) * u);
+    }
+  }
+  return keys[keys.length - 1].slice(1);
+}
+
+class StoryRun {
+  root: HTMLElement; id: string; key: string;
+  track: HTMLElement; stage: HTMLElement; run: HTMLElement;
+  layout: "wide" | "narrow"; steps: HTMLElement[] = []; w: number[] = []; cum: number[] = []; W = 1; n = 0;
+  acts: Record<string, Act>[] = []; devs: Dev[] = [];
+  marks: { b: HTMLButtonElement; k: number; i: HTMLElement | null }[] = []; bars: HTMLElement[] = []; rule: HTMLElement | null = null;
+  subs: HTMLElement[][] = []; subIdx: number[] = []; gEls: HTMLElement[] = [];
+  stick = 0; D = 0; navH = 72; svh = 0; k = -1; G = 0; p = 0; pinned = false; visible = false; ok = false; lastGs = "";
+  off: Array<() => void> = []; c: Cache = new Map();
+  day: { skies: (HTMLElement | null)[]; caps: HTMLElement[]; section: HTMLElement | null; base: string; mat: HTMLElement | null; phone: HTMLElement | null } | null = null;
+  constructor(root: HTMLElement, idx: number) {
+    this.root = root;
+    this.id = root.dataset.story || "story-" + idx;
+    this.key = "story:" + this.id + ":" + idx;
+    this.track = root.querySelector<HTMLElement>(".story-track")!;
+    this.stage = root.querySelector<HTMLElement>(".story-stage")!;
+    this.run = root.querySelector<HTMLElement>(".story-run")!;
+    this.layout = window.matchMedia(WIDE_MQ).matches ? "wide" : "narrow";
+    root.classList.remove("static");
+    delete root.dataset.staticReason;
+    root.dataset.layout = this.layout;
+    (storyApi as any)[this.id] = this.api();
+    if (!this.track || !this.stage || !this.run) { this.fail("act", "a story needs .story-track, .story-stage and .story-run"); return; }
+    /* Steps (text steps and empty beats) for this layout, in document order. */
+    this.steps = qsa(".story-step, .story-beat", root).filter((s) => !s.dataset.only || s.dataset.only === this.layout);
+    this.n = this.steps.length;
+    if (!this.n) { this.fail("act", "a story needs at least one .story-step or .story-beat"); return; }
+    try {
+      this.acts = this.steps.map((s) => (s.dataset.act ? parseAct(s.dataset.act) : {}) as Record<string, Act>);
+    } catch (e) {
+      this.fail("act", "a data-act is not valid JSON", e); return;
+    }
+    this.w = this.steps.map((s) => Math.max(0.05, num(s.dataset.w, 1)));
+    let acc = 0;
+    this.cum = this.w.map((x) => { const c = acc; acc += x; return c; });
+    this.W = acc;
+    this.subs = this.steps.map((s) => qsa(".story-sub", s));
+    this.subIdx = this.steps.map(() => -1);
+    this.marks = qsa<HTMLButtonElement>(".story-marks [data-go]", root).map((b) => ({ b, k: Number(b.dataset.go), i: b.querySelector<HTMLElement>(":scope > i") }));
+    this.bars = qsa(".story-bar > i", root);
+    this.rule = root.querySelector<HTMLElement>(".story-marks-rule > i");
+    this.gEls = qsa("[data-story-g]", root);
+    this.devs = qsa("[data-device]", this.stage).filter(rendered).map((el) => this.device(el));
+    if (this.id === "day") {
+      const section = root.closest<HTMLElement>("[data-tone]");
+      this.day = {
+        skies: ["morning", "midday", "afternoon", "evening"].map((k) => this.stage.querySelector<HTMLElement>(`[data-sky="${k}"]`)),
+        caps: qsa(".day-cap", this.stage), section, base: section?.dataset.tone || "cream",
+        mat: this.stage.querySelector<HTMLElement>(".day-stage"), phone: this.devs[0]?.el || null
+      };
+    }
+    this.bindKeys();
+    this.ok = true;
+    this.measure();
+  }
+  api() {
+    const self = this;
+    return {
+      get G() { return self.G; }, get k() { return self.k; }, get p() { return self.p; }, get pinned() { return self.pinned; },
+      get static() { return self.root.classList.contains("static") ? self.root.dataset.staticReason || "media" : ""; },
+      get stick() { return self.stick; }, get D() { return self.D; }, get n() { return self.n; },
+      layout: this.layout,
+      frames: () => Object.fromEntries(this.devs.map((d) => [d.name, d.sc.index()]))
+    };
+  }
+  /* Parse every act for one device into a change list, ring presses, clicks, cursor and camera keys, typing,
+   * strip and halo ranges, the lift, and the frames each step needs (for warming). */
+  device(el: HTMLElement): Dev {
+    const sc = sceneFor(el);
+    const name = el.dataset.device || "";
+    const win = el.classList.contains("win");
+    const d: Dev = { name, el, sc, win, first: sc.rest, changes: [], rings: [], clicks: [], cur: [], cams: [], types: [], strips: [], halos: [], lift: null, warm: [], shown: sc.index(), prevG: NaN };
+    const act = (k: number): Act => ({ ...(this.acts[k]["*"] || {}), ...(this.acts[k][name] || {}) });
+    /* Pass 1: cursor keys (a click's wipe starts at the cursor's y). */
+    for (let k = 0; k < this.n; k++) (act(k).cur || []).forEach(([t, x, y]) => d.cur.push([k + t, x, y]));
+    d.cur.sort((a, b) => a[0] - b[0]);
+    const curY = (g: number) => (d.cur.length ? keyed(d.cur, g)[1] : 0);
+    /* Pass 2: frames and presses. */
+    let f = act(0).f ?? sc.rest;
+    d.first = f;
+    const pending: { k: number; a: Act }[] = [];
+    for (let k = 0; k < this.n; k++) {
+      const a = act(k);
+      const need = new Set<number>([f]);
+      if (a.in) { if (win) d.clicks.push(k); else d.rings.push([k, a.in[0], a.in[1]]); }
+      if (a.f !== undefined && a.f !== f) { d.changes.push({ g: k, from: f, to: a.f, y: a.in ? a.in[1] : 0 }); f = a.f; }
+      need.add(f);
+      if (a.tap && !win) d.rings.push([k + a.tap[2], a.tap[0], a.tap[1]]);
+      if (a.click !== undefined && win) d.clicks.push(k + a.click);
+      if (a.next) {
+        const at = a.next[0];
+        let y = 0;
+        if (a.tap && !win && at - a.tap[2] >= -1e-6 && at - a.tap[2] <= 0.08 + 1e-6) y = a.tap[1];
+        else if (a.click !== undefined && win && at - a.click >= -1e-6 && at - a.click <= 0.08 + 1e-6) y = curY(k + a.click);
+        d.changes.push({ g: k + at, from: f, to: a.next[1], y });
+        f = a.next[1];
+        need.add(f);
+      }
+      d.cams[k] = a.cam && a.cam.length && !a.cur && a.halo === undefined ? [[0, 1, 50, 50], ...a.cam, [1, 1, 50, 50]] : null;
+      if (a.halo !== undefined) {
+        const h = el.querySelector<HTMLElement>(`.halo[data-halo="${a.halo}"]`);
+        if (h) {
+          let e = d.halos.find((x) => x.el === h);
+          if (!e) { e = { el: h, x: num(h.style.getPropertyValue("--x")), y: num(h.style.getPropertyValue("--y")), on: [] }; d.halos.push(e); }
+          e.on.push({ k, end: a.haloEnd ?? 1 });
+        }
+      }
+      if (a.lift && !d.lift) d.lift = [k + a.lift[0], k + a.lift[1]];
+      if (a.type || a.scroll) pending.push({ k, a });
+      d.warm.push(need);
+    }
+    /* Typing and strips belong to the frame on screen when they start. */
+    for (const { k, a } of pending) {
+      if (a.type) {
+        const [t0, t1] = a.type;
+        const fr = sc.frames[this.frameAt(d, k + t0)];
+        const lines = fr ? qsa(".type-line", fr) : [];
+        if (lines.length) {
+          const ws = lines.map((l) => Math.max(0.1, num(l.style.getPropertyValue("--w"), 1)));
+          const tot = ws.reduce((x, y) => x + y, 0), span = t1 - t0;
+          let at = k + t0;
+          const starts: number[] = [], lens: number[] = [];
+          ws.forEach((wv) => { const len = (span * wv) / tot; starts.push(at); lens.push(len); at += len; });
+          d.types.push({ lines, starts, lens });
+        }
+      }
+      if (a.scroll) {
+        const [t0, t1, from, to] = a.scroll;
+        const fr = sc.frames[this.frameAt(d, k + t0)];
+        const body = fr?.querySelector<HTMLElement>(".scroll-body");
+        if (body) {
+          let e = d.strips.find((x) => x.body === body);
+          if (!e) { e = { body, ranges: [] }; d.strips.push(e); }
+          e.ranges.push([k + t0, k + t1, from, to]);
+        }
+      }
+    }
+    d.strips.forEach((s) => s.ranges.sort((a, b) => a[0] - b[0]));
+    d.rings.sort((a, b) => a[0] - b[0]);
+    return d;
+  }
+  frameAt(d: Dev, g: number) { let f = d.first; for (const c of d.changes) { if (c.g <= g + 1e-9) f = c.to; else break; } return f; }
+  fail(reason: string, why?: string, err?: unknown) {
+    this.ok = false;
+    const r = this.root;
+    r.classList.add("static");
+    r.classList.remove("is-live", "is-pinned", "is-anchored");
+    r.dataset.staticReason = reason;
+    if (why && import.meta.env.DEV) console.warn(`story "${this.id}": ${why}`, err ?? "");
+    this.reset();
+  }
+  /* Everything this engine wrote, taken back: the static layout reads the server markup. */
+  reset() {
+    this.devs.forEach((d) => {
+      d.sc.reset();
+      d.types.forEach((t) => t.lines.forEach((l) => l.style.removeProperty("--m")));
+      d.strips.forEach((s) => s.body.style.removeProperty("--off"));
+      d.halos.forEach((h) => { h.el.style.removeProperty("transform"); h.el.style.removeProperty("opacity"); });
+      d.el.style.removeProperty("--lift");
+      d.shown = d.sc.index(); d.prevG = NaN;
+    });
+    this.c.clear();
+    this.steps.forEach((s) => s.classList.remove("is-current", "is-dim"));
+    this.subs.flat().forEach((s) => s.classList.remove("is-current"));
+    this.subIdx = this.steps.map(() => -1);
+    this.marks.forEach((m) => { m.b.removeAttribute("aria-current"); m.i?.style.removeProperty("transform"); });
+    this.bars.forEach((b) => b.style.removeProperty("transform"));
+    this.rule?.style.removeProperty("transform");
+    this.gEls.forEach((e) => e.style.removeProperty("--g"));
+    this.root.style.removeProperty("--story-stick");
+    this.root.style.removeProperty("--anchor-y");
+    delete this.root.dataset.k;
+    if (this.day) {
+      this.day.skies.forEach((s) => s?.style.removeProperty("opacity"));
+      this.day.caps.forEach((c, j) => c.classList.toggle("on", j === 0));
+      if (this.day.section) this.day.section.dataset.tone = this.day.base;
+      this.day.mat?.classList.remove("is-night");
+      this.day.phone?.style.removeProperty("--sx"); this.day.phone?.style.removeProperty("--floor-a");
+      this.day.mat?.style.removeProperty("--day-cap");
+    }
+    this.k = -1; this.lastGs = "";
+    if (this.pinned) { this.pinned = false; this.root.classList.remove("is-pinned"); }
+  }
+  destroy() { this.off.forEach((f) => f()); this.off = []; this.reset(); this.root.classList.remove("is-live", "is-pinned", "is-anchored"); }
+  /* 1.4.4: the stick position, the anchor mask, the bottom stick, the fit guard and the readability floors. */
+  measure() {
+    if (!this.ok && this.root.dataset.staticReason === "act") return;
+    const r = this.root;
+    const wasStatic = r.classList.contains("static");
+    r.classList.remove("static");
+    delete r.dataset.staticReason;
+    const pr = sysProbe();
+    this.svh = pr.offsetHeight;
+    const cs = getComputedStyle(r);
+    this.navH = num(getComputedStyle(html).getPropertyValue("--nav-h"), 72);
+    const top = num(cs.getPropertyValue("--story-top"), this.navH), gap = num(cs.getPropertyValue("--story-gap"), 16);
+    this.D = this.run.offsetHeight;
+    if (this.D < 1 || this.svh < 1) { this.fail("media"); return; }
+    const st = this.stage.getBoundingClientRect();
+    const H = this.stage.offsetHeight;
+    const svh = this.svh;
+    let stick: number | null = null, anchorY: number | null = null;
+    if (H <= svh - top - gap + 1) stick = top + gap;
+    else {
+      const anchor = qsa(`[data-story-anchor="${this.layout}"], [data-story-anchor="both"]`, this.stage).find(rendered);
+      if (anchor) {
+        const a = anchor.getBoundingClientRect().top - st.top;
+        if (H - a <= svh - this.navH - 12 + 1) { stick = this.navH + 12 - a; anchorY = a; }
+      }
+      if (stick === null) {
+        const first = this.firstText();
+        const s2 = svh - H;
+        if (first !== null && first - st.top + s2 >= this.navH + 8) stick = s2;
+      }
+    }
+    if (stick === null) { this.fail("fit", "the stage does not fit this viewport"); return; }
+    /* Nothing the reader needs may be clipped by a stage of fixed height. */
+    if (H <= svh + 1) {
+      const parts = [this.stage.querySelector(".story-steps"), this.stage.querySelector(".story-marks"), ...qsa(".story-device-box", this.stage)].filter(rendered);
+      const bad = parts.find((el) => { const b = el.getBoundingClientRect(); return b.bottom > st.bottom + 1 || b.top < st.top - 1; });
+      if (bad) { this.fail("fit", `.${bad.className.split(" ")[0]} overflows the stage`); return; }
+    }
+    /* No device may run below the viewport while the stage is stuck (a hero's phone, a hanging phone). */
+    const lowDev = this.devs.find((d) => d.el.getBoundingClientRect().bottom - st.top + stick! > svh + 1);
+    if (lowDev) { this.fail("fit", `device "${lowDev.name}" runs below the viewport when pinned`); return; }
+    for (const d of this.devs) {
+      d.sc.measure();
+      const wpx = d.win ? d.el.offsetWidth : d.sc.sw;
+      if (d.win ? wpx < 680 : wpx < 150) { this.fail("floor", `device "${d.name}" is ${wpx}px wide, under its readability floor`); return; }
+    }
+    this.ok = true;
+    this.stick = stick;
+    r.style.setProperty("--story-stick", stick.toFixed(1) + "px");
+    if (anchorY !== null) { r.style.setProperty("--anchor-y", anchorY.toFixed(1) + "px"); r.classList.add("is-anchored"); }
+    else { r.style.removeProperty("--anchor-y"); r.classList.remove("is-anchored"); }
+    r.classList.add("is-live");
+    if (wasStatic) { this.c.clear(); this.devs.forEach((d) => { d.prevG = NaN; d.shown = d.sc.index(); }); this.k = -1; }
+    this.lastGs = "";
+    this.warm(Math.max(0, this.k));
+  }
+  /* The top of the stage's first line of visible text (for the bottom stick). */
+  firstText(): number | null {
+    const tw = document.createTreeWalker(this.stage, NodeFilter.SHOW_TEXT, { acceptNode: (n) => ((n.textContent || "").trim() && !n.parentElement?.closest(".sr-only, [aria-hidden='true'], .story-static") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT) });
+    for (let n = tw.nextNode(); n; n = tw.nextNode()) {
+      const rg = document.createRange();
+      rg.selectNodeContents(n);
+      const rs = rg.getClientRects();
+      if (rs.length) return rs[0].top;
+    }
+    return null;
+  }
+  /* 1.9: marks are buttons; focus that lands inside a step makes that step current. */
+  bindKeys() {
+    const on = (t: EventTarget, type: string, fn: any) => { t.addEventListener(type, fn); this.off.push(() => t.removeEventListener(type, fn)); };
+    this.marks.forEach((m, j) => {
+      on(m.b, "click", () => this.go(m.k));
+      on(m.b, "keydown", (e: KeyboardEvent) => {
+        const nx = e.key === "ArrowRight" || e.key === "ArrowDown" ? j + 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? j - 1 : -1;
+        if (nx < 0 || nx >= this.marks.length) return;
+        e.preventDefault();
+        this.marks[nx].b.focus({ preventScroll: true });
+        this.go(this.marks[nx].k);
+      });
+    });
+    on(this.root, "focusin", (e: FocusEvent) => {
+      const s = (e.target as Element | null)?.closest?.(".story-step");
+      if (!s) return;
+      const k = this.steps.indexOf(s as HTMLElement);
+      if (k >= 0 && k !== this.k) this.go(k);
+    });
+  }
+  /* Scroll so that step k's t = .3 sits at the stick position. */
+  go(k: number) {
+    if (!this.ok || !this.root.classList.contains("is-live") || k < 0 || k >= this.n) return;
+    const r = this.track.getBoundingClientRect();
+    const top = window.scrollY + (r.top - this.stick) + (this.D * (this.cum[k] + 0.3 * this.w[k])) / this.W;
+    window.scrollTo({ top: Math.round(top), behavior: reduced() ? "auto" : "smooth" });
+  }
+  /* Warm the frames of steps k to k + 2 for every device: eager, and decoded before they are needed. */
+  warm(k: number) {
+    for (const d of this.devs) {
+      for (let j = Math.max(0, k); j <= Math.min(this.n - 1, k + 2); j++) {
+        d.warm[j]?.forEach((fi) => {
+          const fr = d.sc.frames[fi];
+          if (!fr) return;
+          const imgs = fr.tagName === "IMG" ? [fr as HTMLImageElement] : qsa<HTMLImageElement>("img", fr);
+          imgs.forEach((img) => {
+            if (img.loading === "lazy") img.loading = "eager";
+            if (typeof img.decode === "function") img.decode().catch(() => { /* not loaded yet; it will */ });
+          });
+        });
+      }
+    }
+  }
+  read() { return this.track.getBoundingClientRect(); }
+  /* One pass per animation frame (1.5): the track's rect was read before any story wrote. Returns pinned. */
+  write(r: DOMRect): boolean {
+    if (!this.ok || !this.root.classList.contains("is-live")) return false;
+    const D = this.D, n = this.n;
+    const p = D > 0 ? clamp01((this.stick - r.top) / D) : 0;
+    this.p = p;
+    const target = p * this.W;
+    let acc = 0, k = 0;
+    while (k < n - 1 && acc + this.w[k] <= target) { acc += this.w[k]; k++; }
+    const Graw = k + clamp01((target - acc) / this.w[k]);
+    const wasVisible = this.visible;
+    this.visible = r.bottom > 0 && r.top < this.svh * 1.2;
+    const near = r.bottom > -this.svh && r.top < 2 * this.svh;
+    const G = smooth(this.key, Graw, 0.07);
+    const Gs = G.toFixed(4);
+    const pinned = p > 0 && p < 1;
+    if (pinned !== this.pinned) { this.pinned = pinned; this.root.classList.toggle("is-pinned", pinned); }
+    if (Gs === this.lastGs && (!near || this.k >= 0)) return pinned;
+    this.lastGs = Gs;
+    this.G = G;
+    const kNow = Math.min(n - 1, Math.floor(G + 1e-9));
+    const t = G - kNow;
+    if (kNow !== this.k) this.setStep(kNow);
+    /* Sub blocks, marks, the progress bar, the words rule, [data-story-g]. */
+    const subs = this.subs[kNow];
+    if (subs.length) {
+      let si = 0;
+      for (const [st, i] of this.subKeys(kNow)) if (t >= st - 1e-9) si = i;
+      if (si !== this.subIdx[kNow]) { this.subIdx[kNow] = si; subs.forEach((s) => s.classList.toggle("is-current", Number(s.dataset.sub) === si)); }
+    }
+    for (const m of this.marks) if (m.i) put(this.c, m.i, "transform", `scaleX(${(m.k < kNow ? 1 : m.k > kNow ? 0 : t).toFixed(4)})`);
+    const prog = ((this.cum[kNow] + t * this.w[kNow]) / this.W).toFixed(4);
+    for (const b of this.bars) put(this.c, b, "transform", `scaleX(${prog})`);
+    if (this.rule) put(this.c, this.rule, "transform", `scaleX(${(G / n).toFixed(4)})`);
+    if (this.gEls.length) { const gs = G.toFixed(3); for (const e of this.gEls) put(this.c, e, "--g", gs); }
+    for (const d of this.devs) this.drawDevice(d, G, kNow, t, wasVisible);
+    if (this.day) this.drawDay(G);
+    return pinned;
+  }
+  subKeys(k: number): [number, number][] {
+    const all = this.acts[k]["*"]?.sub;
+    if (all) return all;
+    for (const d of this.devs) { const a = this.acts[k][d.name]; if (a?.sub) return a.sub; }
+    return [];
+  }
+  setStep(k: number) {
+    this.k = k;
+    this.root.dataset.k = String(k);
+    this.steps.forEach((s, j) => { s.classList.toggle("is-current", j === k); s.classList.toggle("is-dim", j !== k); });
+    this.marks.forEach((m) => { if (m.k === k) m.b.setAttribute("aria-current", "step"); else m.b.removeAttribute("aria-current"); });
+    if (this.subs[k].length && this.subIdx[k] < 0) { this.subIdx[k] = 0; this.subs[k].forEach((s) => s.classList.toggle("is-current", Number(s.dataset.sub) === 0)); }
+    if (this.day) {
+      const last = k === this.n - 1;
+      this.day.caps.forEach((c) => c.classList.toggle("on", Number(c.dataset.cap) === k));
+      if (this.day.section) this.day.section.dataset.tone = last ? "navy" : this.day.base;
+      this.day.mat?.classList.toggle("is-night", last);
+      /* The tone pass already ran this frame: one more frame, so the page tone re-reads the section. */
+      need = true;
+    }
+    this.warm(k);
+  }
+  drawDevice(d: Dev, G: number, k: number, t: number, wasVisible: boolean) {
+    const sc = d.sc, c = this.c;
+    /* Camera first: the ring, the cursor and the halos are mapped through it. */
+    const cam = d.cams[k];
+    if (cam) { const [s, ox, oy] = keyed(cam, t); sc.camTo(s, ox, oy); } else sc.camTo(1, 50, 50);
+    /* The frame for G: a wipe when exactly one change was crossed since the last frame, else a cut. */
+    const want = this.frameAt(d, G);
+    if (want !== d.shown) {
+      const lo = Math.min(d.prevG, G), hi = Math.max(d.prevG, G);
+      const crossed = Number.isFinite(d.prevG) ? d.changes.filter((ch) => ch.g > lo + 1e-9 && ch.g <= hi + 1e-9) : [];
+      if (wasVisible && crossed.length === 1) sc.show(want, false, crossed[0].y); else sc.show(want, true);
+      d.shown = want;
+    } else if (sc.index() !== want) sc.show(want, true);
+    d.prevG = G;
+    /* The ring: arrives over -.10 to -.03, presses -.03 to 0, releases 0 to .08 around each press point. */
+    if (sc.tap) {
+      let best: K3 | null = null, bu = 1;
+      for (const rg of d.rings) { const u = G - rg[0]; if (u >= -0.1 && u <= 0.08 && Math.abs(u) < Math.abs(bu)) { best = rg; bu = u; } }
+      if (best) {
+        const u = bu;
+        let op: number, s: number, fill: number;
+        if (u < -0.03) { const q = (u + 0.1) / 0.07; op = 0.9 * q; s = 0.6 + 0.18 * q; fill = 0.5; }
+        else if (u < 0) { const q = (u + 0.03) / 0.03; op = 0.9; s = 0.78 - 0.18 * q; fill = 0.5 + 0.4 * q; }
+        else { const q = u / 0.08; op = 0.9 * (1 - q); s = 0.6 + 0.6 * q; fill = 0.9; }
+        const [x, y] = sc.toScreen(best[1], best[2]);
+        put(c, sc.tap, "transform", `translate(${x.toFixed(2)}cqw, ${y.toFixed(2)}cqh) translate(-50%, -50%) scale(${s.toFixed(3)})`);
+        put(c, sc.tap, "opacity", op.toFixed(3));
+        put(c, sc.tap, "--fill", fill.toFixed(3));
+      } else put(c, sc.tap, "opacity", "0");
+    }
+    /* The cursor (windows): visible while live, pressed within -.012 to +.02 of a click. */
+    if (sc.cur && d.win) {
+      if (d.cur.length) {
+        const [cx, cy] = keyed(d.cur, G);
+        const [x, y] = sc.toScreen(cx, cy);
+        put(c, sc.cur, "transform", `translate(${x.toFixed(2)}cqw, ${y.toFixed(2)}cqh) translate(-23%, -12%)`);
+        put(c, sc.cur, "opacity", "1");
+        const pressed = d.clicks.some((ck) => G >= ck - 0.012 && G <= ck + 0.02);
+        if (sc.curSvg) put(c, sc.curSvg, "transform", pressed ? "scale(.8)" : "none");
+      } else put(c, sc.cur, "opacity", "0");
+    }
+    /* Type lines: --m 1 hides a line's text, 0 shows it; lines laid end to end over the range by width. */
+    for (const ty of d.types) ty.lines.forEach((l, i) => put(c, l, "--m", (1 - clamp01((G - ty.starts[i]) / ty.lens[i])).toFixed(3)));
+    /* Strips: the offset in em, sine eased inside each range, holding between them. */
+    for (const s of d.strips) {
+      let off = s.ranges[0][2];
+      for (const [g0, g1, from, to] of s.ranges) { if (G >= g1) off = to; else if (G > g0) { off = from + (to - from) * sine((G - g0) / (g1 - g0)); break; } else break; }
+      put(c, s.body, "--off", off.toFixed(3));
+    }
+    /* Halos: in over t 0 to .1, out over .9 to 1 (or to haloEnd), in capture coordinates through the camera. */
+    for (const h of d.halos) {
+      let o = 0, hs = 0.86;
+      for (const e of h.on) if (e.k === k && t <= e.end) { const a = clamp01(t / 0.1); o = a * (1 - clamp01((t - (e.end - 0.1)) / 0.1)); hs = 0.86 + 0.14 * a; }
+      const [x, y] = sc.toScreen(h.x, h.y);
+      put(c, h.el, "transform", `translate(${x.toFixed(2)}cqw, ${y.toFixed(2)}cqh) translate(-50%, -50%) scale(${hs.toFixed(3)})`);
+      put(c, h.el, "opacity", o.toFixed(3));
+    }
+    if (d.lift) { const [g0, g1] = d.lift; put(c, d.el, "--lift", (G <= g0 ? 0 : G >= g1 ? 1 : sine((G - g0) / (g1 - g0))).toFixed(3)); }
+  }
+  /* The day story (S5): four sky layers blend with G, the floor shadow swings, the caption reads the step. */
+  drawDay(G: number) {
+    const day = this.day!;
+    const s = clamp01((G - 0.5) / Math.max(1, this.n - 1));
+    let wM = 1 - clamp01((s - 0.25) / 0.25), wD = 1 - clamp01(Math.abs(s - 0.5) / 0.25), wA = 1 - clamp01(Math.abs(s - 0.75) / 0.25), wE = clamp01((s - 0.75) / 0.25);
+    const sum = wM + wD + wA + wE || 1;
+    wM /= sum; wD /= sum; wA /= sum; wE /= sum;
+    [wM, wD, wA, wE].forEach((v, i) => { const sk = day.skies[i]; if (sk) put(this.c, sk, "opacity", v.toFixed(3)); });
+    if (day.phone) {
+      put(this.c, day.phone, "--sx", (-26 * wM + 26 * wA).toFixed(1) + "px");
+      put(this.c, day.phone, "--floor-a", (0.3 + 0.25 * wE).toFixed(3));
+    }
+    if (day.mat) put(this.c, day.mat, "--day-cap", `color-mix(in srgb, #5c574f, #cdc6b8 ${(wE * 100).toFixed(1)}%)`);
+  }
+}
+/* One controller per story: bound while STORY_MQ matches, rebound when it or the wide line changes. */
+function stories() {
+  const els = qsa("[data-story]");
+  for (const k of Object.keys(storyApi)) delete storyApi[k];
+  storyRuns = [];
+  if (!els.length) return;
+  const mq = window.matchMedia(STORY_MQ), wq = window.matchMedia(WIDE_MQ);
+  const runs: (StoryRun | null)[] = els.map(() => null);
+  storyRuns = runs;
+  const bind = () => {
+    runs.forEach((r, i) => {
+      r?.destroy();
+      const el = els[i];
+      if (mq.matches) { runs[i] = new StoryRun(el, i); return; }
+      runs[i] = null;
+      el.classList.add("static");
+      el.classList.remove("is-live", "is-pinned", "is-anchored");
+      el.dataset.staticReason = "media";
+      delete el.dataset.layout;
+      (storyApi as any)[el.dataset.story || "story-" + i] = { static: "media", G: 0, k: -1, p: 0, pinned: false, layout: "static", frames: () => ({}) };
+    });
+    kick();
+  };
+  const onChange = () => bind();
+  mq.addEventListener("change", onChange);
+  wq.addEventListener("change", onChange);
+  cleanups.push(() => { mq.removeEventListener("change", onChange); wq.removeEventListener("change", onChange); runs.forEach((r) => r?.destroy()); storyRuns = []; });
+  bind();
+  /* An image that loads inside a stage may change what fits: measure again, once per burst. */
+  let mt = 0;
+  listen(document, "load", (e: Event) => {
+    const t = e.target as HTMLElement;
+    if (t && t.tagName === "IMG" && t.closest(".story-stage")) { clearTimeout(mt); mt = window.setTimeout(() => { runs.forEach((r) => r?.measure()); kick(); }, 120); }
+  }, true);
+  cleanups.push(() => clearTimeout(mt));
+  document.fonts?.ready.then(() => { runs.forEach((r) => r?.measure()); kick(); });
+  register({
+    measure() { runs.forEach((r) => r?.measure()); },
+    frame() {
+      /* Every rect first, then every write. */
+      const rects = runs.map((r) => (r && r.ok ? r.read() : null));
+      runs.forEach((r, i) => { const rc = rects[i]; if (r && rc) r.write(rc); });
+    }
   });
 }
 
@@ -1222,14 +1402,11 @@ function page() {
   lineRise(generation);
   lit();
   scenesBind();
-  loops();
-  stories();
-  rails();
-  scrollScreens();
-  parallax();
-  previews();
   draws();
-  runGates();
+  floors();
+  /* Stories after every other reader of layout, so their writes never force a layout inside the frame. */
+  stories();
+  parallax();
   warming();
   tilt();
   flips();
@@ -1248,7 +1425,7 @@ document.addEventListener("astro:page-load", () => {
   page();
 });
 document.addEventListener("astro:before-swap", () => {
-  scenes.forEach((s) => s.halt());
+  scenes.forEach((s) => s.settle());
   if (queued) { cancelAnimationFrame(raf); queued = false; }
 });
 // Before a swapped page paints, mark it so nothing flashes visible then hides.

@@ -1,27 +1,43 @@
 ---
 /**
- * The drifting floor of the Practice final (BUILD_SPEC 2.2.9): 18 derived
- * tiles under /app/tiles/ (scripts/tiles.mjs) as a perspective plane that
- * drifts by its own height for a seamless loop. The strip is duplicated
- * once; `.run` on the section (1.7.15) plays it. On phones the plane shows
- * the first twelve tiles in four columns (global.css). No tile shows a
- * score: the spec's score-m1, score-upstream-scored and score-m1-result
- * places hold stear2, rap1 and dare.
+ * The floor of the Practice final (BUILD_SPEC 2.2.9, SCROLL_SPEC S11): 18
+ * derived tiles under /app/tiles/ (scripts/tiles.mjs) as a perspective plane.
+ * It moves with the scroll only: site.ts writes --fp on each strip (0 when
+ * the section's top reaches the viewport's bottom, 1 at the end of the page)
+ * and the CSS moves the strip by --fp times its height; the strip is
+ * duplicated once so the plane stays seamless. With the scroll still, the
+ * floor is still. No tile shows a score: the spec's score-m1,
+ * score-upstream-scored and score-m1-result places hold stear2, rap1 and dare.
+ *
+ * Phones show the first twelve tiles in four columns (global.css hides the
+ * rest), so tiles 13 to 18 are only fetched from 735 px up (audit 2): each is
+ * a <picture> whose source matches only there, over an inline placeholder.
+ * Without the script the same rule holds, so nothing depends on site.ts.
  */
 const stems = [
   "coach-draft", "today", "tools-home", "energy", "sunday-quick-plan", "stear2",
   "close-day", "wins-saved", "rap1", "spark", "hear", "facts-vs-story",
   "quiz-results", "leader-blueprint", "friday-energy", "arriving-word", "discomfort-name", "dare"
 ];
+const PHONE_COLS = 12;
+/* A 1 x 1 transparent GIF: the src of a wide-only tile where its source does not match (never fetched). */
+const BLANK = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 ---
 <div class="floor" aria-hidden="true">
   <div class="floor-plane">
-    <ul class="floor-strip">
-      {stems.map((s) => <li><img src={`/app/tiles/${s}.webp`} alt="" width="390" height="844" loading="lazy" decoding="async" fetchpriority="low" /></li>)}
-    </ul>
-    <ul class="floor-strip" aria-hidden="true">
-      {stems.map((s) => <li><img src={`/app/tiles/${s}.webp`} alt="" width="390" height="844" loading="lazy" decoding="async" fetchpriority="low" /></li>)}
-    </ul>
+    {[0, 1].map(() => (
+      <ul class="floor-strip">
+        {stems.map((s, i) => i < PHONE_COLS ? (
+          <li><img src={`/app/tiles/${s}.webp`} alt="" width="390" height="844" loading="lazy" decoding="async" fetchpriority="low" /></li>
+        ) : (
+          <li><picture class="pr-tile-wide"><source media="(min-width: 735px)" srcset={`/app/tiles/${s}.webp`} width="390" height="844" /><img src={BLANK} alt="" width="390" height="844" loading="lazy" decoding="async" fetchpriority="low" /></picture></li>
+        ))}
+      </ul>
+    ))}
   </div>
   <div class="floor-fade grain"></div>
 </div>
+
+<style>
+  .pr-tile-wide { display: contents; }
+</style>

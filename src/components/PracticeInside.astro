@@ -1,14 +1,23 @@
 ---
 /**
- * Everything inside (BUILD_SPEC 2.2.7): the 792 desk window with three
- * stacked screens and an idle cursor scene that only clicks items whose
- * next frame shows them highlighted in the app's own rail. The scene holds
- * the Company OS Score frame without a camera lean: a lean would make the
- * capture's sample score the focus of the frame, so it never zooms; the caption and
- * the Folio dot pager that follow the frame; and the page's one ladder,
- * whose rows preview the frames on hover or focus (1.7.13).
+ * Everything inside (SCROLL_SPEC S8) as a scroll story. Four steps, one per
+ * ladder row. On laptops the 792 desk window pins beside the ladder: the
+ * cursor goes to that row's item in the app's own rail, and it clicks only
+ * where the next capture shows that item open (The Book, InnerBoard OS). The
+ * window never leans in: the Company OS Score frame carries a sample score,
+ * so no camera ever makes it the focus. On tablets and phones a phone takes
+ * the window's place, with the app's own bottom bar: each step rings that
+ * row's tab (the Academy, Inner Lab, the header's book icon, InnerBoard OS),
+ * then the Track wipes in. The caption follows the window's frame; the marks
+ * replace the old dot pager. Nothing moves until the reader scrolls.
+ *
+ * Static (no script, reduced motion, short screens): the four rows in order,
+ * each followed by its own figure where it has one (a 640 window above 734,
+ * the phone at 734 and below).
  */
 import WindowFrame from "./WindowFrame.astro";
+import PhoneFrame from "./PhoneFrame.astro";
+import StoryMarks from "./StoryMarks.astro";
 import Arrow from "./Arrow.astro";
 import { LINKS } from "../config/links";
 
@@ -17,40 +26,79 @@ const caps = [
   "A Company OS Score result, with The Book open in the rail.",
   "The Track page, on a desk."
 ];
-const items = [
-  { name: "The Academy", body: "Every collection, read and practiced in the same place.", href: LINKS.academy, pass: false, external: false, preview: undefined },
-  { name: "Inner Lab", body: "Live sessions each month, the masterclass open to anybody, and a community.", href: LINKS.innerlab, pass: true, external: false, preview: undefined },
-  { name: "The Book", body: "Replaceable: the book, the audiobook, its assessments and worksheets, with each chapter's door into the practice.", href: LINKS.book, pass: true, external: false, preview: 1 },
-  { name: "InnerBoard OS", body: "The Company OS Score, the Team OS Score and the Gap Audit, and the curriculum a team works through.", href: LINKS.ios, pass: false, external: true, preview: 2 }
+const win = [
+  { name: "desk-coach-draft", alt: "Practice on a desk: the Daily Practice Coach with a sentence typed, the Dare of the Day, Set Up Your Day and the October calendar." },
+  { name: "desk-score-upstream-result", alt: "A Company OS Score result on a desk, with The Book open in the rail." },
+  { name: "desk-track-home", alt: "The Track page on a desk, with InnerBoard OS open in the rail." }
 ];
+const phone = [
+  { name: "coach-draft", alt: "The Daily Practice Coach on a phone, with the app's bottom bar.", w: 780 as const, h: 1688 as const },
+  { name: "track-home", alt: "The Track on a phone: the module assessments under Personal leadership and Social leadership.", w: 780 as const, h: 1688 as const }
+];
+/* Acts are SCROLL_SPEC S8 as written. Rail items of the desk captures (% of the capture): Academy 5, 13.8;
+ * Inner Lab 5, 18.7; InnerBoard OS 5, 23.6; The Book 5, 38.2. Halos on the phone: the Academy tab, the Inner Lab
+ * tab, the header's book icon, the InnerBoard OS tab. */
+const rows = [
+  { name: "The Academy", body: "Every collection, read and practiced in the same place.", href: LINKS.academy, pass: false, external: false, w: undefined, win: 0, phone: 0,
+    alt: win[0].alt, altN: phone[0].alt,
+    act: '{"win":{"f":0,"cur":[[.1,40,60],[.4,5,13.8]]},"phone":{"f":0,"halo":0}}' },
+  { name: "Inner Lab", body: "Live sessions each month, the masterclass open to anybody, and a community.", href: LINKS.innerlab, pass: true, external: false, w: undefined, win: null, phone: null,
+    alt: win[0].alt, altN: phone[0].alt,
+    act: '{"win":{"cur":[[.12,5,13.8],[.38,5,18.7]]},"phone":{"halo":1}}' },
+  { name: "The Book", body: "Replaceable: the book, the audiobook, its assessments and worksheets, with each chapter's door into the practice.", href: LINKS.book, pass: true, external: false, w: 1.2, win: 1, phone: null,
+    alt: win[1].alt, altN: phone[0].alt,
+    act: '{"win":{"cur":[[.1,5,18.7],[.36,5,38.2]],"click":.44,"next":[.48,1]},"phone":{"halo":2}}' },
+  { name: "InnerBoard OS", body: "The Company OS Score, the Team OS Score and the Gap Audit, and the curriculum a team works through.", href: LINKS.ios, pass: false, external: true, w: 1.2, win: 2, phone: 1,
+    alt: win[2].alt, altN: phone[1].alt,
+    act: '{"win":{"cur":[[.1,5,38.2],[.36,5,23.6]],"click":.44,"next":[.48,2]},"phone":{"halo":3,"haloEnd":.42,"next":[.5,1]}}' }
+];
+const W = rows.reduce((t, r) => t + (r.w ?? 1), 0);
 ---
-<div class="grid pr-inside">
-  <div class="pr-inside-win rise-obj" data-warm>
-    <WindowFrame id="inside-win" ww={792} loop={5000}
-      flow='[["start",40,60],["hold",1200],["move",5,38.3,1300],["click"],["state",1,320],["hold",3400],["move",5,23.6,1300],["click"],["state",2,320],["hold",2400],["move",5,9,1200],["click"],["state",0,320],["move",40,60,1100],["end"]]'
-      screens={[
-        { name: "desk-coach-draft", alt: "Practice on a desk: the Daily Practice Coach with a sentence typed, the Dare of the Day, Set Up Your Day and the October calendar." },
-        { name: "desk-score-upstream-result", alt: "A Company OS Score result on a desk, with The Book open in the rail." },
-        { name: "desk-track-home", alt: "The Track page on a desk, with InnerBoard OS open in the rail." }
-      ]} />
-    <div class="win-caps">
-      {caps.map((c, i) => <p class={`win-cap t-cap-i${i === 0 ? " on" : ""}`} data-cap={i}>{c}</p>)}
+<div class="story pr-inside" data-story="inside" data-warm style={`--story-w:${W};--step-l:72svh;--step-l-n:64svh`}>
+  <div class="story-track">
+    <div class="story-stage">
+      <div class="story-device-box pr-inside-box">
+        <!-- Laptops: the desk window and its caption. -->
+        <div class="story-win pr-inside-win rise-obj">
+          <WindowFrame id="inside-win" device="win" ww={792} label="Practice on a desk, one rail item at a time." screens={win} />
+          <div class="win-caps">
+            {caps.map((c, i) => <p class={`win-cap t-cap-i${i === 0 ? " on" : ""}`} data-cap={i}>{c}</p>)}
+          </div>
+        </div>
+        <!-- Tablets and phones: the phone with the app's own bottom bar. -->
+        <div class="story-phone pr-inside-phone">
+          <PhoneFrame device="phone" width={240} style="--pw:inherit" label="Practice on a phone, one tab at a time."
+            halos={[{ x: 26.7, y: 95 }, { x: 42, y: 95 }, { x: 77, y: 3.4 }, { x: 57.7, y: 95 }]} screens={phone} />
+        </div>
+      </div>
+      <StoryMarks class="pr-inside-marks" labels={rows.map((r) => r.name)} label="Everything inside, row by row" />
+      <ul class="story-steps ladder pr-inside-ladder" data-story-text="list" role="list">
+        {rows.map((r, i) => (
+          <li class="story-step" data-step={i} data-w={r.w} data-act={r.act}>
+            <a href={r.href} data-passthrough={r.pass ? true : undefined} rel={r.external ? "noopener" : undefined}>
+              <span class="pr-row">
+                <span class="ladder-name">{r.name}</span>
+                <span class="ladder-body">{r.body}</span>
+              </span>
+              <span class="pr-arrow" aria-hidden="true"><Arrow /></span>
+            </a>
+            <span class="sr-only story-alt pr-alt-w">{r.alt}</span>
+            <span class="sr-only story-alt pr-alt-n">{r.altN}</span>
+            {(r.win !== null || r.phone !== null) && (
+              <div class="story-static">
+                {r.win !== null && (
+                  <div class="static-desk">
+                    <WindowFrame ww={640} screens={[win[r.win]]} />
+                    <p class="t-cap-i pr-static-cap">{caps[r.win]}</p>
+                  </div>
+                )}
+                {r.phone !== null && <div class="static-phone"><PhoneFrame width={180} screens={[phone[r.phone]]} /></div>}
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
     </div>
-    <div class="win-pager" role="tablist" data-preview-target="#inside-win" aria-label="The screens on the desk">
-      {caps.map((c, i) => <button type="button" role="tab" data-go={i} aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1} aria-label={c}><i></i></button>)}
-    </div>
+    <div class="story-run" aria-hidden="true"></div>
   </div>
-  <ul class="ladder pr-inside-ladder" role="list">
-    {items.map((it, i) => (
-      <li class="rise" style={`--d:${i * 70}ms`} data-preview={it.preview} data-preview-target={it.preview !== undefined ? "#inside-win" : undefined}>
-        <a href={it.href} data-passthrough={it.pass ? true : undefined} rel={it.external ? "noopener" : undefined}>
-          <span class="pr-row">
-            <span class="ladder-name">{it.name}</span>
-            <span class="ladder-body">{it.body}</span>
-          </span>
-          <span class="pr-arrow" aria-hidden="true"><Arrow /></span>
-        </a>
-      </li>
-    ))}
-  </ul>
 </div>

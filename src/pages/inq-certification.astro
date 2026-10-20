@@ -580,6 +580,8 @@ const faq = [
   .inq-steps-close { margin-top: 48px; }
   .inq-steps-line { grid-column: 1 / span 8; margin: 0; color: var(--fg-2); }
   .inq-link { display: inline; font-size: inherit; font-weight: 500; line-height: inherit; letter-spacing: 0; color: var(--accent); }
+  /* The link sits in a sentence, so its tap target grows by padding alone (an inline box: the lines do not move). */
+  .inq-link { padding-block: 12px; }
 
   /* 2.4.12 Questions people ask */
   /* The page turns ink when the close's top passes 75% of the viewport (the
@@ -680,4 +682,6 @@ const faq = [
     .inq-faq-list { margin-top: 32px; padding-bottom: 96px; }
     .inq-close-btns { align-items: stretch; }
   }
+  /* A phone in landscape: the buttons in the first screen (audit 2, finding 2). */
+  @media (orientation: landscape) and (max-height: 500px) { .inq-hero { padding-top: calc(var(--nav-h) + 16px); } }
 </style>

@@ -32,8 +32,9 @@ const { class: className = "", style = "" } = Astro.props;
 
 <style is:global>
   .ac-door-1 { position: relative; --lab-w: clamp(220px, 20.84vw, 300px); }
-  /* The text column clears the screen: less the card's 36 px padding, the screen plus its 6 px inset, then 24 px of air. */
-  .ac-door-1 .ac-lab-text { position: relative; z-index: 1; width: calc(100% - var(--lab-w) + 6px); display: flex; flex-direction: column; flex: 1; }
+  /* The text column clears the screen: less the card's 36 px padding, the screen plus its 6 px inset, then 24 px of air.
+   * It is not positioned, so the link's stretched box (academy.astro) covers the whole card; the screen never overlaps it. */
+  .ac-door-1 .ac-lab-text { width: calc(100% - var(--lab-w) + 6px); display: flex; flex-direction: column; flex: 1; }
   .ac-lab-media { position: absolute; top: 6px; right: 6px; width: calc(var(--lab-w) + 48px); height: calc(var(--lab-w) * 11 / 15); overflow: hidden; contain: paint; pointer-events: none; z-index: 0; border-radius: 0 14px 0 0;
     -webkit-mask-image: linear-gradient(to bottom, #000 calc(var(--lab-w) * 8 / 15), transparent calc(var(--lab-w) * 11 / 15)); mask-image: linear-gradient(to bottom, #000 calc(var(--lab-w) * 8 / 15), transparent calc(var(--lab-w) * 11 / 15)); }
   .ac-lab-screen { position: absolute; top: 0; right: 0; width: var(--lab-w); height: auto; max-width: none; display: block; border-radius: 0 14px 0 0; background: #f2ece0;

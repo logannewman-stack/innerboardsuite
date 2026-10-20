@@ -10,17 +10,28 @@
  * Company OS Score. The copy on the screens is the app's own. The page
  * walks a visitor through one day, then through one tool, then the quiz.
  *
- * Built to BUILD_SPEC 2.2 on the system of part 1: the hero window with two
- * phones and a cursor, the loop drawn at the reader's pace, the day stage
- * with its sky and tap scenes, the STEAR rail with the reading camera, the
- * quiz still life, the lit statement, the desk with a cursor and the ladder
- * that answers it, the levels and questions, and the drifting floor.
+ * Every app demonstration is a scroll story (SCROLL_SPEC section 2, S4 to S8;
+ * SYSTEM_API section 10): as the reader scrolls, the stage stays under the
+ * header and the scroll position alone steps through the features, then the
+ * page continues. Scrolling back plays it backwards; nothing moves on a timer.
+ * - The hero scene (S4): on laptops the window and its two phones pin for
+ *   three beats (the Coach leaned in, the cursor opens Tools, Close the day
+ *   scrolls); on tablets and phones the phone pair pins for one beat.
+ * - A day in Practice (S5): DayStage, five steps from morning to evening.
+ * - STEAR (S6): one phone pinned beside the seven rows, question by question.
+ * - The quiz pair (S7): the question is answered, then the result is read.
+ * - Everything inside (S8): PracticeInside, the desk window (a phone on
+ *   tablets and phones) one rail item at a time.
+ * - The final's floor (S11) drifts with the scroll only.
+ * Without the script, under reduced motion and on short or landscape screens
+ * every story is static: every step stacked with its own figure (the hero and
+ * the quiz keep their devices on the rest frame).
  */
 import Base from "../layouts/Base.astro";
 import Arrow from "../components/Arrow.astro";
 import PhoneFrame from "../components/PhoneFrame.astro";
 import WindowFrame from "../components/WindowFrame.astro";
-import Rail from "../components/Rail.astro";
+import StoryMarks from "../components/StoryMarks.astro";
 import DayStage from "../components/DayStage.astro";
 import Geo from "../components/Geo.astro";
 import Accordion from "../components/Accordion.astro";
@@ -42,38 +53,76 @@ const loopRows: [string, string][] = [
   ["Result", "Which proves the thought right."]
 ];
 
-/* One day, in the order it goes. The phone holds the frames stacked once:
- * 0 home, 1 today, 2 stear1, 3 stear2, 4 dare, 5 journal; each flow's
- * state indices refer to that order. */
-const home = { name: "home", alt: "The Coach home as a visitor: the Daily Practice Coach, the Dare of the Day and Set Up Your Day.", w: 600 as const, h: 1298 as const };
+/* S4: the hero scene. The window's two frames, and its three beats on laptops (one beat on tablets and phones,
+ * where only the phone pair pins). Acts are SCROLL_SPEC S4 as written. */
+const heroWin = [
+  { name: "desk-coach-draft", alt: "Practice on a desk: the Daily Practice Coach with a sentence typed, the Dare of the Day, Set Up Your Day and the October calendar.", x2: true },
+  { name: "desk-tools-home", alt: "The Tools hub on a desk: start with the moment you're in, Set Up Your Day and the Right now prompts.", x2: true }
+];
+const heroBeats = [
+  { only: "wide", act: '{"win":{"f":0,"cam":[[.14,1,50,50],[.4,1.1,58,22],[.7,1.1,58,22],[.88,1,50,50]]}}' },
+  { only: "wide", act: '{"win":{"cur":[[.06,40,60],[.34,5,33.3]],"click":.42,"next":[.46,1]},"tools":{"lift":[.5,.62]}}' },
+  { only: "wide", act: '{"win":{"cur":[[.1,5,33.3],[.36,78,23.1]]},"close":{"lift":[.06,.16],"scroll":[.24,.84,0,132.56]}}' },
+  { only: "narrow", act: '{"close":{"lift":[.1,.2],"scroll":[.24,.84,0,132.56]}}' }
+];
+
+/* S5: one day, in the order it goes. The phone's frames (the acts' indices refer to them): `today` is a group
+ * (type: []) so the page's crop transform sits inside it and the wipe starts at the ring's y. */
+const dayFrames = [
+  { name: "home", alt: "The Coach home as a visitor: the Daily Practice Coach, the Dare of the Day and Set Up Your Day.", w: 600 as const, h: 1298 as const },
+  { name: "today", alt: "Set Up Your Day, with the ten-second read and two fields filled.", w: 600 as const, h: 1298 as const, type: [] },
+  { name: "stear1", alt: "STEAR, question one, with the fact written.", w: 600 as const, h: 1298 as const },
+  { name: "stear2", alt: "STEAR, question two, with the thought written.", w: 600 as const, h: 1298 as const },
+  { name: "dare", alt: "The home after the Dare is checked, with the star line.", w: 600 as const, h: 1298 as const },
+  { name: "journal", alt: "The Journal, with one entry on this device.", w: 600 as const, h: 1298 as const }
+];
 const daySteps = [
-  { label: "Morning", name: "Open the app. The Coach is first.", body: "Home shows four things: the Coach's prompt, Set Up Your Day, the Dare of the Day, and your calendar. Nothing to configure. The Coach is trained on the InnerBoard method and says, on screen, that it is not a person.", caption: "The Coach home.", frames: [home], flow: '[["hold",500],["cam",1.04,50,14,1400],["hold",1800],["cam",1,50,50,1200],["end"]]' },
-  { label: "Morning", name: "Set up your day in a minute.", body: "How are you arriving? One thing you are grateful for. How you want to approach today. What would make today a win. Four fields, one line each, and the day has a shape.", caption: "Set Up Your Day.", frames: [{ name: "today", alt: "Set Up Your Day, with the ten-second read and two fields filled.", w: 600 as const, h: 1298 as const }], flow: '[["hold",3200],["end"]]' },
-  { label: "Midday", name: "Something lands. You run STEAR.", body: "A business partner goes quiet after you send the numbers. Instead of rereading your message for an hour, you open STEAR: what happened, what you made it mean, what that thought created. Two minutes, and the story is separated from the fact.", caption: "STEAR, question one, then question two.", frames: [{ name: "stear1", alt: "STEAR, question one, with the fact written.", w: 600 as const, h: 1298 as const }, { name: "stear2", alt: "STEAR, question two, with the thought written.", w: 600 as const, h: 1298 as const }], flow: '[["hold",1200],["tap",50,95],["state",3,320],["hold",3000],["end"]]' },
-  { label: "Afternoon", name: "Do the Dare. Check it off.", body: "One small thing before the day ends, new every day. When you tap I did it, the app marks it with a star, asks how it went in one line, and never asks twice.", caption: "The Dare, done.", frames: [home, { name: "dare", alt: "The home after the Dare is checked, with the star line.", w: 600 as const, h: 1298 as const }], flow: '[["cam",1.04,50,30,1200],["hold",600],["tap",18,71],["state",4,320],["hold",2400],["cam",1,50,50,1200],["end"]]' },
-  { label: "Evening", name: "Everything you did is in the Journal.", body: "Every tool you ran, every check-in, every quiz result, dated and yours. Saved on the device as a visitor. Kept in your account the moment you make one.", caption: "The Journal.", frames: [{ name: "journal", alt: "The Journal, with one entry on this device.", w: 600 as const, h: 1298 as const }], flow: '[["hold",3200],["end"]]' }
+  { label: "Morning", name: "Open the app. The Coach is first.", body: "Home shows four things: the Coach's prompt, Set Up Your Day, the Dare of the Day, and your calendar. Nothing to configure. The Coach is trained on the InnerBoard method and says, on screen, that it is not a person.", caption: "The Coach home.",
+    act: '{"day":{"f":0,"cam":[[.14,1,50,50],[.4,1.04,50,14],[.7,1.04,50,14],[.88,1,50,50]]}}' },
+  { label: "Morning", name: "Set up your day in a minute.", body: "How are you arriving? One thing you are grateful for. How you want to approach today. What would make today a win. Four fields, one line each, and the day has a shape.", caption: "Set Up Your Day.",
+    act: '{"day":{"f":1,"in":[80,78.3]}}' },
+  { label: "Midday", name: "Something lands. You run STEAR.", body: "A business partner goes quiet after you send the numbers. Instead of rereading your message for an hour, you open STEAR: what happened, what you made it mean, what that thought created. Two minutes, and the story is separated from the fact.", caption: "STEAR, question one, then question two.",
+    act: '{"day":{"f":2,"tap":[50,95.1,.55],"next":[.59,3]}}' },
+  { label: "Afternoon", name: "Do the Dare. Check it off.", body: "One small thing before the day ends, new every day. When you tap I did it, the app marks it with a star, asks how it went in one line, and never asks twice.", caption: "The Dare, done.",
+    act: '{"day":{"f":0,"cam":[[.12,1,50,50],[.32,1.04,50,64],[.74,1.04,50,64],[.88,1,50,50]],"tap":[19,69.2,.5],"next":[.54,4]}}' },
+  { label: "Evening", name: "Everything you did is in the Journal.", body: "Every tool you ran, every check-in, every quiz result, dated and yours. Saved on the device as a visitor. Kept in your account the moment you make one.", caption: "The Journal.",
+    act: '{"day":{"f":5}}' }
 ];
 
-/* The STEAR run, as the app asks it. Frames are real captures of each step. */
+/* S6: the STEAR run, as the app asks it. Frames are real captures of each step. Continue is pressed into
+ * questions two and three; questions four to six arrive from the top (their Continue is disabled in the
+ * captures, so no ring presses it). The Then row holds question six: no capture shows seven, eight or the run in
+ * the Journal. The lean is 1.04 about the centre (SCROLL_SPEC writes 1.06, which crops the app's Back chevron and
+ * its header icon on these captures; 1.04 keeps both whole, as the day's leans do). */
 const stear = [
-  { screen: "stear1", step: "1 / 8", q: "What happened?", note: "Facts only. What a camera would record." },
-  { screen: "stear2", step: "2 / 8", q: "What did you make it mean?", note: "One sentence. Where did you inherit this one?" },
-  { screen: "stear3", step: "3 / 8", q: "What did that thought create?", note: "One word. The thought created it, not the situation." },
-  { screen: "stear4", step: "4 / 8", q: "What did you do, or avoid?", note: "Defend? Stall? Retaliate? Ruminate?" },
-  { screen: "stear5", step: "5 / 8", q: "What did that create?", note: "Notice how the result proves the original thought right." },
-  { screen: "stear6", step: "6 / 8", q: "What else might be true?", note: "How could you be wrong about this? What would your highest self see?" }
+  { screen: "stear1", step: "1 / 8", q: "What happened?", note: "Facts only. What a camera would record.",
+    act: '{"stear":{"f":0,"cam":[[.14,1,50,50],[.38,1.04,50,24],[.66,1.04,50,24],[.86,1,50,50]]}}' },
+  { screen: "stear2", step: "2 / 8", q: "What did you make it mean?", note: "One sentence. Where did you inherit this one?",
+    act: '{"stear":{"f":1,"in":[50,95.1],"cam":[[.14,1,50,50],[.38,1.04,50,24],[.66,1.04,50,24],[.86,1,50,50]]}}' },
+  { screen: "stear3", step: "3 / 8", q: "What did that thought create?", note: "One word. The thought created it, not the situation.",
+    act: '{"stear":{"f":2,"in":[50,95.1]}}' },
+  { screen: "stear4", step: "4 / 8", q: "What did you do, or avoid?", note: "Defend? Stall? Retaliate? Ruminate?",
+    act: '{"stear":{"f":3}}' },
+  { screen: "stear5", step: "5 / 8", q: "What did that create?", note: "Notice how the result proves the original thought right.",
+    act: '{"stear":{"f":4}}' },
+  { screen: "stear6", step: "6 / 8", q: "What else might be true?", note: "How could you be wrong about this? What would your highest self see?",
+    act: '{"stear":{"f":5}}' }
 ];
-/* The reading camera leans to 1.04 about the centre: the capture's content
- * spans 3.9% to 96.1% of the screen width, so a 1.04 zoom crops 1.9% from
- * each side and every word and control stays whole (the cap for phones under
- * 260 px is 1.08, which would put the Back link on the frame edge). */
-const readingCam = '[["hold",700],["cam",1.04,50,24,1200],["hold",2000],["cam",1,50,50,1000],["end"]]';
+const stearFrames = stear.map((s) => ({ name: s.screen, alt: `STEAR, ${s.q}`, w: 600 as const, h: 1298 as const }));
+const thenName = "A new thought, and the next move.";
 
-/* The three notes under the rail, each with its tile. */
+/* The three notes under STEAR, each with its tile. */
 const notes = [
   { lead: "RAP", rest: " when a feeling has you: name it in one word, find it in the body, and let it pass. Five steps.", caption: "RAP, step one of five.", screen: "rap1", alt: "RAP, step one of five: what are you feeling, with frustrated chosen.", w: 600, h: 1298 },
   { lead: "Pause + Redirect", rest: " when you are about to lose control. The ten-second read when you want to know how you are arriving.", caption: "Pause + Redirect, one breath.", screen: "pause-breath", alt: "Pause + Redirect, one breath: the ring counting down.", w: 780, h: 1688 },
   { lead: "Sixteen tools", rest: " in all, each named for the moment it is for, with the method's name beside it. Run them without an account; a membership keeps them.", caption: "The ten-second read.", screen: "arriving-quadrant", alt: "The ten-second read: how are you arriving, with a quadrant chosen.", w: 780, h: 1688 }
+];
+
+/* S7: the quiz pair. Two steps: the ring presses Often on question one (no answered capture exists, so the tap
+ * changes nothing on that phone), then the light moves to the result and the result phone leans on Approval. */
+const quizActs = [
+  '{"q":{"f":0,"tap":[50,52.1,.55]}}',
+  '{"r":{"f":0,"cam":[[.14,1,50,50],[.4,1.04,50,34],[.7,1.04,50,34],[.88,1,50,50]]}}'
 ];
 
 const levels = [
@@ -92,7 +141,7 @@ const faq = [
 ];
 ---
 <Base title={title} description={description} path="/practice">
-  <!-- Hero: the window with two phones and a cursor (2.2.1) -->
+  <!-- Hero: the copy scrolls away first; then the scene is a scroll story (S4) -->
   <section class="pr-hero grain grain-cream" data-tone="cream">
     <i class="lamp lamp-cream" aria-hidden="true" style="--lx:50%;--ly:0%"></i>
     <div class="wrap pr-hero-wrap">
@@ -115,27 +164,36 @@ const faq = [
         <p class="t-cap pr-strap-line">Every screen on this page is a capture of the app as built, taken as a visitor with no account. Nothing is drawn.</p>
       </div>
     </div>
-    <div class="wrap-wide pr-scene" data-warm>
-      <div class="pr-scene-win rise-obj" style="--d:.3s">
-        <WindowFrame id="hero-win" ww={1320} eager tilt={2} parallax={-22} loop={4000}
-          flow='[["start",40,60],["hold",1400],["move",5,33.4,1300],["click"],["state",1,320],["hold",2600],["cam",1.08,0,20,1200],["hold",1600],["cam",1,50,50,1000],["move",5,9,1200],["click"],["state",0,320],["hold",1200],["move",40,60,900],["end"]]'
-          screens={[
-            { name: "desk-coach-draft", alt: "Practice on a desk: the Daily Practice Coach with a sentence typed, the Dare of the Day, Set Up Your Day and the October calendar.", x2: true },
-            { name: "desk-tools-home", alt: "The Tools hub on a desk: start with the moment you're in, Set Up Your Day and the Right now prompts.", x2: true }
-          ]} />
-        <!-- The caption follows the frame (the scene engine syncs .win-cap[data-cap] beside the window). -->
-        <div class="win-caps pr-scene-caps rise" style="--d:.7s">
-          <p class="win-cap t-cap-i on" data-cap="0">The Coach home, on a desk, with a sentence typed.</p>
-          <p class="win-cap t-cap-i" data-cap="1">The Tools hub.</p>
+    <div class="story wrap-wide pr-scene" data-story="practice-hero" data-story-static="device" data-warm style="--story-w:3;--story-w-n:1;--step-l:65svh;--step-l-n:80svh">
+      <div class="story-track">
+        <div class="story-stage">
+          <div class="story-device-box pr-scene-box">
+            <div class="story-win pr-scene-win rise-obj" style="--d:.3s">
+              <WindowFrame id="hero-win" device="win" ww={1320} eager tilt={2} label="Practice on a desk." screens={heroWin} />
+              <!-- The caption follows the frame (the scene syncs .win-cap[data-cap] beside the window). -->
+              <div class="win-caps pr-scene-caps rise" style="--d:.7s">
+                <p class="win-cap t-cap-i on" data-cap="0">The Coach home, on a desk, with a sentence typed.</p>
+                <p class="win-cap t-cap-i" data-cap="1">The Tools hub.</p>
+              </div>
+              <div class="pr-scene-phones" data-story-anchor="narrow">
+                <div class="pr-scene-phone pr-scene-l rise-obj floor-on" style="--d:.48s">
+                  <PhoneFrame device="tools" width={212} style="--pw:inherit" caption="The Tools hub." screens={[{ name: "tools-home", alt: "The Tools hub on a phone, with Tools active in the bottom bar.", w: 780, h: 1688 }]} />
+                </div>
+                <div class="pr-scene-phone pr-scene-r rise-obj floor-on" style="--d:.6s">
+                  <PhoneFrame device="close" width={224} style="--pw:inherit" caption="Close the day." screens={[{ name: "close-day", alt: "Close the day on a phone, with both fields filled and Coach active in the bottom bar.", w: 780, h: 1688, strip: { next: "close-day-2", at: 132.56, head: 6.2, foot: 91.2 } }]} />
+                </div>
+              </div>
+            </div>
+            <span class="story-bar pr-scene-bar" aria-hidden="true"><i></i></span>
+          </div>
+          {heroBeats.map((b, i) => <i class="story-beat" aria-hidden="true" data-step={b.only === "wide" ? i : 0} data-only={b.only} data-act={b.act}></i>)}
         </div>
+        <div class="story-run" aria-hidden="true"></div>
       </div>
-      <div class="pr-scene-phones">
-        <div class="pr-scene-phone pr-scene-l rise-obj floor-on" style="--d:.48s">
-          <PhoneFrame width={212} parallax={-10} caption="The Tools hub." screens={[{ name: "tools-home", alt: "The Tools hub on a phone, with Tools active in the bottom bar.", w: 780, h: 1688 }]} />
-        </div>
-        <div class="pr-scene-phone pr-scene-r rise-obj floor-on" style="--d:.6s">
-          <PhoneFrame width={212} parallax={-10} caption="Close the day." screens={[{ name: "close-day", alt: "Close the day on a phone, with both fields filled and Coach active in the bottom bar.", w: 780, h: 1688 }]} />
-        </div>
+      <!-- Tablets and phones, while the phone pair pins: the desk follows the story, still (a desk capture at phone width is not a step). -->
+      <div class="pr-scene-desk-n">
+        <WindowFrame ww={1320} screens={[heroWin[0]]} />
+        <p class="t-cap-i pr-scene-desk-cap">The Coach home, on a desk, with a sentence typed.</p>
       </div>
     </div>
   </section>
@@ -157,7 +215,7 @@ const faq = [
     </div>
   </section>
 
-  <!-- A day in Practice: the sky stage with tap scenes (2.2.3) -->
+  <!-- A day in Practice: the sky stage as a scroll story (S5) -->
   <section id="day" class="pr-day" data-tone="cream">
     <i class="lamp grain pr-day-lamp" aria-hidden="true" style="--lx:50%;--ly:72%;--la:.1"></i>
     <div class="wrap">
@@ -169,12 +227,12 @@ const faq = [
         </div>
       </div>
       <div class="pr-day-stage">
-        <DayStage steps={daySteps} width={230} id="day-stage" />
+        <DayStage steps={daySteps} frames={dayFrames} width={230} id="day-stage" />
       </div>
     </div>
   </section>
 
-  <!-- One tool, start to finish: the STEAR rail with the reading camera (2.2.4) -->
+  <!-- One tool, start to finish: STEAR as a scroll story, one phone beside the seven rows (S6) -->
   <section id="stear" class="pr-stear" data-tone="cream">
     <div class="wrap">
       <div class="grid pr-stear-head">
@@ -184,38 +242,38 @@ const faq = [
         </div>
         <p class="t-lead pr-stear-intro rise" style="--d:.3s">Eight questions, one at a time, each with a line of help under it. The example is a real run: a business partner went quiet after the numbers were sent. By question six, the person is writing what else might be true.</p>
       </div>
-    </div>
-    <div class="pr-band" data-warm>
-      <Rail ariaLabel="STEAR, as the app asks it." by="item">
-        <div slot="tabs" class="rail-tabs" role="tablist" aria-label="STEAR, as the app asks it.">
-          {[...stear.map((x) => x.step), "Then"].map((l, i) => (
-            <button type="button" class="rail-tab" role="tab" aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1}><span class="bar"></span><span class="t">{l}</span></button>
-          ))}
-        </div>
-        <p slot="note" class="t-cap pr-rail-help">Seven frames. Scroll sideways, or swipe.</p>
-        {stear.map((s, i) => (
-          <li class="rail-slide">
-            <div class="pr-rail-crop rise-obj" style={`--d:${i * 90}ms`}>
-              <PhoneFrame width={232} flow={readingCam} screens={[{ name: s.screen, alt: `STEAR, ${s.q}`, w: 600, h: 1298 }]} />
+      <div class="story pr-stear-story" data-story="stear" data-warm style="--story-w:7;--step-l:62svh;--step-l-n:58svh">
+        <div class="story-track">
+          <div class="story-stage">
+            <div class="story-device-box mat pr-stear-mat">
+              <div class="story-phone pr-stear-phone">
+                <PhoneFrame device="stear" width={300} style="--pw:inherit" label="STEAR on a phone, question by question." screens={stearFrames} />
+              </div>
             </div>
-            <div class="rail-cap pr-rail-cap">
-              <p class="t-folio pr-folio">{s.step}</p>
-              <p class="t-title pr-rail-q">{s.q}</p>
-              <p class="t-cap pr-rail-h">{s.note}</p>
-            </div>
-          </li>
-        ))}
-        <li class="rail-slide pr-then">
-          <div class="paper pr-then-card rise-obj" style="--d:540ms">
-            <p class="eyebrow">Then</p>
-            <p class="t-title">A new thought, and the next move.</p>
-            <p class="t-body pr-then-body">Questions seven and eight. The run is saved to your Journal, and the Coach can talk it through.</p>
-            <a href={LINKS.practice} class="link pr-then-link" data-passthrough>Run it yourself <Arrow /></a>
+            <StoryMarks class="pr-stear-marks" labels={[...stear.map((s) => s.q), thenName]} label="STEAR, question by question" />
+            <ol class="story-steps pr-stear-steps" data-story-text="list">
+              {stear.map((s, i) => (
+                <li class="story-step pr-stear-row" data-step={i} data-act={s.act}>
+                  <p class="pr-stear-line"><span class="t-folio pr-folio">{s.step}</span> <span class="t-title pr-stear-q">{s.q}</span></p>
+                  <p class="t-cap pr-stear-help">{s.note}</p>
+                  <span class="sr-only story-alt">{stearFrames[i].alt}</span>
+                  <div class="story-static"><PhoneFrame width={200} screens={[stearFrames[i]]} /></div>
+                </li>
+              ))}
+              <li class="story-step pr-stear-then" data-step={stear.length} data-act='{"stear":{}}'>
+                <div class="paper pr-then-card">
+                  <p class="eyebrow">Then</p>
+                  <p class="t-title">{thenName}</p>
+                  <p class="t-body pr-then-body">Questions seven and eight. The run is saved to your Journal, and the Coach can talk it through.</p>
+                  <a href={LINKS.practice} class="link pr-then-link" data-passthrough>Run it yourself <Arrow /></a>
+                </div>
+                <span class="sr-only story-alt">{stearFrames[5].alt}</span>
+              </li>
+            </ol>
           </div>
-        </li>
-      </Rail>
-    </div>
-    <div class="wrap">
+          <div class="story-run" aria-hidden="true"></div>
+        </div>
+      </div>
       <div class="pr-notes" data-warm>
         {notes.map((n, i) => (
           <div class="pr-note">
@@ -232,29 +290,37 @@ const faq = [
     </div>
   </section>
 
-  <!-- The quiz: two phones on linen (2.2.5) -->
+  <!-- The quiz: two phones on linen, a scroll story of two steps (S7) -->
   <section id="quiz" class="pr-quiz" data-tone="cream">
-    <div class="wrap">
-      <div class="grid pr-quiz-grid">
-        <div class="pr-quiz-copy">
-          <p class="eyebrow rise">Where most people start</p>
-          <h2 class="t-m wipe">What are you <em>subscribing to?</em></h2>
-          <p class="t-lead pr-lead pr-quiz-body rise" style="--d:.3s">Eighteen questions about the last thirty days, the way it actually went. No sign-in. The result names the pattern you are paying for most, what it is costing you, where, and one first step. The run on the right came back Approval.</p>
-          <div class="pr-btns rise" style="--d:.4s">
-            <a href={LINKS.quiz} class="btn btn-gold" data-passthrough data-event="quiz_click" data-event-location="practice-quiz">Take the quiz <Arrow /></a>
-          </div>
-          <p class="t-cap pr-quiz-note rise" style="--d:.5s">A reflection tool, not a clinical assessment. Four minutes.</p>
-        </div>
-        <div class="pr-quiz-still" data-warm>
-          <div class="mat pr-quiz-mat">
-            <div class="pr-quiz-q rise-obj floor-on" style="--d:.3s">
-              <PhoneFrame width={212} flow='[["hold",1200],["tap",50,56],["end"]]' screens={[{ name: "quiz-q1", alt: "The quiz, question one of eighteen: when I get less done than I planned, I'm disappointed in myself, from Never to Almost always.", w: 600, h: 1298 }]} />
+    <div class="wrap pr-quiz-wrap">
+      <div class="pr-quiz-head">
+        <p class="eyebrow rise">Where most people start</p>
+        <h2 class="t-m wipe">What are you <em>subscribing to?</em></h2>
+      </div>
+      <div class="story pr-quiz-story" data-story="practice-quiz" data-story-static="device" data-warm style="--story-w:2;--step-l:72svh;--step-l-n:64svh">
+        <div class="story-track">
+          <div class="story-stage">
+            <div class="pr-quiz-copy">
+              <p class="t-lead pr-lead pr-quiz-body story-steps" data-story-text="list"><span class="story-step" data-step="0" data-act={quizActs[0]}>Eighteen questions about the last thirty days, the way it actually went. No sign-in.</span> <span class="story-step" data-step="1" data-act={quizActs[1]}>The result names the pattern you are paying for most, what it is costing you, where, and one first step. The run on the right came back Approval.</span></p>
+              <StoryMarks class="pr-quiz-marks" labels={["Eighteen questions", "The result"]} label="The quiz, from a question to the result" />
             </div>
-            <div class="pr-quiz-r rise-obj floor-on" style="--d:.42s">
-              <PhoneFrame width={244} parallax={-8} flow='[["cam",1.04,50,34,2400],["hold",3000],["cam",1,50,50,1600],["end"]]' screens={[{ name: "quiz-results", alt: "The quiz result: Approval, with what you're paying for, what it's actually costing you, where you're paying, and your first step.", w: 600, h: 1298 }]} />
+            <div class="story-device-box mat pr-quiz-mat">
+              <div class="pr-quiz-q rise-obj floor-on" style="--d:.3s">
+                <PhoneFrame device="q" width={212} style="--pw:inherit" screens={[{ name: "quiz-q1", alt: "The quiz, question one of eighteen: when I get less done than I planned, I'm disappointed in myself, from Never to Almost always.", w: 600, h: 1298 }]} />
+              </div>
+              <div class="pr-quiz-r rise-obj floor-on" style="--d:.42s">
+                <PhoneFrame device="r" width={244} style="--pw:inherit" screens={[{ name: "quiz-results", alt: "The quiz result: Approval, with what you're paying for, what it's actually costing you, where you're paying, and your first step.", w: 600, h: 1298 }]} />
+              </div>
             </div>
           </div>
+          <div class="story-run" aria-hidden="true"></div>
         </div>
+      </div>
+      <div class="pr-quiz-cta">
+        <div class="pr-btns rise" style="--d:.2s">
+          <a href={LINKS.quiz} class="btn btn-gold" data-passthrough data-event="quiz_click" data-event-location="practice-quiz">Take the quiz <Arrow /></a>
+        </div>
+        <p class="t-cap pr-quiz-note rise" style="--d:.3s">A reflection tool, not a clinical assessment. Four minutes.</p>
       </div>
     </div>
   </section>
@@ -272,7 +338,7 @@ const faq = [
     </div>
   </section>
 
-  <!-- Everything inside: the desk with a cursor, and the ladder that answers it (2.2.7) -->
+  <!-- Everything inside: a scroll story, one rail item (or tab) at a time (S8) -->
   <section id="inside" class="pr-inside-sec" data-tone="cream">
     <div class="wrap">
       <div class="grid">
@@ -313,8 +379,8 @@ const faq = [
     </div>
   </section>
 
-  <!-- Final: a forest bleed, the drifting floor (2.2.9) -->
-  <section class="pr-final" data-tone="forest" data-run data-warm>
+  <!-- Final: a forest bleed, the floor that drifts with the scroll (S11) -->
+  <section class="pr-final" data-tone="forest" data-warm>
     <PracticeFloor />
     <Geo class="pr-geo" color="#f4efe4" opacity={0.06} />
     <div class="wrap pr-final-wrap">
@@ -333,8 +399,10 @@ const faq = [
 </Base>
 
 <style is:global>
-  /* ── Practice page layout. Every number is from BUILD_SPEC 2.2; the
-   * components, classes and attributes are the system's (SYSTEM_API). ── */
+  /* ── Practice page layout. Every number is from BUILD_SPEC 2.2 and SCROLL_SPEC section 2 (S4 to S8, S11); the
+   * components, classes and attributes are the system's (SYSTEM_API). Each story's static layout comes first
+   * (no script, reduced motion, short and landscape screens); its pinned layout follows inside the two STORY_MQ
+   * queries, scoped `.js .story-class:not(.static)`, so nothing is hidden without the script. ── */
 
   /* 2.2.1 Hero */
   .pr-hero { position: relative; display: flex; flex-direction: column; padding-top: var(--nav-h); padding-bottom: var(--sec); overflow-x: clip; }
@@ -349,19 +417,20 @@ const faq = [
   .pr-h1 { max-width: 11em; margin: 0; }
   .pr-lead { margin-top: var(--lead-gap); color: var(--fg-2); }
   .pr-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: var(--btn-gap); }
+  /* S4, static: the window with its caption, the two phones standing 64 px below its corners. The left one covers
+   * the rail's footer line in the capture; the right one stands clear of the capture's "Close the day" link. */
   .pr-scene { position: relative; z-index: 1; order: 1; margin-top: clamp(48px, 6vh, 96px); padding-bottom: 72px; }
   .pr-scene-win { position: relative; z-index: 1; }
-  /* The window's caption follows its frame: (a) on the Coach home, (b) on the Tools hub. */
   .pr-scene-caps { margin-top: 14px; }
   .pr-scene-caps .win-cap { left: 0; right: 0; text-align: center; max-width: none; }
   .pr-scene-phones { position: absolute; left: 0; right: 0; top: 0; aspect-ratio: 1000 / 657; z-index: 2; pointer-events: none; }
-  /* The phones stand 64 px below the window's edge. The left one covers the rail's footer line in the
-   * capture; the right one (right edge 1384) stands clear of the capture's "Close the day" link and covers
-   * only the cards' right ends and the margin beside them. */
-  .pr-scene-phone { position: absolute; bottom: -64px; pointer-events: auto; }
+  .pr-scene-phone { --pw: 212px; position: absolute; bottom: -64px; pointer-events: auto; }
   .pr-scene-l { left: 8px; }
   .pr-scene-r { right: -4px; }
-  /* The rise uses the translate property (the figure's own transform carries the parallax), so it is named in the transition list. */
+  .pr-scene-bar { margin-top: 14px; }
+  .pr-scene-desk-n { display: none; }
+  .pr-scene-desk-cap { margin: 14px auto 0; text-align: center; }
+  /* The rise uses the translate property (the device itself carries the story's lift), so it is named in the transition list. */
   .js .pr-scene-phone.rise-obj { translate: 0 80px; transition-property: opacity, transform, translate; transition-duration: 1.3s; }
   .js .pr-scene-phone.rise-obj.in { translate: 0 0; }
   .js .pr-scene-phone .phone figcaption { opacity: 0; transition: opacity .9s var(--slow) 1.25s; }
@@ -395,49 +464,43 @@ const faq = [
   .js svg.pr-loop-back.done .draw-head { opacity: 0; animation: pr-head-pulse 600ms var(--ease); }
   @keyframes pr-head-pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 1; transform: scale(1.3); } 100% { opacity: 0; transform: scale(1); } }
 
-  /* 2.2.3 A day in Practice */
+  /* 2.2.3 A day in Practice (S5: DayStage owns the story layout) */
   .pr-day { padding-block: var(--sec); }
   .pr-day > .lamp { opacity: 0; }
   .pr-day-head { grid-column: 1 / span 8; }
   .pr-day-stage { margin-top: var(--head-gap); }
   /* The Morning step: the today capture was taken in the afternoon, so its greeting sits above the crop.
    * This is a crop of the real capture (moved up 18.4% and set at 1.04, inside the capture's side padding);
-   * nothing is drawn or covered, and its lower edge fades out before the app's bottom bar. */
-  #day img.ds[src$="/today.jpg"], #day img.ds[src$="/today.webp"] { transform-origin: 50% 0; transform: translateY(-18.4%) scale(1.04);
+   * nothing is drawn or covered, and its lower edge fades out before the app's bottom bar. The frame is a
+   * group (type: []), so the crop sits inside it and the wipe clips the untransformed frame box. */
+  #day .ds-group img[src$="/today.jpg"], #day .ds-group img[src$="/today.webp"] { transform-origin: 50% 0; transform: translateY(-18.4%) scale(1.04);
     -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent 91.5%); mask-image: linear-gradient(to bottom, #000 88%, transparent 91.5%); }
-  /* The page's small phones lean at most 1.04 about the centre, so a crop takes under 2% from each side and
-   * the capture's own padding (about 4%) still clears every word: the camera's edge feather is 3 px here,
-   * not 14, so it never lies over the first glyph of a line on a 230 px screen. */
-  .pr-day .day-stage .phone-screen::after, .pr-band .phone-screen::after, .pr-quiz-r .phone-screen::after { background: linear-gradient(90deg, #f2ece0 0, rgba(242,236,224,0) 3px, rgba(242,236,224,0) calc(100% - 3px), #f2ece0 100%); }
+  /* The page's phones lean at most 1.06 about the centre, so a crop takes under 3% from each side and the
+   * capture's own padding (about 4%) still clears every word: the camera's edge feather is 3 px here, not 14,
+   * so it never lies over the first glyph of a line. */
+  .pr-day .day-stage .phone-screen::after, .pr-stear-mat .phone-screen::after, .pr-quiz-r .phone-screen::after { background: linear-gradient(90deg, #f2ece0 0, rgba(242,236,224,0) 3px, rgba(242,236,224,0) calc(100% - 3px), #f2ece0 100%); }
   /* The Journal holds one entry, so on the evening step the phone fades into the night below the list
    * instead of showing three quarters of an empty screen. */
   .pr-day .day-stage.is-night .phone { -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 74%); mask-image: linear-gradient(to bottom, #000 40%, transparent 74%); }
 
-  /* 2.2.4 STEAR */
+  /* 2.2.4 STEAR (S6). Static: the seven rows in order, each with its phone (the Then row with its card). */
   .pr-stear { padding-block: var(--sec) calc(var(--sec) * .7); }
   .pr-stear-head { align-items: end; }
   .pr-stear-title { grid-column: 1 / span 6; }
   .pr-stear-intro { grid-column: 8 / span 5; color: var(--fg-2); max-width: none; padding-bottom: .15em; }
-  .pr-band .rail-track { --rail-w: 250px; --rail-gap: 32px; background: #ebe4d5; padding-block: 48px 40px; box-shadow: inset 0 1px 0 var(--line), inset 0 -1px 0 var(--line); margin-top: var(--head-gap); }
-  /* Each phone is cropped to its content: the top 70 percent (360 of 516 px), its empty lower screen fading
-   * out, no bottom bezel. The box reaches 28 px past the phone at the sides and 20 px above so the phone's
-   * own shadow is not cut. The caption sits 20 px under the fade. */
-  .pr-rail-crop { --crop: 360px; box-sizing: content-box; height: var(--crop); margin: -20px -28px 0; padding: 20px 28px 0; overflow: hidden;
-    -webkit-mask-image: linear-gradient(to bottom, #000 calc(20px + var(--crop) * .72), transparent calc(20px + var(--crop))); mask-image: linear-gradient(to bottom, #000 calc(20px + var(--crop) * .72), transparent calc(20px + var(--crop))); }
-  /* Quiet, not disabled: the neighbours sit at .82 with their colour lowered. */
-  .js .pr-band .rail-slide.off { opacity: .82; }
-  .pr-band .rail-slide .phone { transition: filter .6s var(--ease); }
-  .js .pr-band .rail-slide.off .phone { filter: saturate(.55); }
-  .pr-rail-cap { margin-top: 20px; }
-  .pr-folio { color: var(--fg-3); }
-  .pr-rail-q { margin-top: 8px; max-width: none; }
-  .pr-rail-h { margin-top: 6px; }
-  .pr-then { display: flex; align-items: center; height: 360px; }
-  .pr-then-card { width: 250px; min-height: 300px; padding: 28px; display: flex; flex-direction: column; justify-content: center; }
+  .pr-stear-story { margin-top: var(--head-gap); }
+  .pr-stear-steps { display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); column-gap: var(--gap); row-gap: 48px; }
+  .pr-stear-row, .pr-stear-then { padding-top: 20px; border-top: 1px solid var(--line); }
+  .pr-stear-line { display: flex; align-items: baseline; gap: 12px; margin: 0; }
+  .pr-folio { flex: none; color: var(--fg-3); }
+  .pr-stear-q { max-width: none; }
+  .pr-stear-help { margin: 6px 0 0; }
+  .pr-stear-row .story-static { margin-top: 24px; }
+  .pr-then-card { padding: 28px; display: flex; flex-direction: column; justify-content: center; }
   .pr-then-card .eyebrow { margin-bottom: 14px; }
   .pr-then-body { margin-top: 10px; }
-  .pr-then-link { margin-top: 18px; }
-  .pr-rail-help { margin: 0; }
+  .pr-then-link { margin-top: 18px; align-self: flex-start; position: relative; }
+  .pr-then-link::after { content: ""; position: absolute; inset: -14px -8px; }
   .pr-notes { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: var(--gap); margin-top: 64px; padding-top: 28px; border-top: 1px solid var(--line); }
   .pr-note { display: contents; }
   .pr-note-text { grid-row: 1; color: var(--fg-2); max-width: 24em; }
@@ -447,37 +510,44 @@ const faq = [
   .pr-tile .tile-media-ct { --screen-w: 62%; }
   .pr-tile figcaption { margin: 0; }
 
-  /* 2.2.5 The quiz */
+  /* 2.2.5 The quiz (S7). Static (and without the script): today's section, the copy column beside the mat, the
+   * story's own boxes laid out as if they were not there (display: contents), so the paragraph, the button and
+   * the note read as one column centred on the mat. */
   .pr-quiz { padding-block: var(--sec); }
   .pr-rule-top { display: block; height: 1px; background: var(--line); }
-  .pr-quiz-grid { margin-top: 0; }
-  .pr-quiz-copy { grid-column: 1 / span 5; align-self: center; }
+  .pr-quiz-wrap { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: 1fr auto auto auto 1fr; column-gap: var(--gap); }
+  .pr-quiz-story, .pr-quiz-story > .story-track, .pr-quiz-story > .story-track > .story-stage { display: contents; }
+  .pr-quiz-head { grid-column: 1 / span 5; grid-row: 2; }
+  .pr-quiz-copy { grid-column: 1 / span 5; grid-row: 3; }
+  .pr-quiz-cta { grid-column: 1 / span 5; grid-row: 4; }
   .pr-quiz-body { max-width: 28em; }
   .pr-quiz-note { margin-top: 16px; }
-  .pr-quiz-still { grid-column: 6 / span 7; }
   /* The mat has room around both phones: the results phone's top sits 81 px under the mat's edge. */
-  .pr-quiz-mat { height: 664px; }
-  .pr-quiz-q { position: absolute; left: 76px; bottom: 64px; z-index: 1; }
-  .pr-quiz-r { position: absolute; right: 60px; bottom: 40px; z-index: 2; }
+  .pr-quiz-mat { grid-column: 6 / span 7; grid-row: 1 / -1; align-self: center; height: 664px; }
+  .pr-quiz-q { --pw: 212px; position: absolute; left: 76px; bottom: 64px; z-index: 1; }
+  .pr-quiz-r { --pw: 244px; position: absolute; right: 60px; bottom: 40px; z-index: 2; }
+  /* The light moves between the phones on the step (a 350 ms opacity on the device, never a capture over a capture). */
+  .pr-quiz-mat .phone { transition: opacity .35s var(--ease); }
 
   /* 2.2.6 Yours */
   .pr-private { padding-block: var(--sec-l); }
   .pr-private-copy { grid-column: 1 / span 10; }
 
-  /* 2.2.7 Everything inside */
+  /* 2.2.7 Everything inside (S8). Static: the four rows in order, each followed by its own figure. */
   .pr-inside-sec { padding-block: var(--sec); }
   .pr-inside-head { grid-column: 1 / span 8; }
   .pr-inside-body { margin-top: var(--head-gap); }
-  .pr-inside-win { grid-column: 1 / span 8; }
-  .pr-inside-ladder { grid-column: 9 / span 4; }
+  .pr-inside-ladder { max-width: 720px; }
   .pr-inside-ladder > li { grid-template-columns: 1fr; padding-block: 24px; }
-  .pr-inside-ladder > li:first-child { border-top: 0; padding-top: 4px; }
   .pr-inside-ladder a { display: grid; grid-template-columns: 1fr 16px; column-gap: 16px; align-items: start; }
   .pr-inside-ladder .ladder-name { display: block; font-size: var(--fs-s); letter-spacing: -.012em; line-height: 1.12; text-wrap: balance; }
   .pr-inside-ladder .ladder-body { display: block; margin-top: 8px; }
   .pr-inside-ladder .pr-arrow { color: var(--accent); margin-top: .4em; transition: transform 200ms var(--hover); }
   .pr-inside-ladder .pr-arrow svg { width: 16px; height: 16px; }
   .pr-inside-ladder a:hover .pr-arrow, .pr-inside-ladder a:focus-visible .pr-arrow { transform: translateX(3px); }
+  .pr-inside .story-static { margin-bottom: 8px; }
+  .pr-static-cap { margin-top: 12px; }
+  .pr-inside-win .win-caps { margin-top: 14px; }
 
   /* 2.2.8 Levels and questions */
   .pr-levels { padding-block: var(--sec); }
@@ -510,22 +580,27 @@ const faq = [
    * section's lower part is forest whatever the theme. */
   main .pr-final[data-tone] { background-image: linear-gradient(to bottom, transparent 0, transparent 58%, var(--tone-floor, transparent) calc(58% + 120px)); }
   .pr-final-btns { justify-content: center; }
+  /* The outline button stands on a solid forest ground, so no capture of the floor runs through its label (audit 2). */
+  html[data-theme="forest"] .pr-final .btn-line, .no-js .pr-final .btn-line { background-color: rgba(31,61,46,.92); }
+  @media (hover: hover) and (pointer: fine) { html[data-theme="forest"] .pr-final .btn-line:hover { background-color: #2b4a3b; } }
 
   @media (max-width: 1068px) {
     .pr-hero-copy { grid-column: 1 / -1; padding-top: 64px; }
     .pr-scene { padding-bottom: 0; }
     .pr-scene-phones { position: static; aspect-ratio: auto; display: flex; justify-content: center; gap: 24px; margin-top: 32px; padding-bottom: 44px; pointer-events: auto; }
-    .pr-scene-phone { position: static; }
-    .pr-scene-phone .phone { --pw: 190px !important; }
+    .pr-scene-phone { --pw: 190px; position: static; }
     .js .pr-scene-phone.rise-obj { translate: 0 28px; transition-duration: 1.2s; }
     .pr-strap { margin-top: 24px; }
-    .pr-loop-head, .pr-loop-para, .pr-day-head, .pr-stear-title, .pr-stear-intro, .pr-quiz-copy, .pr-quiz-still, .pr-private-copy, .pr-inside-head, .pr-inside-win, .pr-inside-ladder, .pr-levels-copy, .pr-faq { grid-column: 1 / -1; }
+    .pr-loop-head, .pr-loop-para, .pr-day-head, .pr-stear-title, .pr-stear-intro, .pr-private-copy, .pr-inside-head, .pr-levels-copy, .pr-faq { grid-column: 1 / -1; }
     .pr-loop-body { grid-column: 1 / span 8; }
     .pr-loop-para { margin-top: 40px; }
     .pr-stear-intro { margin-top: 24px; padding-bottom: 0; }
-    .pr-quiz-still { margin-top: 48px; }
-    .pr-inside-ladder { margin-top: 40px; }
-    .pr-inside-ladder > li:first-child { border-top: 1px solid var(--line); padding-top: 24px; }
+    /* The quiz, static: the copy, the button and the note, then the mat. */
+    .pr-quiz-wrap { display: flex; flex-direction: column; }
+    .pr-quiz-head { order: 1; }
+    .pr-quiz-copy { order: 2; }
+    .pr-quiz-cta { order: 3; }
+    .pr-quiz-mat { order: 4; align-self: stretch; margin-top: 48px; }
     .pr-faq { margin-top: 56px; }
     .pr-final-copy { grid-column: 2 / span 10; }
     .pr-notes { grid-template-columns: repeat(2, 1fr); row-gap: 48px; }
@@ -540,55 +615,189 @@ const faq = [
     .pr-btns .btn { width: 100%; }
     /* The hero leads with the two phones at a readable size: Close the day in front at 224, the Tools hub
      * behind it to the left at 196, tilted; then the window with its caption. */
-    .pr-scene { display: flex; flex-direction: column; margin-top: 36px; }
+    .pr-scene { margin-top: 36px; }
+    .pr-scene-win { display: flex; flex-direction: column; }
     .pr-scene-phones { order: -1; position: relative; display: flex; justify-content: flex-end; gap: 0; margin-top: 0; padding: 28px 0 52px; }
     .pr-scene-phone { inset: auto; }
-    .pr-scene-l { position: absolute; left: 4px; top: 0; z-index: 0; rotate: -4deg; }
-    .pr-scene-r { position: relative; z-index: 1; }
-    .pr-scene-l .phone { --pw: 196px !important; }
-    .pr-scene-r .phone { --pw: 224px !important; }
+    .pr-scene-l { --pw: 196px; position: absolute; left: 4px; top: 0; z-index: 0; rotate: -4deg; }
+    .pr-scene-r { --pw: 224px; position: relative; z-index: 1; }
     .pr-scene-phone .phone figcaption { font-size: 12px; margin-top: 12px; }
     .pr-scene-l .phone figcaption { text-align: left; transform-origin: 0 0; rotate: 4deg; }
-    .pr-scene-win { margin-top: 8px; }
+    .pr-scene-win > .win, .pr-scene-desk-n > .win { margin-top: 8px; }
     .pr-strap-rule { grid-column: 1 / -1; }
-    .pr-strap-line { font-size: 12.5px; margin-top: 16px; }
-    .pr-loop { padding-block: 152px; }
+    .pr-strap-line { font-size: var(--fs-cap); margin-top: 16px; }
+    .pr-loop { padding-block: var(--sec-l); }
     .pr-loop-body { grid-column: 1 / -1; }
     .pr-loop-list { grid-template-columns: 32px 1fr; }
     .pr-loop-rows > li { grid-template-columns: 1fr; row-gap: 4px; min-height: 0; padding-block: 18px; }
-    .pr-band .rail-track { --rail-w: 232px; --rail-gap: 20px; }
-    .pr-band .rail-slide .phone { --pw: 212px !important; }
-    .pr-rail-crop { --crop: 330px; }
-    .pr-then { height: 330px; }
-    .pr-then-card { width: 232px; }
+    .pr-stear-steps { grid-template-columns: 1fr; row-gap: 40px; }
     .pr-notes { grid-template-columns: 1fr; row-gap: 40px; margin-top: 48px; }
     .pr-tile .tile-media-ct { --screen-w: 60%; }
     .pr-quiz { overflow-x: clip; }
-    .pr-quiz-grid { margin-top: var(--sec-s); }
+    .pr-quiz-head { margin-top: var(--sec-s); }
     .pr-quiz-mat { height: 480px; margin-inline: calc(-1 * var(--gutter)); border-radius: 0; }
-    .pr-quiz-q { left: 16px; bottom: 6px; }
-    .pr-quiz-q .phone { --pw: 150px !important; }
-    .pr-quiz-r { right: 16px; bottom: 22px; }
-    .pr-quiz-r .phone { --pw: 170px !important; }
-    /* The day at 390. The engine makes current the step whose box centre is nearest the viewport's middle,
-     * which sits under the 44svh mat. Each step's box reaches up behind the mat by the mat's height (padding
-     * that a negative margin cancels, so the layout is unchanged), which moves that centre down to the
-     * middle of the readable band under the mat: the current step is the one with most of itself in view.
-     * Neighbours dim to .6, and the fade under the mat is 20 px, so a heading is in view or under the mat. */
-    .js .pr-day .day:not(.static) .day-step { --ov: calc(var(--nav-h) + 44svh); margin-top: calc(-1 * var(--ov)); padding-top: calc(var(--ov) + 32px); min-height: calc(var(--ov) + 50svh); scroll-margin-top: var(--ov); pointer-events: none; }
-    .js .pr-day .day:not(.static) .day-step-in { pointer-events: auto; }
-    .js .pr-day .day:not(.static) .day-step.is-dim { opacity: .6; }
-    .js .pr-day .day:not(.static) .day-steps { -webkit-mask-image: linear-gradient(to bottom, transparent var(--my, 0px), #000 calc(var(--my, 0px) + 20px)); mask-image: linear-gradient(to bottom, transparent var(--my, 0px), #000 calc(var(--my, 0px) + 20px)); }
-    .pr-private { padding-block: 152px; }
+    .pr-quiz-q { --pw: 150px; left: 16px; bottom: 6px; }
+    .pr-quiz-r { --pw: 170px; right: 16px; bottom: 22px; }
+    .pr-private { padding-block: var(--sec-l); }
     .pr-levels-grid { margin-top: var(--sec-s); }
     .pr-levels-cols > li { grid-template-columns: 1fr; row-gap: 10px; padding-block: 22px; }
     .pr-faq { margin-top: 48px; }
     .pr-final { height: 88svh; }
     .pr-final-wrap { margin-top: 10vh; }
     .pr-final-copy { grid-column: 1 / -1; }
-    .pr-final-copy::before { inset: -48px -40px -72px; background: radial-gradient(60% 65% at 50% 45%, rgba(31,61,46,.92), transparent 78%); }
-    .pr-final .floor-plane { top: 36%; }
+    /* Audit 2: the glow reaches under the buttons, and the floor starts under them, so no capture runs behind a label. */
+    .pr-final-copy::before { inset: -48px -40px -120px; background: radial-gradient(60% 65% at 50% 45%, rgba(31,61,46,.92), transparent 78%); }
+    .pr-final .floor-plane { top: 50%; }
     .floor-strip li:nth-child(n + 13) { display: none; }
+  }
+
+  /* Short laptops (1280 x 720, 1366 x 768): at least 200 px of the first app frame in the first screen (audit 2, finding 1). */
+  @media (min-width: 1069px) and (max-height: 820px) { .pr-hero-copy { padding-top: 32px; } .pr-scene { margin-top: 24px; } .pr-h1 { font-size: min(var(--fs-xl), 9vh); } }
+  /* A phone in landscape: the buttons in the first screen (finding 2). */
+  @media (orientation: landscape) and (max-height: 500px) { .pr-hero-copy { padding-top: 16px; } }
+
+  /* ── The pinned layouts (SCROLL_SPEC 1.4): both layouts ── */
+  @media (prefers-reduced-motion: no-preference) and (min-width: 1069px) and (min-height: 600px),
+         (prefers-reduced-motion: no-preference) and (max-width: 1068px) and (min-height: 560px) {
+    /* S4: the phones are part of the pinned stage, so they stand where the stage measures them (no rise offset);
+     * their motion is the story's lift. */
+    .js .pr-scene:not(.static) .pr-scene-phone.rise-obj { translate: none; }
+    /* S7: the story's boxes are real again; the head above it, the button and the note after it. */
+    .js .pr-quiz-story:not(.static) { display: block; grid-column: 1 / -1; grid-row: 3; }
+    .js .pr-quiz-story:not(.static) > .story-track { display: block; }
+    .js .pr-quiz-story:not(.static)[data-k="0"] .pr-quiz-r .phone, .js .pr-quiz-story:not(.static)[data-k="1"] .pr-quiz-q .phone { opacity: .55; }
+    .js .pr-quiz-wrap:has(> .pr-quiz-story:not(.static)) .pr-quiz-cta { margin-top: 32px; }
+  }
+
+  /* ── Wide (1069 and up, 600 tall) ── */
+  @media (prefers-reduced-motion: no-preference) and (min-width: 1069px) and (min-height: 600px) {
+    /* S4: the window sized to the stage (120 px left for its caption, the bar and the phones' 64 px hang), centred
+     * in the wide wrap; the phones keep their corners and their 212 px. */
+    .js .pr-scene:not(.static) { padding-bottom: 24px; }
+    .js .pr-scene:not(.static) .story-stage { display: block; }
+    .js .pr-scene:not(.static) .pr-scene-box { height: 100%; display: flex; flex-direction: column; align-items: center; }
+    .js .pr-scene:not(.static) .pr-scene-win { --cap-h: 120px; flex: none; }
+    /* Where the stage leaves room beside the window (short laptops shrink it to fit), the phones step out past its
+     * corners, overlapping it by 16 px or more, so neither covers the rail item the cursor opens nor the hub's
+     * Close the day link. --hang is the room beside the window, at most what leaves that 16 px overlap. */
+    .js .pr-scene:not(.static) .pr-scene-phones { --win-w: min(100cqw, calc((100cqh - 120px) / .657)); --hang: max(0px, min(calc((100cqw - var(--win-w)) / 2 - 8px), calc(var(--pw-out, 225px) - 8px))); }
+    .js .pr-scene:not(.static) .pr-scene-l { left: calc(8px - var(--hang)); }
+    .js .pr-scene:not(.static) .pr-scene-r { right: calc(-4px - var(--hang)); }
+
+    /* S6: the mat in columns 1 to 5 with the phone centred on it, the marks under it; the seven rows in 7 to 12. */
+    .js .pr-stear-story:not(.static) .story-stage { grid-template-rows: minmax(0, 1fr) auto; }
+    .js .pr-stear-story:not(.static) .pr-stear-mat { grid-column: 1 / span 5; grid-row: 1; align-self: stretch; margin-top: 0; }
+    .js .pr-stear-story:not(.static) .pr-stear-phone { --pw: min(300px, calc((100cqh - 72px) / 2.224)); }
+    .js .pr-stear-story:not(.static) .pr-stear-marks { grid-column: 1 / span 5; grid-row: 2; justify-self: center; margin: 14px 0 0; }
+    .js .pr-stear-story:not(.static) .pr-stear-steps { grid-column: 7 / span 6; grid-row: 1 / span 2; align-self: center; display: block; }
+    .js .pr-stear-story:not(.static) .pr-stear-row { display: grid; grid-template-columns: 48px minmax(0, 1fr); align-items: baseline; padding: 12px 0; border-top: 1px solid var(--line); }
+    .js .pr-stear-story:not(.static) .pr-stear-line { display: contents; }
+    .js .pr-stear-story:not(.static) .pr-folio { grid-column: 1; }
+    .js .pr-stear-story:not(.static) .pr-stear-q { grid-column: 2; }
+    .js .pr-stear-story:not(.static) .pr-stear-help { grid-column: 2; margin-top: 4px; }
+    .js .pr-stear-story:not(.static) .pr-stear-row.is-current .pr-stear-q { color: var(--accent); }
+    .js .pr-stear-story:not(.static) .pr-stear-q { transition: color .35s var(--ease); }
+    .js .pr-stear-story:not(.static) .pr-stear-then { padding: 16px 0 0; border-top: 1px solid var(--line); }
+    .js .pr-stear-story:not(.static) .pr-then-card { padding: 22px 24px; }
+    .js .pr-stear-story:not(.static) .pr-then-card .eyebrow { margin-bottom: 10px; }
+
+    /* S7: the paragraph (two steps, the current pair at full colour) and its marks in 1 to 5, the mat in 6 to 12. */
+    .js .pr-quiz-story:not(.static) > .story-track > .story-stage { display: grid; grid-template-rows: minmax(0, 1fr); }
+    .js .pr-quiz-story:not(.static) .pr-quiz-copy { grid-column: 1 / span 5; grid-row: 1; align-self: center; }
+    .js .pr-quiz-story:not(.static) .pr-quiz-marks { margin-top: 24px; }
+    .js .pr-quiz-story:not(.static) .pr-quiz-mat { grid-column: 6 / span 7; grid-row: 1; align-self: center; display: block;
+      height: min(664px, calc(100vh - var(--nav-h) - var(--story-gap) - 24px)); height: min(664px, calc(100svh - var(--nav-h) - var(--story-gap) - 24px)); }
+    .js .pr-quiz-story:not(.static) .pr-quiz-q { --pw: min(212px, calc((100cqh - 150px) / 2.224)); }
+    .js .pr-quiz-story:not(.static) .pr-quiz-r { --pw: min(244px, calc((100cqh - 100px) / 2.224)); }
+
+    /* S8: the window in 1 to 8 with its caption, the marks under it in place of the old pager; the ladder in 9 to 12. */
+    /* The window and its marks are one block, centred in the stage beside the ladder: the box is the window's own
+     * height (792 x .657 plus the caption row) or what the stage leaves. */
+    .js .pr-inside:not(.static) .story-stage { grid-template-rows: auto auto; align-content: center; }
+    .js .pr-inside:not(.static) .pr-inside-box { grid-column: 1 / span 8; grid-row: 1; place-items: end center; align-self: end;
+      height: min(564px, calc(100vh - var(--nav-h) - var(--story-gap) - 60px)); height: min(564px, calc(100svh - var(--nav-h) - var(--story-gap) - 60px)); }
+    .js .pr-inside:not(.static) .pr-inside-phone, .js .pr-inside:not(.static) .pr-alt-n { display: none; }
+    .js .pr-inside:not(.static) .pr-inside-win { --cap-h: 44px; }
+    .js .pr-inside:not(.static) .pr-inside-marks { grid-column: 1 / span 8; grid-row: 2; justify-self: start; margin: 4px 0 8px; }
+    .js .pr-inside:not(.static) .pr-inside-ladder { grid-column: 9 / span 4; grid-row: 1 / -1; align-self: center; max-width: none; }
+    .js .pr-inside:not(.static) .pr-inside-ladder > li:first-child { border-top: 0; padding-top: 4px; }
+    .js .pr-inside:not(.static) .pr-inside-ladder > li.is-current .ladder-name { color: var(--accent); }
+  }
+  /* Short laptops: the seven STEAR rows and the four Inside rows fit a 632 px stage (1280 x 720) and a 569 px one
+   * (a 1366 x 657 browser window). */
+  @media (prefers-reduced-motion: no-preference) and (min-width: 1069px) and (min-height: 600px) and (max-height: 820px) {
+    .js .pr-stear-story:not(.static) .pr-stear-row { padding: 8px 0; }
+    .js .pr-stear-story:not(.static) .pr-stear-q { font-size: 19px; }
+    .js .pr-stear-story:not(.static) .pr-stear-help { margin-top: 2px; }
+    .js .pr-stear-story:not(.static) .pr-then-card { padding: 16px 20px; }
+    .js .pr-stear-story:not(.static) .pr-then-card .t-title { font-size: 19px; }
+    .js .pr-stear-story:not(.static) .pr-then-body { font-size: 15px; margin-top: 6px; }
+    .js .pr-stear-story:not(.static) .pr-then-link { margin-top: 12px; }
+    .js .pr-inside:not(.static) .pr-inside-ladder > li { padding-block: 14px; }
+    .js .pr-inside:not(.static) .pr-inside-ladder .ladder-name { font-size: var(--fs-title); }
+    .js .pr-inside:not(.static) .pr-inside-ladder .ladder-body { margin-top: 4px; }
+  }
+
+  /* ── Narrow (1068 and down, 560 tall): the device, the marks, then the current step's text ── */
+  @media (prefers-reduced-motion: no-preference) and (max-width: 1068px) and (min-height: 560px) {
+    /* S4: only the phone pair pins (one beat: Close the day lifts and scrolls); the window waits after the story. */
+    .js .pr-scene:not(.static) .pr-scene-box { flex: none; max-height: none; container-type: normal; display: block; place-items: normal; }
+    .js .pr-scene:not(.static) .pr-scene-win { width: auto; display: block; }
+    .js .pr-scene:not(.static) .pr-scene-win > .win, .js .pr-scene:not(.static) .pr-scene-caps { display: none; }
+    .js .pr-scene:not(.static) .pr-scene-phones { margin-top: 0; padding-top: 8px; }
+    .js .pr-scene:not(.static) .pr-scene-phone { --pw: min(260px, calc((100vh - var(--nav-h) - 170px) / 2.224)); --pw: min(260px, calc((100svh - var(--nav-h) - 170px) / 2.224)); }
+    .js .pr-scene:not(.static) .pr-scene-bar { margin-top: 0; }
+    .js .pr-scene:not(.static) .pr-scene-desk-n { display: block; margin-top: 24px; }
+
+    /* S6: the mat full bleed with the phone at 240 at most, the marks, the slot. */
+    .js .pr-stear-story:not(.static) .pr-stear-mat { margin-inline: calc(-1 * var(--gutter)); border-radius: 0; }
+    .js .pr-stear-story:not(.static) .pr-stear-phone { --pw-max: 240px; }
+    .js .pr-stear-story:not(.static) .pr-stear-steps { grid-template-columns: minmax(0, 1fr); row-gap: 0; }
+    .js .pr-stear-story:not(.static) .pr-stear-row, .js .pr-stear-story:not(.static) .pr-stear-then { padding: 0; border: 0; }
+    .js .pr-stear-story:not(.static) .pr-stear-q { font-size: var(--fs-title); }
+    .js .pr-stear-story:not(.static) .pr-stear-help { font-size: var(--fs-story, 15px); line-height: 1.5; color: var(--fg-2); }
+    .js .pr-stear-story:not(.static) .pr-then-card { padding: 16px 20px; }
+    .js .pr-stear-story:not(.static) .pr-then-card .eyebrow { margin-bottom: 8px; }
+    .js .pr-stear-story:not(.static) .pr-then-body { font-size: var(--fs-story, 15px); margin-top: 6px; }
+    .js .pr-stear-story:not(.static) .pr-then-link { margin-top: 10px; }
+
+    /* S7: the mat full bleed with both phones sized by it, the marks, the slot with the current pair of sentences. */
+    .js .pr-quiz-wrap:has(> .pr-quiz-story:not(.static)) .pr-quiz-head { order: 1; }
+    .js .pr-quiz-story:not(.static) { order: 2; margin-top: 24px; }
+    .js .pr-quiz-wrap:has(> .pr-quiz-story:not(.static)) .pr-quiz-cta { order: 3; }
+    .js .pr-quiz-story:not(.static) > .story-track > .story-stage { display: flex; }
+    .js .pr-quiz-story:not(.static) .pr-quiz-copy { display: contents; }
+    .js .pr-quiz-story:not(.static) .pr-quiz-mat { order: 1; align-self: stretch; margin: 0 calc(-1 * var(--gutter)); border-radius: 0; height: auto; display: block; }
+    .js .pr-quiz-story:not(.static) .pr-quiz-body { font-size: var(--fs-story, 15px); line-height: 1.5; max-width: none; margin-top: 12px; }
+    .js .pr-quiz-story:not(.static) .pr-quiz-q { --pw: min(212px, calc((100cqh - 90px) / 2.224)); }
+    .js .pr-quiz-story:not(.static) .pr-quiz-r { --pw: min(244px, calc((100cqh - 60px) / 2.224)); }
+
+    /* S8: the phone (240 at most) with the app's bottom bar, the marks, the current row as its link. */
+    .js .pr-inside:not(.static) .pr-inside-win, .js .pr-inside:not(.static) .pr-alt-w { display: none; }
+    .js .pr-inside:not(.static) .pr-inside-phone { --pw-max: 240px; }
+    .js .pr-inside:not(.static) .pr-inside-ladder { max-width: none; }
+    .js .pr-inside:not(.static) .pr-inside-ladder > li { border: 0; padding: 0; }
+    .js .pr-inside:not(.static) .pr-inside-ladder > li::before { display: none; }
+  }
+  /* Under 380 px the front phone covers the end of the Tools hub caption: the caption drops to the front caption's line. */
+  @media (max-width: 379px) {
+    .pr-scene-l .phone figcaption { margin-top: 96px; }
+  }
+  @media (prefers-reduced-motion: no-preference) and (max-width: 734px) and (min-height: 560px) {
+    .js .pr-scene:not(.static) .pr-scene-phones { padding: 28px 0 52px; }
+    .js .pr-scene:not(.static) .pr-scene-r { --pw: min(224px, calc((100vh - var(--nav-h) - 190px) / 2.224)); --pw: min(224px, calc((100svh - var(--nav-h) - 190px) / 2.224)); }
+    .js .pr-scene:not(.static) .pr-scene-l { --pw: min(196px, calc((100vh - var(--nav-h) - 190px) / 2.542)); --pw: min(196px, calc((100svh - var(--nav-h) - 190px) / 2.542)); }
+    .js .pr-quiz-story:not(.static) .pr-quiz-q { --pw: min(150px, calc((100cqh - 40px) / 2.224)); left: 16px; bottom: 6px; }
+    .js .pr-quiz-story:not(.static) .pr-quiz-r { --pw: min(170px, calc((100cqh - 50px) / 2.224)); right: 16px; bottom: 22px; }
+  }
+
+  /* A real phone's small viewport (about 660 tall): the Then card gives up padding so STEAR's phone keeps a readable
+   * screen (at least 150 px) above the slot. */
+  @media (prefers-reduced-motion: no-preference) and (max-width: 734px) and (min-height: 560px) and (max-height: 720px) {
+    .js .pr-stear-story:not(.static) .pr-then-card { padding: 12px 16px; }
+    .js .pr-stear-story:not(.static) .pr-then-card .eyebrow { margin-bottom: 6px; }
+    .js .pr-stear-story:not(.static) .pr-then-body { margin-top: 4px; line-height: 1.45; }
+    .js .pr-stear-story:not(.static) .pr-then-link { margin-top: 8px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -596,5 +805,8 @@ const faq = [
     .js .pr-scene-phone .phone figcaption { opacity: 1; transition: none; }
     .js .pr-loop-rows > li:not(.on) .pr-loop-def { color: var(--fg-2); }
     .js .pr-loop .pr-loop-rows > li:not(.on) { color: inherit; }
+  }
+  @media (prefers-contrast: more) {
+    .js .pr-quiz-story[data-k] .pr-quiz-mat .phone { opacity: 1; }
   }
 </style>

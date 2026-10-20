@@ -2,18 +2,33 @@
 /**
  * A drawn phone in em of its screen width (BUILD_SPEC 1.6). No island, no
  * notch, no status strip: the capture fills the screen edge to edge and the
- * app's own header reads as the top of the screen. Frames are stacked
- * img.ds; the first is the rest frame. The scene engine (1.7.7) plays
- * `flow`; `loop` replays it after that many ms of idle.
+ * app's own header reads as the top of the screen. Frames are stacked `.ds`
+ * in the camera; `rest` is the frame shown outside a story, in the static
+ * layout and without the script. Nothing here moves on its own: inside a
+ * scroll story (SCROLL_SPEC 1.3, `device` set) the story engine shows the
+ * frames, moves the camera, presses the ring (.tap) and lights the halos.
+ *
+ * A screen is a plain capture, or (SCROLL_SPEC 1.3.3):
+ * - `type`: a capture with type lines (div.ds.ds-group), each a patch of the
+ *   composer's fill over one typed line, in % of the capture; the engine
+ *   types them in with the scroll. `type: []` gives a group with no lines
+ *   (a frame whose image a page transforms, so a wipe clips the frame box).
+ * - `strip`: a stitched scroll strip (div.ds.ds-strip): the capture, then
+ *   `next` from `at` em, under the first capture's fixed header band (`head`,
+ *   % of the height, default 6.2) and bottom bar (`foot`, % from the top).
+ *   `off` sets the strip's offset in em for a static figure.
+ * Every capture with a /app/{name}-390.webp variant gets a srcset, so a small
+ * phone on a 1x screen loads 390 px instead of 600 or 780 (scripts/small.mjs).
  */
 import { existsSync } from "node:fs";
-interface Screen { name: string; alt: string; w: 600 | 780; h: 1298 | 1688 }
+interface TypeLine { x: number; y: number; w: number; h: number; fill: string }
+interface Strip { next: string; at: number; head?: number; foot?: number }
+interface Screen { name: string; alt: string; w: 600 | 780; h: 1298 | 1688; type?: TypeLine[]; strip?: Strip }
+interface Halo { x: number; y: number }
 interface Props {
   screens: Screen[];
   width: number;
   eager?: boolean;
-  flow?: string;
-  loop?: number;
   rest?: number;
   shadow?: "light" | "dark";
   floor?: boolean;
@@ -24,18 +39,43 @@ interface Props {
   parallax?: number;
   tilt?: number;
   style?: string;
+  device?: string;
+  halos?: Halo[];
+  off?: number;
 }
-const { screens, width, eager = false, flow, loop, rest = 0, shadow = "light", floor = true, class: className = "", id, label, caption, parallax, tilt, style = "" } = Astro.props;
-const hasJpg = (name: string) => existsSync(new URL(`../../public/app/${name}.jpg`, import.meta.url));
+const { screens, width, eager = false, rest = 0, shadow = "light", floor = true, class: className = "", id, label, caption, parallax, tilt, style = "", device, halos = [], off } = Astro.props;
+const has = (file: string) => existsSync(new URL(`../../public/app/${file}`, import.meta.url));
+const restIdx = Math.min(Math.max(0, rest), screens.length - 1);
+const sizes = `${width}px`;
+/* One capture as an <img> (or a <picture> with the WebP source over the JPG original), with the 390 variant. */
+const pic = (name: string, w: number, h: number, cls: string | undefined, alt: string, load: { eager: boolean }, extra: Record<string, string> = {}) => {
+  const set = has(`${name}-390.webp`) ? `/app/${name}-390.webp 390w, /app/${name}.webp ${w}w` : undefined;
+  const jpg = has(`${name}.jpg`);
+  return { name, w, h, cls, alt, set, jpg, eager: load.eager, extra };
+};
+type Pic = ReturnType<typeof pic>;
+const frames = screens.map((s, i) => {
+  const lead = eager && i === restIdx;
+  const alt = label ? "" : s.alt;
+  if (s.strip) {
+    const head = s.strip.head ?? 6.2;
+    return { kind: "strip" as const, i, head, foot: s.strip.foot, at: s.strip.at,
+      first: pic(s.name, s.w, s.h, undefined, alt, { eager: lead }),
+      next: pic(s.strip.next, s.w, s.h, "ds-next", "", { eager: false }),
+      headImg: pic(s.name, s.w, s.h, "ds-head", "", { eager: lead }),
+      footImg: s.strip.foot !== undefined ? pic(s.name, s.w, s.h, "ds-foot", "", { eager: lead }) : null };
+  }
+  if (s.type) return { kind: "group" as const, i, img: pic(s.name, s.w, s.h, undefined, alt, { eager: lead }), lines: s.type };
+  return { kind: "plain" as const, i, img: pic(s.name, s.w, s.h, `ds${i === restIdx ? " on" : ""}`, alt, { eager: lead }) };
+});
 ---
 <figure
   class={`phone ${shadow === "dark" ? "phone-dark" : ""} ${className}`.trim()}
   id={id}
   style={`--pw:${width}px;${style}`}
   data-frames
-  data-flow={flow}
-  data-flow-loop={loop}
-  data-rest={rest || undefined}
+  data-device={device}
+  data-rest={restIdx || undefined}
   data-parallax={parallax}
   data-tilt={tilt}
   role={label ? "img" : undefined}
@@ -44,29 +84,37 @@ const hasJpg = (name: string) => existsSync(new URL(`../../public/app/${name}.jp
   <div class="phone-screen">
     <span class="slot" aria-hidden="true"></span>
     <div class="cam">
-      {screens.map((s, i) => {
-        const img = (
-          <img
-            class={`ds${i === 0 ? " on" : ""}`}
-            src={hasJpg(s.name) ? `/app/${s.name}.jpg` : `/app/${s.name}.webp`}
-            alt={label ? "" : s.alt}
-            width={s.w}
-            height={s.h}
-            sizes={`${width}px`}
-            decoding="async"
-            loading={eager && i === 0 ? "eager" : "lazy"}
-            fetchpriority={eager && i === 0 ? "high" : undefined}
-          />
-        );
-        return hasJpg(s.name) ? (
+      {frames.map((f) => {
+        /* One capture as an <img>, or a <picture> with the WebP source when a JPG original exists. */
+        const img = (p: Pic, st?: string) => p.jpg ? (
           <picture>
-            <source type="image/webp" srcset={`/app/${s.name}.webp`} />
-            {img}
+            <source type="image/webp" srcset={p.set || `/app/${p.name}.webp`} sizes={p.set ? sizes : undefined} />
+            <img class={p.cls} src={`/app/${p.name}.jpg`} alt={p.alt} width={p.w} height={p.h} style={st} decoding="async" loading={p.eager ? "eager" : "lazy"} fetchpriority={p.eager ? "high" : undefined} />
           </picture>
-        ) : img;
+        ) : (
+          <img class={p.cls} src={`/app/${p.name}.webp`} srcset={p.set} sizes={p.set ? sizes : undefined} alt={p.alt} width={p.w} height={p.h} style={st} decoding="async" loading={p.eager ? "eager" : "lazy"} fetchpriority={p.eager ? "high" : undefined} />
+        );
+        if (f.kind === "plain") return img(f.img);
+        if (f.kind === "group") return (
+          <div class={`ds ds-group${f.i === restIdx ? " on" : ""}`}>
+            {img(f.img)}
+            {f.lines.map((l) => <i class="type-line" aria-hidden="true" style={`--x:${l.x};--y:${l.y};--w:${l.w};--h:${l.h};--fill:${l.fill}`}></i>)}
+          </div>
+        );
+        return (
+          <div class={`ds ds-strip${f.i === restIdx ? " on" : ""}`} style={`--head:${f.head}%;${f.foot !== undefined ? `--foot:${f.foot}%` : ""}`}>
+            {img(f.headImg)}
+            <div class="scroll-body" style={off !== undefined && f.i === restIdx ? `--off:${off}` : undefined}>
+              {img(f.first, "top:0")}
+              {img(f.next, `top:${f.at}em`)}
+            </div>
+            {f.footImg && img(f.footImg)}
+          </div>
+        );
       })}
     </div>
     <span class="tap" aria-hidden="true"></span>
+    {halos.map((h, i) => <i class="halo" data-halo={i} aria-hidden="true" style={`--x:${h.x};--y:${h.y}`}></i>)}
   </div>
   {floor && <i class="phone-floor" aria-hidden="true"></i>}
   {caption && <figcaption class="t-cap-i">{caption}</figcaption>}

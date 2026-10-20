@@ -1,0 +1,31 @@
+---
+/**
+ * A scroll story's progress marks (SCROLL_SPEC 1.3.5): a nav of buttons, one
+ * per step, each named by its step's own locked text. The story engine sets
+ * aria-current="step" on the current one and fills each bar from the left
+ * with the scroll (past steps full, the current one by its progress). Enter,
+ * Space or a click scrolls to that step; the arrow keys move between marks.
+ * Hidden in the static layout (reduced motion, no script, short screens),
+ * where every step is already on the page.
+ *
+ * `variant="words"` (the IOS workflow): the visible label is each button's
+ * own text, `sep` stays as text between them (aria-hidden), and a 1 px rule
+ * under the line fills with the story; the words read as the locked line.
+ */
+interface Props { labels: string[]; label: string; variant?: "bars" | "words"; sep?: string; class?: string; style?: string }
+const { labels, label, variant = "bars", sep = "→", class: className = "", style } = Astro.props;
+---
+{variant === "words" ? (
+  <nav class={`story-marks story-marks-words ${className}`.trim()} aria-label={label} style={style}>
+    <p class="t-folio story-words">
+      {labels.map((l, i) => (
+        <Fragment>{i > 0 && <span aria-hidden="true"> {sep} </span>}<button type="button" data-go={i}>{l}</button></Fragment>
+      ))}
+    </p>
+    <span class="story-marks-rule" aria-hidden="true"><i></i></span>
+  </nav>
+) : (
+  <nav class={`story-marks ${className}`.trim()} aria-label={label} style={style}>
+    {labels.map((l, i) => <button type="button" data-go={i} aria-label={l}><i></i></button>)}
+  </nav>
+)}

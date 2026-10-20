@@ -7,7 +7,7 @@ const updated = "October 19, 2026";
   <article class="wrap pt-[120px] pb-24 max-w-[760px] prose-ib">
     <p class="eyebrow">Privacy policy</p>
     <h1 class="mt-4 text-[38px] sm:text-[48px] text-ink">What this site collects, and what it does with it.</h1>
-    <p class="mt-3 text-[14px] text-ink-faint">Last updated {updated}. This policy covers innerboardsuite.com. Practice by InnerBoard, the app, has its own policy inside the app.</p>
+    <p class="mt-3 text-[15px] text-ink-faint">Last updated {updated}. This policy covers innerboardsuite.com. Practice by InnerBoard, the app, has its own policy inside the app.</p>
     <h2>What we collect</h2>
     <p>This site is a set of pages. It does not ask you to create an account and nothing is purchased on it directly. When you visit, our hosting provider records the standard technical details every web server sees: your IP address, browser, the pages you open and the time you opened them. We use these to keep the site running and to understand which pages people read.</p>
     <p>If analytics is enabled on this site, it records which buttons are pressed (for example, that somebody opened the quiz or asked to book a conversation) so we can see what is useful. These events carry no name or email address.</p>
@@ -23,6 +23,11 @@ const updated = "October 19, 2026";
     <p>You can read this site without accepting anything. To ask what we hold about you, to correct it, or to have it deleted, write to <a href={`mailto:${LINKS.contactEmail}`}>{LINKS.contactEmail}</a>.</p>
     <h2>Changes</h2>
     <p>If this policy changes, the date at the top changes with it.</p>
-    <p class="text-[14px] text-ink-faint">Written in plain language; to be reviewed by counsel before launch.</p>
+    <p class="text-[15px] text-ink-faint">Written in plain language; to be reviewed by counsel before launch.</p>
   </article>
 </Base>
+
+<style>
+  /* The address sits in a sentence, so its tap target grows by padding alone (an inline box: the lines do not move). */
+  .prose-ib a { padding-block: 12px; }
+</style>
