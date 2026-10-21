@@ -33,9 +33,9 @@ import HomeHeroPlate from "../components/HomeHeroPlate.astro";
 import HomeQuizStill from "../components/HomeQuizStill.astro";
 import { LINKS } from "../config/links";
 
-const title = "InnerBoard · A new way to meet this life";
+const title = "InnerBoard · You don't need a different life";
 const description =
-  "A few minutes a day to think more clearly, feel more confident, and choose what comes next, with a coach in your pocket. Practice, Academy, INQ and InnerBoard IOS.";
+  "A few minutes a day to think more clearly, feel more confident, and choose what comes next with a coach in your pocket. Learn it. Live it. Lead it. Practice it.";
 
 /* S2, the Practice navy panel: the phone's frames, in the order the acts index them (STORY_V2 2.3). Frame 0 is the
  * hero's own capture, so the story opens on the screen the reader has just scrolled away from. Every step shows its
@@ -66,13 +66,13 @@ const features = [
     act: '{"panel":{"f":0,"tap":[42,26.6,.18],"next":[.22,1],"type":[.28,.7]}}' },
   { eyebrow: "Coach", icon: "dare", name: "The Daily Dare", body: "One small thing to do before the day ends. A new one every day.", w: 1,
     alt: "The home after the Dare is checked, with the star line.", st: panelScreens[2],
-    act: '{"panel":{"f":0,"cam":[[.12,1,50,50],[.3,1.06,50,62],[.74,1.06,50,62],[.88,1,50,50]],"tap":[19,69.2,.5],"next":[.54,2]}}' },
+    act: '{"panel":{"f":0,"tap":[19,69.2,.5],"next":[.54,2]}}' },
   { eyebrow: "Academy", icon: "courses", name: "Courses", body: "Go deeper on what you're living, from your thoughts and feelings to relationships and confidence.", w: 1,
     alt: "The ring taps Academy in the app's bottom bar: the Academy, with InnerBoard 101 to start and the Human Foundations courses.", st: panelScreens[3],
-    act: '{"panel":{"f":3,"in":[26.7,95.4],"cam":[[.14,1,50,50],[.38,1.06,50,62],[.7,1.06,50,62],[.88,1,50,50]]}}' },
+    act: '{"panel":{"f":3,"in":[26.7,95.4]}}' },
   { eyebrow: "Inner Lab", icon: "live", name: "Live Sessions and Community", body: "Monthly masterclasses, coaching labs, and a room where nobody has to figure it out alone.", w: 1,
     alt: "The ring taps Inner Lab in the app's bottom bar: Inner Lab for October, with The Masterclass, open to anybody.", st: panelScreens[4],
-    act: '{"panel":{"f":4,"in":[42.2,95.4],"cam":[[.14,1,50,50],[.38,1.06,50,26],[.7,1.06,50,26],[.88,1,50,50]]}}' },
+    act: '{"panel":{"f":4,"in":[42.2,95.4]}}' },
   { eyebrow: "Tools", icon: "tools", name: "Tools for the Moment", body: "For when you're reacting right now: a breath, a reset, and your next move.", w: 1.2,
     alt: "From Inner Lab, the ring taps Tools: the Tools hub, then Pause + Redirect, one breath.", st: panelScreens[6],
     act: '{"panel":{"f":5,"in":[88.8,95.4],"tap":[40,60.2,.52],"next":[.56,6]}}' }
@@ -88,16 +88,17 @@ const quizCost = { name: "quiz-cost", alt: "The quiz result scrolled to what it'
 const quizStep = { name: "quiz-first-step", alt: "The quiz result scrolled to your first step: buy yourself a beat, decide what you actually want, then answer with that.", w: 600, h: 1298 } as const;
 const quizBenefits = [
   { name: "4 minutes to complete", body: "Quick, simple, and insightful.", alt: quizQ1.alt, fig: quizQ1, w: 1,
-    act: '{"quiz":{"f":0,"cam":[[.14,1,50,50],[.38,1.06,50,22],[.68,1.06,50,22],[.86,1,50,50]]}}' },
+    act: '{"quiz":{"f":0}}' },
   { name: "Personalized results", body: "See what might be auto-renewing in your life.", alt: quizResult.alt, fig: quizResult, w: 1,
-    act: '{"quiz":{"f":1,"cam":[[.14,1,50,50],[.36,1.06,50,24],[.7,1.06,50,24],[.88,1,50,50]]}}' },
+    act: '{"quiz":{"f":1}}' },
   { name: "Discover the unseen cost", body: "What it could be costing you in time, energy, confidence, peace, and relationships.", alt: quizCost.alt, fig: quizCost, w: 1,
-    act: '{"quiz":{"f":2,"cam":[[.14,1,50,50],[.36,1.06,50,26],[.7,1.06,50,26],[.88,1,50,50]]}}' },
+    act: '{"quiz":{"f":2}}' },
   { name: "One thing to do differently", body: "Your gift: a simple next step you can try right away.", alt: quizStep.alt, fig: quizStep, w: 1.2,
-    act: '{"quiz":{"f":3,"cam":[[.12,1,50,50],[.32,1.06,50,16],[.74,1.06,50,16],[.88,1,50,50]]}}' }
+    act: '{"quiz":{"f":3}}' }
 ];
 ---
-<Base title={title} description={description} path="/">
+<Base title={title} description={description} path="/"
+  preload={{ href: "/app/home.webp", srcset: "/app/home-390.webp 390w, /app/home.webp 600w", sizes: "400px", type: "image/webp" }}>
   <!-- 1. Hero: the copy and the phone on the Coach home, one first screen. It does not pin; it ends 40 px above the
        fold, so the Practice navy panel's top edge shows under it (STORY_V2 2.2). -->
   <section class="hm-hero grain grain-cream" data-tone="cream">

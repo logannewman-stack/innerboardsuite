@@ -38,9 +38,19 @@
 
 /* 1.7.3 Line rise */
 .hl { display: block; }
-.js .lines-ready .l { display: block; overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
+/* Each rendered line is its own mask while the words rise into it. The mask reaches .32em below the line box (and
+ * gives it back in negative margin): with the headings' tight leading the italic descenders (y, g, p) run past the
+ * line box, and the first build's .08em cut them after the rise. The heading is its own formatting context
+ * (flow-root), so the last line's negative margin stays inside it and the split lays out exactly as the unsplit
+ * heading did (no shift when the lines are grouped after the fonts load). */
+.js .lines-ready { display: flow-root; }
+.js .lines-ready .l { display: block; overflow: hidden; padding-bottom: .32em; margin-bottom: -.32em; }
 .js .lines-ready .w { display: inline-block; transform: translateY(110%); opacity: 0; transition: transform 1.1s var(--slow), opacity 1.1s var(--slow); transition-delay: calc(var(--l, 0) * 90ms + var(--d, 0s)); }
 .js .lines-ready.in .w { transform: none; opacity: 1; }
+/* In the four heroes the headline's words never start transparent: they rise into their line's mask, which hides
+ * them until they do, so the headline paints at once (it is the Academy's and INQ's largest paint, LCP). */
+.js :is(.hm-hero, .pr-hero, .ac-hero, .inq-hero) .lines-ready .w { opacity: 1; transition-property: transform; }
+.js :is(.hm-hero, .pr-hero, .ac-hero, .inq-hero) .lines-ready:not(.in) .w { transform: translateY(140%); }
 
 /* 1.7.4 Lit statement */
 /* Prefixed .js so a server rendered span.lw (a "lines" statement) reads in
@@ -75,7 +85,7 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
 
 /* 1.7.7 Scene: frames, cursor and ring are written by the story engine; none of them has a transition of its
  * own except the cursor's 100 ms press. Without the script the ring, the cursor and the halos are hidden. */
-.reset .ds, .reset .win-screen .cur, .cam.cam-reset { transition: none !important; }
+.reset .ds, .reset .win-screen .cur { transition: none !important; }
 .no-js .win-screen .cur, .no-js .tap, .no-js .halo { display: none; }
 
 /* 1.7.12 Parallax: --hy is written on html by the loop, --py from the attribute. */
@@ -109,18 +119,16 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
  * one element class (.my-story .story-stage) wins over these defaults.
  * Heights that set a scroll distance or a stage size are svh (stable when the address bar moves).
  *
- * Two layouts share the mechanics. The step layout (Story v2, STORY_V2 part 1, `data-story-ui="steps"` on the
- * root): the device pinned on one side with the segmented rail and its counter, one step's copy at a time on the
- * other, the copy and the screen changing together. The legacy layouts (list and slot, any story without
- * data-story-ui) keep their rules below, keyed :not([data-story-ui="steps"]), until their pages convert. */
+ * Every story is on the step layout (Story v2, STORY_V2 part 1, `data-story-ui="steps"` on the root): the device
+ * pinned on one side with the segmented rail and its counter, one step's copy at a time on the other, the copy
+ * and the screen changing together. (The first list and slot layouts are gone with the pages that used them.) */
 @media screen and (prefers-reduced-motion: no-preference) and (min-width: 1069px) and (min-height: 600px),
        screen and (prefers-reduced-motion: no-preference) and (max-width: 1068px) and (min-height: 560px) {
-  /* Both layouts: the run, the stick, the marks shown, the static figures and alts out of view. */
+  /* The run, the stick, the rail shown, the static figures and alts out of view. */
   :where(.js [data-story]:not(.static)) .story-run { display: block; height: calc(var(--story-w, 1) * var(--step-l, 75svh)); }
   :where(.js [data-story]:not(.static)) .story-stage { position: sticky; top: var(--story-stick, calc(var(--story-top) + var(--story-gap)));
     height: calc(100vh - var(--story-top) - var(--story-gap)); height: calc(100svh - var(--story-top) - var(--story-gap)); }
   :where(.js [data-story]:not(.static)) .story-marks { display: flex; }
-  :where(.js [data-story]:not(.static)) .story-bar { display: block; }
   :where(.js [data-story]:not(.static)) .story-static { display: none; }
   :where(.js [data-story]:not(.static)) .story-alt { display: block; position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
   /* While pinned only: the layers that move get their own compositor layer. */
@@ -130,20 +138,6 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
   :where(.js [data-story].is-anchored.is-pinned:not(.static)) > .story-track > .story-stage {
     -webkit-mask-image: linear-gradient(to bottom, transparent calc(var(--anchor-y, 0px) - 8px), #000 var(--anchor-y, 0px));
     mask-image: linear-gradient(to bottom, transparent calc(var(--anchor-y, 0px) - 8px), #000 var(--anchor-y, 0px)); }
-
-  /* Legacy: the device box is the size container; a phone sized from its box (add .story-phone to the box or a
-   * wrapper inside it, set --pw-max, and give the PhoneFrame style="--pw:inherit"); a window wrapped (with its
-   * caption) in .story-win inside the box, --cap-h the caption row under it. */
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-device-box { display: grid; place-items: center; position: relative; min-height: 0; container-type: size; }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-phone { --pw: min(var(--pw-max, 300px), calc((100cqh - 24px) / 2.224)); }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-win { width: min(100%, calc((100cqh - var(--cap-h, 40px)) / .657)); }
-  /* Legacy slot mode: the steps share one grid cell (the slot is as tall as the tallest step and never changes
-   * height) and only the current one is shown, with the dip timing, so two texts are never both above .2.
-   * Hidden steps stay in the accessibility tree; a link in one is still focusable (focus makes it current). */
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) [data-story-text="slot"] { display: grid; }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) [data-story-text="slot"] > .story-step { grid-area: 1 / 1; opacity: 0; pointer-events: none; transition: opacity .14s var(--ease); }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) [data-story-text="slot"] > .story-step.is-current { opacity: 1; pointer-events: auto; transition: opacity .26s var(--ease) .11s; }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-sub { transition: opacity .35s var(--ease); }
 
   /* ── Story v2, both layouts (STORY_V2 1.3 to 1.7) ───────────────────────
    * The stage holds the device column (.story-device-col: the rail, then the device box) and the copy column
@@ -222,41 +216,16 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
   :where(.js [data-story-ui="steps"]:not(.static)) .story-count-k { color: var(--fg); }
 }
 
-/* Legacy wide: a twelve column stage, the device box in 1 to 6, the step text in 8 to 12, the marks under the box.
- * Sections place their own; these are only the defaults. */
+/* Wide: a step that exists in the narrow layout only is hidden. */
 @media screen and (prefers-reduced-motion: no-preference) and (min-width: 1069px) and (min-height: 600px) {
   :where(.js [data-story]:not(.static)) [data-only="narrow"] { display: none; }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-stage { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr) auto; column-gap: var(--gap); align-items: center; }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-device-box { grid-column: 1 / span 6; grid-row: 1; align-self: stretch; }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-steps { grid-column: 8 / span 5; grid-row: 1 / span 2; }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-marks { grid-column: 1 / span 6; grid-row: 2; justify-self: center; margin-top: 16px; }
-  /* List mode (wide only; narrow is always a slot): every step in view, the current one at full colour, the rest dimmed. */
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) [data-story-text="list"] > .story-step { transition: opacity .35s var(--ease); }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) [data-story-text="list"] > .story-step.is-dim { opacity: var(--story-dim, .42); }
-  /* Sub blocks: all in view, the current one lit. */
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-step.is-current .story-sub:not(.is-current) { opacity: var(--story-dim-sub, .55); }
 }
-/* Legacy narrow: a column under the header: the device box (it takes what is left, up to 60svh), the marks, then
- * the slot with the current step, set a step smaller so the device keeps its size on a real phone (whose small
- * viewport is about 660 px tall). Every story uses slot mode here, whatever its wide mode; a step with sub
- * blocks shows one at a time. */
+/* Narrow: the run at the narrow step length; a step that exists in the wide layout only is hidden. */
 @media screen and (prefers-reduced-motion: no-preference) and (max-width: 1068px) and (min-height: 560px) {
   :where(.js [data-story]:not(.static)) .story-run { height: calc(var(--story-w-n, var(--story-w, 1)) * var(--step-l-n, var(--step-l, 66svh))); }
   :where(.js [data-story]:not(.static)) [data-only="wide"] { display: none; }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-stage { display: flex; flex-direction: column; justify-content: center; }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-device-box { order: 1; flex: 1 1 0; max-height: 60vh; max-height: 60svh; }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-marks { order: 2; flex: none; margin: 12px auto 0; }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-steps { order: 3; flex: none; display: grid; margin-top: 12px; padding-bottom: 16px; }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-steps > .story-step { grid-area: 1 / 1; opacity: 0; pointer-events: none; transition: opacity .14s var(--ease); }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-steps > .story-step.is-current { opacity: 1; pointer-events: auto; transition: opacity .26s var(--ease) .11s; }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-step:has(> .story-sub, > .story-subs) { display: grid; }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-subs { display: contents; }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) :is(.story-step, .story-subs) > .story-sub { grid-area: 1 / 1; opacity: 0; transition: opacity .14s var(--ease); }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) :is(.story-step, .story-subs) > .story-sub.is-current { opacity: 1; transition: opacity .26s var(--ease) .11s; }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-steps :is(.t-s, .t-m, .ladder-name, .story-name) { font-size: var(--fs-title); line-height: 1.2; }
-  :where(.js [data-story]:not(.static, [data-story-ui="steps"])) .story-steps :is(.t-body, .t-lead, .ladder-body, .story-body) { font-size: var(--fs-story, 15px); line-height: 1.5; color: var(--fg-2); }
 }
-/* A real phone's small viewport (about 660 tall): the slot's bodies one step smaller (SCROLL_SPEC 1.4.3), so the
+/* A real phone's small viewport (about 660 tall): the step bodies one step smaller (SCROLL_SPEC 1.4.3), so the
  * device keeps a readable size. */
 @media screen and (prefers-reduced-motion: no-preference) and (max-width: 734px) and (min-height: 560px) and (max-height: 720px) {
   :root { --fs-story: 14.5px; }
@@ -302,6 +271,8 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
   :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button::before,
   :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button > i { left: 21px; width: 2px; top: 0; bottom: 0; }
   :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button > i { transform-origin: 50% 0; transform: scaleY(var(--f, 0)); }
+  /* Each segment's hit area takes half of the gap on either side, so the rail has no dead space between targets. */
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button::after { content: ""; position: absolute; inset: -4px 0; }
   :where(.js [data-story-ui="steps"]:not(.static)) .story-count { padding-left: .16em; }
 }
 
@@ -320,7 +291,9 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
   :where(.js [data-story-ui="steps"]:not(.static)) .story-rail { flex-direction: row; width: min(100%, 560px); height: 16px; margin-top: 10px; }
   :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars { flex-direction: row; flex: 1 1 auto; gap: 6px; height: 16px; }
   :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button { height: 16px; }
-  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button::after { content: ""; position: absolute; inset: -14px 0; }
+  /* 44 px tall hit areas, and each takes half of the gap on either side (a segment is 42 px wide on a 375 phone, so
+   * its target is 48). */
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button::after { content: ""; position: absolute; inset: -14px -3px; }
   :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button::before,
   :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button > i { left: 0; right: 0; top: 7px; height: 2px; }
   :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button > i { transform-origin: 0 50%; transform: scaleX(var(--f, 0)); }
@@ -378,9 +351,10 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
 @media screen and (prefers-reduced-motion: no-preference) and (max-width: 1068px) and (min-height: 560px) {
   :where(.js .day:not(.static)) .day-stage { padding: 10px 16px 42px; }
   :where(.js .day:not(.static)) .day-rail { position: absolute; right: 16px; top: 50%; bottom: auto; translate: 0 -50%; flex-direction: column; width: 56px; height: auto; margin: 0; gap: 14px; }
-  :where(.js .day:not(.static)) .day-rail .story-rail-bars { flex: none; flex-direction: column; gap: 8px; width: 44px; height: clamp(160px, 38cqh, 320px); }
+  /* At least 212 px tall, so each of the five segments, with half of the gap on either side, is a 44 px target. */
+  :where(.js .day:not(.static)) .day-rail .story-rail-bars { flex: none; flex-direction: column; gap: 8px; width: 44px; height: clamp(212px, 38cqh, 320px); }
   :where(.js .day:not(.static)) .day-rail .story-rail-bars > button { height: auto; }
-  :where(.js .day:not(.static)) .day-rail .story-rail-bars > button::after { inset: 0; }
+  :where(.js .day:not(.static)) .day-rail .story-rail-bars > button::after { inset: -4px 0; }
   :where(.js .day:not(.static)) .day-rail .story-rail-bars > button::before,
   :where(.js .day:not(.static)) .day-rail .story-rail-bars > button > i { left: 21px; right: auto; width: 2px; top: 0; bottom: 0; height: auto; }
   :where(.js .day:not(.static)) .day-rail .story-rail-bars > button > i { transform-origin: 50% 0; transform: scaleY(var(--f, 0)); }
@@ -414,9 +388,7 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
 .js [data-tilt].tilt-on:hover { transition-duration: 120ms; }
 .js [data-tilt][data-parallax].tilt-on { transform: translate3d(0, calc(var(--hy, 0) * var(--py, 0) * 1px), 0) perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
 
-/* Legacy attribute aliases kept alive: data-words (line rise) and
- * data-scrollwords (lit) are handled by the script; .words-ready and .sw
- * from the first build are no longer emitted. */
+/* Attribute aliases kept alive: data-words (line rise) and data-scrollwords (lit) are handled by the script. */
 
 /* ── Reduced motion: nothing moves, nothing is hidden, stages are static ── */
 @media (prefers-reduced-motion: reduce) {

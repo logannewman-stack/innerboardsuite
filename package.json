@@ -11,7 +11,8 @@
     "sweep": "node scripts/sweep.mjs",
     "tiles": "node scripts/tiles.mjs",
     "desk2x": "node scripts/desk2x.mjs",
-    "small": "node scripts/small.mjs"
+    "small": "node scripts/small.mjs",
+    "scrolled": "node scripts/scrolled.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.6.0",

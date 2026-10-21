@@ -55,7 +55,5 @@ export const LINKS = {
 export const SITE = {
   name: "InnerBoard",
   url: "https://innerboardsuite.com",
-  description:
-    "InnerBoard is self-leadership from the inside out: Practice, the daily app; the Academy, the curriculum school never offered; INQ Certification for coaches; and InnerBoard IOS for organizations.",
   founder: "Leah Roling"
 } as const;

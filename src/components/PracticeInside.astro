@@ -31,6 +31,11 @@ import { LINKS } from "../config/links";
 /* Inner Lab fades out under The Masterclass card: on a desk the rail stays whole (x under 17.3%) and the main
  * column fades from y 33.6%; on a phone the screen fades from y 38% and the bottom bar stays. */
 const deskLabFade = "linear-gradient(to right, #000 17.3%, transparent 17.3%), linear-gradient(to bottom, #000 33.6%, transparent 35.4%)";
+/* The Academy and the Track run on past the bottom of their desk captures, which ends mid line ("Practice
+ * Thresholds", "The Company OS Score"): the main column fades out in the space above that line (under
+ * "Understanding Your Patterns", under the Baseline card), so no word is cut at the window's edge. */
+const deskAcademyFade = "linear-gradient(to right, #000 17.3%, transparent 17.3%), linear-gradient(to bottom, #000 97%, transparent 98.6%)";
+const deskTrackFade = "linear-gradient(to right, #000 17.3%, transparent 17.3%), linear-gradient(to bottom, #000 94.6%, transparent 96.6%)";
 const phoneLabFade = "linear-gradient(to bottom, #000 38%, transparent 40.6%, transparent 91.3%, #000 91.8%)";
 const caps = [
   "The Coach home, on a desk.",
@@ -41,10 +46,10 @@ const caps = [
 ];
 const win = [
   { name: "desk-coach-draft", alt: "Practice on a desk: the Daily Practice Coach with a sentence typed, the Dare of the Day, Set Up Your Day and the October calendar." },
-  { name: "desk-academy-courses", alt: "The Academy on a desk, with Academy open in the rail: InnerBoard 101 to start, and the Human Foundations courses." },
+  { name: "desk-academy-courses", alt: "The Academy on a desk, with Academy open in the rail: InnerBoard 101 to start, and the Human Foundations courses.", fade: deskAcademyFade },
   { name: "desk-lab-masterclass", alt: "Inner Lab on a desk, with Inner Lab open in the rail: October, live it, and The Masterclass, open to anybody.", fade: deskLabFade },
   { name: "desk-score-upstream-result", alt: "A Company OS Score result on a desk, with The Book open in the rail." },
-  { name: "desk-track-home", alt: "The Track page on a desk, with InnerBoard OS open in the rail." }
+  { name: "desk-track-home", alt: "The Track page on a desk, with InnerBoard OS open in the rail.", fade: deskTrackFade }
 ];
 const phone = [
   { name: "coach-draft", alt: "The Daily Practice Coach on a phone, with the app's bottom bar.", w: 780 as const, h: 1688 as const },

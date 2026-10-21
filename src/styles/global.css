@@ -104,7 +104,7 @@
   --fs-lead: clamp(17px, .5vw + 10.5px, 22px);
   --fs-body: clamp(16px, .35vw + 11px, 18px);
   --fs-small: clamp(14.5px, .25vw + 11px, 15px);
-  --fs-eyebrow: clamp(11px, .15vw + 9.5px, 12.5px);
+  --fs-eyebrow: clamp(12px, .15vw + 9.5px, 12.5px);
   --fs-cap: 13px;
   --fs-cap-i: 14px;
   --fs-folio: 12px;
@@ -177,9 +177,9 @@
 .theme-teal[data-theme="ink"] { --accent: #f7f4ee; --focus: #f7f4ee; }
 [data-theme="teal"]     { --bg: #1e5b57; --fg: #ffffff; --fg-2: rgba(255,255,255,.78); --fg-3: rgba(255,255,255,.6); --line: rgba(255,255,255,.18); --line-strong: rgba(255,255,255,.4); --accent: #ffffff; --btn-line: rgba(255,255,255,.4); --btn-hover: rgba(255,255,255,.08); --lit-off: rgba(255,255,255,.55); --focus: #ffffff; --dark: 1; }
 
-/* Dark surfaces on cream pages (the plate, the Practice navy and navy panels, flip
+/* Dark surfaces on cream pages (the Practice navy and navy panels, the flip
  * backs) carry their own text tokens so nothing inside follows the page. */
-[data-surface="dark"], .surface-dark, .on-dark {
+[data-surface="dark"], .surface-dark {
   --fg: #f4efe4; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(244,239,228,.14); --line-strong: rgba(244,239,228,.32);
   --accent: #c9ab66; --btn-line: rgba(244,239,228,.32); --btn-hover: rgba(244,239,228,.06); --lit-off: rgba(244,239,228,.4); --focus: #c9ab66; --dark: 1;
   color: var(--fg);
@@ -206,14 +206,14 @@
     overflow-x: clip;
     transition: background-color .5s var(--ease), color .5s var(--ease);
   }
-  h1, h2, h3, .display {
+  h1, h2, h3 {
     font-family: var(--font-display);
     font-weight: 500;
     letter-spacing: -0.02em;
     line-height: 1.05;
     text-wrap: balance;
   }
-  h1 em, h2 em, h3 em, .display em, .t-xl em, .t-l em, .t-m em, .t-s em, .t-state em { font-style: italic; font-weight: 400; }
+  h1 em, h2 em, h3 em, .t-xl em, .t-l em, .t-m em, .t-s em, .t-state em { font-style: italic; font-weight: 400; }
   p { text-wrap: pretty; }
   [id] { scroll-margin-top: 96px; }
   :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 6px; }
@@ -229,13 +229,9 @@
   /* ── 1.1 Containers and the twelve column grid ─────────────────────── */
   .wrap { width: min(100% - 2 * var(--gutter), var(--max)); margin-inline: auto; }
   .wrap-wide { width: min(100% - 2 * max(20px, 2.8vw, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px)), var(--max-wide)); margin-inline: auto; }
-  /* The twelve column grid. The :not() guard keeps it off the legacy pages'
-   * Tailwind `grid gap-* md:grid-cols-*` usage until stage three removes them. */
+  /* The twelve column grid. The :not() guard keeps it off an element that lays itself out with Tailwind's
+   * `grid gap-* lg:grid-cols-*` utilities (the contact page's three cards). */
   .grid:not([class*="grid-cols-"]):not([class*="gap-"]) { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
-  .sec { padding-block: var(--sec); }
-  .sec-lg, .sec-l { padding-block: var(--sec-l); }
-  .sec-sm, .sec-s { padding-block: var(--sec-s); }
-  .sec-m { padding-block: var(--sec); }
   /* The alternate tint, feathered over 72 px at both edges so the bands never meet in a hard line. It is
    * an image layer (--tone-tint) so the tone floor below composes with it. */
   .sec-alt { --tone-tint: linear-gradient(to bottom, transparent, rgba(110,87,36,.06) 72px, rgba(110,87,36,.06) calc(100% - 72px), transparent); background-image: var(--tone-tint); }
@@ -267,8 +263,6 @@
    * so it never starts in one either. A page can override the mask on its own lamp. */
   [data-tone] > .lamp, [data-tone] > i.grain, [data-tone].grain::after { -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent); mask-image: linear-gradient(to bottom, #000 55%, transparent); }
   main > [data-tone]:not(:first-child) > :is(.lamp, i.grain), main > [data-tone].grain:not(:first-child)::after { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 200px, #000 55%, transparent); mask-image: linear-gradient(to bottom, transparent 0, #000 200px, #000 55%, transparent); }
-  .hairline { border-top: 1px solid var(--line); }
-  .dark-rule { border-top: 1px solid var(--line); }
   .rule-gold { height: 1px; border: 0; background: linear-gradient(90deg, transparent, var(--line-gold) 12% 88%, transparent); }
   .rule-gold-v { width: 1px; background: linear-gradient(180deg, transparent, var(--line-gold) 12% 88%, transparent); }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
@@ -293,8 +287,8 @@
   @media (max-width: 734px) { .t-xl { line-height: .98; } .t-state { line-height: 1.28; } }
   /* The italic: Fraunces italic 400 in the section's accent (antique gold on cream, gold-2 on the dark grounds,
    * teal on the Academy and INQ, white on teal, ivory on their dark close). BRAND_FIX S2. */
-  :is(h1, h2, h3, .display, .t-xl, .t-l, .t-m, .t-s, .t-state, .t-s-quote) em { font-style: italic; font-weight: 400; color: var(--accent); }
-  .lead-phrase, .lb { color: var(--fg); font-weight: 500; }
+  :is(h1, h2, h3, .t-xl, .t-l, .t-m, .t-s, .t-state, .t-s-quote) em { font-style: italic; font-weight: 400; color: var(--accent); }
+  .lb { color: var(--fg); font-weight: 500; }
   .quote-hang { hanging-punctuation: first; }
   @supports not (hanging-punctuation: first) { .quote-hang { text-indent: -.38em; } }
   .amp { font-family: var(--font-display); font-style: italic; font-weight: 400; color: var(--accent); }
@@ -340,11 +334,6 @@
     .btn-cream:hover { background: #ffffff; }
     .btn-teal:hover { background: #174845; }
     .btn-line-teal:hover { background: #e3ece9; }
-    .btn-outline:hover { background: var(--btn-hover); }
-    .btn-outline-light:hover { background: rgba(244,239,228,.06); }
-    .btn-outline-teal:hover { background: #e3ece9; }
-    .btn-dark:hover { background: #1f1d1a; }
-    .btn-practice:hover { background: #174270; }
     .link:hover, .link-arrow:hover { text-decoration: underline; }
     .link:hover svg, .link-arrow:hover svg { transform: translateX(3px); }
     .q-btn:hover .q-ico { color: var(--accent); }
@@ -354,12 +343,6 @@
   .btn-sm { height: 40px; padding: 0 18px; font-size: 14px; }
   @media (max-width: 734px) { .btn { height: 48px; } .btn-lg { height: 56px; } .btn-sm { height: 40px; } }
   @media (pointer: coarse) { .btn-sm { height: 44px; } }
-  /* Legacy names from the first build, mapped onto the pill system. */
-  .btn-outline { box-shadow: inset 0 0 0 1px var(--btn-line); color: var(--fg); }
-  .btn-outline-light { box-shadow: inset 0 0 0 1px rgba(244,239,228,.32); color: #f4efe4; }
-  .btn-outline-teal { box-shadow: inset 0 0 0 1px #1e5b57; color: #1e5b57; }
-  .btn-dark { background: #26231f; color: #f4efe4; }
-  .btn-practice { background: #0d3054; color: #f4efe4; }
 
   /* ── Text link ───────────────────────────────────────────────────────── */
   .link, .link-arrow { display: inline-flex; align-items: center; gap: .45em; font-family: var(--font-sans); font-size: var(--fs-small); font-weight: 500; letter-spacing: -.005em; line-height: 1; color: var(--accent); text-decoration: none; text-underline-offset: .22em; text-decoration-thickness: 1px; }
@@ -381,7 +364,6 @@
   .paper-lift { transition: transform 200ms var(--hover), box-shadow 200ms var(--hover); }
   .mat { position: relative; overflow: visible; background: #ebe4d5; border-radius: var(--r-lg); box-shadow: inset 0 1px 2px rgba(31,29,26,.06), inset 0 0 0 1px rgba(31,29,26,.05); }
   .mat-blush { background: radial-gradient(60% 55% at 88% 0%, rgba(201,171,102,.22), transparent 70%), linear-gradient(160deg, #efe6d6 0%, #f0e1d8 58%, #ece0c9 100%); }
-  .plate { position: relative; overflow: hidden; background: #0d1a2d; border-radius: var(--r-lg); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); }
   .panel-practice { position: relative; overflow: clip; background: #0d3054; border-radius: var(--r-lg); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); --line: rgba(201,171,102,.35); }
   .panel-navy { position: relative; overflow: clip; background: #071b30; border-radius: var(--r-lg); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); }
   .theme-teal .card { border-color: transparent; }
@@ -393,7 +375,6 @@
   /* The Academy and INQ dark close: a white glow, never gold (BRAND_FIX S5), whatever class its lamp carries. */
   .theme-teal [data-tone="ink"] > .lamp { background: radial-gradient(55% 60% at var(--lx, 85%) var(--ly, 100%), rgba(255,255,255,var(--la, .08)), transparent 70%); }
   .lamp-cream { background: radial-gradient(50% 45% at var(--lx, 50%) var(--ly, 0%), rgba(255,255,255,.75), transparent 72%), linear-gradient(to top, rgba(176,141,79,.08), transparent 30%); animation: lights 2.2s var(--ease) both; }
-  .lamp-sky { background: radial-gradient(60% 55% at var(--lx, 12%) var(--ly, 0%), rgba(201,171,102,.3), transparent 70%); }
   @keyframes lights { from { opacity: 0; } }
   .grain { position: relative; }
   /* A lamp that also carries the grain stays an absolute layer over its section (.grain alone would make it
@@ -421,7 +402,6 @@
   }
   .ladder > li:focus-within::before { transform: scaleX(1); }
   .ladder > li:focus-within .ladder-name { color: var(--accent); }
-  .ladder > li.is-on .ladder-name { color: var(--accent); }
   .ladder a { color: inherit; text-decoration: none; }
   @media (max-width: 734px) { .ladder > li { grid-template-columns: 1fr; row-gap: 6px; padding-block: 18px; } }
 
@@ -459,6 +439,9 @@
   .phone-screen img.ds, .win-screen img.ds, .ds-group img { object-fit: cover; object-position: top; }
   .phone-screen .ds.on, .win-screen .ds.on { opacity: 1; z-index: 2; }
   .phone-screen .ds.was, .win-screen .ds.was { opacity: 1; z-index: 1; }
+  /* A frame that is a group (type lines, a fade) or a strip hides its own captures too while it is not shown, so
+   * every capture of a frame that is off reads as hidden (to an audit that looks at the images, as to a reader). */
+  :is(.phone-screen, .win-screen) .ds:is(.ds-group, .ds-strip):not(.on, .was) img { opacity: 0; }
   /* A capture with type lines: each line is a patch of the composer's own fill laid over a typed line, scaled
    * away from the left as the draft types (--m: 1 covers the line, 0 shows it; the engine writes it). */
   .ds-group { overflow: hidden; }
@@ -473,10 +456,12 @@
   .ds-strip .scroll-body { position: absolute; left: 0; top: 0; width: 100em; transform: translate3d(0, calc(-1 * var(--off, 0) * 1em), 0); }
   .ds-strip .scroll-body img { position: absolute; left: 0; width: 100em; height: auto; max-width: none; }
   .ds-strip .scroll-body .ds-next { clip-path: inset(var(--head, 6.2%) 0 0 0); -webkit-mask-image: linear-gradient(to bottom, transparent var(--head, 6.2%), #000 calc(var(--head, 6.2%) + 2em)); mask-image: linear-gradient(to bottom, transparent var(--head, 6.2%), #000 calc(var(--head, 6.2%) + 2em)); }
-  /* The edge mask: while the camera is in (scale above 1) the outer 14 px of the screen fade to the app
-   * canvas, so a crop at the frame edge reads as the capture's own padding, never a word cut mid letter. */
+  /* The edge mask: while the camera is in (scale above 1) the outer 3 px of the screen fade to the app canvas,
+   * a soft edge on the crop, never wide enough to lie over the first glyph of a line. A lean must keep every
+   * frame edge, and the phone's rounded corners, clear of what the app draws; on the current captures (header and
+   * bottom bar at the edges) no phone lean does, so the pages author none (October 21, 2026). */
   .phone-screen::after, .win-screen::after { content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; transition: opacity .45s var(--ease);
-    background: linear-gradient(90deg, #f2ece0 0, rgba(242,236,224,0) 14px, rgba(242,236,224,0) calc(100% - 14px), #f2ece0 100%); }
+    background: linear-gradient(90deg, #f2ece0 0, rgba(242,236,224,0) 3px, rgba(242,236,224,0) calc(100% - 3px), #f2ece0 100%); }
   .phone-screen.cam-on::after, .win-screen.cam-on::after { opacity: 1; transition-duration: .2s; }
   .phone-floor { position: absolute; left: -10%; right: -10%; bottom: -5em; height: 10em; border-radius: 50%; z-index: -1; pointer-events: none;
     background: radial-gradient(50% 50% at 50% 50%, rgba(31,29,26,var(--floor-a, .3)), transparent 70%); filter: blur(1em); transform: translateX(var(--sx, 0px)); }
@@ -514,7 +499,6 @@
   .win-screen .cur svg { width: 100%; height: auto; display: block; }
   .win-screen .cur.on { opacity: 1; }
   .win-screen .cur svg { transform-origin: 23% 12%; transition: transform 100ms var(--ease); }
-  .win-screen .cur.press svg { transform: scale(.8); }
   .win-dark { background: #1b1916; box-shadow: 0 0 0 1px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.1), var(--sh-object-dark); }
   .win-dark .win-dots i { background: rgba(255,255,255,.22); }
   .win-dark .win-url { background: rgba(255,255,255,.08); color: rgba(244,239,228,.7); box-shadow: none; }
@@ -523,10 +507,6 @@
   .win-caps .win-cap { position: absolute; left: 0; top: 0; margin: 0; opacity: 0; transition: opacity .14s var(--ease); }
   .win-caps .win-cap.on { opacity: 1; transition: opacity .26s var(--ease) .11s; }
   .win-cap { margin-top: 16px; }
-  .win-pager { display: flex; gap: 14px; margin-top: 14px; }
-  .win-pager button { width: 28px; height: 28px; display: grid; place-items: center; background: none; border: 0; padding: 0; cursor: pointer; border-radius: 999px; }
-  .win-pager button i { display: block; width: 8px; height: 8px; border-radius: 999px; background: var(--lit-off); transition: width .45s var(--slow), background-color .45s var(--slow); }
-  .win-pager button[aria-selected="true"] i { width: 22px; background: var(--fg); }
 
   /* ── Scroll stories (SCROLL_SPEC 1.3, 1.10): the static layout ─────
    * Static is the default: no pin, the run hidden, every step in document order at full colour with its own
@@ -536,7 +516,7 @@
   .story { --story-top: var(--nav-h); --story-gap: 16px; position: relative; }
   .story-track { position: relative; }
   .story-stage { position: relative; }
-  .story-run, .story-beat, .story-marks, .story-bar { display: none; }
+  .story-run, .story-beat, .story-marks { display: none; }
   .story-steps { list-style: none; margin: 0; padding: 0; }
   .story-alt { display: none; }
   .story-static { margin-top: 24px; }
@@ -557,26 +537,6 @@
   .story-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: var(--btn-gap); }
   /* A system probe (site.ts): 100svh tall and the gutter wide, read on measure only. */
   .sys-probe { position: fixed; left: 0; top: 0; width: var(--gutter); height: 100vh; height: 100svh; visibility: hidden; pointer-events: none; z-index: -1; }
-
-  /* The progress marks (StoryMarks.astro): equal bars in a row, 2 px high, 6 px apart, each button 28 px
-   * high with a 44 px hit area; the engine scales each bar's fill from the left with the scroll. */
-  .story-marks { --mark-track: var(--lit-off); --mark-fill: var(--fg); align-items: center; gap: 6px; width: min(100%, var(--marks-w, 320px)); margin: 0; padding: 0; }
-  .story-marks > button { position: relative; flex: 1 1 0; min-width: 0; height: 28px; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 2px; }
-  .story-marks > button::before { content: ""; position: absolute; left: 0; right: 0; top: 13px; height: 2px; border-radius: 2px; background: var(--mark-track); }
-  .story-marks > button::after { content: ""; position: absolute; inset: -8px 0; }
-  .story-marks > button > i { position: absolute; left: 0; right: 0; top: 13px; height: 2px; border-radius: 2px; background: var(--mark-fill); transform-origin: 0 50%; transform: scaleX(var(--f, 0)); }
-  /* The words variant (the IOS workflow): the locked line itself, each word a button, the arrows text. */
-  .story-marks-words { flex-direction: column; align-items: flex-start; gap: 10px; width: auto; }
-  .story-words { margin: 0; color: var(--fg-3); }
-  .story-words > button { padding: 6px 0; border: 0; background: none; font: inherit; letter-spacing: inherit; color: inherit; cursor: pointer; transition: color .35s var(--ease); }
-  .story-words > button[aria-current="step"] { color: var(--accent); }
-  .story-words > button { position: relative; }
-  .story-words > button::after { content: ""; position: absolute; inset: -4px -4px; }
-  .story-marks-rule { position: relative; display: block; width: 100%; height: 1px; background: var(--line); }
-  .story-marks-rule > i { position: absolute; inset: 0; background: #c9ab66; transform-origin: 0 50%; transform: scaleX(0); }
-  /* The single bar of a hero (no step text): 72 px, centred under the device. */
-  .story-bar { position: relative; width: 72px; height: 2px; border-radius: 2px; background: var(--lit-off); margin-inline: auto; overflow: hidden; }
-  .story-bar > i { position: absolute; inset: 0; background: var(--fg); transform-origin: 0 50%; transform: scaleX(0); }
 
   /* ── The day (DayStage.astro, SCROLL_SPEC S5) ──────────────────────
    * Static: each step with its own phone and caption, the evening step on navy. Pinned (motion.css): the step
@@ -709,7 +669,7 @@
   @media (pointer: coarse) { .hdr-link { padding-block: max(8px, calc((44px - 1em) / 2)); } }
   .hdr-link[aria-current="page"] { color: var(--fg); }
   @media (hover: hover) and (pointer: fine) { .hdr-link:hover { color: var(--fg); } }
-  .hdr-link .sub { display: none; font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--fg-2); }
+  .hdr-link .sub { display: none; font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--fg-2); }
   @media (min-width: 1280px) { .hdr-link .sub { display: inline; } }
   .hdr-cta { margin-left: 8px; }
   .hdr-burger { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-right: -10px; background: none; border: 0; cursor: pointer; color: inherit; border-radius: 999px; position: relative; }

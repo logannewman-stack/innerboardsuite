@@ -5,6 +5,14 @@
  * "cream" for the Suite pages, "ac-cream" (alias "teal") for the Academy and
  * INQ pages, which also get the .theme-teal class for the teal accent system.
  * `navStart` seeds the header tone ("light" on every page today).
+ *
+ * The head: every page passes its own title (under 60 characters) and
+ * description (120 to 160), each built from that page's own copy; the
+ * canonical URL, Open Graph and Twitter card tags follow from them, with the
+ * shared /og-image.png (1200 x 630) unless a page passes `image` and
+ * `imageAlt`. `noindex` (the 404 page) drops the canonical and asks search
+ * engines not to index it. theme-color is the page's first tone. `preload`
+ * names the first screen's image, so it is requested with the fonts.
  */
 import "../styles/global.css";
 import "../styles/motion.css";
@@ -15,14 +23,20 @@ import { ClientRouter } from "astro:transitions";
 
 interface Props {
   title: string;
-  description?: string;
+  description: string;
   path?: string;
   image?: string;
   theme?: "cream" | "ac-cream" | "teal";
   themeColor?: string;
   navStart?: "light" | "dark";
+  imageAlt?: string;
+  noindex?: boolean;
+  preload?: { href: string; srcset?: string; sizes?: string; type?: string; media?: string };
 }
-const { title, description = SITE.description, path = "/", image = "/og-image.png", theme = "cream", themeColor, navStart = "light" } = Astro.props;
+const {
+  title, description, path = "/", image = "/og-image.png", theme = "cream", themeColor, navStart = "light", noindex = false, preload,
+  imageAlt = "InnerBoard. Practice by InnerBoard: You don't need a different life, just a new way to meet this one. Beside it, the Coach home on a phone."
+} = Astro.props;
 const teal = theme === "teal" || theme === "ac-cream";
 const dataTheme = teal ? "ac-cream" : "cream";
 const color = themeColor || (teal ? "#f7f4ee" : "#f4efe4");
@@ -36,12 +50,13 @@ const imageUrl = new URL(image, SITE.url).toString();
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     <meta name="theme-color" content={color} />
     <meta name="nav-start" content={navStart} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -49,13 +64,17 @@ const imageUrl = new URL(image, SITE.url).toString();
     <meta property="og:image" content={imageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content={imageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content={imageAlt} />
     <link rel="preload" href="/fonts/fraunces-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/instrument-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/fraunces-latin-wght-italic.woff2" as="font" type="font/woff2" crossorigin />
+    {preload && <link rel="preload" as="image" href={preload.href} imagesrcset={preload.srcset} imagesizes={preload.sizes} type={preload.type} media={preload.media} fetchpriority="high" />}
     <script is:inline>document.documentElement.classList.remove("no-js");document.documentElement.classList.add("js");</script>
     <style is:inline>@view-transition { navigation: auto; }</style>
     <link rel="sitemap" href="/sitemap-index.xml" />

@@ -7,6 +7,7 @@ export default defineConfig({
   output: "static",
   trailingSlash: "never",
   build: { format: "file" },
-  integrations: [sitemap()],
+  // The sitemap lists the real pages only (the 404 page is served for missing routes and is not indexed).
+  integrations: [sitemap({ filter: (page) => !/\/404\/?$/.test(page) })],
   vite: { plugins: [tailwindcss()] }
 });

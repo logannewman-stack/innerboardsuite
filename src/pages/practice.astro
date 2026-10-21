@@ -19,7 +19,7 @@
  * then the page continues. Scrolling back plays it backwards; nothing moves on
  * a timer. Sides alternate down the page.
  * - The hero scene (S4, left): on laptops the desk window with the Close the
- *   day phone at its lower right, three steps (the Coach leaned in, the cursor
+ *   day phone at its lower right, three steps (the Coach with its draft, the cursor
  *   opens Tools, Close the day scrolls); on tablets and phones a phone, two
  *   steps (the Tools hub, Close the day). The headlines are its captions.
  * - A day in Practice (S5, right): DayStage, five steps, morning to evening.
@@ -47,9 +47,12 @@ import PracticeInside from "../components/PracticeInside.astro";
 import PracticeFloor from "../components/PracticeFloor.astro";
 import { LINKS } from "../config/links";
 
-const title = "Practice by InnerBoard · See how it works";
+/* The first screen's image on a laptop is the desk window (its 1600 and 2880 px files, as WindowFrame's srcset
+ * picks them); on tablets and phones the window is not in the first screen (the pinned phone takes its place), so
+ * the preload (Base `preload`) is for laptops only and the window's image is lazy rather than eager. */
+const title = "Practice by InnerBoard · How it works, screen by screen";
 const description =
-  "A walk through Practice, screen by screen: the Coach, the Dare of the Day, Set Up Your Day, STEAR, the quiz and the Journal. A web app for any phone. Start as you are.";
+  "People don't do what they know. They do who they are. Practice is the daily app that closes the gap between the two. Start today, as you are.";
 
 /* The loop, five rows. */
 const loopRows: [string, string][] = [
@@ -72,7 +75,7 @@ const heroTools = { name: "tools-home", alt: "The Tools hub on a phone, with Too
 const heroClose = { name: "close-day", alt: "Close the day on a phone, with both fields filled and Coach active in the bottom bar.", w: 780 as const, h: 1688 as const, strip: { next: "close-day-2", at: 132.56, head: 6.2, foot: 91.2 } };
 const heroSteps = [
   { step: 0, only: "wide", w: 1, eyebrow: "Coach", name: "The Coach home, on a desk, with a sentence typed.",
-    act: '{"win":{"f":0,"cam":[[.14,1,50,50],[.4,1.1,58,22],[.7,1.1,58,22],[.88,1,50,50]]}}' },
+    act: '{"win":{"f":0}}' },
   { step: 1, only: undefined, w: 1, eyebrow: "Tools", name: "The Tools hub.",
     act: '{"win":{"cur":[[.06,40,60],[.34,5,33.3]],"click":.42,"next":[.46,1]},"pn":{"f":0}}' },
   { step: 2, only: undefined, w: 1.2, eyebrow: "Tools", name: "Close the day.",
@@ -91,26 +94,27 @@ const dayFrames = [
 ];
 const daySteps = [
   { label: "Morning", name: "Open the app. The Coach is first.", body: "Home shows four things: the Coach's prompt, Set Up Your Day, the Dare of the Day, and your calendar. Nothing to configure. The Coach is trained on the InnerBoard method and says, on screen, that it is not a person.", caption: "The Coach home.",
-    act: '{"day":{"f":0,"cam":[[.14,1,50,50],[.4,1.04,50,14],[.7,1.04,50,14],[.88,1,50,50]]}}' },
+    act: '{"day":{"f":0}}' },
   { label: "Morning", name: "Set up your day in a minute.", body: "How are you arriving? One thing you are grateful for. How you want to approach today. What would make today a win. Four fields, one line each, and the day has a shape.", caption: "Set Up Your Day.",
     act: '{"day":{"f":1,"in":[80,78.3]}}' },
   { label: "Midday", name: "Something lands. You run STEAR.", body: "A business partner goes quiet after you send the numbers. Instead of rereading your message for an hour, you open STEAR: what happened, what you made it mean, what that thought created. Two minutes, and the story is separated from the fact.", caption: "STEAR, question one, then question two.",
     act: '{"day":{"f":2,"tap":[50,95.1,.55],"next":[.59,3]}}' },
   { label: "Afternoon", name: "Do the Dare. Check it off.", body: "One small thing before the day ends, new every day. When you tap I did it, the app marks it with a star, asks how it went in one line, and never asks twice.", caption: "The Dare, done.",
-    act: '{"day":{"f":0,"cam":[[.12,1,50,50],[.32,1.04,50,64],[.74,1.04,50,64],[.88,1,50,50]],"tap":[19,69.2,.5],"next":[.54,4]}}' },
+    act: '{"day":{"f":0,"tap":[19,69.2,.5],"next":[.54,4]}}' },
   { label: "Evening", name: "Everything you did is in the Journal.", body: "Every tool you ran, every check-in, every quiz result, dated and yours. Saved on the device as a visitor. Kept in your account the moment you make one.", caption: "The Journal.",
     act: '{"day":{"f":5}}' }
 ];
 
 /* S6: the STEAR run, as the app asks it. Frames are real captures of each step. Continue is pressed into
  * questions two and three; questions four to six arrive from the top (their Continue is disabled in the
- * captures, so no ring presses it). The Then row shows the Coach (below), arriving from the top too. The lean is 1.04 about the centre (SCROLL_SPEC writes 1.06, which crops the app's Back chevron and
- * its header icon on these captures; 1.04 keeps both whole, as the day's leans do). */
+ * captures, so no ring presses it). The Then row shows the Coach (below), arriving from the top too. No phone on
+ * this page leans in: the app's header (Back, the title, the mark) and its bottom bar sit at the capture's edges
+ * and in the phone's rounded corners, so any lean, even 1.02, puts a frame edge or a corner through them. */
 const stear = [
   { screen: "stear1", step: "1 / 8", w: 1, q: "What happened?", note: "Facts only. What a camera would record.",
-    act: '{"stear":{"f":0,"cam":[[.14,1,50,50],[.38,1.04,50,24],[.66,1.04,50,24],[.86,1,50,50]]}}' },
+    act: '{"stear":{"f":0}}' },
   { screen: "stear2", step: "2 / 8", w: 1, q: "What did you make it mean?", note: "One sentence. Where did you inherit this one?",
-    act: '{"stear":{"f":1,"in":[50,95.1],"cam":[[.14,1,50,50],[.38,1.04,50,24],[.66,1.04,50,24],[.86,1,50,50]]}}' },
+    act: '{"stear":{"f":1,"in":[50,95.1]}}' },
   { screen: "stear3", step: "3 / 8", w: 1, q: "What did that thought create?", note: "One word. The thought created it, not the situation.",
     act: '{"stear":{"f":2,"in":[50,95.1]}}' },
   { screen: "stear4", step: "4 / 8", w: .85, q: "What did you do, or avoid?", note: "Defend? Stall? Retaliate? Ruminate?",
@@ -124,10 +128,10 @@ const stearFrames = stear.map((s) => ({ name: s.screen, alt: `STEAR, ${s.q}`, w:
 const thenName = "A new thought, and the next move.";
 /* The Then step has its own screen (no capture shows questions seven and eight or the run in the Journal): the
  * Coach, where the run can be talked through, with the sentence about the same business partner typing into the
- * composer as the reader scrolls (the type lines are the homepage panel's), and the lean on the composer. */
+ * composer as the reader scrolls (the type lines are the homepage panel's). */
 const thenFrame = { name: "coach-draft", alt: "The Daily Practice Coach, with a sentence typed in the composer: I keep putting off the call with my business partner.", w: 780 as const, h: 1688 as const,
   type: [{ x: 7.8, y: 25.8, w: 55.4, h: 2.55, fill: "#f9f6ee" }, { x: 7.8, y: 28.6, w: 38.8, h: 2.45, fill: "#f9f6ee" }] };
-const thenAct = `{"stear":{"f":${stear.length},"type":[.3,.66],"cam":[[.12,1,50,50],[.3,1.04,50,26],[.76,1.04,50,26],[.9,1,50,50]]}}`;
+const thenAct = `{"stear":{"f":${stear.length},"type":[.3,.66]}}`;
 const stearW = stear.reduce((t, s) => t + s.w, 0) + 1;
 
 /* The three notes under STEAR, each with its tile. */
@@ -138,10 +142,10 @@ const notes = [
 ];
 
 /* S7: the quiz pair. Two steps: the ring presses Often on question one (no answered capture exists, so the tap
- * changes nothing on that phone), then the light moves to the result and the result phone leans on Approval. */
+ * changes nothing on that phone), then the light moves to the result. */
 const quizActs = [
   '{"q":{"f":0,"tap":[50,52.1,.55]}}',
-  '{"r":{"f":0,"cam":[[.14,1,50,50],[.4,1.04,50,34],[.7,1.04,50,34],[.88,1,50,50]]}}'
+  '{"r":{"f":0}}'
 ];
 /* The paragraph's two halves (STORY_V2 3.4), each split at its sentence boundary into a headline and a body; in the
  * static layout the spans read as today's one paragraph. */
@@ -165,7 +169,8 @@ const faq = [
   { q: "What does a subscription include?", a: `Everything in the app, including the Academy and the Wisdom Collective. The current plans and prices are shown inside Practice under Membership. <a href="${LINKS.practice}" data-passthrough>Open Practice</a>` }
 ];
 ---
-<Base title={title} description={description} path="/practice">
+<Base title={title} description={description} path="/practice"
+  preload={{ href: "/app/desk-coach-draft.webp", srcset: "/app/desk-coach-draft.webp 1600w, /app/desk-coach-draft-2x.webp 2880w", sizes: "1320px", type: "image/webp", media: "(min-width: 1069px)" }}>
   <!-- Hero: the copy scrolls away first; then the scene is a scroll story (S4) -->
   <section class="pr-hero grain grain-cream" data-tone="cream">
     <i class="lamp lamp-cream" aria-hidden="true" style="--lx:50%;--ly:0%"></i>
@@ -197,7 +202,7 @@ const faq = [
             <div class="story-device-box pr-scene-box">
               <!-- Laptops: the desk window; static: the window with its caption and a phone at each lower corner. -->
               <div class="story-win pr-scene-win rise-obj" style="--d:.3s">
-                <WindowFrame id="hero-win" device="win" ww={1320} eager tilt={2} label="Practice on a desk." screens={heroWin} />
+                <WindowFrame id="hero-win" device="win" ww={1320} tilt={2} label="Practice on a desk." screens={heroWin} />
                 <!-- The caption follows the frame (the scene syncs .win-cap[data-cap] beside the window). -->
                 <div class="win-caps pr-scene-caps rise" style="--d:.7s">
                   <p class="win-cap t-cap-i on" data-cap="0">The Coach home, on a desk, with a sentence typed.</p>
@@ -329,7 +334,7 @@ const faq = [
             <figure class="paper tile pr-tile rise" style={`--d:${120 + i * 90}ms`}>
               <figcaption class="t-cap-i">{n.caption}</figcaption>
               <div class="tile-media tile-media-ct">
-                <img class="screen" src={`/app/${n.screen}.webp`} alt={n.alt} width={n.w} height={n.h} loading="lazy" decoding="async" />
+                <img class="screen" src={`/app/${n.screen}.webp`} srcset={`/app/${n.screen}-390.webp 390w, /app/${n.screen}.webp ${n.w}w`} sizes="(max-width: 734px) 60vw, (max-width: 1068px) 30vw, 240px" alt={n.alt} width={n.w} height={n.h} loading="lazy" decoding="async" />
               </div>
             </figure>
           </div>
@@ -529,13 +534,8 @@ const faq = [
    * group (type: []), so the crop sits inside it and the wipe clips the untransformed frame box. */
   #day .ds-group img[src$="/today.jpg"], #day .ds-group img[src$="/today.webp"] { transform-origin: 50% 0; transform: translateY(-18.4%) scale(1.04);
     -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent 91.5%); mask-image: linear-gradient(to bottom, #000 88%, transparent 91.5%); }
-  /* The page's phones lean at most 1.06 about the centre, so a crop takes under 3% from each side and the
-   * capture's own padding (about 4%) still clears every word: the camera's edge feather is 3 px here, not 14,
-   * so it never lies over the first glyph of a line. */
-  .pr-day .day-stage .phone-screen::after, .pr-stear-mat .phone-screen::after, .pr-quiz-r .phone-screen::after { background: linear-gradient(90deg, #f2ece0 0, rgba(242,236,224,0) 3px, rgba(242,236,224,0) calc(100% - 3px), #f2ece0 100%); }
-  /* The Journal holds one entry, so on the evening step the phone fades into the night below the list
-   * instead of showing three quarters of an empty screen. */
-  .pr-day .day-stage.is-night .phone { -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 74%); mask-image: linear-gradient(to bottom, #000 40%, transparent 74%); }
+  /* The evening step shows the Journal whole, as the app draws it (its header, the filters, the month and the
+   * entry, on the app's own ground), so the phone reads as a finished screen against the night. */
 
   /* 2.2.4 STEAR (S6). Static: the seven rows in order, each with its phone (the Then row with its card, then the Coach). */
   .pr-stear { padding-block: var(--sec) calc(var(--sec) * .7); }

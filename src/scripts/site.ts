@@ -10,11 +10,10 @@
  * Kept from the first build: track(), passthrough(), the header menu, flips().
  *
  * Nothing in a device moves on a timer: every app demonstration is a scroll
- * story, and the scene only shows what the story's scroll position says.
- * Legacy, until the pages that still use them convert to stories: rails
- * (1.7.10, /practice STEAR), the scroll screen (1.7.11, the home quiz) and
- * previews (1.7.13, /practice Everything inside). The loop phone (1.7.8), the
- * old day stage (1.7.9), scene autoplay and run gates are gone.
+ * story, and the scene only shows what the story's scroll position says. The
+ * loop phone (1.7.8), the old day stage (1.7.9), the rails (1.7.10), the
+ * scroll screen (1.7.11), the previews (1.7.13), scene autoplay and run gates
+ * are gone: every page runs on stories.
  *
  * Everything is progressive: without it the page is complete, readable and
  * every link works. With reduced motion on, nothing moves and nothing hides.
@@ -33,7 +32,6 @@ const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matc
 const finePointer = () => window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 const clamp01 = (t: number) => Math.min(1, Math.max(0, t));
 const sine = (t: number) => 0.5 - 0.5 * Math.cos(Math.PI * clamp01(t));
-const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 const qsa = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => Array.from(root.querySelectorAll<T>(sel));
 const DARK = new Set(["navy", "practice", "charcoal", "ink", "teal"]);
 
@@ -82,7 +80,6 @@ function smooth(k: string, v: number, tau = 0.1) {
   if (S[k] !== v) need = true;
   return S[k];
 }
-function progress(el: HTMLElement, h: number) { const r = el.getBoundingClientRect(); return clamp01(-r.top / (r.height - h)); }
 function kick() {
   need = true;
   if (!queued) { queued = true; raf = requestAnimationFrame(frame); }
@@ -295,12 +292,10 @@ function lineRise(gen: number) {
 }
 
 /* ── 1.7.4 Lit statement (data-lit, alias data-scrollwords) ─────────────── */
-let litN = 0;
 function lit() {
   qsa("[data-lit], [data-scrollwords]").forEach((el) => {
     if (el.dataset.litDone) return;
     el.dataset.litDone = "1";
-    const key = "lit:" + litN++;
     if (el.dataset.lit === "lines") {
       const units = qsa(":scope > li, :scope > .lw", el);
       if (!units.length) return;
@@ -595,12 +590,11 @@ class Scene {
     for (const t of [this.cur, this.tap]) if (t) { t.style.removeProperty("transform"); t.style.removeProperty("opacity"); t.style.removeProperty("--fill"); }
     this.curSvg?.style.removeProperty("transform");
   }
-  /* The caption beside a window follows the frame it shows (and a legacy pager, until its page converts). */
+  /* The caption beside a window follows the frame it shows. */
   syncCaps(i: number) {
     const host = this.el.parentElement;
     if (!host) return;
     qsa(".win-cap[data-cap]", host).forEach((c) => c.classList.toggle("on", Number(c.dataset.cap) === i));
-    qsa<HTMLButtonElement>(".win-pager [data-go]", host).forEach((b) => { const on = Number(b.dataset.go) === i; b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; });
   }
 }
 /* The registries are exposed for QA scripts (read only): window.__ib.stories[id] is SCROLL_SPEC 1.6 item 8. */
@@ -824,7 +818,7 @@ class StoryRun {
   track: HTMLElement; stage: HTMLElement; run: HTMLElement;
   layout: "wide" | "narrow"; steps: HTMLElement[] = []; w: number[] = []; cum: number[] = []; W = 1; n = 0;
   acts: Record<string, Act>[] = []; devs: Dev[] = [];
-  marks: { b: HTMLButtonElement; k: number; i: HTMLElement | null }[] = []; bars: HTMLElement[] = []; rule: HTMLElement | null = null;
+  marks: { b: HTMLButtonElement; k: number; i: HTMLElement | null }[] = [];
   /* Story v2 (STORY_V2 1.7): the rail's counter, "01" and " / 05", rewritten on bind and at every step change. */
   countK: HTMLElement | null = null; countN: HTMLElement | null = null;
   subs: HTMLElement[][] = []; subIdx: number[] = []; gEls: HTMLElement[] = [];
@@ -873,8 +867,6 @@ class StoryRun {
     this.countN = root.querySelector<HTMLElement>(".story-count-n");
     if (this.countN) this.countN.textContent = " / " + pad2(this.n);
     if (this.countK) this.countK.textContent = pad2(1);
-    this.bars = qsa(".story-bar > i", root);
-    this.rule = root.querySelector<HTMLElement>(".story-marks-rule > i");
     this.gEls = qsa("[data-story-g]", root);
     this.devs = qsa("[data-device]", this.stage).filter(rendered).map((el) => this.device(el));
     if (this.id === "day") {
@@ -1002,8 +994,6 @@ class StoryRun {
     this.subIdx = this.steps.map(() => -1);
     this.marks.forEach((m) => { m.b.removeAttribute("aria-current"); m.i?.style.removeProperty("--f"); });
     if (this.countK) this.countK.textContent = pad2(1);
-    this.bars.forEach((b) => b.style.removeProperty("transform"));
-    this.rule?.style.removeProperty("transform");
     this.gEls.forEach((e) => e.style.removeProperty("--g"));
     this.root.style.removeProperty("--story-stick");
     this.root.style.removeProperty("--anchor-y");
@@ -1114,8 +1104,13 @@ class StoryRun {
     const top = window.scrollY + (r.top - this.stick) + (this.D * (this.cum[k] + 0.3 * this.w[k])) / this.W;
     window.scrollTo({ top: Math.round(top), behavior: reduced() ? "auto" : "smooth" });
   }
-  /* Warm the frames of steps k to k + 2 for every device: eager, and decoded before they are needed. */
+  /* Warm the frames of steps k to k + 2 for every device: eager, and decoded before they are needed. Only for a
+   * story within two screens of the viewport: one further down keeps its lazy images until the data-warm observer
+   * (warming(), two screens ahead) or this, as the reader nears it, asks for them, so a page's first load fetches
+   * only what is near its first screen. */
   warm(k: number) {
+    const r = this.track.getBoundingClientRect(), vh = this.svh || window.innerHeight;
+    if (r.top > 2 * vh || r.bottom < -vh) return;
     for (const d of this.devs) {
       for (let j = Math.max(0, k); j <= Math.min(this.n - 1, k + 2); j++) {
         d.warm[j]?.forEach((fi) => {
@@ -1161,11 +1156,8 @@ class StoryRun {
       for (const [st, i] of this.subKeys(kNow)) if (t >= st - 1e-9) si = i;
       if (si !== this.subIdx[kNow]) { this.subIdx[kNow] = si; subs.forEach((s) => s.classList.toggle("is-current", Number(s.dataset.sub) === si)); }
     }
-    /* E1: each mark's fill is --f (0 to 1); the CSS maps it to scaleX (bars, the narrow rail) or scaleY (the wide rail). */
+    /* E1: each mark's fill is --f (0 to 1); the CSS maps it to scaleX (the narrow rail) or scaleY (the wide rail). */
     for (const m of this.marks) if (m.i) put(this.c, m.i, "--f", (m.k < kNow ? 1 : m.k > kNow ? 0 : t).toFixed(4));
-    const prog = ((this.cum[kNow] + t * this.w[kNow]) / this.W).toFixed(4);
-    for (const b of this.bars) put(this.c, b, "transform", `scaleX(${prog})`);
-    if (this.rule) put(this.c, this.rule, "transform", `scaleX(${(G / n).toFixed(4)})`);
     if (this.gEls.length) { const gs = G.toFixed(3); for (const e of this.gEls) put(this.c, e, "--g", gs); }
     for (const d of this.devs) this.drawDevice(d, G, kNow, t, wasVisible);
     if (this.day) this.drawDay(G);

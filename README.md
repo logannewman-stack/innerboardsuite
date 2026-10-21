@@ -1,120 +1,170 @@
 # InnerBoard (innerboardsuite.com)
 
-The InnerBoard website: the Suite homepage, the Practice sales page, the
-Academy page and the INQ Certification page, plus contact, privacy and terms.
-
-| Page | Built to |
-| --- | --- |
-| `/` | InnerBoard Suite Logan Handoff FINAL and the INNERBOARD SUITE build brief (D5 in the build tracker): the locked nav, the eight sections with their locked copy, the footer. |
-| `/practice` | The Practice sales page: the app, section by section, in the style of a product-led software site. Every claim on it comes from the app's own copy and build maps. |
-| `/academy` | Academy Page Rebuild: Copy and Build Directions (D1). Copy as written, cream and teal. |
-| `/inq-certification` | The INQ Certification Page Mock-up (D9), copy as written, section by section. |
-| `/contact`, `/privacy`, `/terms` | Plain-language pages; counsel review before launch. |
-
-**Stack:** Astro 5 (static output), Tailwind 4, no framework runtime. Deploys on
-Vercel as a static site; `vercel.json` carries the cache and security headers.
+The InnerBoard website: the Suite homepage, the Practice page, the Academy page and the INQ Certification
+page, plus contact, privacy, terms and a 404 page. Astro 5 (static output), Tailwind 4 through
+`@tailwindcss/vite`, one vanilla TypeScript file for every motion, no framework runtime. Deployed by Vercel.
 
 ```bash
 npm install
 npm run dev        # localhost:4321
 npm run build      # dist/
-npm run sweep      # after a build: fails on any em/en dash or the lowercase i spelling of IOS in the output
+npm run sweep      # after a build: fails on any em or en dash, or the lowercase i spelling of IOS, in dist/
 ```
+
+Preview: https://innerboardsuite.vercel.app/ (the branch deploy). Production: https://innerboardsuite.com.
+
+## The pages
+
+| Page | What it is | Built to |
+| --- | --- | --- |
+| `/` | The Suite homepage: the front door to Practice, the Academy, INQ Certification and InnerBoard IOS. Eight sections in the client's order of October 20: the hero (the headline and the phone on the Coach home), the Practice panel (a scroll story, one feature per step), the subscription quiz (a scroll story on the blush mat, "Take the Quiz" pinned under the copy), the four recognition cards (they flip on click, tap, Enter and Space, never on their own), the Academy (typographic, the books image is held), the INQ teaser (navy), the mission, and the InnerBoard IOS panel. | InnerBoard Suite Logan Handoff FINAL and the INNERBOARD SUITE build brief (`brief/suite/`). Copy locked word for word. |
+| `/practice` | The Practice page: the app shown by the app itself. The hero (a desk window and a phone, a story), the loop, a day in Practice (a story on a sky mat that turns to evening), STEAR question by question (a story), the quiz (a story with "Take the quiz" pinned), "Yours", everything inside (a desk window on laptops, a phone on tablets and phones, a story), the three levels and the questions, and the closing floor of eighteen screens that drifts with the scroll. Every screen is a capture of the app. | The app's own copy and build maps; the only sentences we added are short captions naming a screen. |
+| `/academy` | The Academy: the curriculum, the three levels, the library of collections, the testimonials signed "Academy student", the two doors (InnerLab, INQ) and the filter. Cream and teal. | Academy Page Rebuild: Copy and Build Directions (`brief/academy/`). Links point where the live Academy page pointed. |
+| `/inq-certification` | INQ Certification: the mock-up's thirteen sections, the modules, the investment card ($6,997, the only price on the site), the FAQ. Cream and teal. | INQ Certification Page Mock-up (`brief/inq/`). |
+| `/contact`, `/privacy`, `/terms` | Plain-language pages written by us; counsel review before launch. | |
+| `/404` | Served for any address that is not on the site: the header and footer, the brand mark, "This page isn't here." and two buttons (Start in Practice, the homepage). Not indexed, not in the sitemap. | |
+
+Every page has its own title (under 60 characters) and meta description (120 to 160 characters), each built from
+that page's own copy; a canonical URL; Open Graph and Twitter card tags with `public/og-image.png` (1200 x 630:
+the brand mark and wordmark, the hero headline as the site sets it, the Coach home on a phone); `favicon.svg`,
+`apple-touch-icon.png` and a theme-color in the page's first tone (`#f4efe4` on the Suite pages, `#f7f4ee` on the
+Academy and INQ). `robots.txt` allows everything and names the sitemap; the sitemap lists the seven real pages.
 
 ## Where things are
 
 | Path | What |
 | --- | --- |
-| `src/config/links.ts` | Every destination on the site. `into(path, from)` builds a link into Practice that carries where it was handed out (`?from=suite`, `?from=academy`, `?from=inq`, `?from=innerlab`). |
-| `src/pages/*.astro` | One file per page, copy included. |
-| `src/layouts/Base.astro` | The page shell: `theme` (`cream` for the Suite pages, `ac-cream` for Academy and INQ) written on `<html data-theme>`, the `nav-start` seed, fonts, meta, `ClientRouter`, the one script. |
-| `src/components/Header.astro`, `Footer.astro` | The locked nav (Academy, INQ Certification, InnerBoard IOS, Start in Practice) with the mobile sheet, and the linen colophon with the founder line. Shared by every page. |
-| `src/components/FlipCards.astro` | The four recognition cards: click, tap, Enter and Space; never on their own; reduced motion honoured. |
-| `src/components/PhoneFrame.astro`, `WindowFrame.astro` | Real captures of the Practice app (`public/app/*.webp`) in a drawn phone and a drawn browser window, with stacked frames that a scroll story shows (nothing in them moves on a timer). Taken from a local build of the app, unchanged, on October 19. Recapture when the app's screens change. |
-| `src/components/StoryMarks.astro`, `DayStage.astro`, `Rail.astro`, `Geo.astro`, `ToggleCard.astro`, `Accordion.astro` | The shared primitives: a scroll story's progress marks; the day in Practice as a scroll story (five phones under reduced motion); the snap rail (legacy, until STEAR becomes a story); the mark geometry that draws itself; the toggle card (image only); the FAQ accordion (a button per question, every answer open without the script). |
-| `src/components/Home*.astro` | The homepage's own pieces: `HomeHeroPlate` (the navy plate, the hanging phone and its tap scene), `HomeQuizStill` (the blush mat, the scrolling result, the toggle card). |
-| `src/components/Practice*.astro` | The Practice page's own pieces: `PracticeLoopLine` (the drawn loop that returns to Thought), `PracticeFloor` (the eighteen tiles), `PracticeInside` (the desk window, its captions and pager, the ladder). |
-| `src/components/Academy*.astro`, `Inq*.astro` | `AcademyStair` (the stepped line beside the three levels), `AcademyLabCard` (the paper door with the masked Inner Lab screen), `InqLoopGlyph` (the unlabelled loop on teal), `InqStepsLine` (three dots on one line). |
-| `public/app/` | The captures: 24 original phone screens (600 x 1298, `.webp` with `.jpg` fallbacks), 67 newer phone screens (780 x 1688) and their desktop pairs (1600 x 1000), the two 2880 px hero windows (`desk-coach-draft-2x`, `desk-tools-home-2x`) and `tiles/` (the eighteen 390 x 844 floor tiles). Nothing else is imagery; `public/images/` stays empty. |
-| `src/styles/global.css` | The system: tokens, the seven themes, the type roles, pills, paper, mats, the plate, lamps and grain, and every component's structure. See The system below. |
-| `src/styles/motion.css` | The CSS half of every mechanic: reveals, line rise, lit statements, page tone, scenes, scroll stories (the pinned layout, under STORY_MQ), the day, drawn lines, the floor. Reduced motion, no JS and high contrast honoured. |
-| `scripts/sweep.mjs` | The copy check run by `npm run sweep`. |
-| `src/config/links.ts` and `vercel.json` | Destinations, and the redirects from the old site's URLs. Untouched by the rebuild. |
-| `brief/` | The source documents: Suite handoff and build brief, Academy directions, INQ mock-up, Practice documents. |
-| `src/scripts/site.ts` | The motion library: one scroll loop, reveals, line rise, lit statements, page tone, the header, the passive scene, scroll stories (every app demonstration is pinned and driven by the scroll alone, SCROLL_SPEC section 1), the scroll driven floor, drawn lines, flips, the accordion, analytics events, UTM passthrough; legacy until their pages convert: rails, the scroll screen, previews. |
-| `scripts/tiles.mjs`, `scripts/desk2x.mjs`, `scripts/small.mjs` | Build time image scripts (`npm run tiles`, `npm run desk2x`, `npm run small`): the floor tiles, the two 2x hero windows, and the 390 px variant of every phone capture. |
+| `src/pages/*.astro` | One file per page, copy included, with its own layout CSS in a `<style>` block (prefixed `hm-`, `pr-`, `ac-`, `inq-`). |
+| `src/layouts/Base.astro` | The page shell: the head (title, description, canonical, Open Graph, Twitter, icons, theme-color, font and hero image preloads), `<html data-theme>`, the `no-js` to `js` switch, the header, `main`, the footer and the one script. |
+| `src/config/links.ts` | Every destination on the site, and only here. `into(path, from)` builds a link into Practice that says where it was handed out (`?from=suite`, `academy`, `inq`, `innerlab`). |
+| `src/styles/global.css` | The system: tokens, themes, type, surfaces, every component's structure, the static layout of the stories. |
+| `src/styles/motion.css` | The CSS half of every mechanic, the pinned story layout, reduced motion, no JS, high contrast. |
+| `src/scripts/site.ts` | The motion library (below). |
+| `src/components/` | Shared: `Header`, `Footer`, `PhoneFrame`, `WindowFrame`, `StoryMarks` (the rail), `DayStage`, `FlipCards`, `Accordion`, `Geo`, `ToggleCard`, `FeatureIcon`, `Mark`, `Wordmark`, `Arrow`. Page pieces are prefixed with their page: `Home*`, `Practice*`, `Academy*`, `Inq*`. |
+| `public/app/` | The captures a page shows (`.webp`, with `.jpg` fallbacks for the first 24), their 390 px variants (`-390.webp`), the two 2880 px desk heroes (`-2x.webp`) and `tiles/` (the floor). Nothing else on the site is imagery; `public/images/` stays empty. |
+| `captures/` | Real captures no page uses today, kept in the repo and not deployed (see `captures/README.md`). |
+| `scripts/` | `sweep.mjs` (the copy check), `capture.mjs` (recapture the app), `small.mjs`, `tiles.mjs`, `desk2x.mjs`, `scrolled.mjs` (see Captures). |
+| `brief/` | The client's source documents. |
+| `vercel.json` | Redirects from the old site's URLs, cache and security headers. |
 
-## The system
+## The system and the story engine, in brief
 
-The rebuild's design system (BUILD_SPEC part 1), built by the system engineer before the pages. The full reference with every prop, slot, attribute and fallback is `SYSTEM_API.md` in the spec folder; this is the map.
+**Tokens and themes.** `global.css` holds the palette (`@theme`), role tokens (`--bg --fg --fg-2 --fg-3 --line
+--accent --focus`) and the themes on `<html data-theme>`: `cream`, `ac-cream` (Academy and INQ, with
+`.theme-teal`), `navy`, `practice`, `charcoal`, `ink`, `teal`. Text always uses the role tokens, so a section that
+changes the page's tone carries its text with it. Type roles `.t-xl .t-l .t-m .t-s .t-state .t-title .t-lead
+.t-body .t-cap .t-folio .t-price`; Fraunces for display, Instrument Sans for the rest, both self-hosted in
+`public/fonts/` and preloaded. Pills (`.btn-gold`, `.btn-line`, `.btn-cream`, `.btn-teal`), paper cards, mats,
+panels, one lamp and a grain per dark surface.
 
-**Files.** `src/styles/global.css`: the `@theme` palette (unchanged), the role tokens and the seven themes (`cream`, `ac-cream`, `navy`, `forest`, `charcoal`, `ink`, `teal` on `[data-theme]`), the grid (`--gutter --max --max-wide --gap --nav-h --edge --colw`, `.wrap .wrap-wide .grid`), the type scale (`--fs-*` and the roles `.t-xl .t-l .t-m .t-s .t-state .t-title .t-lead .t-body .t-small .t-cap .t-cap-i .t-folio .t-price`), spacing and rhythm (`--sp-*`, `--sec --sec-l --sec-s --head-gap --eyebrow-gap --lead-gap --btn-gap`), radii, shadows and easings (`--r --r-lg --sh-paper --sh-object --sh-object-dark --sh-toast --line-gold --ease --slow --sheet --scene --pop`), and every component's structure: pills (`.btn` with `.btn-gold .btn-line .btn-cream .btn-teal .btn-line-teal .btn-lg .btn-sm`), `.link`, `.eyebrow`, `.paper`, `.paper-teal`, `.mat`, `.mat-blush`, `.plate`, `.panel-forest`, `.panel-navy`, `.lamp`, `.grain`, `.ladder`, `.tile`, `.phone`, `.win`, the rail, the day stage, the accordion, the flip cards, the toggle card, the geometry, the floor, the header and the footer. `src/styles/motion.css`: the CSS half of every mechanic, the reduced motion block (nothing moves, nothing hides, stages unpin), the no JS block and the high contrast block. `src/scripts/site.ts`: one scroll loop with exponential smoothing, reveals, line rise, lit statements, page tone, the header, the passive scene, scroll stories, the scroll driven floor, rails, the scroll screen and previews (legacy), parallax, drawn lines, image warming, tilt, flips, the accordion, `track()`, `passthrough()` and the `astro:page-load` lifecycle.
+**Motion** (`site.ts`, one scroll loop, every mechanic with a reduced motion and a no JS fallback): reveals
+(`.rise`, `.rise-obj`, `.wipe`), the headline line rise (`data-lines`), lit statements (`data-lit`), the page tone
+(`data-tone` on every full bleed section: the page cross fades as a section passes the middle of the screen),
+the header (tone, hide on scroll down, the menu sheet with focus trap and Escape), drawn lines, the floor, flips,
+the accordion, analytics events and the UTM passthrough.
 
-**Components** (`src/components/`): `PhoneFrame` (a drawn phone in em of its screen width, frames stacked for a scroll story: plain captures, captures with type lines, stitched scroll strips; halos; a 390 px srcset; no island), `WindowFrame` (a browser window in em of its width, the two 2x captures through `x2`, a drawn cursor), `StoryMarks` (a story's progress marks), `DayStage` (the day as a scroll story: the sky mat with one phone and five steps; static with five phones under reduced motion), `Rail` (legacy: native snap plus arrows, tabs, keyboard and drag momentum), `ToggleCard` (image only), `Geo` (the mark geometry that draws itself), `FlipCards` (paper fronts, forest backs, both faces in one grid cell), `Accordion` (a button with `aria-expanded`, the answer a `0fr` to `1fr` row), `Header`, `Footer`, `FeatureIcon` (1.25 px stroke), `Arrow`, `Mark`, `Wordmark`. Page components are prefixed with their page (`Home*`, `Practice*`, `Academy*`, `Inq*`). The first build's `AppPhone`, `AppDesktop` and `QuizPhone` are gone.
+**Scroll stories.** Every app demonstration is a story: a tall track whose stage sticks under the header while
+the reader scrolls (native `position: sticky`, no scroll hijacking). The scroll position alone decides the step,
+the frame each device shows (a 380 ms wipe from the tap that caused it), where the ring presses, how far a draft
+has typed, where the desk cursor moves and clicks, and how far a long result scrolls inside a phone; scrolling
+back plays it backwards; nothing moves on a timer. Markup: `div.story[data-story][data-story-ui="steps"]` with
+`.story-track > .story-stage` (the device column with the rail, and the copy column with one `.story-step` per
+step, each with a `data-act` in JSON) and `.story-run`. Every story is on the step layout: the device pinned on
+one side with the segmented rail and its "01 / 05" counter, one step's eyebrow, headline and body at a time on the
+other. Without the pin (no script, reduced motion, a landscape phone, a short laptop window, or a screen where the
+fit guard says no) every step is on the page in order with its own still screen. The engine is exposed for QA as
+`window.__ib.stories[id]`. No device leans in (the camera is supported, but on these captures the app's header
+and bottom bar sit at the edges and in the phone's rounded corners, so any lean cuts them).
 
-**Hooks** (data attributes, each with a reduced motion and a no JS fallback): `.wipe .rise .rise-obj .seq .slide-l .slide-r .rule-draw .tcard-in`, `data-lines` (alias `data-words`), `data-lit` (alias `data-scrollwords`, `data-lit="lines"`), `data-tone`, `data-surface`, `data-rest`, `data-story` with `data-act`, `data-device`, `data-story-anchor`, `data-story-g` and `data-story-static` (SYSTEM_API section 10), `data-rail`, `data-scrollscreen` and `data-preview` (legacy), `data-parallax`, `data-draw="enter|scroll"` with `.draw-line`, `data-reveal-at` (a gate that fires a group of reveals when its section's centre passes a fraction of the viewport), `data-warm`, `data-tilt`; kept from the first build: `data-passthrough data-event data-event-location data-header data-menu-button data-menu-panel data-count`.
+## Brand decisions
 
-**Build time images.** `npm run small` writes `{name}-390.webp` beside every phone capture; `npm run tiles` writes the 18 floor tiles to `public/app/tiles/`; `npm run desk2x` writes the two 2880 px hero windows (`desk-coach-draft-2x.webp`, `desk-tools-home-2x.webp`). Both use `sharp` (a devDependency), run by hand, and their outputs are committed; `astro build` never runs them.
+- **No green.** The Practice panel, the Practice page's closing floor and every former forest surface are the
+  Practice navy `#0d3054` from the InnerBoard brand book (the app icon), with `#174270` for hover and gold lines on
+  it; the INQ teaser keeps its navy `#0d1a2d`, the InnerBoard IOS panel `#071b30` (the IOS site's navy).
+- **Gold italic accents.** Every `<em>` in a heading or statement is Fraunces italic 400 in the section's accent:
+  antique gold `#886020` on the Suite's cream, `#c9ab66` on the dark grounds. Filled buttons are `#b08d4f` with an
+  ink label. Eyebrows take the accent too.
+- **Academy and INQ teal.** Their own cream and teal system: `#f7f4ee`, `#efeae1`, cards `#fbf9f5`, teal `#1e5b57`
+  (buttons, eyebrows, italics), `#174845`, `#e3ece9`; white italics on teal, ivory on the dark close. The only
+  greens on the site are these teals.
+- **One nav on every page**, exactly as the handoff locks it: Academy, INQ Certification, InnerBoard IOS and the
+  gold Start in Practice. "InnerBoard IOS" everywhere (capital I, O and S).
+- **Nothing of Leah.** No photographs, portraits or likeness anywhere; "Founded by Leah Roling." appears once, in
+  the footer. The homepage hero carries the real Practice home screen in place of the handoff's photograph.
+- **Copy is the client's, word for word.** We removed only our own first-build labels (section numerals, the
+  drawn quiz phone's captions, the three Academy summary items). No dashes anywhere (`npm run sweep`).
+- **No sample score is a step's focus**, and no capture shows "not available yet", "aren't posted yet", "coming
+  soon" or "opens soon" at a readable size (Inner Lab is shown with a `fade` that ends the screen under The
+  Masterclass).
 
-**Integration (stage three).** The scratch page is deleted. The build is checked with `npm run build && npm run sweep`, a copy diff of `dist/` against the locked page text, a per page Playwright pass (overflow at 1440 and 390, console errors, the link and attribute table, reduced motion, no JS, keyboard, view transitions between pages, image weight, the header's tone against the pixels under it) and a read of every section's screenshot. The header reads a surface's own colour (`data-surface`, paper, mats, tiles, screens) and otherwise the page's current theme.
+## Captures: how they were made, and how to recapture
 
-## Analytics events
+The app is never drawn. Every screen is a screenshot of Practice, in its light theme, as a visitor with no account:
 
-Calls to action carry a `data-event` (`practice_click`, `quiz_click`,
-`academy_click`, `inq_click`, `inq_book_click`, `inq_enroll_click`,
-`ios_click`) with a `location`. `track()` pushes them to `dataLayer`, `gtag`
-and `plausible` when any of those is on the page, and does nothing otherwise.
-Add the analytics tag to `src/layouts/Base.astro` when the account exists.
+- **October 19 and 20, 2026: the local app.** A build of `/home/user/practice-by-innerboard` (read only, never
+  modified) served with its own `npm run preview` on `localhost:4173`, driven by Playwright: the first 24 phone
+  screens at 600 x 1298 (`.webp` with `.jpg` fallbacks), the newer phone screens at 780 x 1688 (390 x 844 at 2x),
+  the desk screens at 1600 x 1000, and the two hero windows at 2880 x 1800.
+- **October 21, 2026: the live app** at https://practiceinnerboard.com (read only: navigate, scroll, screenshot),
+  for the screens that need the real catalogue: `academy-courses`, `lab-masterclass`, `book-scores` and their
+  desk pairs.
 
-Links into Practice carry `data-passthrough`: the page's `utm_*` and `from`
-parameters are appended, so a campaign's starts are counted under the campaign.
+Scripts (each run by hand; the outputs are committed; `astro build` never runs them):
 
-## The quiz flow (tracker SU-07)
+| Script | What it does |
+| --- | --- |
+| `node scripts/capture.mjs <outDir> <route[@scrollY]>,... [baseUrl]` | Recaptures routes of the app (live by default, or a local preview URL): a phone (390 x 844 at 2x, written at 780 x 1688) and a desk (1440 x 900 at 2x, written at 1600 x 1000, plus the 2880 px PNG), light theme, the one-time notice accepted, and a warning for any "not available yet", "aren't posted yet", "coming soon", "opens soon" in view. Needs Playwright with Chromium (`npm i -D playwright && npx playwright install chromium`). |
+| `npm run small` | The 390 px variant of every phone capture (`{name}-390.webp`, quality 80), which PhoneFrame adds to the srcset. Run after adding a capture. |
+| `npm run tiles` | The eighteen floor tiles (390 x 844) for the Practice page's closing floor. |
+| `npm run desk2x [dir]` | The two 2880 px hero windows from their PNGs. |
+| `npm run scrolled` | `quiz-cost` and `quiz-first-step`: the quiz result scrolled (its header held, `quiz-results` and `quiz-results2` joined as the app scrolls), at offsets where no line is cut. |
 
-Practice already supports it: `/quiz` opens with no sign-in, scores as you
-answer, shows results at once, keeps every retake, and "Save my results" is the
-moment an account is created, with no card. The site links straight to it with
-`?from=suite`. No login wall was added anywhere.
+To recapture: run `capture.mjs` for the routes you need, look at every file (no people, nothing unavailable in
+view, nothing cut mid line), copy the ones a page uses into `public/app/` under the same names (the rest into
+`captures/`), run `npm run small` (and `npm run tiles` if a tile changed), then build and look at the stories that
+show them. A frame whose capture shows something the site must not show gets a `fade` on that frame
+(PhoneFrame and WindowFrame), never a drawing over it.
 
-## Links still to confirm (from the tracker)
+## Links still to confirm
 
-| Button | Today | Needs |
+All destinations live in `src/config/links.ts`; each pending one carries the best real destination today, so no
+button goes nowhere.
+
+| What | Today | Needs |
 | --- | --- | --- |
-| Start in Practice | `practiceinnerboard.com/?from=suite` | Confirm the app URL. |
-| What's Holding You Back? / Take the quiz | `practiceinnerboard.com/quiz?from=suite` | Confirm. |
-| Explore Academy | `/academy` on this site; "Open the collection" goes to the Academy inside Practice | The Academy storefront URL, if it is not the app. |
-| Book a Conversation (INQ) | `mailto:info@innerboardsuite.com` | The INQ booking URL. |
-| Enroll now (INQ) | `mailto:info@innerboardsuite.com` | Checkout or enrollment URL. |
-| The Certified Mind Method | The Academy inside Practice | Its course URL. |
-| Log in | `practiceinnerboard.com/login` | Confirm. |
-| Privacy / Terms / Contact | `/privacy`, `/terms`, `/contact` on this site | Counsel review. |
+| INQ "Book a conversation" (homepage teaser, INQ page three times, contact) | `mailto:info@innerboardsuite.com` with a subject | The booking URL. |
+| INQ "Enroll now" (INQ page three times) | `mailto:info@innerboardsuite.com` with a subject | The enrollment or checkout URL. |
+| INQ accreditation | The accreditation FAQ stays in the page source as a comment | The accrediting body and the credential name. |
+| The book cover (InnerBoard IOS site) | A placeholder cover with the title and author only | The approved Replaceable cover artwork. |
+| The sample score shown on the InnerBoard IOS site | A sample Company OS Score | Confirm it may be shown, or supply the one to show. |
+| Start in Practice, the quiz, Log in | `practiceinnerboard.com/?from=suite`, `/quiz?from=suite`, `/login?from=suite` | Confirm the app URLs. |
+| The Certified Mind Method, Academy "Open the collection" | The live Academy page's own links (redirected in `vercel.json` to the Academy inside Practice) | The course URLs, if they change. |
+| Privacy, Terms, Contact | `/privacy`, `/terms`, `/contact` on this site | Counsel review. |
 
-## Decisions made here, for Leah and Abra to confirm
+Other open questions from the briefs: the Academy's twelve vs thirteen collections, "Relationships &
+Connection" as coming soon, the teen age range, "48 books" and "7 research-grounded frameworks"; INQ's price
+($6,997, from the mock-up); the three navy books image for the homepage Academy section (held until the client
+sends the original).
 
-- **One nav on every page, exactly as the handoff locks it:** Academy, INQ Certification, InnerBoard IOS, and the gold Start in Practice. The Academy doc and INQ mock-up show a different nav (Academy, Certify, InnerLab, InnerBoard OS, Log in); the tracker's open question ALL-03 decides. "Log in" sits in the footer (it goes to skool.com, where the live Academy page sends it). The Practice sales page is reached from the Practice panel's "See everything inside" and the footer.
-- **Two palettes.** The homepage and Practice page use the Suite palette; Academy and INQ use the cream and teal system the Academy doc specifies. The header and footer are shared, so the site still reads as one place.
-- **Display name.** "InnerBoard IOS" everywhere, as the IOS brief and the Suite handoff spell it.
-- **InnerLab links** point into Practice (`/lab`), since InnerLab lives inside the app.
-- **Academy links are the live page's own**, read from innerboardsuite.com/academy on October 19: Human Foundations, the Wisdom Collection and the Certified Mind Method pages, InnerLab (`/innerlab-5011`), and Log in (skool.com). Nothing about links changed, as the Academy doc asks.
-- **Nothing of Leah on the site.** By her direction, so the company can scale without her in it. No photographs or portraits anywhere; her name appears only where a brief requires it. The homepage hero carries the real Practice home screen in place of the handoff's photograph.
-- **The Practice page is a demonstration, not a brochure.** It walks a day through the real app on a sticky stage (the Coach home, Set Up Your Day, STEAR, the Dare, the Journal), the six STEAR steps as a rail with a reading camera, the quiz on linen, the desk with a cursor working the app's own rail, and the eighteen screens as a receding floor. Every screen is a capture of the app itself, so the page shows exactly what someone gets. The only new visible sentences on the site are its fourteen captions, each naming a screen and a step.
-- **Every phone and window is driven by the scroll.** A demonstration stays on screen while the reader scrolls through it, one feature per step, then the page continues (the client's ask, October 20). The scroll alone types a draft, presses a ring, moves the desk cursor to a rail item and clicks it, leans the camera and scrolls a long result inside the phone; scrolling back plays it backwards, and nothing moves while the page is still. Every story is static under reduced motion, without the script, on a landscape phone and on a short laptop window, with every step and its screen on the page.
-- **Copy removed, nothing changed.** With the rebuild the first build's own labels went: the "Section one" eyebrows and "01" numerals, the time of day readings, the numerals before Visit, Account and Subscribe and before the INQ modules and steps, the three Academy summary items beside its hero, the drawn quiz phone's own captions ("Your results", "Your top two are up first.", "Retake it anytime; every result is kept.", "Cancel one": the real result capture replaced it), and the periods after the quiz benefit names. "Founded by Leah Roling." lives in the footer only. Every locked sentence from the briefs is still on its page, verbatim.
-- **The source briefs** live in `brief/`: the Suite handoff and build brief, the Academy directions, the INQ mock-up, and the Practice documents.
-- **No prices for Practice.** The sales page says plans and prices are inside the app under Membership. INQ shows $6,997 with payment options, per the mock-up, pending confirmation.
-- **No testimonials** anywhere except the three the Academy doc approves, signed "Academy student".
-- **The three navy books** image is held, per the tracker; the homepage Academy section stays typographic (the italic deck between two rules and a paper note) until it arrives.
-- **Design restraint.** No glows, blobs or watermarks. Dark moments are full bleed sections the page cross fades into, never two in a row, each lit from one corner with one lamp and a grain; gold is for one filled button per section, the italic clauses and the hairlines on dark. Pill buttons, paper cards with a gradient border instead of a plain line, ruled lists in place of card grids. The footer is linen.
-- **Old URLs redirect** (`vercel.json`): the live site's `/human-foundations`, `/wisdom-collection`, `/certified-mind-method` go to the Academy inside Practice; `/innerlab-5011` and `/innerlab-lp` to the Lab; `/quiz-page` to the quiz; `/certification` to `/inq-certification`.
-- **The INQ accreditation FAQ** is in the page source as a comment until the accrediting body and credential name are supplied, so no placeholder ships.
+## Analytics
 
-## Open questions carried from the tracker
+Calls to action carry `data-event` (`practice_click`, `quiz_click`, `academy_click`, `academy_start_click`,
+`inq_click`, `inq_book_click`, `inq_enroll_click`, `ios_click`) and `data-event-location`. `track()` pushes them to
+`dataLayer`, `gtag` and `plausible` when one is on the page and does nothing otherwise; add the tag to
+`Base.astro` when the account exists. Links into Practice carry `data-passthrough`: the page's `utm_*` and
+`from` parameters travel with them.
 
-- Academy: twelve collections vs thirteen shown; Relationships & Connection "Coming soon"; teen age range; "48 books" and "7 research-grounded frameworks"; testimonial names.
-- INQ: accreditation placeholders `[ACCREDITING BODY]` and `[CREDENTIAL NAME]` in the FAQ must be filled before launch; headline wording (the INQ page says "transformation", the Suite teaser says "change", as the tracker records each); price.
+## Deploy
 
-## Copy rules enforced
+Vercel builds the branch on every push (`framework: astro`, `astro build`, output `dist/`). Before pushing:
 
-No em or en dashes anywhere in the output (`npm run sweep`). "InnerBoard IOS"
-with a capital I and OS. No "Not this. That." lines, no stacked buzzwords, no
-section numbers in the Academy, no emoji, one quote style.
+```bash
+npm run build && npm run sweep
+```
+
+`vercel.json` keeps the old site's URLs working (`/human-foundations`, `/wisdom-collection`,
+`/certified-mind-method` to the Academy inside Practice; `/innerlab-5011`, `/innerlab-lp` to Inner Lab; `/quiz-page`
+to the quiz; `/certification` to `/inq-certification`, permanent), serves clean URLs without a trailing slash, and
+sets long cache headers on `/_astro`, `/fonts` and `/app` and the security headers on every page. A missing route
+gets `dist/404.html` (Vercel serves a static build's `404.html` for unmatched routes, with a 404 status; no rule
+is needed). To launch: point innerboardsuite.com at the Vercel project and promote the deploy.
