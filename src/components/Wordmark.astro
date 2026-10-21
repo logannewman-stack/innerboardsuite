@@ -1,9 +1,21 @@
 ---
-import Mark from "./Mark.astro";
-interface Props { class?: string; href?: string }
-const { class: className = "", href = "/" } = Astro.props;
+/**
+ * InnerBoard's logo (the client's file, October 21): the gold arcs and the
+ * wordmark, INNER in gold and BOARD in ink. The header uses the wordmark alone
+ * (the full circle is too small to read at header height) in two cuts, ink
+ * BOARD on light bars and ivory BOARD on dark ones; the footer uses the whole
+ * logo. Files in public/brand, cut from the client's PNG.
+ */
+interface Props { class?: string; href?: string; size?: "header" | "footer" }
+const { class: className = "", href = "/", size = "header" } = Astro.props;
 ---
-<a href={href} class={`inline-flex items-center gap-2.5 ${className}`} aria-label="InnerBoard, home">
-  <Mark class="w-[26px] h-[26px]" />
-  <span class="font-display text-[22px] leading-none tracking-[-0.01em] font-normal">Inner<em class="not-italic font-normal">Board</em></span>
-</a>
+{size === "header" ? (
+  <a href={href} class={`brand-wordmark ${className}`.trim()} aria-label="InnerBoard, home">
+    <img class="bw-light" src="/brand/wordmark.png" width="384" height="47" alt="InnerBoard" />
+    <img class="bw-dark" src="/brand/wordmark-dark.png" width="384" height="47" alt="" aria-hidden="true" />
+  </a>
+) : (
+  <a href={href} class={`brand-logo ${className}`.trim()} aria-label="InnerBoard, home">
+    <img src="/brand/logo.png" width="500" height="500" alt="InnerBoard" loading="lazy" decoding="async" />
+  </a>
+)}

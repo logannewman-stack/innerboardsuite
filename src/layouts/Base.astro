@@ -35,13 +35,19 @@ interface Props {
 }
 const {
   title, description, path = "/", image = "/og-image.png", theme = "cream", themeColor, navStart = "light", noindex = false, preload,
-  imageAlt = "InnerBoard. Practice by InnerBoard: You don't need a different life, just a new way to meet this one. Beside it, the Coach home on a phone."
+  imageAlt = "The InnerBoard logo."
 } = Astro.props;
 const teal = theme === "teal" || theme === "ac-cream";
 const dataTheme = teal ? "ac-cream" : "cream";
 const color = themeColor || (teal ? "#f7f4ee" : "#f4efe4");
 const canonical = new URL(path, SITE.url).toString();
-const imageUrl = new URL(image, SITE.url).toString();
+/* The link preview (Open Graph, Twitter) must load from the host that serves this build: on Vercel that is the
+ * project's production URL (its vercel.app address until the domain is attached, then the domain), or the branch
+ * URL for previews. Without Vercel it falls back to the site's own domain. */
+const host = process.env.VERCEL_ENV === "production" ? process.env.VERCEL_PROJECT_PRODUCTION_URL : (process.env.VERCEL_BRANCH_URL || process.env.VERCEL_URL);
+const origin = host ? `https://${host}` : SITE.url;
+const imageUrl = new URL(image, origin).toString();
+const shareUrl = new URL(path, origin).toString();
 ---
 <!doctype html>
 <html lang="en" class={`no-js ${teal ? "theme-teal" : ""}`} data-theme={dataTheme}>
@@ -53,14 +59,16 @@ const imageUrl = new URL(image, SITE.url).toString();
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     <meta name="theme-color" content={color} />
     <meta name="nav-start" content={navStart} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" href="/brand/icon-32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/brand/icon-48.png" type="image/png" sizes="48x48" />
+    <link rel="icon" href="/brand/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png" sizes="180x180" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
+    <meta property="og:url" content={shareUrl} />
     <meta property="og:image" content={imageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />

@@ -742,3 +742,14 @@
   .prose-ib p { margin-top: 14px; font-size: 16px; line-height: 1.65; color: var(--fg-2); }
   .prose-ib a { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
 }
+
+/* The client's logo (October 21): the header wordmark in two cuts and the whole logo in the footer. */
+.brand-wordmark { display: inline-flex; align-items: center; }
+.brand-wordmark img { display: block; height: 19px; width: auto; }
+.brand-wordmark .bw-dark { display: none; }
+.site-header.is-dark .brand-wordmark .bw-light { display: none; }
+.site-header.is-dark .brand-wordmark .bw-dark { display: block; }
+@media (max-width: 734px) { .brand-wordmark img { height: 16px; } }
+.brand-logo { display: inline-block; }
+.brand-logo img { display: block; width: 172px; height: 172px; margin: -18px 0 -14px -18px; }
+@media (max-width: 734px) { .brand-logo img { width: 152px; height: 152px; margin: -16px 0 -12px -16px; } }
