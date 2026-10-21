@@ -17,7 +17,7 @@ Preview: https://innerboardsuite.vercel.app/ (the branch deploy). Production: ht
 
 | Page | What it is | Built to |
 | --- | --- | --- |
-| `/` | The Suite homepage: the front door to Practice, the Academy, INQ Certification and InnerBoard IOS. Eight sections in the client's order of October 20: the hero (the headline and the phone on the Coach home), the Practice panel (a scroll story, one feature per step), the subscription quiz (a scroll story on the blush mat, "Take the Quiz" pinned under the copy), the four recognition cards (they flip on click, tap, Enter and Space, never on their own), the Academy (typographic, the books image is held), the INQ teaser (navy), the mission, and the InnerBoard IOS panel. | InnerBoard Suite Logan Handoff FINAL and the INNERBOARD SUITE build brief (`brief/suite/`). Copy locked word for word. |
+| `/` | The Suite homepage: the front door to Practice, the Academy, INQ Certification and InnerBoard IOS. Eight sections in the client's order of October 20: the hero (the headline and the phone on the Coach home), the Practice panel (a scroll story, one feature per step), the subscription quiz (a scroll story on the blush mat, "Take the Quiz" pinned under the copy), the four recognition cards (they flip on click, tap, Enter and Space, never on their own), the Academy (typographic, the books image is held), the INQ teaser (its own full width navy band; the page does not turn for it), the mission, and the InnerBoard IOS panel (its button inside the logo's arcs). | InnerBoard Suite Logan Handoff FINAL and the INNERBOARD SUITE build brief (`brief/suite/`). Copy locked word for word. |
 | `/practice` | The Practice page: the app shown by the app itself. The hero (a desk window and a phone, a story), the loop, a day in Practice (a story on a sky mat that turns to evening), STEAR question by question (a story), the quiz (a story with "Take the quiz" pinned), "Yours", everything inside (a desk window on laptops, a phone on tablets and phones, a story), the three levels and the questions, and the closing floor of eighteen screens that drifts with the scroll. Every screen is a capture of the app. | The app's own copy and build maps; the only sentences we added are short captions naming a screen. |
 | `/academy` | The Academy: the curriculum, the three levels, the library of collections, the testimonials signed "Academy student", the two doors (InnerLab, INQ) and the filter. Cream and teal. | Academy Page Rebuild: Copy and Build Directions (`brief/academy/`). Links point where the live Academy page pointed. |
 | `/inq-certification` | INQ Certification: the mock-up's thirteen sections, the modules, the investment card ($6,997, the only price on the site), the FAQ. Cream and teal. | INQ Certification Page Mock-up (`brief/inq/`). |
@@ -40,7 +40,7 @@ Academy and INQ). `robots.txt` allows everything and names the sitemap; the site
 | `src/styles/global.css` | The system: tokens, themes, type, surfaces, every component's structure, the static layout of the stories. |
 | `src/styles/motion.css` | The CSS half of every mechanic, the pinned story layout, reduced motion, no JS, high contrast. |
 | `src/scripts/site.ts` | The motion library (below). |
-| `src/components/` | Shared: `Header`, `Footer`, `PhoneFrame`, `WindowFrame`, `StoryMarks` (the rail), `DayStage`, `FlipCards`, `Accordion`, `Geo`, `ToggleCard`, `FeatureIcon`, `Mark`, `Wordmark`, `Arrow`. Page pieces are prefixed with their page: `Home*`, `Practice*`, `Academy*`, `Inq*`. |
+| `src/components/` | Shared: `Header`, `Footer`, `PhoneFrame`, `WindowFrame`, `StoryMarks` (the rail), `DayStage`, `FlipCards`, `Accordion`, `BrandArcs` (the logo's arcs), `Logo` (the whole logo as vectors round the wordmark), `ToggleCard`, `FeatureIcon`, `Wordmark`, `Arrow`. Page pieces are prefixed with their page: `Home*`, `Practice*`, `Academy*`, `Inq*`. |
 | `public/app/` | The captures a page shows (`.webp`, with `.jpg` fallbacks for the first 24), their 390 px variants (`-390.webp`), the two 2880 px desk heroes (`-2x.webp`) and `tiles/` (the floor). Nothing else on the site is imagery; `public/images/` stays empty. |
 | `captures/` | Real captures no page uses today, kept in the repo and not deployed (see `captures/README.md`). |
 | `scripts/` | `sweep.mjs` (the copy check), `capture.mjs` (recapture the app), `small.mjs`, `tiles.mjs`, `desk2x.mjs`, `scrolled.mjs` (see Captures). |
@@ -59,9 +59,13 @@ panels, one lamp and a grain per dark surface.
 
 **Motion** (`site.ts`, one scroll loop, every mechanic with a reduced motion and a no JS fallback): reveals
 (`.rise`, `.rise-obj`, `.wipe`), the headline line rise (`data-lines`), lit statements (`data-lit`), the page tone
-(`data-tone` on every full bleed section: the page cross fades as a section passes the middle of the screen),
-the header (tone, hide on scroll down, the menu sheet with focus trap and Escape), drawn lines, the floor, flips,
-the accordion, analytics events and the UTM passthrough.
+(`data-tone` on every full bleed section: the page turns, .4 s eased in and out, as a section passes the middle of
+the screen; while it turns no section floor paints, so the whole screen turns as one colour with no seam), the
+header (tone, hide on scroll down but never within three quarters of a screen of a story's pin, over an inset dark
+panel only as wide as the panel, the menu sheet with focus trap and Escape), drawn lines, the floor, flips, the
+accordion, analytics events and the UTM passthrough. Reveals are timed for a reader who is scrolling: they arrive
+as they enter the screen, a heading's wipe in .8 s and a block's rise in .7 s. Page to page (the `ClientRouter`), the
+old page fades out in 150 ms before the new one rises in, and the header holds still.
 
 **Scroll stories.** Every app demonstration is a story: a tall track whose stage sticks under the header while
 the reader scrolls (native `position: sticky`, no scroll hijacking). The scroll position alone decides the step,
@@ -71,19 +75,27 @@ back plays it backwards; nothing moves on a timer. Markup: `div.story[data-story
 `.story-track > .story-stage` (the device column with the rail, and the copy column with one `.story-step` per
 step, each with a `data-act` in JSON) and `.story-run`. Every story is on the step layout: the device pinned on
 one side with the segmented rail and its "01 / 05" counter, one step's eyebrow, headline and body at a time on the
-other. Without the pin (no script, reduced motion, a landscape phone, a short laptop window, or a screen where the
+other (each step starts at the top of the copy cell, and the incoming step rises only once the outgoing one has
+gone, so two never read at once). Without the pin (no script, reduced motion, a landscape phone, a short laptop window, or a screen where the
 fit guard says no) every step is on the page in order with its own still screen. The engine is exposed for QA as
 `window.__ib.stories[id]`. No device leans in (the camera is supported, but on these captures the app's header
 and bottom bar sit at the edges and in the phone's rounded corners, so any lean cuts them).
 
 ## Brand decisions
 
+- **The logo is the brand device.** The client's logo (October 21) is two tapered gold arcs round the wordmark.
+  `BrandArcs` draws those arcs as vectors, measured from `public/brand/logo.png` (radius 188.5 of 500, strokes from
+  35 to 140 and 215 to 320 degrees, 8.6 px at the thick end, the logo's gold `#d4ac34`), and they draw themselves in
+  from the thick end. They stand round the hero's phone (tablet and up), round the IOS panel's button (laptops), in
+  the Academy teal from the Academy hero's margin rule, and, with the wordmark (`Logo`), as the footer's logo and
+  the 404's mark. The earlier drawn ring and crosshair (`Geo`, `Mark`) are retired.
 - **No green.** The Practice panel, the Practice page's closing floor and every former forest surface are the
   Practice navy `#0d3054` from the InnerBoard brand book (the app icon), with `#174270` for hover and gold lines on
-  it; the INQ teaser keeps its navy `#0d1a2d`, the InnerBoard IOS panel `#071b30` (the IOS site's navy).
+  it; the INQ teaser is its own full width band in `#0d1a2d`, the InnerBoard IOS panel `#071b30` (the IOS site's navy).
 - **Gold italic accents.** Every `<em>` in a heading or statement is Fraunces italic 400 in the section's accent:
-  antique gold `#886020` on the Suite's cream, `#c9ab66` on the dark grounds. Filled buttons are `#b08d4f` with an
-  ink label. Eyebrows take the accent too.
+  antique gold `#886020` on the Suite's cream, `#c9ab66` on the dark grounds. Filled buttons are `#c8a13e` (the
+  logo's gold a step deeper, so it sits beside the antique italics; `#d4ac34`, the logo's own, under a pointer) with
+  an ink label. Eyebrows take the accent too.
 - **Academy and INQ teal.** Their own cream and teal system: `#f7f4ee`, `#efeae1`, cards `#fbf9f5`, teal `#1e5b57`
   (buttons, eyebrows, italics), `#174845`, `#e3ece9`; white italics on teal, ivory on the dark close. The only
   greens on the site are these teals.

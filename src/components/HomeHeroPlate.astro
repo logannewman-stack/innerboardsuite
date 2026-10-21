@@ -13,8 +13,10 @@
  * and phones under the copy.
  */
 import PhoneFrame from "./PhoneFrame.astro";
+import BrandArcs from "./BrandArcs.astro";
 ---
 <div class="hm-hero-phone">
+  <BrandArcs class="hm-hero-arcs" size="calc(var(--pw) * 2.05)" cx="50%" cy="50%" opacity={0.8} weight={0.8} />
   <div class="hm-hero-device rise-obj floor-on" style="--d:.3s">
     <PhoneFrame
       id="hero-phone"

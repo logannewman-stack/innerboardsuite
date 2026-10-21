@@ -12,7 +12,7 @@
  */
 import Base from "../layouts/Base.astro";
 import Arrow from "../components/Arrow.astro";
-import Geo from "../components/Geo.astro";
+import BrandArcs from "../components/BrandArcs.astro";
 import AcademyStair from "../components/AcademyStair.astro";
 import AcademyLabCard from "../components/AcademyLabCard.astro";
 import { LINKS } from "../config/links";
@@ -57,11 +57,11 @@ const testimonials = [
 const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</span>&nbsp;');
 ---
 <Base title={title} description={description} path="/academy" theme="teal" themeColor="#f7f4ee">
-  <!-- 2.3.1 Hero: type, the mark geometry drawing in, one margin rule -->
+  <!-- 2.3.1 Hero: type, the logo's arcs drawing in, one margin rule -->
   <section class="ac-hero grain grain-cream" data-tone="ac-cream">
     <i class="lamp lamp-cream" aria-hidden="true" style="--lx:80%;--ly:0%"></i>
     <div class="wrap ac-hero-wrap">
-      <Geo class="ac-hero-geo" color="#1e5b57" opacity={0.14} stroke={1.25} ringsOnly />
+      <BrandArcs class="ac-hero-arcs" size={990} turn={-35} flip weight={0.55} color="#1e5b57" opacity={0.34} />
       <i class="ac-rule ac-hero-rule rule-draw-v" aria-hidden="true" style="--d:.6s"></i>
       <div class="grid">
         <div class="ac-hero-copy">
@@ -266,11 +266,13 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
   .ac-hero { position: relative; overflow: hidden; min-height: min(100svh, 880px); padding-top: var(--nav-h); display: flex; flex-direction: column; }
   .ac-hero > .lamp { z-index: 0; }
   .ac-hero-wrap { position: relative; z-index: 1; flex: 1; }
-  /* The mark here is the ring alone: no crosshair, no dot. It sits in the wrap so it can be placed from the margin rule:
-   * the ring (r 480 in the 1100 box, so its left edge is 70 px in) touches the rule at column 10's left edge, centred 430 px
-   * down the section (x 1517, y 430 at 1440), so rule and ring read as one drawn mark. */
-  .ac-hero .ac-hero-geo { left: calc(75% + .75 * var(--gap) + .5px - 70px); top: calc(430px - var(--nav-h) - 550px); z-index: 0; max-width: none; }
-  .ac-hero .ac-hero-geo .draw-line { transition-delay: calc(var(--d, 0s) + .4s); }
+  /* The mark here is the logo's arcs in the Academy teal (BrandArcs), turned and mirrored so one stroke starts, at
+   * its thick end, on the margin rule and sweeps down round the circle's foot, clear of the header: the arcs' circle
+   * (r 480 in the 990 box at weight .55, so its left edge is 12 px in) touches the rule at column 10's left edge,
+   * centred 430 px down the section (x 1517, y 430 at 1440), so rule and stroke read as one drawn mark. The other
+   * stroke runs above the section, out of view. */
+  .ac-hero .ac-hero-arcs { left: calc(75% + .75 * var(--gap) + .5px - 12px); top: calc(430px - var(--nav-h) - 495px); z-index: 0; }
+  .ac-hero .ac-hero-arcs .draw-line { transition-delay: calc(var(--d, 0s) + .4s); }
   .ac-hero-rule { top: 90px; }
   .ac-hero-copy { position: relative; z-index: 1; grid-column: 1 / span 9; padding-top: 90px; padding-bottom: clamp(72px, 10vh, 120px); }
   /* Greedy wrap, not balance: with the 8.6em measure the break is "The curriculum / school never / offered." at every width (balance set "school" alone on a line at tablet). */
@@ -414,9 +416,8 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
   /* ── Phone ───────────────────────────────────────────────────────────── */
   @media (max-width: 734px) {
     .ac-hero-copy { grid-column: 1 / -1; padding-top: 48px; padding-bottom: 40px; }
-    /* The ring alone at .08 behind the h1's right half: centre 30 px past the right edge, 300 px down the section, 700 px box. */
-    .ac-hero .ac-hero-geo { width: 700px; height: 700px; left: calc(100% + var(--gutter) + 30px - 350px); top: calc(300px - var(--nav-h) - 350px); }
-    .ac-hero .ac-hero-geo circle.ring { opacity: .08; stroke-width: 1.6; }
+    /* A phone has no margin rule for the stroke to start from, and the stroke would cross the headline: not drawn. */
+    .ac-hero .ac-hero-arcs { display: none; }
     .ac-rule { display: none; }
     .ac-btns { flex-direction: column; }
     .ac-btns .btn { width: 100%; }

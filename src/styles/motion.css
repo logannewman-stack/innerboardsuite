@@ -5,13 +5,17 @@
  */
 
 /* 1.7.2 Reveals */
+/* Timed for a reader who is scrolling, not one who has stopped (flow QA, October 21): a heading's wipe in .8 s, a
+ * block's rise in .7 s, an object's in .85 s, each after six tenths of its authored delay (--d keeps the order of a
+ * section's sequence), so a section's copy is whole by the time its first lines reach the middle of the screen. The
+ * observer arrives them as they enter (site.ts). */
 /* The wipe is a mask, not a clip-path: Chromium counts clip-path in
  * IntersectionObserver geometry, so a clipped heading would never be seen. */
-.js .wipe { -webkit-mask-image: linear-gradient(to right, #000 0 49.5%, transparent 50.5%); mask-image: linear-gradient(to right, #000 0 49.5%, transparent 50.5%); -webkit-mask-size: 200% 100%; mask-size: 200% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: 100% 0; mask-position: 100% 0; padding-block: .2em; margin-block: -.2em; transition: -webkit-mask-position 1.15s var(--slow), mask-position 1.15s var(--slow); transition-delay: calc(var(--i, 0) * 110ms + var(--d, 0s)); }
+.js .wipe { -webkit-mask-image: linear-gradient(to right, #000 0 49.5%, transparent 50.5%); mask-image: linear-gradient(to right, #000 0 49.5%, transparent 50.5%); -webkit-mask-size: 200% 100%; mask-size: 200% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: 100% 0; mask-position: 100% 0; padding-block: .2em; margin-block: -.2em; transition: -webkit-mask-position .8s var(--slow), mask-position .8s var(--slow); transition-delay: calc(var(--i, 0) * 90ms + var(--d, 0s)); }
 .js .wipe.in { -webkit-mask-position: 0% 0; mask-position: 0% 0; }
-.js .rise, .js .reveal { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--slow), transform .9s var(--slow); transition-delay: var(--d, .2s); }
+.js .rise, .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity .7s var(--slow), transform .7s var(--slow); transition-delay: calc(var(--d, .13s) * .6); }
 .js .rise.in, .js .reveal.in, .js .reveal.is-in { opacity: 1; transform: none; }
-.js .rise-obj { opacity: 0; translate: 0 28px; transition: opacity 1.2s var(--slow), translate 1.2s var(--slow); transition-delay: var(--d, .3s); }
+.js .rise-obj { opacity: 0; translate: 0 24px; transition: opacity .85s var(--slow), translate .85s var(--slow); transition-delay: calc(var(--d, .2s) * .6); }
 .js .rise-obj.in { opacity: 1; translate: 0 0; }
 /* First screens paint at once (audit 2, finding 9): a hero's copy and objects slide in without being hidden, so
  * the largest paint is not held back by a fade, and their delays are capped at .2 s. The first frame of a story
@@ -31,9 +35,9 @@
 .js .rule-draw.in, .js .in .rule-draw, .js .in > .rule-draw { transform: scaleX(1); }
 .js .rule-draw-v { transform: scaleY(0); transform-origin: top; transition: transform .9s var(--slow); transition-delay: var(--d, 0s); }
 .js .rule-draw-v.in, .js .in .rule-draw-v { transform: scaleY(1); }
-.js .tcard-in { transform: rotate(-9deg) translate(12px, 24px); opacity: 0; transition: transform 1.2s var(--slow), opacity 1.2s var(--slow); transition-delay: var(--d, .46s); }
+.js .tcard-in { transform: rotate(-9deg) translate(12px, 24px); opacity: 0; transition: transform .9s var(--slow), opacity .9s var(--slow); transition-delay: var(--d, .3s); }
 .js .tcard-in.in { transform: rotate(-5deg); opacity: 1; }
-.js .phone-floor { opacity: 0; transition: opacity 1.2s var(--slow) .3s, transform .4s var(--ease), background-color .4s var(--ease); }
+.js .phone-floor { opacity: 0; transition: opacity .9s var(--slow) .15s, transform .4s var(--ease), background-color .4s var(--ease); }
 .js .in .phone-floor, .js .phone.in .phone-floor, .js .floor-on .phone-floor { opacity: 1; }
 
 /* 1.7.3 Line rise */
@@ -45,7 +49,7 @@
  * heading did (no shift when the lines are grouped after the fonts load). */
 .js .lines-ready { display: flow-root; }
 .js .lines-ready .l { display: block; overflow: hidden; padding-bottom: .32em; margin-bottom: -.32em; }
-.js .lines-ready .w { display: inline-block; transform: translateY(110%); opacity: 0; transition: transform 1.1s var(--slow), opacity 1.1s var(--slow); transition-delay: calc(var(--l, 0) * 90ms + var(--d, 0s)); }
+.js .lines-ready .w { display: inline-block; transform: translateY(110%); opacity: 0; transition: transform .85s var(--slow), opacity .85s var(--slow); transition-delay: calc(var(--l, 0) * 80ms + var(--d, 0s)); }
 .js .lines-ready.in .w { transform: none; opacity: 1; }
 /* In the four heroes the headline's words never start transparent: they rise into their line's mask, which hides
  * them until they do, so the headline paints at once (it is the Academy's and INQ's largest paint, LCP). */
@@ -67,13 +71,21 @@
 /* 1.7.5 Page tone: a dark bleed's own floor is in global.css (tone floors);
  * its lamp and grain live on a child that fades in with the theme. */
 [data-tone] { position: relative; }
-[data-tone="navy"] > .lamp, [data-tone="practice"] > .lamp, [data-tone="charcoal"] > .lamp, [data-tone="ink"] > .lamp, [data-tone="teal"] > .lamp { opacity: 0; transition: opacity .5s var(--ease); }
+[data-tone="navy"] > .lamp, [data-tone="practice"] > .lamp, [data-tone="charcoal"] > .lamp, [data-tone="ink"] > .lamp, [data-tone="teal"] > .lamp { opacity: 0; transition: opacity .4s var(--turn); }
 html[data-theme="navy"] [data-tone="navy"] > .lamp,
 html[data-theme="practice"] [data-tone="practice"] > .lamp,
 html[data-theme="charcoal"] [data-tone="charcoal"] > .lamp,
 html[data-theme="ink"] [data-tone="ink"] > .lamp,
 html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
 [data-tone] > .lamp { z-index: 0; }
+/* The logo's arcs on a dark bleed fade in with its tone, as its lamp does, to their own opacity. */
+[data-tone="navy"] > .brand-arcs, [data-tone="practice"] > .brand-arcs, [data-tone="charcoal"] > .brand-arcs, [data-tone="ink"] > .brand-arcs, [data-tone="teal"] > .brand-arcs { opacity: 0; transition: opacity .4s var(--turn); }
+html[data-theme="navy"] [data-tone="navy"] > .brand-arcs,
+html[data-theme="practice"] [data-tone="practice"] > .brand-arcs,
+html[data-theme="charcoal"] [data-tone="charcoal"] > .brand-arcs,
+html[data-theme="ink"] [data-tone="ink"] > .brand-arcs,
+html[data-theme="teal"] [data-tone="teal"] > .brand-arcs,
+.no-js [data-tone] > .brand-arcs { opacity: var(--arc-o, 1); }
 [data-tone] > .wrap, [data-tone] > .wrap-wide { position: relative; z-index: 1; }
 .no-js [data-tone="navy"] { background: #0d1a2d; color: #f4efe4; --fg: #f4efe4; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(244,239,228,.14); --accent: #c9ab66; --btn-line: rgba(244,239,228,.32); --lit-off: rgba(244,239,228,.25); --focus: #c9ab66; }
 .no-js [data-tone="practice"] { background: #0d3054; color: #f4efe4; --fg: #f4efe4; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(201,171,102,.35); --accent: #c9ab66; --btn-line: rgba(244,239,228,.32); --lit-off: rgba(244,239,228,.25); --focus: #c9ab66; }
@@ -154,18 +166,21 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
    * row under the window; --win-max caps it on very wide screens. Pass the WindowFrame a `ww` at least this wide. */
   :where(.js [data-story-ui="steps"]:not(.static)) .story-win { width: min(var(--win-max, 4000px), calc(100cqw - 92px), calc((100cqh - 32px - var(--cap-h, 44px)) / .657)); }
   :where(.js [data-story-ui="steps"]:not(.static)) .story-copy { position: relative; display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
-  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps { display: grid; align-items: center; width: 100%; margin: 0; padding: 0; }
-  /* The copy change (1.6): one step at a time. Steps after the current one rest 20 px below, steps before it 20 px
+  /* Every step starts at the top of the shared cell, so the eyebrow and the headline keep one line from step to
+   * step whatever each body's length (flow QA, October 21: centred, the eyebrows of two steps stood apart). */
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps { display: grid; align-items: start; width: 100%; margin: 0; padding: 0; }
+  /* The copy change (1.6): one step at a time. Steps after the current one rest 14 px below, steps before it 14 px
    * above, both transparent; the current one at rest. Crossing a boundary going down, the outgoing step leaves
-   * upward (200 ms, ease in) and the incoming one rises from below 160 ms later (240 ms); going up, the mirror.
-   * The two are never both above .25. The scroll position alone triggers it (the engine's .is-current). Until the
-   * engine marks a step, the first one shows, so nothing is ever empty while the script loads. */
-  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps > .story-step { grid-area: 1 / 1; min-width: 0; opacity: 0; pointer-events: none; transform: translate3d(0, 20px, 0);
-    transition: opacity 200ms cubic-bezier(.4, 0, 1, 1), transform 200ms cubic-bezier(.4, 0, 1, 1); }
-  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps > .story-step:has(~ .story-step.is-current) { transform: translate3d(0, -20px, 0); }
+   * upward (170 ms, ease in) and the incoming one rises from below once it has gone (190 ms later, 280 ms); going
+   * up, the mirror. The two are never on screen together (at 200 and 160 ms both read at once, flow QA). The
+   * scroll position alone triggers it (the engine's .is-current). Until the engine marks a step, the first one
+   * shows, so nothing is ever empty while the script loads. */
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps > .story-step { grid-area: 1 / 1; min-width: 0; opacity: 0; pointer-events: none; transform: translate3d(0, 14px, 0);
+    transition: opacity 170ms cubic-bezier(.4, 0, 1, 1), transform 170ms cubic-bezier(.4, 0, 1, 1); }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-steps > .story-step:has(~ .story-step.is-current) { transform: translate3d(0, -14px, 0); }
   :where(.js [data-story-ui="steps"]:not(.static)) .story-steps > .story-step.is-current,
   :where(.js [data-story-ui="steps"]:not(.static)) .story-steps:not(:has(> .is-current)) > .story-step:first-child { opacity: 1; pointer-events: auto; transform: none;
-    transition: opacity 240ms var(--ease) 160ms, transform 240ms var(--ease) 160ms; }
+    transition: opacity 280ms var(--ease) 190ms, transform 280ms var(--slow) 190ms; }
   /* A step is a block of copy while pinned: a ladder row's grid, padding, rules and hover line are the static
    * layout's (the :is() lifts these over `.ladder > li:last-child`). */
   :where(.js [data-story-ui="steps"]:not(.static)) .story-steps > .story-step:is(*, :last-child) { display: block; margin: 0; padding: 0; border: 0; }
@@ -175,12 +190,12 @@ html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
    * step has other content (they share one cell). */
   :where(.js [data-story-ui="steps"]:not(.static)) .story-subs,
   :where(.js [data-story-ui="steps"]:not(.static)) .story-steps > .story-step:has(> .story-sub) { display: grid; align-items: start; }
-  :where(.js [data-story-ui="steps"]:not(.static)) :is(.story-subs, .story-step) > .story-sub { grid-area: 1 / 1; min-width: 0; opacity: 0; pointer-events: none; transform: translate3d(0, 20px, 0);
-    transition: opacity 200ms cubic-bezier(.4, 0, 1, 1), transform 200ms cubic-bezier(.4, 0, 1, 1); }
-  :where(.js [data-story-ui="steps"]:not(.static)) :is(.story-subs, .story-step) > .story-sub:has(~ .story-sub.is-current) { transform: translate3d(0, -20px, 0); }
+  :where(.js [data-story-ui="steps"]:not(.static)) :is(.story-subs, .story-step) > .story-sub { grid-area: 1 / 1; min-width: 0; opacity: 0; pointer-events: none; transform: translate3d(0, 14px, 0);
+    transition: opacity 170ms cubic-bezier(.4, 0, 1, 1), transform 170ms cubic-bezier(.4, 0, 1, 1); }
+  :where(.js [data-story-ui="steps"]:not(.static)) :is(.story-subs, .story-step) > .story-sub:has(~ .story-sub.is-current) { transform: translate3d(0, -14px, 0); }
   :where(.js [data-story-ui="steps"]:not(.static)) :is(.story-subs, .story-step) > .story-sub.is-current,
   :where(.js [data-story-ui="steps"]:not(.static)) :is(.story-subs, .story-step):not(:has(> .story-sub.is-current)) > .story-sub:nth-child(1 of .story-sub) { opacity: 1; pointer-events: auto; transform: none;
-    transition: opacity 240ms var(--ease) 160ms, transform 240ms var(--ease) 160ms; }
+    transition: opacity 280ms var(--ease) 190ms, transform 280ms var(--slow) 190ms; }
   /* The roles, added to the elements a step already has; only the pinned layout restyles them. The headline and
    * body rules carry three classes, so a page's static rule of two (.my-ladder .ladder-name) does not leak into the
    * pinned layout; a page's pinned rule (.js .my-story:not(.static) ...) still wins. */

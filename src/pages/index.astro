@@ -6,7 +6,7 @@
  * brief: the copy below is theirs, section by section. Eight sections, in the
  * order the client set on October 20: the hero, the Practice panel (the green
  * panel), the quiz still life, the recognition cards, the typographic Academy,
- * the INQ teaser (where the page turns to evening), the lit mission and the
+ * the INQ teaser (its own navy band), the lit mission and the
  * InnerBoard IOS panel. Every image is a real capture of Practice.
  *
  * The hero does not pin: the first notch of scroll moves the page, and the
@@ -28,7 +28,7 @@ import FlipCards from "../components/FlipCards.astro";
 import PhoneFrame from "../components/PhoneFrame.astro";
 import StoryMarks from "../components/StoryMarks.astro";
 import FeatureIcon from "../components/FeatureIcon.astro";
-import Geo from "../components/Geo.astro";
+import BrandArcs from "../components/BrandArcs.astro";
 import HomeHeroPlate from "../components/HomeHeroPlate.astro";
 import HomeQuizStill from "../components/HomeQuizStill.astro";
 import { LINKS } from "../config/links";
@@ -262,10 +262,10 @@ const quizBenefits = [
     </div>
   </section>
 
-  <!-- 6. INQ Certification teaser: a navy bleed, the page turns to evening -->
-  <section id="inq" class="hm-inq" data-tone="navy">
+  <!-- 6. INQ Certification teaser: a full width navy band that paints itself, between two cream sections (the
+       page does not turn for it, so the Academy above never sits on navy: flow QA, October 21) -->
+  <section id="inq" class="hm-inq" data-tone="cream" data-surface="dark">
     <i class="lamp grain" aria-hidden="true" style="--lx:85%;--ly:0%"></i>
-    <Geo class="hm-geo-inq" color="#f4efe4" opacity={0.08} ringsOnly />
     <div class="wrap grid">
       <div class="hm-inq-copy">
         <p class="eyebrow rise">INQ Certification | Lead it</p>
@@ -302,7 +302,6 @@ const quizBenefits = [
   <section id="ios" class="hm-ios" data-tone="cream">
     <div class="wrap-wide panel-navy grain hm-ios-panel" data-surface="dark">
       <i class="lamp" aria-hidden="true" style="--lx:12%;--ly:72%;--la:.12"></i>
-      <Geo class="hm-geo-ios" color="#f4efe4" opacity={0.08} ringsOnly />
       <div class="hm-ios-in">
         <div class="hm-ios-copy">
           <i class="rule-gold-v rule-draw-v hm-ios-rule" aria-hidden="true"></i>
@@ -312,6 +311,7 @@ const quizBenefits = [
           <p class="t-lead hm-ios-lead hm-ios-lead-2 rise" style="--d:.3s">InnerBoard IOS brings a people operating system into organizations, helping build the confidence, capability, and accountability that strengthen culture and drive results.</p>
         </div>
         <div class="hm-ios-btn rise" style="--d:.36s">
+          <BrandArcs class="hm-arcs-ios" size={292} cx="50%" cy="50%" opacity={0.92} weight={1.1} />
           <a href={LINKS.ios} class="btn btn-gold btn-lg" rel="noopener" data-event="ios_click" data-event-location="pathway">Explore InnerBoard IOS <Arrow /></a>
         </div>
       </div>
@@ -324,7 +324,7 @@ const quizBenefits = [
    * order and the two step layout stories, BRAND_FIX part 3 for the page's brand fixes). Every number is from the
    * specs or the punch list; the system's tokens, classes and components do the rest. Prefixed hm- so the rules
    * never reach a shared component: where the page needs a shared component to look different (the flip cards,
-   * the toggle card, the geo, the ladder rows) it says so here, scoped under an hm- class.
+   * the toggle card, the arcs, the ladder rows) it says so here, scoped under an hm- class.
    *
    * Stories: the static layout (no script, reduced motion, a landscape phone, a short laptop window) is the
    * default CSS below; every pinned rule sits inside the story media queries of site.ts (STORY_MQ), scoped
@@ -364,6 +364,11 @@ const quizBenefits = [
   .hm-hero-phone .phone { box-shadow: inset 0 0 0 .55em #0c0b09, inset 0 0 0 .9em rgba(255,255,255,.06), 0 0 0 1px rgba(110,87,36,.18),
     0 2px 4px rgba(31,29,26,.14), 0 24px 40px -16px rgba(31,29,26,.34), 0 90px 120px -50px rgba(31,29,26,.5); }
   .hm-hero-phone .phone-floor { --floor-a: .38; }
+  /* The logo's arcs round the phone, as they round the wordmark in the logo: on the circle the phone's height
+   * spans, drawn in as the page opens (BrandArcs). A phone's screen is too narrow to keep them clear of the
+   * device, so they start at tablet width (735). */
+  .hm-hero-arcs { z-index: -1; }
+  @media (max-width: 734px) { .hm-hero-arcs { display: none; } }
   @media (min-width: 900px) {
     .hm-hero { min-height: max(640px, calc(100vh - 40px)); min-height: max(640px, calc(100svh - 40px)); padding-bottom: 0; }
     .hm-hero-copy { padding-top: clamp(24px, 6vh, 90px); padding-top: clamp(24px, 6svh, 90px); }
@@ -442,7 +447,7 @@ const quizBenefits = [
    * phone shows the result's first step. The knob moves by transform and the gold is an opacity layer (BRAND_FIX S8);
    * with --g unset (static, no script) it is on, as the card draws it. */
   .hm-tcard .tcard-row:nth-child(2) .tg { --on: calc(1 - clamp(0, (var(--g, 0) - 3.62) / .1, 1)); background: #d9cfbe; }
-  .hm-tcard .tcard-row:nth-child(2) .tg::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #b08d4f; box-shadow: inset 0 1px 2px rgba(31,29,26,.18); opacity: var(--on); }
+  .hm-tcard .tcard-row:nth-child(2) .tg::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #c8a13e; box-shadow: inset 0 1px 2px rgba(31,29,26,.18); opacity: var(--on); }
   .hm-tcard .tcard-row:nth-child(2) .tg::after { left: 2px; transform: translateX(calc(var(--on) * 16px)); }
   /* Static: the four benefits side by side, each with its own still screen (the question, the result, its cost, its
    * first step); names, bodies and screens each start on one line (every item is a three row subgrid). Then the button
@@ -494,15 +499,11 @@ const quizBenefits = [
   .hm-note-body { color: var(--fg-2); }
 
   /* ── 6. INQ teaser ────────────────────────────────────────────────── */
-  /* Ring only (Geo ringsOnly; the crosshair and the dot are also hidden here
-   * in case the prop is ever dropped), its centre off the section: one
-   * quarter arc enters the top right, above the buttons, and the margin rule
-   * stays the only vertical. */
-  .hm-inq { padding-block: var(--sec-l); overflow: hidden; }
-  .hm-geo-inq path, .hm-geo-inq .dot, .hm-geo-ios path, .hm-geo-ios .dot { display: none; }
-  /* Centre 100 px right of the section and 160 px above it: a 350 x 310 arc,
-   * at least 44 px clear of every line and button from 1069 to 1920. */
-  .hm-geo-inq { right: -650px; top: -710px; z-index: 0; }
+  /* Its own navy, edge to edge (the brief's "separate full-width navy and gold section"), so it never shares a
+   * ground with the Academy above or the mission below; the section's floor is the page's cream, so the band
+   * replaces it. The lamp and the margin rule only: the logo's arcs are the IOS panel's, two sections on. */
+  .hm-inq { padding-block: var(--sec); overflow: hidden; }
+  main .hm-inq[data-tone] { background-color: #0d1a2d; background-image: none; }
   .hm-inq-copy { grid-column: 1 / span 8; grid-row: 1; }
   .hm-inq-lead { color: var(--fg-2); max-width: 28em; margin-top: 28px; }
   .hm-inq-lead-2 { margin-top: 1em; }
@@ -520,11 +521,11 @@ const quizBenefits = [
   .hm-mission-close { margin: 56px 0 0; }
 
   /* ── 8. InnerBoard IOS ────────────────────────────────────────────── */
-  /* Ring only, its centre above the panel: an arc hangs from the top edge on
-   * the right, clear of the copy and the button. */
+  /* The panel's button stands in the logo's arcs, as the wordmark stands in the logo: the circle about the
+   * button's width, centred on it, the button in the middle of its column from 1069 up (BrandArcs, the logo's
+   * own gold). Under 1069 the button runs the column's width under the copy and the arcs are not drawn. */
   .hm-ios { padding-block: var(--sec); }
   .hm-ios-panel { padding: 96px 80px 88px; }
-  .hm-geo-ios { right: -400px; top: -850px; z-index: 0; }
   .hm-ios-in { position: relative; z-index: 1; isolation: isolate; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
   .hm-ios-copy { grid-column: 1 / span 7; position: relative; }
   .hm-ios-rule { position: absolute; left: -32px; top: 0; bottom: 0; display: block; }
@@ -532,7 +533,10 @@ const quizBenefits = [
   .hm-ios h2 em.grad { color: transparent; -webkit-text-fill-color: transparent; }
   .hm-ios-lead { color: #cdc6b8; max-width: 28em; margin-top: var(--lead-gap); }
   .hm-ios-lead-2 { margin-top: 1em; }
-  .hm-ios-btn { grid-column: 9 / span 4; align-self: end; justify-self: end; }
+  .hm-ios-btn { grid-column: 9 / span 4; align-self: center; justify-self: center; position: relative; isolation: isolate; }
+  .hm-ios-btn .btn { position: relative; z-index: 1; }
+  .hm-arcs-ios { z-index: 0; }
+  @media (max-width: 1068px) { .hm-arcs-ios { display: none; } }
 
   /* ── Tablet (735 to 1068) ─────────────────────────────────────────── */
   @media (max-width: 1068px) {
@@ -557,7 +561,6 @@ const quizBenefits = [
     .hm-academy-btns { grid-column: 1 / span 6; }
     .hm-deck { grid-column: 7 / span 6; grid-row: 1; align-self: start; margin-bottom: 0; }
     .hm-note { grid-column: 7 / span 6; grid-row: 2; align-self: start; margin-top: 36px; }
-    .hm-geo-inq, .hm-geo-ios { right: -700px; top: -900px; }
     .hm-ios-panel { padding: 64px 40px; }
     .hm-ios-copy { grid-column: 1 / -1; }
     .hm-ios-btn { grid-column: 1 / -1; justify-self: start; margin-top: 36px; }
@@ -627,8 +630,6 @@ const quizBenefits = [
     .hm-deck-line { font-size: 24px; }
     .hm-note { margin-top: 28px; padding: 24px; order: 3; }
     .hm-academy-btns { order: 4; margin-top: 32px; align-self: stretch; }
-    .hm-inq { padding-block: var(--sec); }
-    .hm-geo-inq { --geo-o: .06 !important; right: -700px; top: -900px; }
     .hm-inq-copy { grid-column: 1 / -1; }
     .hm-inq-lead { margin-top: 22px; }
     /* The margin rule becomes a 48 px horizontal rule above the buttons. */
@@ -642,7 +643,6 @@ const quizBenefits = [
     .hm-mission-lit { margin-top: 36px; }
     .hm-mission-close { margin-top: 44px; }
     .hm-ios-panel { width: calc(100% - 24px); border-radius: 20px; padding: 48px 24px; }
-    .hm-geo-ios { --geo-o: .06 !important; right: -700px; top: -930px; }
     .hm-ios-rule { position: static; width: 48px; height: 1px; margin: 0 0 24px; background: linear-gradient(90deg, var(--line-gold), var(--line-gold) 70%, transparent); transform-origin: left; }
     .js .hm-ios-rule { transform: scaleX(0); }
     .js .hm-ios-rule.in, .js .in .hm-ios-rule { transform: scaleX(1); }

@@ -40,7 +40,6 @@ import PhoneFrame from "../components/PhoneFrame.astro";
 import WindowFrame from "../components/WindowFrame.astro";
 import StoryMarks from "../components/StoryMarks.astro";
 import DayStage from "../components/DayStage.astro";
-import Geo from "../components/Geo.astro";
 import Accordion from "../components/Accordion.astro";
 import PracticeLoopLine from "../components/PracticeLoopLine.astro";
 import PracticeInside from "../components/PracticeInside.astro";
@@ -437,7 +436,6 @@ const faq = [
   <!-- Final: a Practice navy bleed, the floor that drifts with the scroll (S11) -->
   <section class="pr-final" data-tone="practice" data-warm>
     <PracticeFloor />
-    <Geo class="pr-geo" color="#f4efe4" opacity={0.06} />
     <div class="wrap pr-final-wrap">
       <div class="grid">
         <div class="pr-final-copy">
@@ -589,6 +587,9 @@ const faq = [
 
   /* 2.2.7 Everything inside (S8). Static: the four rows in order, each followed by its own figure. */
   .pr-inside-sec { padding-block: var(--sec); }
+  /* Pinned, the story's stage is a screen tall and the window sits in its middle, so the stage's own foot is the
+   * section's closing space: no bottom padding then (flow QA, October 21: 374 px of nothing before the levels). */
+  .js .pr-inside-sec:has(.pr-inside.is-live:not(.static)) { padding-bottom: 0; }
   .pr-inside-head { grid-column: 1 / span 8; }
   .pr-inside-body { margin-top: var(--head-gap); }
   .pr-inside-ladder { max-width: 720px; }
@@ -622,7 +623,6 @@ const faq = [
   html[data-theme="practice"] .pr-final .floor, .no-js .pr-final .floor { opacity: 1; }
   /* The floor's grain starts under the section's top edge, so it never draws a line across the Practice navy page there. */
   .pr-final .floor-fade.grain::after { -webkit-mask-image: linear-gradient(to bottom, transparent, #000 200px); mask-image: linear-gradient(to bottom, transparent, #000 200px); }
-  .pr-geo { right: -260px; bottom: -420px; z-index: 0; }
   .pr-final-wrap { position: relative; z-index: 2; margin-top: 14vh; }
   .pr-final-copy { grid-column: 3 / span 8; position: relative; text-align: center; }
   .pr-final-copy::before { content: ""; position: absolute; inset: -80px -120px; background: radial-gradient(50% 60% at 50% 40%, rgba(13,48,84,.85), transparent 75%); z-index: -1; pointer-events: none; opacity: 0; transition: opacity .5s var(--ease); }

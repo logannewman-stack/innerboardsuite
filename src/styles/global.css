@@ -21,7 +21,8 @@
   --color-ink: #1f1d1a;
   --color-ink-muted: #3d3a35;
   --color-ink-faint: #5c574f;
-  --color-gold: #b08d4f;
+  --color-gold: #c8a13e;
+  --color-logo-gold: #d4ac34;
   --color-gold-2: #c9ab66;
   --color-gold-soft: #e6d7b3;
   --color-gold-ink: #886020;
@@ -94,6 +95,7 @@
   --pop: cubic-bezier(.2, .9, .25, 1.15);
   --spring: cubic-bezier(.34, 1.25, .64, 1);
   --hover: cubic-bezier(0, 0, .58, 1);
+  --turn: cubic-bezier(.65, 0, .35, 1);
 
   --fs-xl: clamp(44px, min(6.1vw, 10.4vh), 112px);
   --fs-l: clamp(34px, min(4.3vw, 7.2vh), 80px);
@@ -204,7 +206,9 @@
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
     overflow-x: clip;
-    transition: background-color .5s var(--ease), color .5s var(--ease);
+    /* The page's turn between tones: .4 s, eased in and out, so the half way colour (where neither ink nor ivory
+     * reads) passes quickly. */
+    transition: background-color .4s var(--turn), color .4s var(--turn);
   }
   h1, h2, h3 {
     font-family: var(--font-display);
@@ -239,11 +243,13 @@
   /* ── Tone floors (1.7.5) ────────────────────────────────────────────
    * Every section[data-tone] carries a floor: transparent at its top, its own tone's colour from 200 px
    * down, so the top still cross fades with the body. The floor is painted exactly while the page is in
-   * that section's tone, and fades with the body (--tone-floor is a registered colour), so text in the
-   * theme's --fg tokens and the ground under it always agree: a floor painted ahead of its tone would put
+   * that section's tone (--tone-floor is a registered colour), so text in the theme's --fg tokens and the
+   * ground under it always agree: a floor painted ahead of its tone would put
    * the light page's ink on a dark floor (the close h2 before the switch). The page end holds because the
    * tone engine skips the footer, so the closing bleed stays the theme, and its floor with it, to the
-   * bottom. Pages need no rule of their own. */
+   * bottom. Pages need no rule of their own. While the page turns, no floor paints: the floor of the tone being
+   * left goes at once and the floor of the tone arriving comes once the body has finished turning, so the whole
+   * screen turns as one colour and no edge shows between the two sections (flow QA, October 21). */
   [data-tone="cream"] { --tone-bg: #f4efe4; }
   [data-tone="ac-cream"] { --tone-bg: #f7f4ee; }
   [data-tone="navy"] { --tone-bg: #0d1a2d; }
@@ -251,11 +257,11 @@
   [data-tone="charcoal"] { --tone-bg: #26231f; }
   [data-tone="ink"] { --tone-bg: #1f1d1a; }
   [data-tone="teal"] { --tone-bg: #1e5b57; }
-  main [data-tone] { background-image: var(--tone-tint, none), linear-gradient(to bottom, transparent 0, var(--tone-floor) 200px); transition: --tone-floor .5s var(--ease); }
+  main [data-tone] { background-image: var(--tone-tint, none), linear-gradient(to bottom, transparent 0, var(--tone-floor) 200px); transition: --tone-floor 0s linear 0s; }
   html[data-theme="cream"] main [data-tone="cream"], html[data-theme="ac-cream"] main [data-tone="ac-cream"],
   html[data-theme="navy"] main [data-tone="navy"], html[data-theme="practice"] main [data-tone="practice"],
   html[data-theme="charcoal"] main [data-tone="charcoal"], html[data-theme="ink"] main [data-tone="ink"],
-  html[data-theme="teal"] main [data-tone="teal"] { --tone-floor: var(--tone-bg); }
+  html[data-theme="teal"] main [data-tone="teal"] { --tone-floor: var(--tone-bg); transition-delay: .4s; }
 
   /* Atmosphere at a section's edges: a lamp or grain layer that is a direct child of a section (and a
    * section's own grain) fades out over its lower half, so it never ends in a hard horizontal seam; below
@@ -320,7 +326,9 @@
   }
   .btn svg { width: 14px; height: 14px; flex: none; transition: transform 200ms var(--hover); }
   .btn:active { transform: scale(.98); }
-  .btn-gold { background: #b08d4f; color: #1f1d1a; }
+  /* The filled gold: the logo's gold (#d4ac34) taken a step deeper so it holds its own beside the antique gold
+   * italics; it lifts to the logo's own gold under a pointer. */
+  .btn-gold { background: #c8a13e; color: #1f1d1a; }
   .btn-line { box-shadow: inset 0 0 0 1px var(--btn-line); color: var(--fg); }
   .btn-cream { background: #f7f4ee; color: #1f1d1a; }
   .btn-teal { background: #1e5b57; color: #ffffff; }
@@ -329,7 +337,7 @@
    * (finding 14). :active and :focus-visible still answer every input. */
   @media (hover: hover) and (pointer: fine) {
     .btn:hover svg { transform: translateX(3px); }
-    .btn-gold:hover { background: #c9ab66; }
+    .btn-gold:hover { background: #d4ac34; }
     .btn-line:hover { background: var(--btn-hover); }
     .btn-cream:hover { background: #ffffff; }
     .btn-teal:hover { background: #174845; }
@@ -626,14 +634,8 @@
   .tcard-row span { line-height: 1; font-weight: 450; }
   .tcard .tg { position: relative; display: block; width: 38px; height: 22px; border-radius: 999px; background: #d9cfbe; box-shadow: inset 0 1px 2px rgba(31,29,26,.18); flex: none; }
   .tcard .tg::after { content: ""; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
-  .tcard .tg.on { background: #b08d4f; }
+  .tcard .tg.on { background: #c8a13e; }
   .tcard .tg.on::after { left: 18px; }
-
-  /* ── The mark geometry ─────────────────────────────────────────────── */
-  /* z-index 0: under the copy, which sits in a positioned wrapper at z-index 1 (a bleed's .wrap already is). */
-  .geo { position: absolute; z-index: 0; width: var(--geo-size, 1100px); height: var(--geo-size, 1100px); max-width: none; max-height: none; pointer-events: none; color: currentColor; opacity: 1; }
-  .geo path, .geo circle.ring { fill: none; stroke: currentColor; stroke-width: var(--geo-sw, 1); opacity: var(--geo-o, .08); }
-  .geo circle.dot { fill: currentColor; stroke: none; opacity: calc(var(--geo-o, .08) * 2); }
 
   /* ── The floor (Practice final only) ───────────────────────────────── */
   .floor { position: absolute; inset: 0; perspective: 1100px; perspective-origin: 50% 28%; overflow: hidden; pointer-events: none; }
@@ -658,6 +660,11 @@
   /* Dark state: the bar takes the colour of what it sits on (the page's tone, or the dark surface under it,
    * which the script writes as --hdr-bg), at 90 percent with the blur, so nothing reads through it. */
   .site-header.is-dark.is-scrolled { background: color-mix(in srgb, var(--hdr-bg, var(--bg)) 90%, transparent); box-shadow: 0 1px 0 rgba(244,239,228,.1); }
+  /* Over a panel set in from the page's edges, the bar is the panel's own colour across the panel's width only
+   * (the script writes the panel's left and right as --hdr-x0 and --hdr-x1), opaque, so the panel runs up under
+   * it and the cream on either side stays cream. */
+  html:not(.menu-open) .site-header.is-dark.is-scrolled.is-inset { -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none;
+    background: linear-gradient(90deg, transparent var(--hdr-x0, 0px), var(--hdr-bg, var(--bg)) var(--hdr-x0, 0px), var(--hdr-bg, var(--bg)) var(--hdr-x1, 100%), transparent var(--hdr-x1, 100%)); }
   .site-header.nav-hidden { transform: translateY(calc(-100% - 2px)); }
   /* Without the script the bar never learns it has scrolled, so it is painted from the start. */
   .no-js .site-header { background: rgba(244,239,228,.92); box-shadow: 0 1px 0 rgba(31,29,26,.08); }
@@ -698,7 +705,7 @@
   .hdr-row > a, .ftr-blurb-col > a { padding-block: 9px; margin-block: -9px; }
   html.menu-open .site-header { background: #faf7f0; box-shadow: none; color: #1f1d1a; }
   html.menu-open { overflow: hidden; }
-  .skip { position: absolute; left: 12px; top: 12px; z-index: 100; padding: 11px 16px; min-height: 44px; border-radius: 999px; background: #b08d4f; color: #1f1d1a; font-family: var(--font-sans); font-size: var(--fs-small); font-weight: 500; transform: translateY(-200%); }
+  .skip { position: absolute; left: 12px; top: 12px; z-index: 100; padding: 11px 16px; min-height: 44px; border-radius: 999px; background: #c8a13e; color: #1f1d1a; font-family: var(--font-sans); font-size: var(--fs-small); font-weight: 500; transform: translateY(-200%); }
   .skip:focus { transform: none; }
 
   /* ── Footer (1.9) ──────────────────────────────────────────────────── */
@@ -713,14 +720,15 @@
   .ftr-blurb { margin-top: 28px; font-family: var(--font-display); font-size: var(--fs-s); font-weight: 400; letter-spacing: -.012em; line-height: 1.2; max-width: 22em; color: var(--fg); text-wrap: pretty; }
   .ftr-founder { margin: 20px 0 0; font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: var(--fs-cap-i); line-height: 1.4; color: var(--fg-3); }
   .ftr-rule { height: 1px; margin-top: 64px; background: linear-gradient(90deg, transparent, var(--line-gold) 12% 88%, transparent); }
-  .ftr-cols { grid-column: 7 / span 6; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; column-gap: var(--gap); row-gap: 32px; padding-top: calc(26px + 28px + .1em); }
+  /* The columns' eyebrows stand on the logo's wordmark line (the logo is 200 high, its wordmark at its middle). */
+  .ftr-cols { grid-column: 7 / span 6; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; column-gap: var(--gap); row-gap: 32px; padding-top: 86px; }
   .ftr-col { min-width: 0; }
   .ftr-col .eyebrow { margin-bottom: 14px; }
   /* Each link is a 44 px target (12 px above and below a 20 px line); the list pulls up by the padding so the
    * column keeps its place under the eyebrow (finding 7). */
   .ftr-col ul { list-style: none; margin: -12px 0 0; padding: 0; }
   .ftr-col a { display: inline-block; padding-block: 12px; font-family: var(--font-sans); font-size: var(--fs-body); font-weight: 450; line-height: 20px; color: var(--fg); text-decoration: none; text-underline-offset: .18em; text-decoration-thickness: 1px; }
-  .ftr-legal { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 0; padding-top: 20px; font-family: var(--font-sans); font-size: var(--fs-cap); line-height: 1.45; color: var(--fg-3); }
+  .ftr-legal { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 0; padding-top: 20px; font-family: var(--font-sans); font-size: var(--fs-cap); line-height: 1.45; color: var(--fg-3); }
   .ftr-legal p { margin: 0; }
   .ftr-legal nav { display: flex; gap: 24px; }
   .ftr-legal a { display: inline-block; min-height: 44px; padding-block: 12px; padding-inline: 6px; margin-inline: -6px; color: inherit; text-decoration: none; text-underline-offset: .18em; }
@@ -745,11 +753,32 @@
 
 /* The client's logo (October 21): the header wordmark in two cuts and the whole logo in the footer. */
 .brand-wordmark { display: inline-flex; align-items: center; }
+/* 21 px tall from 960 up (the wordmark file is 47 px tall, so it stays sharp at twice the pixels). */
 .brand-wordmark img { display: block; height: 19px; width: auto; }
+@media (min-width: 960px) { .brand-wordmark img { height: 21px; } }
 .brand-wordmark .bw-dark { display: none; }
 .site-header.is-dark .brand-wordmark .bw-light { display: none; }
 .site-header.is-dark .brand-wordmark .bw-dark { display: block; }
 @media (max-width: 734px) { .brand-wordmark img { height: 16px; } }
 .brand-logo { display: inline-block; }
-.brand-logo img { display: block; width: 172px; height: 172px; margin: -18px 0 -14px -18px; }
-@media (max-width: 734px) { .brand-logo img { width: 152px; height: 152px; margin: -16px 0 -12px -16px; } }
+/* The logo lockup (Logo.astro): the vector arcs and the wordmark where the logo file puts them, for the default
+ * weight (BrandArcs at weight 1: the arcs' centre line is 95.6 percent of the box). */
+.logo-lockup { position: relative; display: block; width: var(--logo); height: var(--logo); flex: none; }
+.logo-lockup .logo-word { position: absolute; left: 4.27%; top: 44.04%; width: 97.45%; height: auto; max-width: none; }
+/* In the footer the wordmark's first letter stands on the blurb's left edge (5.8 percent of the box in). */
+.ftr-logo { margin: -6px 0 -10px calc(var(--logo) * -.058); }
+@media (max-width: 734px) { .ftr-logo { --logo: 168px !important; margin-bottom: 0; } }
+
+/* The logo's arcs (BrandArcs.astro): the brand device behind sections, in place of the earlier drawn ring. It sits
+ * under the copy (keep the copy in a positioned wrapper at z-index 1, as with Geo). */
+.brand-arcs { position: absolute; z-index: 0; display: block; width: var(--arc-size); height: var(--arc-size); max-width: none; max-height: none; pointer-events: none; opacity: var(--arc-o, 1); overflow: visible; }
+
+/* Page to page (the ClientRouter's view transition): the page leaving fades in 150 ms and the page arriving rises
+ * 8 px as it fades in, 280 ms from 110 ms, so the two are never read on top of each other (flow QA, October 21: the
+ * browser's own cross fade showed both headlines at once). The header (view-transition-name: nav) holds still. */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) { animation: 150ms cubic-bezier(.4, 0, 1, 1) both ib-page-out; }
+  ::view-transition-new(root) { animation: 280ms cubic-bezier(.16, 1, .3, 1) 110ms both ib-page-in; }
+}
+@keyframes ib-page-out { to { opacity: 0; } }
+@keyframes ib-page-in { from { opacity: 0; transform: translateY(8px); } }

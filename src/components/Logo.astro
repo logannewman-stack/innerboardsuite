@@ -1,0 +1,18 @@
+---
+/**
+ * The whole InnerBoard logo, built at any size: the arcs drawn as vectors (BrandArcs, so they stay sharp and
+ * draw themselves in) round the client's wordmark, placed as the logo places it (public/brand/logo.png: the
+ * wordmark's letters span 98.7 percent of the arcs' circle, their centre 3.1 percent of it right of the circle's
+ * centre, on its middle line; wordmark.png is those letters at the logo's own scale with 6 px around them).
+ * `size` is the drawing's box in px (the arcs' outer edge); `tone` picks the wordmark's cut (ink BOARD on light grounds,
+ * ivory BOARD on dark). Used where the logo is shown large: the footer and the not found page.
+ */
+import BrandArcs from "./BrandArcs.astro";
+interface Props { size?: number; tone?: "light" | "dark"; class?: string; draw?: boolean; weight?: number }
+const { size = 200, tone = "light", class: className = "", draw = true, weight = 1 } = Astro.props;
+const word = tone === "dark" ? "/brand/wordmark-dark.png" : "/brand/wordmark.png";
+---
+<span class={`logo-lockup ${className}`.trim()} style={`--logo:${size}px`}>
+  <BrandArcs class="logo-arcs" size={size} cx="50%" cy="50%" weight={weight} draw={draw} />
+  <img class="logo-word" src={word} width="384" height="47" alt="InnerBoard" decoding="async" />
+</span>

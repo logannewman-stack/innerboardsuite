@@ -1,0 +1,72 @@
+---
+/**
+ * The logo's two arcs (the client's logo, October 21), as a drawing the pages can place at any size: two
+ * brush strokes on one circle, each thick at its start and tapering to a point, the second the first turned
+ * half a turn. Measured from public/brand/logo.png: the circle's radius is 188.5 of the 500 px file, the
+ * strokes run from 35 to 140 degrees and from 215 to 320 (clockwise from three o'clock), 8.6 px at their
+ * thick end. The gold is the logo's own, #d4ac34, unless a page passes another colour.
+ *
+ * It replaces the earlier drawn ring and crosshair (Geo, retired October 21) as the brand device. Each stroke is
+ * a filled tapered shape shown through a mask whose centre line is a `.draw-line`, so the strokes draw themselves
+ * in from the thick end when they arrive (the motion library's drawn lines, data-draw="enter"); reduced motion
+ * and no script show them drawn. Place it with your own class (absolute: right, top, ...), or with
+ * `cx` and `cy` (CSS lengths for the circle's centre in the positioned parent). `size` is the circle's
+ * outer diameter, in px or as any CSS length (e.g. "calc(var(--pw) * 2.05)", so it follows its object);
+ * `weight` scales the stroke (1 is the logo's own proportion); `turn` rotates the pair; `flip` mirrors it top to
+ * bottom (after the turn), so a stroke can run the other way round the circle from its thick end.
+ */
+import { uid } from "../config/uid";
+interface Props {
+  size?: number | string;
+  color?: string;
+  opacity?: number;
+  weight?: number;
+  turn?: number;
+  cx?: string;
+  cy?: string;
+  class?: string;
+  style?: string;
+  draw?: boolean;
+  flip?: boolean;
+}
+const { size = 900, color = "#d4ac34", opacity = 1, weight = 1, turn = 0, cx, cy, class: className = "", style = "", draw = true, flip = false } = Astro.props;
+
+const R = 188.5;
+const W = 8.6 * weight;
+const rad = (d: number) => (d * Math.PI) / 180;
+const pt = (r: number, d: number) => `${(r * Math.cos(rad(d))).toFixed(2)} ${(r * Math.sin(rad(d))).toFixed(2)}`;
+/* One stroke from a0 (thick) to a1 (the point): the outer edge forward, the inner edge back. The width follows
+ * the logo: 8.6 at the start, 7.0 a quarter of the way, 5.0 at the middle, 1.2 near the end. */
+function stroke(a0: number, a1: number) {
+  const n = 48, outer: string[] = [], inner: string[] = [];
+  for (let i = 0; i <= n; i++) {
+    const t = i / n, a = a0 + (a1 - a0) * t, w = W * Math.max(0.04, 1 - Math.pow(t, 1.25));
+    outer.push(pt(R + w / 2, a));
+    inner.unshift(pt(R - w / 2, a));
+  }
+  return `M${outer.join("L")}L${inner.join("L")}Z`;
+}
+const centre = (a0: number, a1: number) => `M${pt(R, a0)}A${R} ${R} 0 0 1 ${pt(R, a1)}`;
+const strokes = [[35, 140], [215, 320]];
+const id = uid("arc");
+const box = R + W;
+const len = typeof size === "number" ? `${size}px` : size;
+const place = [
+  cx != null ? `left:calc(${cx} - var(--arc-size) / 2)` : "",
+  cy != null ? `top:calc(${cy} - var(--arc-size) / 2)` : ""
+].filter(Boolean).map((d) => d + ";").join("");
+---
+<svg class={`brand-arcs ${className}`.trim()} viewBox={`${-box} ${-box} ${2 * box} ${2 * box}`}
+  style={`--arc-o:${opacity};--arc-size:${len};--dur:1800ms;${place}${style}`}
+  data-geo={draw ? "" : undefined} data-draw={draw ? "enter" : undefined} aria-hidden="true" focusable="false">
+  <defs>
+    {strokes.map(([a0, a1], i) => (
+      <mask id={`${id}-${i}`} maskUnits="userSpaceOnUse" x={-box} y={-box} width={2 * box} height={2 * box}>
+        <path class={draw ? "draw-line" : undefined} d={centre(a0, a1)} fill="none" stroke="#fff" stroke-width={W + 4} stroke-linecap="butt" style={i ? "--d:.35s" : undefined} />
+      </mask>
+    ))}
+  </defs>
+  <g transform={[flip ? "scale(1 -1)" : "", turn ? `rotate(${turn})` : ""].filter(Boolean).join(" ") || undefined} fill={color}>
+    {strokes.map(([a0, a1], i) => <path d={stroke(a0, a1)} mask={`url(#${id}-${i})`} />)}
+  </g>
+</svg>

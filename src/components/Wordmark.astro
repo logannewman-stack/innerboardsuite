@@ -4,8 +4,11 @@
  * wordmark, INNER in gold and BOARD in ink. The header uses the wordmark alone
  * (the full circle is too small to read at header height) in two cuts, ink
  * BOARD on light bars and ivory BOARD on dark ones; the footer uses the whole
- * logo. Files in public/brand, cut from the client's PNG.
+ * logo, built as vectors round the wordmark (Logo.astro) so it stays sharp at
+ * its size and draws its arcs in as the footer arrives. Files in public/brand,
+ * cut from the client's PNG.
  */
+import Logo from "./Logo.astro";
 interface Props { class?: string; href?: string; size?: "header" | "footer" }
 const { class: className = "", href = "/", size = "header" } = Astro.props;
 ---
@@ -16,6 +19,6 @@ const { class: className = "", href = "/", size = "header" } = Astro.props;
   </a>
 ) : (
   <a href={href} class={`brand-logo ${className}`.trim()} aria-label="InnerBoard, home">
-    <img src="/brand/logo.png" width="500" height="500" alt="InnerBoard" loading="lazy" decoding="async" />
+    <Logo size={200} class="ftr-logo" />
   </a>
 )}
