@@ -104,8 +104,7 @@ const daySteps = [
 
 /* S6: the STEAR run, as the app asks it. Frames are real captures of each step. Continue is pressed into
  * questions two and three; questions four to six arrive from the top (their Continue is disabled in the
- * captures, so no ring presses it). The Then row holds question six: no capture shows seven, eight or the run in
- * the Journal. The lean is 1.04 about the centre (SCROLL_SPEC writes 1.06, which crops the app's Back chevron and
+ * captures, so no ring presses it). The Then row shows the Coach (below), arriving from the top too. The lean is 1.04 about the centre (SCROLL_SPEC writes 1.06, which crops the app's Back chevron and
  * its header icon on these captures; 1.04 keeps both whole, as the day's leans do). */
 const stear = [
   { screen: "stear1", step: "1 / 8", w: 1, q: "What happened?", note: "Facts only. What a camera would record.",
@@ -123,9 +122,12 @@ const stear = [
 ];
 const stearFrames = stear.map((s) => ({ name: s.screen, alt: `STEAR, ${s.q}`, w: 600 as const, h: 1298 as const }));
 const thenName = "A new thought, and the next move.";
-/* The Then step holds question six (no capture shows seven, eight or the run in the Journal): the lean reads its
- * written answer, as questions one and two do (STORY_V2 3.3). */
-const thenAct = '{"stear":{"cam":[[.12,1,50,50],[.36,1.04,50,24],[.74,1.04,50,24],[.88,1,50,50]]}}';
+/* The Then step has its own screen (no capture shows questions seven and eight or the run in the Journal): the
+ * Coach, where the run can be talked through, with the sentence about the same business partner typing into the
+ * composer as the reader scrolls (the type lines are the homepage panel's), and the lean on the composer. */
+const thenFrame = { name: "coach-draft", alt: "The Daily Practice Coach, with a sentence typed in the composer: I keep putting off the call with my business partner.", w: 780 as const, h: 1688 as const,
+  type: [{ x: 7.8, y: 25.8, w: 55.4, h: 2.55, fill: "#f9f6ee" }, { x: 7.8, y: 28.6, w: 38.8, h: 2.45, fill: "#f9f6ee" }] };
+const thenAct = `{"stear":{"f":${stear.length},"type":[.3,.66],"cam":[[.12,1,50,50],[.3,1.04,50,26],[.76,1.04,50,26],[.9,1,50,50]]}}`;
 const stearW = stear.reduce((t, s) => t + s.w, 0) + 1;
 
 /* The three notes under STEAR, each with its tile. */
@@ -290,7 +292,7 @@ const faq = [
               <StoryMarks variant="rail" count={false} labels={[...stear.map((s) => s.q), thenName]} label="STEAR, question by question" />
               <div class="story-device-box mat pr-stear-mat">
                 <div class="story-phone pr-stear-phone">
-                  <PhoneFrame device="stear" width={300} style="--pw:inherit" label="STEAR on a phone, question by question." screens={stearFrames} />
+                  <PhoneFrame device="stear" width={300} style="--pw:inherit" label="STEAR on a phone, question by question." screens={[...stearFrames, thenFrame]} />
                 </div>
               </div>
             </div>
@@ -311,7 +313,8 @@ const faq = [
                     <p class="t-body pr-then-body story-body">Questions seven and eight. The run is saved to your Journal, and the Coach can talk it through.</p>
                     <a href={LINKS.practice} class="link pr-then-link" data-passthrough>Run it yourself <Arrow /></a>
                   </div>
-                  <span class="sr-only story-alt">{stearFrames[5].alt}</span>
+                  <span class="sr-only story-alt">{thenFrame.alt}</span>
+                  <div class="story-static"><PhoneFrame width={200} screens={[{ name: thenFrame.name, alt: thenFrame.alt, w: thenFrame.w, h: thenFrame.h }]} /></div>
                 </li>
               </ol>
             </div>
@@ -534,7 +537,7 @@ const faq = [
    * instead of showing three quarters of an empty screen. */
   .pr-day .day-stage.is-night .phone { -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 74%); mask-image: linear-gradient(to bottom, #000 40%, transparent 74%); }
 
-  /* 2.2.4 STEAR (S6). Static: the seven rows in order, each with its phone (the Then row with its card). */
+  /* 2.2.4 STEAR (S6). Static: the seven rows in order, each with its phone (the Then row with its card, then the Coach). */
   .pr-stear { padding-block: var(--sec) calc(var(--sec) * .7); }
   .pr-stear-head { align-items: end; }
   .pr-stear-title { grid-column: 1 / span 6; }
@@ -546,7 +549,7 @@ const faq = [
   .pr-folio { flex: none; color: var(--fg-3); }
   .pr-stear-q { max-width: none; }
   .pr-stear-help { margin: 6px 0 0; }
-  .pr-stear-row .story-static { margin-top: 24px; }
+  .pr-stear-row .story-static, .pr-stear-then .story-static { margin-top: 24px; }
   .pr-then-card { padding: 28px; display: flex; flex-direction: column; justify-content: center; }
   .pr-then-card .eyebrow { margin-bottom: 14px; }
   .pr-then-body { margin-top: 10px; }

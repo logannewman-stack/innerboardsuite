@@ -3,20 +3,24 @@
  * Everything inside (SCROLL_SPEC S8, STORY_V2 3.5) as a scroll story on the
  * step layout: four steps, one per ladder row, one row at a time beside the
  * device (its name the headline, its line the body, both inside the row's
- * link). On laptops the desk window pins at the left with the rail: the
- * cursor goes to that row's item in the app's own rail, and it clicks only
- * where the next capture shows that item open (The Book, InnerBoard OS). The
- * window never leans in: the Company OS Score frame carries a sample score,
- * so no camera ever makes it the focus. On tablets and phones a phone takes
- * the window's place, with the app's own bottom bar: each step rings that
- * row's tab (the Academy, Inner Lab, the header's book icon, InnerBoard OS),
- * then the Track wipes in. The caption follows the window's frame; the rail
+ * link). Every row has its own screen. On laptops the desk window pins at the
+ * left with the rail: it opens on the Coach home, and in each step the cursor
+ * goes to that row's item in the app's own rail and clicks it, and the next
+ * capture shows that item open (the Academy, Inner Lab, The Book, InnerBoard
+ * OS). The window never leans in: the Company OS Score frame carries a sample
+ * score, so no camera ever makes it the focus. On tablets and phones a phone
+ * takes the window's place, with the app's own bottom bar: the ring taps
+ * Academy, then Inner Lab, the header's book icon and InnerBoard OS, each tap
+ * bringing that row's screen. The caption follows the window's frame; the rail
  * and its counter replace the old marks. Nothing moves until the reader
- * scrolls.
+ * scrolls. The Academy and Inner Lab captures are of the live app (October 21,
+ * 2026; it has the real courses); Inner Lab is shown down to The Masterclass
+ * and fades to the app's ivory under it (`fade`, a mask on that frame only),
+ * so its calendar note and the month's resources are never shown.
  *
  * Static (no script, reduced motion, short screens): the four rows in order,
- * each followed by its own figure where it has one (a 640 window above 734,
- * the phone at 734 and below).
+ * each followed by its own figure (a 640 window above 734, the phone at 734
+ * and below).
  */
 import WindowFrame from "./WindowFrame.astro";
 import PhoneFrame from "./PhoneFrame.astro";
@@ -24,36 +28,44 @@ import StoryMarks from "./StoryMarks.astro";
 import Arrow from "./Arrow.astro";
 import { LINKS } from "../config/links";
 
+/* Inner Lab fades out under The Masterclass card: on a desk the rail stays whole (x under 17.3%) and the main
+ * column fades from y 33.6%; on a phone the screen fades from y 38% and the bottom bar stays. */
+const deskLabFade = "linear-gradient(to right, #000 17.3%, transparent 17.3%), linear-gradient(to bottom, #000 33.6%, transparent 35.4%)";
+const phoneLabFade = "linear-gradient(to bottom, #000 38%, transparent 40.6%, transparent 91.3%, #000 91.8%)";
 const caps = [
   "The Coach home, on a desk.",
+  "The Academy, on a desk, with the Human Foundations courses.",
+  "Inner Lab, on a desk, with the month's Masterclass.",
   "A Company OS Score result, with The Book open in the rail.",
   "The Track page, on a desk."
 ];
 const win = [
   { name: "desk-coach-draft", alt: "Practice on a desk: the Daily Practice Coach with a sentence typed, the Dare of the Day, Set Up Your Day and the October calendar." },
+  { name: "desk-academy-courses", alt: "The Academy on a desk, with Academy open in the rail: InnerBoard 101 to start, and the Human Foundations courses." },
+  { name: "desk-lab-masterclass", alt: "Inner Lab on a desk, with Inner Lab open in the rail: October, live it, and The Masterclass, open to anybody.", fade: deskLabFade },
   { name: "desk-score-upstream-result", alt: "A Company OS Score result on a desk, with The Book open in the rail." },
   { name: "desk-track-home", alt: "The Track page on a desk, with InnerBoard OS open in the rail." }
 ];
 const phone = [
   { name: "coach-draft", alt: "The Daily Practice Coach on a phone, with the app's bottom bar.", w: 780 as const, h: 1688 as const },
+  { name: "academy-courses", alt: "The Academy on a phone, with Academy active in the bottom bar: InnerBoard 101 to start, and the Human Foundations courses.", w: 780 as const, h: 1688 as const },
+  { name: "lab-masterclass", alt: "Inner Lab on a phone, with Inner Lab active in the bottom bar: October, live it, and The Masterclass, open to anybody.", w: 780 as const, h: 1688 as const, fade: phoneLabFade },
+  { name: "book-scores", alt: "The Book on a phone, with its icon active in the header: the seven scores, one module and one chapter each, with Take it.", w: 780 as const, h: 1688 as const },
   { name: "track-home", alt: "The Track on a phone: the module assessments under Personal leadership and Social leadership.", w: 780 as const, h: 1688 as const }
 ];
-/* Acts are SCROLL_SPEC S8 as written. Rail items of the desk captures (% of the capture): Academy 5, 13.8;
- * Inner Lab 5, 18.7; InnerBoard OS 5, 23.6; The Book 5, 38.2. Halos on the phone: the Academy tab, the Inner Lab
- * tab, the header's book icon, the InnerBoard OS tab. */
+/* Rail items of the desk captures (% of the capture): Academy 5, 13.8; Inner Lab 5, 18.7; InnerBoard OS 5, 23.6;
+ * The Book 5, 38.2. On the phone: the Academy tab 26.7, 95.4; Inner Lab 42.2, 95.4; the header's book icon 78.5,
+ * 3.3; InnerBoard OS 57.7, 95.4. Each step's click (or tap) opens that row's screen; `win` and `phone` are each
+ * row's still figure. */
 const rows = [
-  { name: "The Academy", body: "Every collection, read and practiced in the same place.", href: LINKS.academy, pass: false, external: false, w: undefined, win: 0, phone: 0,
-    alt: win[0].alt, altN: phone[0].alt,
-    act: '{"win":{"f":0,"cur":[[.1,40,60],[.4,5,13.8]]},"phone":{"f":0,"halo":0}}' },
-  { name: "Inner Lab", body: "Live sessions each month, the masterclass open to anybody, and a community.", href: LINKS.innerlab, pass: true, external: false, w: undefined, win: null, phone: null,
-    alt: win[0].alt, altN: phone[0].alt,
-    act: '{"win":{"cur":[[.12,5,13.8],[.38,5,18.7]]},"phone":{"halo":1}}' },
-  { name: "The Book", body: "Replaceable: the book, the audiobook, its assessments and worksheets, with each chapter's door into the practice.", href: LINKS.book, pass: true, external: false, w: 1.2, win: 1, phone: null,
-    alt: win[1].alt, altN: phone[0].alt,
-    act: '{"win":{"cur":[[.1,5,18.7],[.36,5,38.2]],"click":.44,"next":[.48,1]},"phone":{"halo":2}}' },
-  { name: "InnerBoard OS", body: "The Company OS Score, the Team OS Score and the Gap Audit, and the curriculum a team works through.", href: LINKS.ios, pass: false, external: true, w: 1.2, win: 2, phone: 1,
-    alt: win[2].alt, altN: phone[1].alt,
-    act: '{"win":{"cur":[[.1,5,38.2],[.36,5,23.6]],"click":.44,"next":[.48,2]},"phone":{"halo":3,"haloEnd":.42,"next":[.5,1]}}' }
+  { name: "The Academy", body: "Every collection, read and practiced in the same place.", href: LINKS.academy, pass: false, external: false, w: undefined, win: 1, phone: 1,
+    act: '{"win":{"f":0,"cur":[[.06,40,60],[.26,5,13.8]],"click":.32,"next":[.36,1]},"phone":{"f":0,"tap":[26.7,95.4,.32],"next":[.36,1]}}' },
+  { name: "Inner Lab", body: "Live sessions each month, the masterclass open to anybody, and a community.", href: LINKS.innerlab, pass: true, external: false, w: undefined, win: 2, phone: 2,
+    act: '{"win":{"cur":[[.08,5,13.8],[.3,5,18.7]],"click":.36,"next":[.4,2]},"phone":{"f":2,"in":[42.2,95.4]}}' },
+  { name: "The Book", body: "Replaceable: the book, the audiobook, its assessments and worksheets, with each chapter's door into the practice.", href: LINKS.book, pass: true, external: false, w: 1.2, win: 3, phone: 3,
+    act: '{"win":{"cur":[[.08,5,18.7],[.34,5,38.2]],"click":.42,"next":[.46,3]},"phone":{"f":3,"in":[78.5,3.3]}}' },
+  { name: "InnerBoard OS", body: "The Company OS Score, the Team OS Score and the Gap Audit, and the curriculum a team works through.", href: LINKS.ios, pass: false, external: true, w: 1.2, win: 4, phone: 4,
+    act: '{"win":{"cur":[[.08,5,38.2],[.34,5,23.6]],"click":.42,"next":[.46,4]},"phone":{"f":4,"in":[57.7,95.4]}}' }
 ];
 const W = rows.reduce((t, r) => t + (r.w ?? 1), 0);
 ---
@@ -72,8 +84,7 @@ const W = rows.reduce((t, r) => t + (r.w ?? 1), 0);
           </div>
           <!-- Tablets and phones: the phone with the app's own bottom bar. -->
           <div class="story-phone pr-inside-phone" style="--pw-max-n:240px">
-            <PhoneFrame device="phone" width={240} style="--pw:inherit" label="Practice on a phone, one tab at a time."
-              halos={[{ x: 26.7, y: 95 }, { x: 42, y: 95 }, { x: 77, y: 3.4 }, { x: 57.7, y: 95 }]} screens={phone} />
+            <PhoneFrame device="phone" width={240} style="--pw:inherit" label="Practice on a phone, one tab at a time." screens={phone} />
           </div>
         </div>
       </div>
@@ -89,19 +100,15 @@ const W = rows.reduce((t, r) => t + (r.w ?? 1), 0);
                 </span>
                 <span class="pr-arrow" aria-hidden="true"><Arrow /></span>
               </a>
-              <span class="sr-only story-alt pr-alt-w">{r.alt}</span>
-              <span class="sr-only story-alt pr-alt-n">{r.altN}</span>
-              {(r.win !== null || r.phone !== null) && (
-                <div class="story-static">
-                  {r.win !== null && (
-                    <div class="static-desk">
-                      <WindowFrame ww={640} screens={[win[r.win]]} />
-                      <p class="t-cap-i pr-static-cap">{caps[r.win]}</p>
-                    </div>
-                  )}
-                  {r.phone !== null && <div class="static-phone"><PhoneFrame width={180} screens={[phone[r.phone]]} /></div>}
+              <span class="sr-only story-alt pr-alt-w">{win[r.win].alt}</span>
+              <span class="sr-only story-alt pr-alt-n">{phone[r.phone].alt}</span>
+              <div class="story-static">
+                <div class="static-desk">
+                  <WindowFrame ww={640} screens={[win[r.win]]} />
+                  <p class="t-cap-i pr-static-cap">{caps[r.win]}</p>
                 </div>
-              )}
+                <div class="static-phone"><PhoneFrame width={180} screens={[phone[r.phone]]} /></div>
+              </div>
             </li>
           ))}
         </ul>

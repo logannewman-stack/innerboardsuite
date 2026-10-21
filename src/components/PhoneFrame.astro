@@ -17,13 +17,17 @@
  *   `next` from `at` em, under the first capture's fixed header band (`head`,
  *   % of the height, default 6.2) and bottom bar (`foot`, % from the top).
  *   `off` sets the strip's offset in em for a static figure.
+ * - `fade`: a CSS mask image for the capture (a group, div.ds.ds-group, painted
+ *   the app's own ivory, #f2ece0, under the masked capture), so a part of a
+ *   screen the site must not show fades out to the app's ground. Nothing is
+ *   drawn over the capture; the mask is on that frame only.
  * Every capture with a /app/{name}-390.webp variant gets a srcset, so a small
  * phone on a 1x screen loads 390 px instead of 600 or 780 (scripts/small.mjs).
  */
 import { existsSync } from "node:fs";
 interface TypeLine { x: number; y: number; w: number; h: number; fill: string }
 interface Strip { next: string; at: number; head?: number; foot?: number }
-interface Screen { name: string; alt: string; w: 600 | 780; h: 1298 | 1688; type?: TypeLine[]; strip?: Strip }
+interface Screen { name: string; alt: string; w: 600 | 780; h: 1298 | 1688; type?: TypeLine[]; strip?: Strip; fade?: string }
 interface Halo { x: number; y: number }
 interface Props {
   screens: Screen[];
@@ -65,7 +69,7 @@ const frames = screens.map((s, i) => {
       headImg: pic(s.name, s.w, s.h, "ds-head", "", { eager: lead }),
       footImg: s.strip.foot !== undefined ? pic(s.name, s.w, s.h, "ds-foot", "", { eager: lead }) : null };
   }
-  if (s.type) return { kind: "group" as const, i, img: pic(s.name, s.w, s.h, undefined, alt, { eager: lead }), lines: s.type };
+  if (s.type || s.fade) return { kind: "group" as const, i, img: pic(s.name, s.w, s.h, undefined, alt, { eager: lead }), lines: s.type || [], fade: s.fade };
   return { kind: "plain" as const, i, img: pic(s.name, s.w, s.h, `ds${i === restIdx ? " on" : ""}`, alt, { eager: lead }) };
 });
 ---
@@ -96,8 +100,8 @@ const frames = screens.map((s, i) => {
         );
         if (f.kind === "plain") return img(f.img);
         if (f.kind === "group") return (
-          <div class={`ds ds-group${f.i === restIdx ? " on" : ""}`}>
-            {img(f.img)}
+          <div class={`ds ds-group${f.i === restIdx ? " on" : ""}`} style={f.fade ? "background:#f2ece0" : undefined}>
+            {img(f.img, f.fade ? `-webkit-mask-image:${f.fade};mask-image:${f.fade}` : undefined)}
             {f.lines.map((l) => <i class="type-line" aria-hidden="true" style={`--x:${l.x};--y:${l.y};--w:${l.w};--h:${l.h};--fill:${l.fill}`}></i>)}
           </div>
         );

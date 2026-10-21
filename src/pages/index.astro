@@ -38,18 +38,27 @@ const description =
   "A few minutes a day to think more clearly, feel more confident, and choose what comes next, with a coach in your pocket. Practice, Academy, INQ and InnerBoard IOS.";
 
 /* S2, the Practice navy panel: the phone's frames, in the order the acts index them (STORY_V2 2.3). Frame 0 is the
- * hero's own capture, so the story opens on the screen the reader has just scrolled away from. */
+ * hero's own capture, so the story opens on the screen the reader has just scrolled away from. Every step shows its
+ * own screen: the Coach, the Dare, the Academy, Inner Lab, Tools. The Academy and Inner Lab are captures of the live
+ * app (October 21, 2026; it has the real courses). Inner Lab is shown down to The Masterclass: its calendar note and
+ * the month's resources are not shown, so the frame fades to the app's ivory just under the Masterclass card (a mask
+ * on that frame only, PhoneFrame `fade`), keeping the app's own bottom bar, whose Tools tab the next step taps. */
+const labFade = "linear-gradient(to bottom, #000 38%, transparent 40.6%, transparent 91.3%, #000 91.8%)";
 const panelScreens = [
   { name: "home", alt: "The Coach home as a visitor.", w: 600, h: 1298 },
   { name: "coach-draft", alt: "The Daily Practice Coach with a sentence typed in the composer.", w: 780, h: 1688,
     type: [{ x: 7.8, y: 25.8, w: 55.4, h: 2.55, fill: "#f9f6ee" }, { x: 7.8, y: 28.6, w: 38.8, h: 2.45, fill: "#f9f6ee" }] },
   { name: "dare", alt: "The home after the Dare is checked, with the star line.", w: 600, h: 1298 },
+  { name: "academy-courses", alt: "The Academy: learn how your thoughts, feelings, and actions affect everyday life, InnerBoard 101 to start, and the Human Foundations courses, with Academy active in the bottom bar.", w: 780, h: 1688 },
+  { name: "lab-masterclass", alt: "Inner Lab for October: live it, practice what you're learning through live sessions and monthly resources, and The Masterclass, open to anybody, with Inner Lab active in the bottom bar.", w: 780, h: 1688, fade: labFade },
   { name: "tools-home", alt: "The Tools hub.", w: 780, h: 1688 },
   { name: "pause-breath", alt: "Pause + Redirect, one breath.", w: 780, h: 1688 }
 ];
 /* The five features, one step each: the eyebrow (the app's own tab, a .story-only label), the icon (FeatureIcon,
- * BRAND_FIX H3), the act (STORY_V2 2.3), the screen in words, and the step's static figure (null: Courses and Live
- * Sessions hold the Dare screen and have no figure of their own; the Coach's figure is the typed draft). */
+ * BRAND_FIX H3), the act (STORY_V2 2.3), the screen in words, and the step's static figure (the Coach's figure is
+ * the typed draft). Courses, Live Sessions and Tools each open with the ring on the app's own bottom tab (Academy at
+ * x 26.7, Inner Lab 42.2, Tools 88.8, all at y 95.4 of the capture) as the step begins, so the screen changes with
+ * the copy; Tools starts from the Inner Lab screen. */
 const features = [
   { eyebrow: "Coach", icon: "coach", name: "Daily Practice Coach", body: "Type what is happening, and think it through right when it matters.", w: 1.2,
     alt: "The Daily Practice Coach with a sentence typed in the composer.",
@@ -59,30 +68,33 @@ const features = [
     alt: "The home after the Dare is checked, with the star line.", st: panelScreens[2],
     act: '{"panel":{"f":0,"cam":[[.12,1,50,50],[.3,1.06,50,62],[.74,1.06,50,62],[.88,1,50,50]],"tap":[19,69.2,.5],"next":[.54,2]}}' },
   { eyebrow: "Academy", icon: "courses", name: "Courses", body: "Go deeper on what you're living, from your thoughts and feelings to relationships and confidence.", w: 1,
-    alt: "The home after the Dare is checked, with the app's Academy tab marked.", st: null,
-    act: '{"panel":{"halo":0}}' },
+    alt: "The ring taps Academy in the app's bottom bar: the Academy, with InnerBoard 101 to start and the Human Foundations courses.", st: panelScreens[3],
+    act: '{"panel":{"f":3,"in":[26.7,95.4],"cam":[[.14,1,50,50],[.38,1.06,50,62],[.7,1.06,50,62],[.88,1,50,50]]}}' },
   { eyebrow: "Inner Lab", icon: "live", name: "Live Sessions and Community", body: "Monthly masterclasses, coaching labs, and a room where nobody has to figure it out alone.", w: 1,
-    alt: "The home after the Dare is checked, with the app's Inner Lab tab marked.", st: null,
-    act: '{"panel":{"halo":1}}' },
+    alt: "The ring taps Inner Lab in the app's bottom bar: Inner Lab for October, with The Masterclass, open to anybody.", st: panelScreens[4],
+    act: '{"panel":{"f":4,"in":[42.2,95.4],"cam":[[.14,1,50,50],[.38,1.06,50,26],[.7,1.06,50,26],[.88,1,50,50]]}}' },
   { eyebrow: "Tools", icon: "tools", name: "Tools for the Moment", body: "For when you're reacting right now: a breath, a reset, and your next move.", w: 1.2,
-    alt: "The Tools hub, then Pause + Redirect, one breath.", st: panelScreens[4],
-    act: '{"panel":{"f":3,"in":[89,95],"tap":[40,60.2,.52],"next":[.56,4]}}' }
+    alt: "From Inner Lab, the ring taps Tools: the Tools hub, then Pause + Redirect, one breath.", st: panelScreens[6],
+    act: '{"panel":{"f":5,"in":[88.8,95.4],"tap":[40,60.2,.52],"next":[.56,6]}}' }
 ];
 
-/* S3, the quiz still life: question one, then the result as a stitched strip (the result, then its other five
- * patterns from 179.56 em, under the app's own header). */
+/* S3, the quiz still life: one screen per benefit. Question one; the result's top (what's on auto-renew, Approval);
+ * the result scrolled to what it's actually costing you and where you're paying; the result scrolled to your first
+ * step. The two scrolled screens are the result as the app scrolls it (its header fixed, the body moved up; the
+ * capture and its second half joined at 179.56 em, as the strip did), so each step has its own still. */
 const quizQ1 = { name: "quiz-q1", alt: "The quiz, question one of eighteen: when I get less done than I planned, I'm disappointed in myself, from Never to Almost always.", w: 600, h: 1298 } as const;
-const quizResult = { name: "quiz-results", alt: "The quiz result: Approval, what it is costing, where, and a first step.", w: 600, h: 1298, strip: { next: "quiz-results2", at: 179.56, head: 6.2 } } as const;
-const quizFive = { ...quizResult, alt: "The quiz result's other five patterns: Pressure, Proving, Control, Old identity, Certainty." };
+const quizResult = { name: "quiz-results", alt: "The quiz result: here's what's on auto-renew, Approval, and what you're paying for: if everyone's happy with me, I'll be okay.", w: 600, h: 1298 } as const;
+const quizCost = { name: "quiz-cost", alt: "The quiz result scrolled to what it's actually costing you, then where you're paying: health, relationships and money.", w: 600, h: 1298 } as const;
+const quizStep = { name: "quiz-first-step", alt: "The quiz result scrolled to your first step: buy yourself a beat, decide what you actually want, then answer with that.", w: 600, h: 1298 } as const;
 const quizBenefits = [
-  { name: "4 minutes to complete", body: "Quick, simple, and insightful.", alt: quizQ1.alt, fig: quizQ1, off: undefined, w: 1,
+  { name: "4 minutes to complete", body: "Quick, simple, and insightful.", alt: quizQ1.alt, fig: quizQ1, w: 1,
     act: '{"quiz":{"f":0,"cam":[[.14,1,50,50],[.38,1.06,50,22],[.68,1.06,50,22],[.86,1,50,50]]}}' },
-  { name: "Personalized results", body: "See what might be auto-renewing in your life.", alt: quizResult.alt, fig: quizResult, off: 0, w: 1,
+  { name: "Personalized results", body: "See what might be auto-renewing in your life.", alt: quizResult.alt, fig: quizResult, w: 1,
     act: '{"quiz":{"f":1,"cam":[[.14,1,50,50],[.36,1.06,50,24],[.7,1.06,50,24],[.88,1,50,50]]}}' },
-  { name: "Discover the unseen cost", body: "What it could be costing you in time, energy, confidence, peace, and relationships.", alt: quizResult.alt, fig: null, off: undefined, w: 1,
-    act: '{"quiz":{"cam":[[.12,1,50,50],[.34,1.06,50,52],[.7,1.06,50,52],[.88,1,50,50]]}}' },
-  { name: "One thing to do differently", body: "Your gift: a simple next step you can try right away.", alt: quizFive.alt, fig: quizFive, off: 179.56, w: 1.2,
-    act: '{"quiz":{"cam":[[.08,1,50,50],[.22,1.06,50,84],[.44,1.06,50,84],[.54,1,50,50]],"scroll":[.58,.9,0,179.56]}}' }
+  { name: "Discover the unseen cost", body: "What it could be costing you in time, energy, confidence, peace, and relationships.", alt: quizCost.alt, fig: quizCost, w: 1,
+    act: '{"quiz":{"f":2,"cam":[[.14,1,50,50],[.36,1.06,50,26],[.7,1.06,50,26],[.88,1,50,50]]}}' },
+  { name: "One thing to do differently", body: "Your gift: a simple next step you can try right away.", alt: quizStep.alt, fig: quizStep, w: 1.2,
+    act: '{"quiz":{"f":3,"cam":[[.12,1,50,50],[.32,1.06,50,16],[.74,1.06,50,16],[.88,1,50,50]]}}' }
 ];
 ---
 <Base title={title} description={description} path="/">
@@ -127,7 +139,7 @@ const quizBenefits = [
                 <StoryMarks variant="rail" labels={features.map((f) => f.name)} label="Practice, feature by feature" />
                 <div class="story-device-box story-phone hm-panel-phone floor-on" style="--pw-max:320px;--pw-max-n:240px">
                   <PhoneFrame device="panel" width={320} style="--pw:inherit" shadow="dark" label="Practice on a phone, feature by feature."
-                    halos={[{ x: 26.7, y: 95 }, { x: 42, y: 95 }]} screens={panelScreens} />
+                    screens={panelScreens} />
                 </div>
               </div>
               <div class="story-copy">
@@ -186,7 +198,7 @@ const quizBenefits = [
           <div class="story-stage">
             <div class="story-device-col">
               <StoryMarks variant="rail" labels={quizBenefits.map((b) => b.name)} label="The subscription quiz, benefit by benefit" />
-              <HomeQuizStill screens={[quizQ1, quizResult]} />
+              <HomeQuizStill screens={[quizQ1, quizResult, quizCost, quizStep]} />
             </div>
             <div class="story-copy">
               <ul class="story-steps hm-benefits" role="list">
@@ -196,7 +208,7 @@ const quizBenefits = [
                     <b class="t-title story-h">{b.name}</b>
                     <p class="t-body story-body">{b.body}</p>
                     <span class="sr-only story-alt">{b.alt}</span>
-                    {b.fig && <div class="story-static floor-on"><PhoneFrame width={200} screens={[b.fig]} off={b.off} /></div>}
+                    {b.fig && <div class="story-static floor-on"><PhoneFrame width={200} screens={[b.fig]} /></div>}
                   </li>
                 ))}
               </ul>
@@ -380,7 +392,7 @@ const quizBenefits = [
    * with its icon, in the pinned step it sits on the eyebrow line in place of the dot. */
   .hm-ico { width: 22px; height: 22px; color: #c9ab66; flex: none; }
   /* Static: the ladder of five, icon led, between thin gold rules, each row with its own still screen (the Coach
-   * with the draft, the Dare checked, one breath). */
+   * with the draft, the Dare checked, the Academy, Inner Lab, one breath). */
   .hm-ladder { --row-pad: 26px; position: relative; }
   .hm-ladder > li { grid-template-columns: 22px minmax(0, 1fr); column-gap: 18px; padding-block: var(--row-pad); }
   .hm-ladder > li:last-child { padding-bottom: var(--row-pad); }
@@ -425,14 +437,14 @@ const quizBenefits = [
   .hm-quiz-phone { position: relative; flex: none; z-index: 2; }
   .hm-tcard { position: relative; flex: none; z-index: 1; margin: 0 -12px 26px 0; width: clamp(186px, calc(6 * var(--colw) + 5 * var(--gap) - 320px), 236px); box-shadow: var(--sh-paper), 0 18px 30px -18px rgba(31,29,26,.35); }
   .no-js .hm-tcard { transform: rotate(-5deg); }
-  /* The Approval switch (the card's second row) follows the scroll: it turns off from G 3.62 to 3.72, as the
-   * result scrolls to the other five. The knob moves by transform and the gold is an opacity layer (BRAND_FIX S8);
+  /* The Approval switch (the card's second row) follows the scroll: it turns off from G 3.62 to 3.72, while the
+   * phone shows the result's first step. The knob moves by transform and the gold is an opacity layer (BRAND_FIX S8);
    * with --g unset (static, no script) it is on, as the card draws it. */
   .hm-tcard .tcard-row:nth-child(2) .tg { --on: calc(1 - clamp(0, (var(--g, 0) - 3.62) / .1, 1)); background: #d9cfbe; }
   .hm-tcard .tcard-row:nth-child(2) .tg::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #b08d4f; box-shadow: inset 0 1px 2px rgba(31,29,26,.18); opacity: var(--on); }
   .hm-tcard .tcard-row:nth-child(2) .tg::after { left: 2px; transform: translateX(calc(var(--on) * 16px)); }
-  /* Static: the four benefits side by side, each with its own still screen (the question, the result, the other
-   * five); names, bodies and screens each start on one line (every item is a three row subgrid). Then the button
+  /* Static: the four benefits side by side, each with its own still screen (the question, the result, its cost, its
+   * first step); names, bodies and screens each start on one line (every item is a three row subgrid). Then the button
    * (the story's .story-cta, in flow after the steps) and the closing line on its own row under it. */
   .hm-benefits { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 0; }
   .hm-benefits > li { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 6px; align-content: start; }
