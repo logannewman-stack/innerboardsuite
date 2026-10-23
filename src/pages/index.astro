@@ -263,9 +263,9 @@ const quizBenefits = [
   </section>
 
   <!-- 6. INQ Certification teaser: a navy bleed, the page turns to evening -->
-  <section id="inq" class="hm-inq" data-tone="navy">
+  <section id="inq" class="hm-inq" data-tone="slate">
     <i class="lamp grain" aria-hidden="true" style="--lx:85%;--ly:0%"></i>
-    <Geo class="hm-geo-inq" color="#f4efe4" opacity={0.08} ringsOnly />
+    <Geo class="hm-geo-inq" color="#f2ece0" opacity={0.08} ringsOnly />
     <div class="wrap grid">
       <div class="hm-inq-copy">
         <p class="eyebrow rise">INQ Certification | Lead it</p>
@@ -302,7 +302,7 @@ const quizBenefits = [
   <section id="ios" class="hm-ios" data-tone="cream">
     <div class="wrap-wide panel-navy grain hm-ios-panel" data-surface="dark">
       <i class="lamp" aria-hidden="true" style="--lx:12%;--ly:72%;--la:.12"></i>
-      <Geo class="hm-geo-ios" color="#f4efe4" opacity={0.08} ringsOnly />
+      <Geo class="hm-geo-ios" color="#f2ece0" opacity={0.08} ringsOnly />
       <div class="hm-ios-in">
         <div class="hm-ios-copy">
           <i class="rule-gold-v rule-draw-v hm-ios-rule" aria-hidden="true"></i>
@@ -361,7 +361,7 @@ const quizBenefits = [
   .hm-btns { display: flex; flex-wrap: wrap; gap: 12px; }
   .hm-hero-btns { margin-top: 36px; }
   .hm-hero-phone { position: relative; z-index: 3; }
-  .hm-hero-phone .phone { box-shadow: inset 0 0 0 .55em #0c0b09, inset 0 0 0 .9em rgba(255,255,255,.06), 0 0 0 1px rgba(110,87,36,.18),
+  .hm-hero-phone .phone { box-shadow: inset 0 0 0 .55em #0c0b09, inset 0 0 0 .9em rgba(255,255,255,.06), 0 0 0 1px rgba(90,40,50,.18),
     0 2px 4px rgba(31,29,26,.14), 0 24px 40px -16px rgba(31,29,26,.34), 0 90px 120px -50px rgba(31,29,26,.5); }
   .hm-hero-phone .phone-floor { --floor-a: .38; }
   @media (min-width: 900px) {
@@ -383,7 +383,7 @@ const quizBenefits = [
   .hm-panel-in { position: relative; z-index: 1; }
   .hm-panel-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
   .hm-panel-head { grid-column: 1 / span 7; grid-row: 1; align-self: last baseline; }
-  .hm-panel-h2 { color: #f4efe4; }
+  .hm-panel-h2 { color: #f2ece0; }
   .hm-panel-lead { grid-column: 8 / span 5; grid-row: 1; align-self: last baseline; color: #cdc6b8; max-width: 28em; margin: 0; }
   .hm-panel-story { margin-top: 48px; }
   /* The panel's lamp, moved into the stage behind the pinned phone: shown only while the story is pinned. */
@@ -391,7 +391,7 @@ const quizBenefits = [
   .js .hm-panel-story.is-live:not(.static) .story-stage > .hm-stage-lamp { display: block; }
   /* The features' icons (FeatureIcon, BRAND_FIX H3): gold-2 on the Practice navy; in the static ladder each row leads
    * with its icon, in the pinned step it sits on the eyebrow line in place of the dot. */
-  .hm-ico { width: 22px; height: 22px; color: #c9ab66; flex: none; }
+  .hm-ico { width: 22px; height: 22px; color: #a8757e; flex: none; }
   /* Static: the ladder of five, icon led, between thin gold rules, each row with its own still screen (the Coach
    * with the draft, the Dare checked, the Academy, Inner Lab, one breath). */
   .hm-ladder { --row-pad: 26px; position: relative; }
@@ -399,13 +399,13 @@ const quizBenefits = [
   .hm-ladder > li:last-child { padding-bottom: var(--row-pad); }
   .hm-ladder > li > .hm-row { min-width: 0; }
   .hm-row-ico { display: block; margin-top: calc((var(--fs-title) * 1.2 - 22px) / 2); }
-  .hm-ladder .ladder-name { color: #f4efe4; }
+  .hm-ladder .ladder-name { color: #f2ece0; }
   .hm-ladder .ladder-body { color: #cdc6b8; }
   .hm-ladder > li > .story-static { grid-column: 2; margin-top: 20px; }
   .hm-panel-rule { margin-block: 56px 48px; }
   .hm-panel-foot { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: end; }
   .hm-panel-close { grid-column: 1 / span 7; }
-  .hm-panel-close-line { color: #f4efe4; }
+  .hm-panel-close-line { color: #f2ece0; }
   .hm-panel-close-body { color: #cdc6b8; margin-top: 12px; }
   .hm-panel-btns { grid-column: 8 / span 5; justify-content: flex-end; }
   @media (min-width: 1069px) {
@@ -442,7 +442,7 @@ const quizBenefits = [
    * phone shows the result's first step. The knob moves by transform and the gold is an opacity layer (BRAND_FIX S8);
    * with --g unset (static, no script) it is on, as the card draws it. */
   .hm-tcard .tcard-row:nth-child(2) .tg { --on: calc(1 - clamp(0, (var(--g, 0) - 3.62) / .1, 1)); background: #d9cfbe; }
-  .hm-tcard .tcard-row:nth-child(2) .tg::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #b08d4f; box-shadow: inset 0 1px 2px rgba(31,29,26,.18); opacity: var(--on); }
+  .hm-tcard .tcard-row:nth-child(2) .tg::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #7a3a4a; box-shadow: inset 0 1px 2px rgba(31,29,26,.18); opacity: var(--on); }
   .hm-tcard .tcard-row:nth-child(2) .tg::after { left: 2px; transform: translateX(calc(var(--on) * 16px)); }
   /* Static: the four benefits side by side, each with its own still screen (the question, the result, its cost, its
    * first step); names, bodies and screens each start on one line (every item is a three row subgrid). Then the button
@@ -498,7 +498,7 @@ const quizBenefits = [
    * in case the prop is ever dropped), its centre off the section: one
    * quarter arc enters the top right, above the buttons, and the margin rule
    * stays the only vertical. */
-  .hm-inq { padding-block: var(--sec-l); overflow: hidden; }
+  .hm-inq { padding-block: var(--sec-l); overflow: hidden; --line-gold: rgba(212,175,55,.4); }
   .hm-geo-inq path, .hm-geo-inq .dot, .hm-geo-ios path, .hm-geo-ios .dot { display: none; }
   /* Centre 100 px right of the section and 160 px above it: a 350 x 310 arc,
    * at least 44 px clear of every line and button from 1069 to 1920. */
@@ -528,11 +528,17 @@ const quizBenefits = [
   .hm-ios-in { position: relative; z-index: 1; isolation: isolate; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
   .hm-ios-copy { grid-column: 1 / span 7; position: relative; }
   .hm-ios-rule { position: absolute; left: -32px; top: 0; bottom: 0; display: block; }
-  .hm-ios-h2 { color: #f4efe4; }
+  .hm-ios-h2 { color: #f2ece0; }
   .hm-ios h2 em.grad { color: transparent; -webkit-text-fill-color: transparent; }
   .hm-ios-lead { color: #cdc6b8; max-width: 28em; margin-top: var(--lead-gap); }
   .hm-ios-lead-2 { margin-top: 1em; }
   .hm-ios-btn { grid-column: 9 / span 4; align-self: end; justify-self: end; }
+  /* The panel keeps the InnerBoard IOS site's own navy and honey, so it matches the site it opens. */
+  .hm-ios .hm-ios-panel { --accent: #e4b676; --focus: #e4b676; --line-gold: rgba(228,182,118,.35); }
+  .hm-ios .hm-ios-panel > .lamp { background: radial-gradient(55% 60% at var(--lx, 18%) var(--ly, 0%), rgba(228,182,118,var(--la, .16)), transparent 70%); }
+  .hm-ios h2 em.grad { background-image: linear-gradient(100deg, #f1dcb4 0%, #e4b676 48%, #c99a5b 100%); }
+  .hm-ios .hm-ios-panel .btn.btn-gold { background: #e4b676; color: #1b1916; }
+  @media (hover: hover) and (pointer: fine) { .hm-ios .hm-ios-panel .btn.btn-gold:hover { background: #ecc58e; } }
 
   /* ── Tablet (735 to 1068) ─────────────────────────────────────────── */
   @media (max-width: 1068px) {

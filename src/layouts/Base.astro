@@ -2,8 +2,9 @@
 /**
  * The page shell. `theme` picks the page's first tone, written server side on
  * <html data-theme> so the first paint is right before the script runs:
- * "cream" for the Suite pages, "ac-cream" (alias "teal") for the Academy and
- * INQ pages, which also get the .theme-teal class for the teal accent system.
+ * "cream" for the Suite pages, "ac-cream" (alias "teal") for the Academy page
+ * and "inq" for the INQ page; both get .theme-teal for the product page system,
+ * and INQ also .theme-inq, which swaps Academy's teal for INQ's gold on slate.
  * `navStart` seeds the header tone ("light" on every page today).
  *
  * The head: every page passes its own title (under 60 characters) and
@@ -26,7 +27,7 @@ interface Props {
   description: string;
   path?: string;
   image?: string;
-  theme?: "cream" | "ac-cream" | "teal";
+  theme?: "cream" | "ac-cream" | "teal" | "inq";
   themeColor?: string;
   navStart?: "light" | "dark";
   imageAlt?: string;
@@ -37,9 +38,9 @@ const {
   title, description, path = "/", image = "/og-image.png", theme = "cream", themeColor, navStart = "light", noindex = false, preload,
   imageAlt = "The InnerBoard logo."
 } = Astro.props;
-const teal = theme === "teal" || theme === "ac-cream";
+const teal = theme === "teal" || theme === "ac-cream" || theme === "inq";
 const dataTheme = teal ? "ac-cream" : "cream";
-const color = themeColor || (teal ? "#f7f4ee" : "#f4efe4");
+const color = themeColor || (teal ? "#f2ece0" : "#f2ece0");
 const canonical = new URL(path, SITE.url).toString();
 /* The link preview (Open Graph, Twitter) must load from the host that serves this build: on Vercel that is the
  * project's production URL (its vercel.app address until the domain is attached, then the domain), or the branch
@@ -50,7 +51,7 @@ const imageUrl = new URL(image, origin).toString();
 const shareUrl = new URL(path, origin).toString();
 ---
 <!doctype html>
-<html lang="en" class={`no-js ${teal ? "theme-teal" : ""}`} data-theme={dataTheme}>
+<html lang="en" class={`no-js ${teal ? "theme-teal" : ""} ${theme === "inq" ? "theme-inq" : ""}`.replace(/\s+/g, " ").trim()} data-theme={dataTheme}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />

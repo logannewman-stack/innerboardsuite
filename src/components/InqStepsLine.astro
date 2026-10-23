@@ -13,5 +13,5 @@ interface Props { class?: string }
 const { class: className = "" } = Astro.props;
 ---
 <svg class={`inq-steps-svg ${className}`.trim()} viewBox="0 0 1200 24" preserveAspectRatio="none" width="100%" height="24" data-draw="enter" aria-hidden="true" focusable="false" fill="none" style="--dur:1400ms">
-  <path class="draw-line" d="M0 12H1200" stroke="#1e5b57" stroke-width="1"></path>
+  <path class="draw-line" d="M0 12H1200" style="stroke: var(--pa-line)" stroke-width="1"></path>
 </svg>

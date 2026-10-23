@@ -1,0 +1,2531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Brand Book — The InnerBoard Ecosystem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,200..900,0..100&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ivory: #F2ECE0;
+    --ivory-warm: #EFE7D7;
+    --stone: #D9CFBE;
+    --stone-soft: #E6DECD;
+    --charcoal: #1B1916;
+    --charcoal-soft: #2A2622;
+    --ink: #14110E;
+    --muted: #6E6660;
+    --hair: rgba(27, 25, 22, 0.12);
+    --hair-light: rgba(242, 236, 224, 0.18);
+
+    /* Leah Roling */
+    --leah-1: #D09342;
+    --leah-2: #E4AE9B;
+    --leah-3: #FBEEE6;
+    /* InnerBoard */
+    --rose: #7A3A4A;
+    --rose-soft: #A8757E;
+    --rose-deep: #5A2832;
+    --graphite: #3A3631;
+    /* Academy */
+    --teal: #1A5D63;
+    --teal-deep: #0D3438;
+    --teal-soft: #5BA0A7;
+    --bronze: #A26B3D;
+    --cream: #EBE0C9;
+    /* InnerLab */
+    --pink: #DB61B5;
+    --pink-soft: #EDA5D2;
+    --pink-deep: #A8418C;
+    --chocolate: #4A2E20;
+    --blush: #FDF1F5;
+    /* OS */
+    --steel: #4F6D8C;
+    --steel-deep: #0D3054;
+    --steel-soft: #8AA3BF;
+    --steel-pale: #E6E7EA;
+    /* INQ */
+    --gold: #D4AF37;
+    --gold-soft: #E8CF7A;
+    --slate: #2D2A26;
+    --slate-mid: #6E6660;
+    --slate-soft: #B8B2A8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Instrument Sans', sans-serif;
+    background: var(--ivory);
+    color: var(--charcoal);
+    font-weight: 400;
+    line-height: 1.55;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.04;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  .wrap { max-width: 1400px; margin: 0 auto; padding: 0 56px; }
+  @media (max-width: 760px) { .wrap { padding: 0 28px; } }
+
+  /* ============ COVER ============ */
+  .cover {
+    min-height: 100vh;
+    padding: 140px 0 100px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--hair);
+    position: relative;
+  }
+  .cover-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
+  .cover .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 56px;
+    font-weight: 500;
+  }
+  .cover h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 200;
+    font-variation-settings: "opsz" 144, "SOFT" 60;
+    font-size: clamp(64px, 10vw, 168px);
+    line-height: 0.92;
+    letter-spacing: -0.034em;
+    color: var(--charcoal);
+  }
+  .cover h1 em {
+    font-style: italic;
+    font-weight: 200;
+    color: var(--rose);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+  .cover-sub {
+    margin-top: 56px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(22px, 2.4vw, 32px);
+    color: var(--muted);
+    max-width: 780px;
+    line-height: 1.4;
+    font-weight: 300;
+  }
+  .cover-meta {
+    margin-top: 80px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    max-width: 900px;
+  }
+  .cover-meta div {
+    border-top: 1px solid var(--hair);
+    padding-top: 18px;
+  }
+  .cover-meta .label {
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .cover-meta .val {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    color: var(--charcoal);
+    font-weight: 300;
+  }
+  .cover-spectrum {
+    position: absolute;
+    bottom: 100px;
+    left: 56px;
+    right: 56px;
+    display: flex;
+    height: 24px;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .cover-spectrum > div { flex: 1; }
+  @media (max-width: 760px) {
+    .cover-meta { grid-template-columns: 1fr 1fr; }
+    .cover-spectrum { left: 28px; right: 28px; bottom: 60px; }
+  }
+
+  /* ============ TOC ============ */
+  .toc {
+    padding: 120px 0;
+    background: var(--ivory-warm);
+    border-bottom: 1px solid var(--hair);
+  }
+  .toc-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 60px;
+  }
+  .toc-head .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .toc-head::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--hair);
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--hair);
+    border: 1px solid var(--hair);
+  }
+  .toc-row {
+    background: var(--ivory);
+    padding: 36px 40px;
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    gap: 24px;
+    align-items: center;
+    text-decoration: none;
+    color: var(--charcoal);
+    transition: background 0.4s;
+  }
+  .toc-row:hover { background: var(--ivory-warm); }
+  .toc-num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+  .toc-main .name {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 300;
+    letter-spacing: -0.012em;
+  }
+  .toc-main .name em { font-style: italic; }
+  .toc-main .role {
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+  .toc-swatch {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+  }
+  @media (max-width: 760px) {
+    .toc-grid { grid-template-columns: 1fr; }
+    .toc-row { padding: 28px 24px; gap: 18px; grid-template-columns: 36px 1fr auto; }
+  }
+
+  /* ============ BRAND HEADER (used at start of every brand) ============ */
+  .brand-divider {
+    background: var(--ivory);
+    padding: 100px 0 60px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .brand-divider .head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 40px;
+    align-items: center;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .brand-divider .num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 200;
+    font-size: 80px;
+    line-height: 1;
+    color: var(--muted);
+  }
+  .brand-divider .name {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.024em;
+  }
+  .brand-divider .name em { font-style: italic; }
+  .brand-divider .role {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    text-align: right;
+  }
+  .brand-divider .swatches {
+    display: flex;
+    gap: 8px;
+    margin-top: 36px;
+  }
+  .brand-divider .swatches div {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--hair);
+  }
+  @media (max-width: 760px) {
+    .brand-divider .head { grid-template-columns: 1fr; gap: 12px; }
+    .brand-divider .role { text-align: left; }
+    .brand-divider .num { font-size: 56px; }
+  }
+
+  /* ============ MOOD SECTION (per brand) ============ */
+  .mood {
+    padding: 80px 0 120px;
+    border-bottom: 1px solid var(--hair);
+    position: relative;
+    overflow: hidden;
+  }
+  .mood.dark { background: var(--ink); color: var(--ivory); border-bottom-color: rgba(242, 236, 224, 0.1); }
+  .mood.dark .meta-label,
+  .mood.dark .materials-label { color: rgba(242, 236, 224, 0.55); }
+  .mood.dark .body-text { color: rgba(242, 236, 224, 0.78); }
+  .mood.dark .materials { border-top-color: rgba(242, 236, 224, 0.15); }
+  .mood.dark .materials-list { color: var(--ivory); }
+  .mood.dark .hex-pill { background: rgba(242, 236, 224, 0.08); border-color: rgba(242, 236, 224, 0.2); color: var(--ivory); }
+
+  .mood .section-label {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 28px;
+  }
+  .mood.dark .section-label { color: rgba(242, 236, 224, 0.55); }
+
+  .atmosphere {
+    font-family: 'Fraunces', serif;
+    font-weight: 200;
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+    font-style: italic;
+    font-size: clamp(48px, 8vw, 132px);
+    line-height: 0.96;
+    letter-spacing: -0.028em;
+  }
+  .meta-label {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+  .body-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--charcoal);
+  }
+  .body-text em { font-style: italic; }
+  .type-moment {
+    font-family: 'Fraunces', serif;
+    font-weight: 200;
+    font-variation-settings: "opsz" 144, "SOFT" 70;
+    font-size: clamp(34px, 4.8vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+  .type-moment em { font-style: italic; }
+
+  .sw { position: relative; overflow: hidden; }
+  .sw .label {
+    position: absolute;
+    bottom: 16px;
+    left: 18px;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* SVG illustration container */
+  .illo { position: relative; overflow: hidden; }
+  .illo svg { width: 100%; height: 100%; display: block; }
+  .illo .illo-caption {
+    position: absolute;
+    bottom: 14px;
+    left: 16px;
+    z-index: 2;
+    font-size: 9px;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: rgba(242, 236, 224, 0.85);
+    font-weight: 500;
+    padding: 5px 9px;
+    background: rgba(13, 13, 10, 0.45);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+
+  .materials {
+    border-top: 1px solid var(--hair);
+    padding-top: 32px;
+    margin-top: 40px;
+  }
+  .materials-label {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+  .materials-list {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.4;
+    color: var(--charcoal);
+  }
+  .materials-list .dot {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    margin: 0 14px 4px 14px;
+    vertical-align: middle;
+  }
+
+  .hex-ticker {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+  .hex-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px 8px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--hair);
+    background: var(--ivory);
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .hex-pill .swatch-dot { width: 16px; height: 16px; border-radius: 50%; }
+
+  /* ============ IDENTITY (spec) SECTION (per brand) ============ */
+  .identity {
+    padding: 120px 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .identity .wrap { max-width: 1100px; }
+  .identity-tag {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 56px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .identity-tag::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--hair);
+  }
+  .block {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 64px;
+    padding: 56px 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .block:last-child { border-bottom: none; }
+  .block-label {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    padding-top: 6px;
+  }
+  .block-body { max-width: 760px; }
+  .block-body p {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(20px, 1.9vw, 26px);
+    line-height: 1.45;
+    letter-spacing: -0.005em;
+    color: var(--charcoal);
+    margin-bottom: 20px;
+  }
+  .block-body p em { font-style: italic; }
+  .block-body p:last-child { margin-bottom: 0; }
+  .block-body .small {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--charcoal);
+    font-weight: 400;
+    margin-bottom: 16px;
+  }
+  .block-body .small strong { font-weight: 600; }
+  @media (max-width: 880px) {
+    .block { grid-template-columns: 1fr; gap: 20px; padding: 40px 0; }
+  }
+
+  /* Voice rules */
+  .rules {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--hair);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 28px;
+  }
+  .rule-col { padding: 32px 36px; }
+  .rule-col.do { background: var(--ivory); }
+  .rule-col.dont { background: var(--ivory-warm); border-left: 1px solid var(--hair); }
+  .rule-col .head {
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  .rule-col li {
+    list-style: none;
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 1.4;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .rule-col li:last-child { border-bottom: none; }
+  @media (max-width: 760px) {
+    .rules { grid-template-columns: 1fr; }
+    .rule-col.dont { border-left: none; border-top: 1px solid var(--hair); }
+  }
+
+  /* Palette */
+  .palette {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .swatch {
+    border: 1px solid var(--hair);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .swatch-fill { height: 120px; width: 100%; }
+  .swatch-meta { padding: 16px 18px; background: var(--ivory); }
+  .swatch-meta .role-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .swatch-meta .hex {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    letter-spacing: 0.04em;
+    color: var(--charcoal);
+    font-weight: 300;
+  }
+  .swatch-meta .usage {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  /* Typography display */
+  .type-display {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(40px, 5vw, 72px);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    margin: 24px 0 16px;
+  }
+  .type-display em { font-style: italic; }
+  .type-body {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .type-spec {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+    margin-top: 28px;
+  }
+  .type-spec-card {
+    padding: 24px 28px;
+    border: 1px solid var(--hair);
+    border-radius: 2px;
+  }
+  .type-spec-card .role-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .type-spec-card .font {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 300;
+    margin-bottom: 8px;
+    letter-spacing: -0.005em;
+  }
+  .type-spec-card .details {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  @media (max-width: 760px) { .type-spec { grid-template-columns: 1fr; } }
+
+  /* Anchor list */
+  .anchors {
+    list-style: none;
+  }
+  .anchors li {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(20px, 2vw, 26px);
+    line-height: 1.35;
+    color: var(--charcoal);
+    padding: 18px 0;
+    border-bottom: 1px solid var(--hair);
+    letter-spacing: -0.008em;
+  }
+  .anchors li:last-child { border-bottom: none; }
+  .anchors li em { font-style: italic; }
+  .anchors li::before {
+    content: "—";
+    margin-right: 16px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ============ Mood grid layouts (per brand) ============ */
+  .mood-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: 60px;
+    gap: 16px;
+    margin-bottom: 56px;
+  }
+  @media (max-width: 900px) {
+    .mood-grid { grid-template-columns: 1fr; grid-auto-rows: auto; }
+    .mood-grid > * { grid-column: 1 !important; grid-row: auto !important; min-height: 100px; padding-left: 0 !important; border-left: none !important; }
+  }
+
+  /* Leah */
+  .mood-leah .atmosphere em { color: var(--leah-1); }
+  .mood-leah .sw-1 { grid-column: 8 / span 5; grid-row: 1 / span 5; background: linear-gradient(135deg, var(--leah-2), var(--leah-1)); }
+  .mood-leah .atmosphere-block { grid-column: 1 / span 7; grid-row: 1 / span 3; display: flex; align-items: flex-end; }
+  .mood-leah .description { grid-column: 1 / span 6; grid-row: 4 / span 3; padding-top: 24px; }
+  .mood-leah .sw-2 { grid-column: 1 / span 3; grid-row: 7 / span 2; background: var(--leah-3); }
+  .mood-leah .sw-3 { grid-column: 4 / span 3; grid-row: 7 / span 2; background: var(--leah-1); }
+  .mood-leah .quote-block { grid-column: 7 / span 6; grid-row: 6 / span 3; padding: 32px 28px; background: var(--ivory-warm); display: flex; align-items: center; }
+  .mood-leah .quote-block em { color: var(--leah-1); }
+
+  /* InnerBoard */
+  .mood-innerboard .atmosphere em { color: var(--rose); }
+  .mood-innerboard .sw-1 { grid-column: 1 / span 5; grid-row: 1 / span 4; background: var(--rose); }
+  .mood-innerboard .atmosphere-block { grid-column: 6 / span 7; grid-row: 1 / span 3; display: flex; align-items: center; padding-left: 12px; }
+  .mood-innerboard .description { grid-column: 6 / span 7; grid-row: 4 / span 2; padding-left: 12px; padding-top: 8px; }
+  .mood-innerboard .sw-2 { grid-column: 1 / span 3; grid-row: 5 / span 2; background: var(--rose-soft); }
+  .mood-innerboard .sw-3 { grid-column: 4 / span 2; grid-row: 5 / span 2; background: var(--graphite); }
+  .mood-innerboard .quote-block { grid-column: 6 / span 7; grid-row: 6 / span 3; padding: 36px 28px; background: var(--charcoal); color: var(--ivory); display: flex; align-items: center; }
+  .mood-innerboard .quote-block em { color: var(--rose-soft); }
+
+  /* Academy */
+  .mood.mood-academy { background: var(--teal-deep); color: var(--ivory); border-bottom-color: rgba(242, 236, 224, 0.1); }
+  .mood.mood-academy .meta-label,
+  .mood.mood-academy .materials-label,
+  .mood.mood-academy .section-label { color: rgba(242, 236, 224, 0.55); }
+  .mood.mood-academy .body-text { color: rgba(242, 236, 224, 0.85); }
+  .mood.mood-academy .materials { border-top-color: rgba(242, 236, 224, 0.15); }
+  .mood.mood-academy .materials-list { color: var(--ivory); }
+  .mood.mood-academy .hex-pill { background: rgba(242, 236, 224, 0.08); border-color: rgba(242, 236, 224, 0.2); color: var(--ivory); }
+  .mood-academy .atmosphere em { color: var(--teal-soft); }
+  .mood-academy .atmosphere-block { grid-column: 1 / span 8; grid-row: 1 / span 3; display: flex; align-items: flex-end; }
+  .mood-academy .sw-1 { grid-column: 1 / span 2; grid-row: 4 / span 5; background: var(--teal); }
+  .mood-academy .sw-2 { grid-column: 3 / span 2; grid-row: 4 / span 5; background: var(--bronze); }
+  .mood-academy .sw-3 { grid-column: 5 / span 2; grid-row: 4 / span 5; background: var(--cream); }
+  .mood-academy .description { grid-column: 7 / span 6; grid-row: 4 / span 3; padding-left: 24px; }
+  .mood-academy .quote-block { grid-column: 7 / span 6; grid-row: 7 / span 3; padding-left: 24px; padding-top: 12px; }
+  .mood-academy .quote-block em { color: var(--bronze); }
+
+  /* InnerLab */
+  .mood-innerlab .atmosphere em { color: var(--pink); }
+  .mood-innerlab .atmosphere-block { grid-column: 1 / span 8; grid-row: 1 / span 3; display: flex; align-items: flex-end; }
+  .mood-innerlab .sw-1 { grid-column: 9 / span 4; grid-row: 1 / span 5; background: var(--pink); }
+  .mood-innerlab .sw-2 { grid-column: 1 / span 4; grid-row: 4 / span 3; background: var(--blush); }
+  .mood-innerlab .sw-3 { grid-column: 5 / span 4; grid-row: 4 / span 3; background: var(--pink-soft); }
+  .mood-innerlab .sw-4 { grid-column: 9 / span 4; grid-row: 6 / span 3; background: var(--chocolate); }
+  .mood-innerlab .description { grid-column: 1 / span 8; grid-row: 7 / span 2; padding-top: 16px; }
+  .mood-innerlab .quote-block { grid-column: 1 / span 12; grid-row: 9 / span 3; padding: 48px 40px; background: linear-gradient(135deg, var(--blush), var(--pink-soft)); display: flex; align-items: center; margin-top: 16px; }
+  .mood-innerlab .quote-block em { color: var(--pink-deep); }
+
+  /* OS */
+  .mood.mood-os { background: var(--steel-deep); color: var(--ivory); border-bottom-color: rgba(242, 236, 224, 0.1); }
+  .mood.mood-os .meta-label,
+  .mood.mood-os .materials-label,
+  .mood.mood-os .section-label { color: rgba(242, 236, 224, 0.55); }
+  .mood.mood-os .body-text { color: rgba(242, 236, 224, 0.85); }
+  .mood.mood-os .materials { border-top-color: rgba(242, 236, 224, 0.15); }
+  .mood.mood-os .materials-list { color: var(--ivory); }
+  .mood.mood-os .hex-pill { background: rgba(242, 236, 224, 0.08); border-color: rgba(242, 236, 224, 0.2); color: var(--ivory); }
+  .mood-os .atmosphere em { color: var(--steel-soft); }
+  .mood-os .atmosphere-block { grid-column: 1 / span 12; grid-row: 1 / span 3; }
+  .mood-os .sw-1 { grid-column: 1 / span 4; grid-row: 4 / span 4; background: var(--steel); }
+  .mood-os .sw-2 { grid-column: 5 / span 3; grid-row: 4 / span 4; background: var(--steel-soft); }
+  .mood-os .sw-3 { grid-column: 8 / span 2; grid-row: 4 / span 4; background: var(--steel-pale); }
+  .mood-os .description { grid-column: 10 / span 3; grid-row: 4 / span 4; padding-left: 16px; }
+  .mood-os .quote-block { grid-column: 1 / span 12; grid-row: 8 / span 3; padding-top: 32px; border-top: 1px solid rgba(242, 236, 224, 0.18); }
+  .mood-os .quote-block em { color: var(--steel-soft); }
+
+  /* INQ */
+  .mood.mood-inq { background: var(--slate); color: var(--ivory); border-bottom-color: rgba(242, 236, 224, 0.1); }
+  .mood.mood-inq .meta-label,
+  .mood.mood-inq .materials-label,
+  .mood.mood-inq .section-label { color: rgba(242, 236, 224, 0.55); }
+  .mood.mood-inq .body-text { color: rgba(242, 236, 224, 0.85); }
+  .mood.mood-inq .materials { border-top-color: rgba(242, 236, 224, 0.15); }
+  .mood.mood-inq .materials-list { color: var(--ivory); }
+  .mood.mood-inq .hex-pill { background: rgba(242, 236, 224, 0.08); border-color: rgba(242, 236, 224, 0.2); color: var(--ivory); }
+  .mood-inq .atmosphere em { color: var(--gold); }
+  .mood-inq .atmosphere-block { grid-column: 1 / span 9; grid-row: 1 / span 3; }
+  .mood-inq .sw-1 { grid-column: 1 / span 6; grid-row: 4 / span 4; background: var(--gold); }
+  .mood-inq .sw-2 { grid-column: 7 / span 3; grid-row: 4 / span 2; background: var(--slate-mid); }
+  .mood-inq .sw-3 { grid-column: 7 / span 3; grid-row: 6 / span 2; background: var(--slate-soft); }
+  .mood-inq .sw-4 { grid-column: 10 / span 3; grid-row: 4 / span 4; background: var(--gold-soft); }
+  .mood-inq .description { grid-column: 1 / span 7; grid-row: 8 / span 2; padding-top: 24px; }
+  .mood-inq .quote-block { grid-column: 8 / span 5; grid-row: 8 / span 3; padding-top: 24px; padding-left: 24px; border-left: 1px solid rgba(242, 236, 224, 0.18); }
+  .mood-inq .quote-block em { color: var(--gold); }
+
+  /* ============ FAMILY PORTRAIT ============ */
+  .family {
+    padding: 140px 0 120px;
+    background: var(--ivory-warm);
+    border-bottom: 1px solid var(--hair);
+  }
+  .family-header { text-align: center; margin-bottom: 100px; }
+  .family-header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 200;
+    font-variation-settings: "opsz" 144, "SOFT" 60;
+    font-size: clamp(48px, 7vw, 108px);
+    line-height: 0.98;
+    letter-spacing: -0.028em;
+    margin-top: 24px;
+  }
+  .family-header h2 em { font-style: italic; }
+  .family-header .sub {
+    margin-top: 28px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--muted);
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.4;
+    font-weight: 300;
+  }
+  .family-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    margin-bottom: 80px;
+    border: 1px solid var(--hair);
+  }
+  .family-card {
+    aspect-ratio: 4 / 5;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 28px 22px;
+    overflow: hidden;
+    border-right: 1px solid var(--hair);
+  }
+  .family-card:last-child { border-right: none; }
+  .family-card .name {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+  .family-card .name em { font-style: italic; }
+  .family-card .hex {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    opacity: 0.7;
+  }
+  .family-card .role {
+    font-size: 9px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 500;
+    opacity: 0.6;
+  }
+  @media (max-width: 900px) {
+    .family-grid { grid-template-columns: repeat(2, 1fr); }
+    .family-card { aspect-ratio: 3 / 4; border-right: none; border-bottom: 1px solid var(--hair); }
+    .family-card:nth-child(odd) { border-right: 1px solid var(--hair); }
+  }
+
+  .pairings { margin-top: 60px; }
+  .pair-row {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--hair);
+    align-items: center;
+  }
+  .pair-row:last-child { border-bottom: none; }
+  .pair-swatches {
+    display: flex;
+    height: 56px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .pair-swatches > div { flex: 1; }
+  .pair-info .h {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: -0.012em;
+    margin-bottom: 6px;
+  }
+  .pair-info .h em { font-style: italic; }
+  .pair-info .desc {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--muted);
+    max-width: 720px;
+  }
+  @media (max-width: 760px) {
+    .pair-row { grid-template-columns: 1fr; gap: 12px; }
+  }
+
+  .avoid {
+    margin-top: 60px;
+    padding: 48px;
+    background: var(--charcoal);
+    color: var(--ivory);
+    border-radius: 2px;
+  }
+  .avoid h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 32px;
+    letter-spacing: -0.014em;
+    margin-bottom: 32px;
+  }
+  .avoid h3 em { font-style: italic; color: var(--pink); }
+  .avoid-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 28px;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(242, 236, 224, 0.18);
+    align-items: center;
+  }
+  .avoid-row:last-child { border-bottom: none; }
+  .avoid-swatches { display: flex; height: 36px; border-radius: 4px; overflow: hidden; }
+  .avoid-swatches > div { flex: 1; }
+  .avoid-row .reason {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 17px;
+    line-height: 1.45;
+    color: rgba(242, 236, 224, 0.85);
+  }
+  @media (max-width: 760px) {
+    .avoid { padding: 32px 24px; }
+    .avoid-row { grid-template-columns: 1fr; gap: 10px; }
+  }
+
+  /* Footer */
+  footer {
+    background: var(--ink);
+    color: rgba(242, 236, 224, 0.6);
+    padding: 100px 0 48px;
+  }
+  .foot-mark {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 32px;
+    color: var(--ivory);
+    letter-spacing: -0.014em;
+  }
+  .foot-mark em { font-style: italic; color: var(--leah-1); }
+  footer p { font-size: 14px; line-height: 1.6; margin-top: 24px; max-width: 600px; }
+  .foot-bottom {
+    border-top: 1px solid rgba(242, 236, 224, 0.1);
+    padding-top: 32px;
+    margin-top: 80px;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    display: flex;
+    justify-content: space-between;
+  }
+  @media (max-width: 760px) {
+    .foot-bottom { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============== COVER =============== -->
+<section class="cover">
+  <div class="wrap cover-inner">
+    <div class="eyebrow">Brand Book · 2026 · v1.0</div>
+    <h1>The <em>InnerBoard</em><br>Ecosystem.</h1>
+    <p class="cover-sub">One personal brand. One umbrella. Four products. A single reference for the feeling, the voice, and the visual identity of every page that ships from inside the system.</p>
+    <div class="cover-meta">
+      <div>
+        <div class="label">Edition</div>
+        <div class="val">v1.0</div>
+      </div>
+      <div>
+        <div class="label">For</div>
+        <div class="val">Leah Roling</div>
+      </div>
+      <div>
+        <div class="label">Brands</div>
+        <div class="val">Six</div>
+      </div>
+      <div>
+        <div class="label">Status</div>
+        <div class="val">Living document</div>
+      </div>
+    </div>
+  </div>
+  <div class="cover-spectrum">
+    <div style="background: var(--leah-1);"></div>
+    <div style="background: var(--rose);"></div>
+    <div style="background: var(--teal);"></div>
+    <div style="background: var(--pink);"></div>
+    <div style="background: var(--steel);"></div>
+    <div style="background: var(--gold);"></div>
+  </div>
+</section>
+
+<!-- =============== TOC =============== -->
+<section class="toc">
+  <div class="wrap">
+    <div class="toc-head"><div class="eyebrow">Contents</div></div>
+    <div class="toc-grid">
+      <a href="#brand-01" class="toc-row">
+        <div class="toc-num">01</div>
+        <div class="toc-main">
+          <div class="name">Leah <em>Roling</em></div>
+          <div class="role">The Personal Brand</div>
+        </div>
+        <div class="toc-swatch" style="background: var(--leah-1);"></div>
+      </a>
+      <a href="#brand-02" class="toc-row">
+        <div class="toc-num">02</div>
+        <div class="toc-main">
+          <div class="name">Inner<em>Board</em></div>
+          <div class="role">The Ecosystem Umbrella</div>
+        </div>
+        <div class="toc-swatch" style="background: var(--rose);"></div>
+      </a>
+      <a href="#brand-03" class="toc-row">
+        <div class="toc-num">03</div>
+        <div class="toc-main">
+          <div class="name">InnerBoard <em>Academy</em></div>
+          <div class="role">The Library</div>
+        </div>
+        <div class="toc-swatch" style="background: var(--teal);"></div>
+      </a>
+      <a href="#brand-04" class="toc-row">
+        <div class="toc-num">04</div>
+        <div class="toc-main">
+          <div class="name">Inner<em>Lab</em></div>
+          <div class="role">The Practice Membership</div>
+        </div>
+        <div class="toc-swatch" style="background: var(--pink);"></div>
+      </a>
+      <a href="#brand-05" class="toc-row">
+        <div class="toc-num">05</div>
+        <div class="toc-main">
+          <div class="name">InnerBoard <em>OS</em></div>
+          <div class="role">The Operating System</div>
+        </div>
+        <div class="toc-swatch" style="background: var(--steel);"></div>
+      </a>
+      <a href="#brand-06" class="toc-row">
+        <div class="toc-num">06</div>
+        <div class="toc-main">
+          <div class="name">INQ <em>Certification</em></div>
+          <div class="role">The Credential</div>
+        </div>
+        <div class="toc-swatch" style="background: var(--gold);"></div>
+      </a>
+      <a href="#family" class="toc-row" style="grid-column: 1 / span 2;">
+        <div class="toc-num">07</div>
+        <div class="toc-main">
+          <div class="name">The <em>Family</em> Portrait</div>
+          <div class="role">Pairings · Combinations · How they live together</div>
+        </div>
+        <div class="toc-swatch" style="background: linear-gradient(90deg, var(--leah-1), var(--rose), var(--teal), var(--pink), var(--steel), var(--gold));"></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============== 01 — LEAH ROLING =============== -->
+<section class="brand-divider" id="brand-01">
+  <div class="wrap">
+    <div class="head">
+      <div class="num">01</div>
+      <div>
+        <div class="name">Leah <em style="color: var(--leah-1);">Roling</em></div>
+        <div class="swatches">
+          <div style="background: var(--leah-1);"></div>
+          <div style="background: var(--leah-2);"></div>
+          <div style="background: var(--leah-3);"></div>
+        </div>
+      </div>
+      <div class="role">The Personal Brand</div>
+    </div>
+  </div>
+</section>
+
+<section class="mood mood-leah">
+  <div class="wrap">
+    <div class="section-label">Mood · Atmosphere · References</div>
+    <div class="mood-grid">
+      <div class="atmosphere-block">
+        <div class="atmosphere">Late-afternoon<br><em>honesty.</em></div>
+      </div>
+      <div class="sw sw-1 illo" style="background: var(--leah-3);">
+        <svg viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="lr-bg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#FBEEE6"/>
+              <stop offset="50%" stop-color="#F2E1D2"/>
+              <stop offset="100%" stop-color="#E4AE9B"/>
+            </linearGradient>
+            <radialGradient id="lr-skin" cx="0.4" cy="0.35" r="0.75">
+              <stop offset="0%" stop-color="#E4AE9B"/>
+              <stop offset="70%" stop-color="#D09342"/>
+              <stop offset="100%" stop-color="#A66E22"/>
+            </radialGradient>
+            <radialGradient id="lr-flesh" cx="0.45" cy="0.4" r="0.7">
+              <stop offset="0%" stop-color="#FBEEE6"/>
+              <stop offset="55%" stop-color="#E4AE9B"/>
+              <stop offset="100%" stop-color="#D09342"/>
+            </radialGradient>
+            <radialGradient id="lr-pit" cx="0.4" cy="0.4" r="0.7">
+              <stop offset="0%" stop-color="#8A5A28"/>
+              <stop offset="60%" stop-color="#5A3818"/>
+              <stop offset="100%" stop-color="#2A1808"/>
+            </radialGradient>
+            <radialGradient id="lr-glow" cx="0.5" cy="0.15" r="0.6">
+              <stop offset="0%" stop-color="rgba(208,147,66,0.35)"/>
+              <stop offset="100%" stop-color="rgba(208,147,66,0)"/>
+            </radialGradient>
+            <pattern id="lr-linen" width="80" height="3" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="1.5" x2="80" y2="1.5" stroke="#D09342" stroke-width="0.3" opacity="0.2"/>
+            </pattern>
+            <filter id="lr-grain">
+              <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" stitchTiles="stitch"/>
+              <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.07 0"/>
+            </filter>
+          </defs>
+          <rect width="600" height="800" fill="url(#lr-bg)"/>
+          <rect width="600" height="800" fill="url(#lr-linen)"/>
+          <rect width="600" height="800" fill="url(#lr-glow)"/>
+          <!-- Warm light bokeh in upper area -->
+          <circle cx="110" cy="120" r="55" fill="rgba(208,147,66,0.18)"/>
+          <circle cx="490" cy="170" r="42" fill="rgba(208,147,66,0.14)"/>
+          <circle cx="85" cy="320" r="28" fill="rgba(208,147,66,0.1)"/>
+          <circle cx="520" cy="380" r="22" fill="rgba(208,147,66,0.09)"/>
+          <!-- Halved peach centered -->
+          <circle cx="300" cy="445" r="195" fill="url(#lr-skin)"/>
+          <!-- Inner flesh ring -->
+          <circle cx="300" cy="445" r="170" fill="url(#lr-flesh)"/>
+          <!-- Pit at center -->
+          <ellipse cx="300" cy="455" rx="50" ry="64" fill="url(#lr-pit)"/>
+          <!-- Pit grooves -->
+          <ellipse cx="300" cy="455" rx="40" ry="50" fill="none" stroke="#3A1F08" stroke-width="0.6" opacity="0.5"/>
+          <ellipse cx="300" cy="455" rx="28" ry="36" fill="none" stroke="#3A1F08" stroke-width="0.4" opacity="0.4"/>
+          <!-- Stem indent at top -->
+          <ellipse cx="300" cy="255" rx="9" ry="16" fill="#A66E22" opacity="0.5"/>
+          <!-- Highlight on peach (upper left) -->
+          <ellipse cx="220" cy="350" rx="40" ry="55" fill="#FBEEE6" opacity="0.25" transform="rotate(-25 220 350)"/>
+          <!-- Subtle vignette + grain -->
+          <rect width="600" height="800" fill="rgba(0,0,0,0)" filter="url(#lr-grain)" opacity="0.5"/>
+        </svg>
+        <span class="illo-caption">Peach · Late-afternoon honesty</span>
+      </div>
+      <div class="description">
+        <div class="meta-label">Atmosphere</div>
+        <p class="body-text">Sun-warmed terracotta. The hour when the day softens and a person becomes <em>truthful</em>. Linen on skin. Honey settled at the bottom of a jar. The brand of someone who has finally stopped performing.</p>
+      </div>
+      <div class="sw sw-2"><span class="label" style="color: rgba(0,0,0,0.7);">FBEEE6</span></div>
+      <div class="sw sw-3"><span class="label" style="color: rgba(255,255,255,0.95);">D09342</span></div>
+      <div class="quote-block">
+        <div class="type-moment">For the wildly <em>successful</em>,<br>but quietly <em>disconnected.</em></div>
+      </div>
+    </div>
+    <div class="materials">
+      <div class="materials-label">Materials &amp; References</div>
+      <div class="materials-list">
+        Warm linen <span class="dot" style="background: var(--leah-1);"></span>
+        Honey light <span class="dot" style="background: var(--leah-1);"></span>
+        Sun-bleached paper <span class="dot" style="background: var(--leah-2);"></span>
+        Terracotta clay <span class="dot" style="background: var(--leah-1);"></span>
+        Late-afternoon shadow <span class="dot" style="background: var(--charcoal);"></span>
+        The inside of a peach
+      </div>
+    </div>
+    <div class="hex-ticker">
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--leah-1);"></div>#D09342 · Amber</div>
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--leah-2);"></div>#E4AE9B · Peach</div>
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--leah-3);"></div>#FBEEE6 · Blush</div>
+    </div>
+  </div>
+</section>
+
+<section class="identity">
+  <div class="wrap">
+    <div class="identity-tag">Identity · Voice · System</div>
+
+    <div class="block">
+      <div class="block-label">Essence</div>
+      <div class="block-body">
+        <p>For the <em style="color: var(--leah-1);">wildly successful, but quietly disconnected.</em></p>
+        <p class="small">Leah Roling is a personal brand for accomplished adults who have built the life they thought they wanted — and discovered, somewhere along the way, that they stopped being present in it. The work is the long, undramatic return: from doing back to being, from the curated life back to the lived one.</p>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Positioning</div>
+      <div class="block-body">
+        <p>Most personal-development brands sell <em>more</em>. Leah's sells <em>less, but real</em>.</p>
+        <p class="small">The brand is not aspirational performance. It is the soft, persistent invitation to come home to your own life — friendlier than therapy, more grounded than self-help, and unafraid of the truths most successful people are too busy to look at.</p>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Voice</div>
+      <div class="block-body">
+        <p class="small">Editorial, unhurried, intimate. Speaks in plain sentences but lets a few of them land like poetry. Coaches without lecturing. Challenges without confronting. Allows for grief and humor in the same paragraph. Never sells from urgency. Never moralizes. Trusts the reader to do the work.</p>
+        <div class="rules">
+          <div class="rule-col do">
+            <div class="head" style="color: var(--leah-1);">Sounds like</div>
+            <ul>
+              <li>"You have forgotten you have dreams of your own."</li>
+              <li>"There are no balls. No one is juggling."</li>
+              <li>"How you lead is another question."</li>
+              <li>"Wrong people want to be inspired."</li>
+            </ul>
+          </div>
+          <div class="rule-col dont">
+            <div class="head">Never sounds like</div>
+            <ul>
+              <li>"Crush your goals."</li>
+              <li>"Manifest your best life."</li>
+              <li>"Hustle harder."</li>
+              <li>"You've got this, queen."</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Palette</div>
+      <div class="block-body">
+        <p class="small">A five-color system. The amber leads. The peach softens. The blush lifts on dark backgrounds. Together they read as warm, sunlit, late-afternoon-honest — never bright, never girlish, never corporate.</p>
+        <div class="palette">
+          <div class="swatch"><div class="swatch-fill" style="background: #D09342;"></div><div class="swatch-meta"><div class="role-label">Primary</div><div class="hex">#D09342</div><div class="usage">Amber-gold. Italic emphasis on light backgrounds.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #E4AE9B;"></div><div class="swatch-meta"><div class="role-label">Mid</div><div class="hex">#E4AE9B</div><div class="usage">Warm peach. Atmospheric gradients and field washes.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #FBEEE6;"></div><div class="swatch-meta"><div class="role-label">Lightest</div><div class="hex">#FBEEE6</div><div class="usage">Near-white blush. Italic emphasis on dark backgrounds.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #F2ECE0;"></div><div class="swatch-meta"><div class="role-label">Base</div><div class="hex">#F2ECE0</div><div class="usage">Warm ivory page background.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #1B1916;"></div><div class="swatch-meta"><div class="role-label">Ink</div><div class="hex">#1B1916</div><div class="usage">Charcoal-black body type.</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Typography</div>
+      <div class="block-body">
+        <div class="type-display">A life worth <em style="color: var(--leah-1);">attending</em> to.</div>
+        <p class="type-body">Editorial restraint. Generous line height. Italics carry the load.</p>
+        <div class="type-spec">
+          <div class="type-spec-card"><div class="role-label">Display &amp; Pull-quote</div><div class="font">Fraunces</div><div class="details">Variable serif. Weights 200–400. Italic used for landing words and emotional emphasis. Use the soft-axis (SOFT 60–100) for warmth.</div></div>
+          <div class="type-spec-card"><div class="role-label">Body &amp; UI</div><div class="font" style="font-family: 'Instrument Sans', sans-serif;">Instrument Sans</div><div class="details">Geometric sans. Weights 400–500. Body, navigation, captions. Eyebrows in uppercase tracking (0.28em).</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Anchor Lines</div>
+      <div class="block-body">
+        <ul class="anchors">
+          <li>For the <em style="color: var(--leah-1);">wildly successful</em>, but quietly disconnected.</li>
+          <li>If you woke up with breath this morning — <em style="color: var(--leah-1);">you lead</em>.</li>
+          <li>You'd stop scrolling the lives of others — and start <em style="color: var(--leah-1);">experiencing your own</em>.</li>
+          <li>There are no balls. No one is <em style="color: var(--leah-1);">juggling</em>.</li>
+          <li>The dream did not disappear. It has been <em style="color: var(--leah-1);">within</em>, all along.</li>
+          <li>Wrong people want to be inspired. <em style="color: var(--leah-1);">Right people want to be changed</em>.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Applications</div>
+      <div class="block-body">
+        <p class="small"><strong>Website &amp; long-form essays:</strong> warm ivory base, amber italic emphasis, generous whitespace, Fraunces display with Instrument Sans body. Letterboxed cold-opens are part of the brand.</p>
+        <p class="small"><strong>Social:</strong> single-color cards (ivory or charcoal background), one italic line, no logo lockup. The phrase is the brand.</p>
+        <p class="small"><strong>Books &amp; print:</strong> deckle-edge feel, single-column type, amber accents reserved for chapter italics. Page numbers in Fraunces italic.</p>
+        <p class="small"><strong>Avoid:</strong> stock photography of women looking inspirationally at sunsets. Bright/poppy colors. Hustle iconography. Gratuitous emoji.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============== 02 — INNERBOARD =============== -->
+<section class="brand-divider" id="brand-02">
+  <div class="wrap">
+    <div class="head">
+      <div class="num">02</div>
+      <div>
+        <div class="name">Inner<em style="color: var(--rose);">Board</em></div>
+        <div class="swatches">
+          <div style="background: var(--rose);"></div>
+          <div style="background: var(--rose-soft);"></div>
+          <div style="background: var(--rose-deep);"></div>
+          <div style="background: var(--graphite);"></div>
+        </div>
+      </div>
+      <div class="role">The Ecosystem Umbrella</div>
+    </div>
+  </div>
+</section>
+
+<section class="mood mood-innerboard">
+  <div class="wrap">
+    <div class="section-label">Mood · Atmosphere · References</div>
+    <div class="mood-grid">
+      <div class="sw sw-1 illo" style="background: var(--rose-deep);">
+        <svg viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="ib-bg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3A1B22"/>
+              <stop offset="55%" stop-color="#5A2832"/>
+              <stop offset="100%" stop-color="#1A0810"/>
+            </linearGradient>
+            <radialGradient id="ib-candle" cx="0.85" cy="0.22" r="0.65">
+              <stop offset="0%" stop-color="rgba(208,147,66,0.55)"/>
+              <stop offset="35%" stop-color="rgba(208,147,66,0.18)"/>
+              <stop offset="100%" stop-color="rgba(208,147,66,0)"/>
+            </radialGradient>
+            <linearGradient id="ib-leather" x1="0" y1="0" x2="0.4" y2="1">
+              <stop offset="0%" stop-color="#7A3A4A"/>
+              <stop offset="50%" stop-color="#5A2832"/>
+              <stop offset="100%" stop-color="#2A0810"/>
+            </linearGradient>
+            <linearGradient id="ib-leather-hi" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#A8757E" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#A8757E" stop-opacity="0"/>
+            </linearGradient>
+            <filter id="ib-grain">
+              <feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="2" stitchTiles="stitch"/>
+              <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.1 0"/>
+            </filter>
+          </defs>
+          <rect width="600" height="800" fill="url(#ib-bg)"/>
+          <rect width="600" height="800" fill="url(#ib-candle)"/>
+          <!-- Chesterfield armchair silhouette (front view, stylized) -->
+          <!-- High back with rolled top -->
+          <path d="M 110 220 Q 110 160 165 160 L 435 160 Q 490 160 490 220 L 490 540 L 110 540 Z" fill="url(#ib-leather)"/>
+          <!-- Highlight on left edge -->
+          <path d="M 110 220 Q 110 160 165 160 L 200 160 L 200 540 L 110 540 Z" fill="url(#ib-leather-hi)"/>
+          <!-- Left rolled arm -->
+          <path d="M 70 380 Q 50 380 50 420 L 50 620 Q 50 660 90 660 L 130 660 L 130 380 Z" fill="url(#ib-leather)" opacity="0.95"/>
+          <!-- Right rolled arm -->
+          <path d="M 530 380 Q 550 380 550 420 L 550 620 Q 550 660 510 660 L 470 660 L 470 380 Z" fill="url(#ib-leather)" opacity="0.95"/>
+          <!-- Seat cushion (front) -->
+          <rect x="110" y="540" width="380" height="130" fill="url(#ib-leather)" opacity="0.92"/>
+          <!-- Seat shadow under -->
+          <rect x="110" y="665" width="380" height="8" fill="#1A0810" opacity="0.7"/>
+          <!-- Base/legs hint -->
+          <rect x="110" y="670" width="380" height="35" fill="#1A0810"/>
+          <rect x="130" y="700" width="20" height="20" fill="#3A1820"/>
+          <rect x="450" y="700" width="20" height="20" fill="#3A1820"/>
+          <!-- Button tufting on back (diamond pattern) -->
+          <g fill="#2A0810" opacity="0.75">
+            <circle cx="190" cy="240" r="3.5"/>
+            <circle cx="260" cy="240" r="3.5"/>
+            <circle cx="330" cy="240" r="3.5"/>
+            <circle cx="400" cy="240" r="3.5"/>
+            <circle cx="225" cy="300" r="3.5"/>
+            <circle cx="295" cy="300" r="3.5"/>
+            <circle cx="365" cy="300" r="3.5"/>
+            <circle cx="190" cy="360" r="3.5"/>
+            <circle cx="260" cy="360" r="3.5"/>
+            <circle cx="330" cy="360" r="3.5"/>
+            <circle cx="400" cy="360" r="3.5"/>
+            <circle cx="225" cy="420" r="3.5"/>
+            <circle cx="295" cy="420" r="3.5"/>
+            <circle cx="365" cy="420" r="3.5"/>
+            <circle cx="190" cy="480" r="3.5"/>
+            <circle cx="260" cy="480" r="3.5"/>
+            <circle cx="330" cy="480" r="3.5"/>
+            <circle cx="400" cy="480" r="3.5"/>
+          </g>
+          <!-- Subtle diamond lines connecting buttons (tufting) -->
+          <g stroke="#3A1820" stroke-width="0.4" opacity="0.45" fill="none">
+            <line x1="190" y1="240" x2="225" y2="300"/>
+            <line x1="260" y1="240" x2="225" y2="300"/>
+            <line x1="260" y1="240" x2="295" y2="300"/>
+            <line x1="330" y1="240" x2="295" y2="300"/>
+            <line x1="330" y1="240" x2="365" y2="300"/>
+            <line x1="400" y1="240" x2="365" y2="300"/>
+            <line x1="225" y1="300" x2="190" y2="360"/>
+            <line x1="225" y1="300" x2="260" y2="360"/>
+            <line x1="295" y1="300" x2="260" y2="360"/>
+            <line x1="295" y1="300" x2="330" y2="360"/>
+            <line x1="365" y1="300" x2="330" y2="360"/>
+            <line x1="365" y1="300" x2="400" y2="360"/>
+          </g>
+          <!-- Candle in upper right -->
+          <!-- Candle body -->
+          <rect x="528" y="195" width="14" height="55" fill="#E4AE9B"/>
+          <rect x="528" y="195" width="3" height="55" fill="#FBEEE6" opacity="0.6"/>
+          <!-- Wick -->
+          <line x1="535" y1="185" x2="535" y2="195" stroke="#1A0810" stroke-width="1"/>
+          <!-- Flame -->
+          <ellipse cx="535" cy="178" rx="5" ry="13" fill="#D09342"/>
+          <ellipse cx="535" cy="175" rx="2.5" ry="8" fill="#FBEEE6"/>
+          <!-- Grain -->
+          <rect width="600" height="800" fill="rgba(0,0,0,0)" filter="url(#ib-grain)" opacity="0.55"/>
+        </svg>
+        <span class="illo-caption">Chesterfield · The room with the door closed</span>
+      </div>
+      <div class="atmosphere-block">
+        <div class="atmosphere">The room<br>where you meet <em>yourself.</em></div>
+      </div>
+      <div class="description">
+        <div class="meta-label">Atmosphere</div>
+        <p class="body-text">Velvet curtains drawn just enough to keep the room warm. The cabinet of selves — Protector, Critic, Dreamer, CEO — meeting in oxblood leather chairs. Candlelight reading on rose linen.</p>
+      </div>
+      <div class="sw sw-2"><span class="label" style="color: rgba(0,0,0,0.65);">A8757E</span></div>
+      <div class="sw sw-3"><span class="label" style="color: rgba(242, 236, 224, 0.9);">3A3631</span></div>
+      <div class="quote-block">
+        <div class="type-moment" style="font-size: clamp(28px, 3.4vw, 48px); color: var(--ivory);">School taught you <em>algebra.</em><br>Nobody taught you how to lead <em>yourself.</em></div>
+      </div>
+    </div>
+    <div class="materials">
+      <div class="materials-label">Materials &amp; References</div>
+      <div class="materials-list">
+        Oxblood leather <span class="dot" style="background: var(--rose);"></span>
+        Velvet curtain <span class="dot" style="background: var(--rose-deep);"></span>
+        Aged brass <span class="dot" style="background: var(--rose-soft);"></span>
+        Candlelight <span class="dot" style="background: var(--leah-1);"></span>
+        Cabinet wood <span class="dot" style="background: var(--graphite);"></span>
+        A room with the door closed
+      </div>
+    </div>
+    <div class="hex-ticker">
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--rose);"></div>#7A3A4A · Rose</div>
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--rose-soft);"></div>#A8757E · Soft</div>
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--rose-deep);"></div>#5A2832 · Deep</div>
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--graphite);"></div>#3A3631 · Graphite</div>
+    </div>
+  </div>
+</section>
+
+<section class="identity">
+  <div class="wrap">
+    <div class="identity-tag">Identity · Voice · System</div>
+
+    <div class="block">
+      <div class="block-label">Essence</div>
+      <div class="block-body">
+        <p>The architecture of <em style="color: var(--rose);">self-leadership</em>.</p>
+        <p class="small">InnerBoard is the umbrella for four products that share one operating thesis: most adults were taught to manage their lives, never to lead them. The Board is the internal cabinet of selves — Protector, Critic, Dreamer, CEO — that runs every life whether or not the person knows it.</p>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Positioning</div>
+      <div class="block-body">
+        <p>School taught you <em>algebra</em>. Nobody taught you how to lead <em>yourself</em>.</p>
+        <p class="small">InnerBoard occupies the space between coaching, education, and culture. It is not therapy. It is not a course platform. It is the missing curriculum for the human underneath every job, role, relationship, and decision.</p>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Voice</div>
+      <div class="block-body">
+        <p class="small">Plain-spoken systems-thinking. Methodology over motivation. Identity over tactics. The voice is the calm certainty of someone who has done the work and refuses to dress it up. Confident without grandiosity.</p>
+        <div class="rules">
+          <div class="rule-col do">
+            <div class="head" style="color: var(--rose);">Sounds like</div>
+            <ul>
+              <li>"Become the person who creates it."</li>
+              <li>"The thought drives the result."</li>
+              <li>"Change the person who was behaving."</li>
+              <li>"Standards over motivation."</li>
+            </ul>
+          </div>
+          <div class="rule-col dont">
+            <div class="head">Never sounds like</div>
+            <ul>
+              <li>"Unlock your potential."</li>
+              <li>"Transform in 30 days."</li>
+              <li>"Find your why."</li>
+              <li>"Live your truth."</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Palette</div>
+      <div class="block-body">
+        <p class="small">A single rose accent paired with a deep warm charcoal off-palette. The umbrella reads warmer than its product children. Rose is the family color — every product page borrows from it without copying it.</p>
+        <div class="palette">
+          <div class="swatch"><div class="swatch-fill" style="background: #7A3A4A;"></div><div class="swatch-meta"><div class="role-label">Primary</div><div class="hex">#7A3A4A</div><div class="usage">Italic emphasis. Brand mark accent. The signature.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #5A2832;"></div><div class="swatch-meta"><div class="role-label">Deep</div><div class="hex">#5A2832</div><div class="usage">Gradient depth in dark sections.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #A8757E;"></div><div class="swatch-meta"><div class="role-label">Soft</div><div class="hex">#A8757E</div><div class="usage">Italic emphasis on dark backgrounds.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #3A3631;"></div><div class="swatch-meta"><div class="role-label">Off-palette · Graphite</div><div class="hex">#3A3631</div><div class="usage">Deep warm charcoal. Editorial gravity moments and umbrella-level institutional weight.</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Typography</div>
+      <div class="block-body">
+        <div class="type-display">Lead the <em style="color: var(--rose);">person</em> who is behaving.</div>
+        <p class="type-body">Same Fraunces + Instrument Sans system across the ecosystem. Consistency is the brand.</p>
+        <div class="type-spec">
+          <div class="type-spec-card"><div class="role-label">Display</div><div class="font">Fraunces · Italic Light</div><div class="details">Hero headlines, manifesto lines, filter closes.</div></div>
+          <div class="type-spec-card"><div class="role-label">Body</div><div class="font" style="font-family: 'Instrument Sans', sans-serif;">Instrument Sans · 400</div><div class="details">Body, captions, meta-text.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Anchor Lines</div>
+      <div class="block-body">
+        <ul class="anchors">
+          <li>Already know what you want. Now learn to be the <em style="color: var(--rose);">person</em> who creates it.</li>
+          <li>Thoughts drive emotions. Emotions drive actions. Actions create <em style="color: var(--rose);">results</em>.</li>
+          <li>School taught you algebra. Nobody taught you how to lead <em style="color: var(--rose);">yourself</em>.</li>
+          <li>Change your behavior — or change the <em style="color: var(--rose);">person</em> who was behaving.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Applications</div>
+      <div class="block-body">
+        <p class="small"><strong>Umbrella website:</strong> the homepage. Houses the family. Sends visitors downstream to the right product. Rose accent.</p>
+        <p class="small"><strong>Product pages:</strong> each child product has its own accent color (teal, pink, blue, gold) but keeps the InnerBoard typography, ivory base, and structural rhythms.</p>
+        <p class="small"><strong>Cross-channel:</strong> InnerBoard branding appears in product footers as "part of the InnerBoard ecosystem." The umbrella never competes with its children — it identifies them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============== 03 — ACADEMY =============== -->
+<section class="brand-divider" id="brand-03">
+  <div class="wrap">
+    <div class="head">
+      <div class="num">03</div>
+      <div>
+        <div class="name">InnerBoard <em style="color: var(--teal);">Academy</em></div>
+        <div class="swatches">
+          <div style="background: var(--teal);"></div>
+          <div style="background: var(--teal-soft);"></div>
+          <div style="background: var(--bronze);"></div>
+          <div style="background: var(--cream);"></div>
+        </div>
+      </div>
+      <div class="role">The Library</div>
+    </div>
+  </div>
+</section>
+
+<section class="mood mood-academy">
+  <div class="wrap">
+    <div class="section-label">Mood · Atmosphere · References</div>
+    <div class="mood-grid">
+      <div class="atmosphere-block">
+        <div class="atmosphere">A <em>library</em> with<br>your name on it.</div>
+      </div>
+      <div class="sw sw-1 illo" style="grid-column: 1 / span 6; background: var(--teal-deep);">
+        <svg viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="ac-lthA" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#7A4A20"/>
+              <stop offset="50%" stop-color="#A26B3D"/>
+              <stop offset="100%" stop-color="#6A3A18"/>
+            </linearGradient>
+            <linearGradient id="ac-lthB" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#3A1A10"/>
+              <stop offset="50%" stop-color="#5A2A20"/>
+              <stop offset="100%" stop-color="#3A1A10"/>
+            </linearGradient>
+            <linearGradient id="ac-lthC" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#4A3020"/>
+              <stop offset="50%" stop-color="#6B4830"/>
+              <stop offset="100%" stop-color="#4A3020"/>
+            </linearGradient>
+            <linearGradient id="ac-lthD" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#5A3A20"/>
+              <stop offset="50%" stop-color="#7B5C42"/>
+              <stop offset="100%" stop-color="#5A3A20"/>
+            </linearGradient>
+            <linearGradient id="ac-lthE" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#8B6B4C"/>
+              <stop offset="50%" stop-color="#A6845E"/>
+              <stop offset="100%" stop-color="#7B5B3C"/>
+            </linearGradient>
+            <linearGradient id="ac-lthCream" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#A89070"/>
+              <stop offset="50%" stop-color="#C9A773"/>
+              <stop offset="100%" stop-color="#A89070"/>
+            </linearGradient>
+            <radialGradient id="ac-lampGlow" cx="0.75" cy="0.22" r="0.7">
+              <stop offset="0%" stop-color="rgba(208, 147, 66, 0.32)"/>
+              <stop offset="40%" stop-color="rgba(208, 147, 66, 0.08)"/>
+              <stop offset="100%" stop-color="rgba(208, 147, 66, 0)"/>
+            </radialGradient>
+            <radialGradient id="ac-vignette" cx="0.5" cy="0.5" r="0.85">
+              <stop offset="0%" stop-color="rgba(0,0,0,0)"/>
+              <stop offset="70%" stop-color="rgba(0,0,0,0)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.45)"/>
+            </radialGradient>
+            <filter id="ac-grain">
+              <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" stitchTiles="stitch"/>
+              <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.1 0"/>
+            </filter>
+          </defs>
+          <rect width="600" height="800" fill="#0D3438"/>
+          <rect width="600" height="800" fill="url(#ac-lampGlow)"/>
+          <rect x="0" y="0" width="600" height="140" fill="rgba(0,0,0,0.5)"/>
+          <!-- Book spines, varied heights and widths -->
+          <rect x="20" y="140" width="42" height="640" fill="url(#ac-lthA)" rx="1.5"/>
+          <rect x="20" y="260" width="42" height="2.5" fill="#D09342" opacity="0.55"/>
+          <rect x="20" y="500" width="42" height="2" fill="#D09342" opacity="0.5"/>
+          <rect x="65" y="100" width="36" height="680" fill="url(#ac-lthB)" rx="1.5"/>
+          <rect x="65" y="220" width="36" height="2" fill="#D09342" opacity="0.5"/>
+          <rect x="65" y="450" width="36" height="2" fill="#D09342" opacity="0.5"/>
+          <rect x="105" y="160" width="48" height="620" fill="url(#ac-lthC)" rx="1.5"/>
+          <rect x="105" y="280" width="48" height="3" fill="#D09342" opacity="0.6"/>
+          <rect x="157" y="180" width="28" height="600" fill="url(#ac-lthE)" rx="1.5"/>
+          <rect x="189" y="120" width="44" height="660" fill="url(#ac-lthA)" rx="1.5"/>
+          <rect x="189" y="200" width="44" height="2" fill="#D09342" opacity="0.5"/>
+          <rect x="189" y="440" width="44" height="2" fill="#D09342" opacity="0.5"/>
+          <rect x="237" y="150" width="38" height="630" fill="url(#ac-lthD)" rx="1.5"/>
+          <rect x="237" y="290" width="38" height="2" fill="#D09342" opacity="0.5"/>
+          <rect x="279" y="90" width="22" height="690" fill="url(#ac-lthB)" rx="1.5"/>
+          <rect x="305" y="130" width="46" height="650" fill="url(#ac-lthC)" rx="1.5"/>
+          <rect x="305" y="270" width="46" height="2.5" fill="#D09342" opacity="0.55"/>
+          <rect x="305" y="540" width="46" height="2" fill="#D09342" opacity="0.5"/>
+          <rect x="355" y="170" width="40" height="610" fill="url(#ac-lthCream)" rx="1.5"/>
+          <rect x="355" y="310" width="40" height="2" fill="#5A2A1A" opacity="0.6"/>
+          <rect x="399" y="140" width="36" height="640" fill="url(#ac-lthA)" rx="1.5"/>
+          <rect x="399" y="260" width="36" height="2" fill="#D09342" opacity="0.5"/>
+          <rect x="439" y="160" width="50" height="620" fill="url(#ac-lthC)" rx="1.5"/>
+          <rect x="439" y="240" width="50" height="3" fill="#D09342" opacity="0.6"/>
+          <rect x="439" y="500" width="50" height="2" fill="#D09342" opacity="0.5"/>
+          <rect x="493" y="120" width="30" height="660" fill="url(#ac-lthD)" rx="1.5"/>
+          <rect x="527" y="150" width="42" height="630" fill="url(#ac-lthB)" rx="1.5"/>
+          <rect x="527" y="290" width="42" height="2" fill="#D09342" opacity="0.5"/>
+          <rect x="573" y="170" width="25" height="610" fill="url(#ac-lthE)" rx="1.5"/>
+          <!-- Shelf bottom -->
+          <rect x="0" y="775" width="600" height="25" fill="#1A0F08"/>
+          <rect x="0" y="770" width="600" height="6" fill="#2A1A10"/>
+          <!-- Dust motes -->
+          <line x1="420" y1="180" x2="500" y2="240" stroke="rgba(208, 147, 66, 0.08)" stroke-width="0.5"/>
+          <line x1="380" y1="200" x2="450" y2="260" stroke="rgba(208, 147, 66, 0.06)" stroke-width="0.5"/>
+          <rect width="600" height="800" fill="url(#ac-vignette)"/>
+          <rect width="600" height="800" fill="rgba(0,0,0,0)" filter="url(#ac-grain)" opacity="0.5"/>
+        </svg>
+        <span class="illo-caption">Library · Leather book spines</span>
+      </div>
+      <div class="description">
+        <div class="meta-label">Atmosphere</div>
+        <p class="body-text">Dark teal walls. Leather book spines in autumn cognac. Cream paper, aging gracefully. A reading lamp on a heavy desk. The hush of a room where the work has been waiting <em>patiently</em> for you to arrive.</p>
+      </div>
+      <div class="quote-block">
+        <div class="type-moment" style="font-size: clamp(28px, 3.6vw, 56px);">The <em>manual</em><br>school never gave you.</div>
+      </div>
+    </div>
+    <div class="materials">
+      <div class="materials-label">Materials &amp; References</div>
+      <div class="materials-list">
+        Leather book spines <span class="dot" style="background: var(--bronze);"></span>
+        Cream paper <span class="dot" style="background: var(--cream);"></span>
+        Brass desk lamp <span class="dot" style="background: var(--bronze);"></span>
+        Teal velvet wall <span class="dot" style="background: var(--teal);"></span>
+        Dust motes in afternoon light <span class="dot" style="background: var(--teal-soft);"></span>
+        The Penguin Classics shelf
+      </div>
+    </div>
+    <div class="hex-ticker">
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--teal);"></div>#1A5D63 · Teal</div>
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--teal-soft);"></div>#5BA0A7 · Soft</div>
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--bronze);"></div>#A26B3D · Bronze</div>
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--cream);"></div>#EBE0C9 · Cream</div>
+    </div>
+  </div>
+</section>
+
+<section class="identity">
+  <div class="wrap">
+    <div class="identity-tag">Identity · Voice · System</div>
+
+    <div class="block">
+      <div class="block-label">Essence</div>
+      <div class="block-body">
+        <p>The <em style="color: var(--teal);">manual</em> school never gave you.</p>
+        <p class="small">Academy is the self-paced library of every framework, philosophy, and inner mechanic that powers the InnerBoard methodology. Where InnerLab is practice, Academy is curriculum. Cerebral. Catalog-shaped. Built for the reader, the student, the quiet learner.</p>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Positioning</div>
+      <div class="block-body">
+        <p>Most courses teach you something <em>new</em>. Academy teaches you to see something <em style="color: var(--teal);">true</em>.</p>
+        <p class="small">Frameworks aren't ideas to memorize. They are mirrors. Academy is the place where someone walks in for information and walks out with self-recognition.</p>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Voice</div>
+      <div class="block-body">
+        <p class="small">Academic without being dry. Library-quiet. Speaks the way a great teacher does — with the patience to let the reader arrive at the answer themselves. Never hype. Never tactic-of-the-week.</p>
+        <div class="rules">
+          <div class="rule-col do">
+            <div class="head" style="color: var(--teal);">Sounds like</div>
+            <ul>
+              <li>"The manual that will meet you there."</li>
+              <li>"Frameworks are mirrors."</li>
+              <li>"Start where you are."</li>
+              <li>"The curriculum that should have always existed."</li>
+            </ul>
+          </div>
+          <div class="rule-col dont">
+            <div class="head">Never sounds like</div>
+            <ul>
+              <li>"Master this in 7 days."</li>
+              <li>"Mini-course for big results."</li>
+              <li>"Quick wins."</li>
+              <li>"Limited-time offer."</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Palette</div>
+      <div class="block-body">
+        <p class="small">Dark forest teal as primary, paired with burnished bronze and wheat cream off-palette. Together they describe an entire library: teal walls, bronze lamps, cream pages. Library atmosphere, not just library accents.</p>
+        <div class="palette">
+          <div class="swatch"><div class="swatch-fill" style="background: #1A5D63;"></div><div class="swatch-meta"><div class="role-label">Primary</div><div class="hex">#1A5D63</div><div class="usage">Italic emphasis. Catalog dots. Brand mark.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #0D3438;"></div><div class="swatch-meta"><div class="role-label">Deep</div><div class="hex">#0D3438</div><div class="usage">Dark section radial depth.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #5BA0A7;"></div><div class="swatch-meta"><div class="role-label">Soft</div><div class="hex">#5BA0A7</div><div class="usage">Italic emphasis in dark sections.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #A26B3D;"></div><div class="swatch-meta"><div class="role-label">Off-palette · Bronze</div><div class="hex">#A26B3D</div><div class="usage">Burnished bronze. Library-warmth callouts.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #EBE0C9;"></div><div class="swatch-meta"><div class="role-label">Off-palette · Cream</div><div class="hex">#EBE0C9</div><div class="usage">Wheat cream. Book paper, parchment, callout washes.</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Typography</div>
+      <div class="block-body">
+        <div class="type-display">A <em style="color: var(--teal);">curriculum</em> for the human.</div>
+        <p class="type-body">Catalog energy. Numbered listings, hairline dividers, generous margins. Penguin Classics, not Coursera.</p>
+        <div class="type-spec">
+          <div class="type-spec-card"><div class="role-label">Display</div><div class="font">Fraunces · 300</div><div class="details">Course titles. Italic for the qualifier ("Thought *Awareness*").</div></div>
+          <div class="type-spec-card"><div class="role-label">Catalog</div><div class="font" style="font-family: 'Instrument Sans', sans-serif;">Instrument Sans · 500</div><div class="details">Module numbers in uppercase tracking. Hairlines between rows.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Anchor Lines</div>
+      <div class="block-body">
+        <ul class="anchors">
+          <li>The <em style="color: var(--teal);">manual</em> school never gave you.</li>
+          <li>Frameworks aren't ideas to memorize. They are <em style="color: var(--teal);">mirrors</em>.</li>
+          <li>The curriculum that should have <em style="color: var(--teal);">always existed</em>.</li>
+          <li>This is the manual that will meet you there. Wherever <em style="color: var(--teal);">that</em> is.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Applications</div>
+      <div class="block-body">
+        <p class="small"><strong>Course catalog:</strong> editorial library treatment. Numbered modules in 3-column grids. Status dots for available/forthcoming.</p>
+        <p class="small"><strong>Module pages:</strong> single-column reading. Chapter-style numbering. Generous typography. PDF workbooks downloadable.</p>
+        <p class="small"><strong>Email:</strong> subject lines like *On Thought Awareness* or *Lesson Three · The Critic*. Always book-chapter framing, never marketing-blast.</p>
+        <p class="small"><strong>Print:</strong> bronze foil on cream stock. Dark teal cover. Inside pages on bright ivory.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============== 04 — INNERLAB =============== -->
+<section class="brand-divider" id="brand-04">
+  <div class="wrap">
+    <div class="head">
+      <div class="num">04</div>
+      <div>
+        <div class="name">Inner<em style="color: var(--pink);">Lab</em></div>
+        <div class="swatches">
+          <div style="background: var(--pink);"></div>
+          <div style="background: var(--pink-soft);"></div>
+          <div style="background: var(--blush);"></div>
+          <div style="background: var(--chocolate);"></div>
+        </div>
+      </div>
+      <div class="role">The Practice Membership</div>
+    </div>
+  </div>
+</section>
+
+<section class="mood mood-innerlab">
+  <div class="wrap">
+    <div class="section-label">Mood · Atmosphere · References</div>
+    <div class="mood-grid">
+      <div class="atmosphere-block">
+        <div class="atmosphere">Alive in the <em>body</em><br>and unashamed.</div>
+      </div>
+      <div class="sw sw-1 illo" style="background: var(--pink-deep);">
+        <svg viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="il-bg" cx="0.5" cy="0.45" r="0.85">
+              <stop offset="0%" stop-color="#FDF1F5"/>
+              <stop offset="50%" stop-color="#EDA5D2"/>
+              <stop offset="100%" stop-color="#A8418C"/>
+            </radialGradient>
+            <radialGradient id="il-petal-light" cx="0.5" cy="0.3">
+              <stop offset="0%" stop-color="#FDF1F5"/>
+              <stop offset="100%" stop-color="#EDA5D2"/>
+            </radialGradient>
+            <radialGradient id="il-petal-mid" cx="0.5" cy="0.3">
+              <stop offset="0%" stop-color="#EDA5D2"/>
+              <stop offset="100%" stop-color="#DB61B5"/>
+            </radialGradient>
+            <radialGradient id="il-petal-vib" cx="0.5" cy="0.3">
+              <stop offset="0%" stop-color="#DB61B5"/>
+              <stop offset="100%" stop-color="#A8418C"/>
+            </radialGradient>
+            <radialGradient id="il-center" cx="0.5" cy="0.5">
+              <stop offset="0%" stop-color="#4A2E20"/>
+              <stop offset="100%" stop-color="#A8418C"/>
+            </radialGradient>
+            <filter id="il-grain">
+              <feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="2" stitchTiles="stitch"/>
+              <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.07 0"/>
+            </filter>
+          </defs>
+          <rect width="600" height="800" fill="url(#il-bg)"/>
+          <!-- Dahlia: layered concentric rings of petals -->
+          <g transform="translate(300 400)">
+            <!-- Outer ring: 12 large pale petals -->
+            <g opacity="0.85">
+              <ellipse cx="0" cy="-200" rx="42" ry="110" fill="url(#il-petal-light)"/>
+              <g transform="rotate(30)"><ellipse cx="0" cy="-200" rx="42" ry="110" fill="url(#il-petal-light)"/></g>
+              <g transform="rotate(60)"><ellipse cx="0" cy="-200" rx="42" ry="110" fill="url(#il-petal-light)"/></g>
+              <g transform="rotate(90)"><ellipse cx="0" cy="-200" rx="42" ry="110" fill="url(#il-petal-light)"/></g>
+              <g transform="rotate(120)"><ellipse cx="0" cy="-200" rx="42" ry="110" fill="url(#il-petal-light)"/></g>
+              <g transform="rotate(150)"><ellipse cx="0" cy="-200" rx="42" ry="110" fill="url(#il-petal-light)"/></g>
+              <g transform="rotate(180)"><ellipse cx="0" cy="-200" rx="42" ry="110" fill="url(#il-petal-light)"/></g>
+              <g transform="rotate(210)"><ellipse cx="0" cy="-200" rx="42" ry="110" fill="url(#il-petal-light)"/></g>
+              <g transform="rotate(240)"><ellipse cx="0" cy="-200" rx="42" ry="110" fill="url(#il-petal-light)"/></g>
+              <g transform="rotate(270)"><ellipse cx="0" cy="-200" rx="42" ry="110" fill="url(#il-petal-light)"/></g>
+              <g transform="rotate(300)"><ellipse cx="0" cy="-200" rx="42" ry="110" fill="url(#il-petal-light)"/></g>
+              <g transform="rotate(330)"><ellipse cx="0" cy="-200" rx="42" ry="110" fill="url(#il-petal-light)"/></g>
+            </g>
+            <!-- Middle ring: 12 mid pink petals, offset -->
+            <g transform="rotate(15)" opacity="0.95">
+              <ellipse cx="0" cy="-150" rx="36" ry="92" fill="url(#il-petal-mid)"/>
+              <g transform="rotate(30)"><ellipse cx="0" cy="-150" rx="36" ry="92" fill="url(#il-petal-mid)"/></g>
+              <g transform="rotate(60)"><ellipse cx="0" cy="-150" rx="36" ry="92" fill="url(#il-petal-mid)"/></g>
+              <g transform="rotate(90)"><ellipse cx="0" cy="-150" rx="36" ry="92" fill="url(#il-petal-mid)"/></g>
+              <g transform="rotate(120)"><ellipse cx="0" cy="-150" rx="36" ry="92" fill="url(#il-petal-mid)"/></g>
+              <g transform="rotate(150)"><ellipse cx="0" cy="-150" rx="36" ry="92" fill="url(#il-petal-mid)"/></g>
+              <g transform="rotate(180)"><ellipse cx="0" cy="-150" rx="36" ry="92" fill="url(#il-petal-mid)"/></g>
+              <g transform="rotate(210)"><ellipse cx="0" cy="-150" rx="36" ry="92" fill="url(#il-petal-mid)"/></g>
+              <g transform="rotate(240)"><ellipse cx="0" cy="-150" rx="36" ry="92" fill="url(#il-petal-mid)"/></g>
+              <g transform="rotate(270)"><ellipse cx="0" cy="-150" rx="36" ry="92" fill="url(#il-petal-mid)"/></g>
+              <g transform="rotate(300)"><ellipse cx="0" cy="-150" rx="36" ry="92" fill="url(#il-petal-mid)"/></g>
+              <g transform="rotate(330)"><ellipse cx="0" cy="-150" rx="36" ry="92" fill="url(#il-petal-mid)"/></g>
+            </g>
+            <!-- Inner ring: 8 vibrant pink petals -->
+            <g>
+              <ellipse cx="0" cy="-90" rx="28" ry="62" fill="url(#il-petal-vib)"/>
+              <g transform="rotate(45)"><ellipse cx="0" cy="-90" rx="28" ry="62" fill="url(#il-petal-vib)"/></g>
+              <g transform="rotate(90)"><ellipse cx="0" cy="-90" rx="28" ry="62" fill="url(#il-petal-vib)"/></g>
+              <g transform="rotate(135)"><ellipse cx="0" cy="-90" rx="28" ry="62" fill="url(#il-petal-vib)"/></g>
+              <g transform="rotate(180)"><ellipse cx="0" cy="-90" rx="28" ry="62" fill="url(#il-petal-vib)"/></g>
+              <g transform="rotate(225)"><ellipse cx="0" cy="-90" rx="28" ry="62" fill="url(#il-petal-vib)"/></g>
+              <g transform="rotate(270)"><ellipse cx="0" cy="-90" rx="28" ry="62" fill="url(#il-petal-vib)"/></g>
+              <g transform="rotate(315)"><ellipse cx="0" cy="-90" rx="28" ry="62" fill="url(#il-petal-vib)"/></g>
+            </g>
+            <!-- Center -->
+            <circle cx="0" cy="0" r="38" fill="url(#il-center)"/>
+            <circle cx="0" cy="0" r="22" fill="#4A2E20" opacity="0.75"/>
+            <!-- Stamen dots -->
+            <g fill="#EDA5D2">
+              <circle cx="-12" cy="-8" r="2"/>
+              <circle cx="10" cy="-6" r="2"/>
+              <circle cx="-4" cy="12" r="2"/>
+              <circle cx="14" cy="8" r="2"/>
+              <circle cx="-14" cy="6" r="2"/>
+            </g>
+          </g>
+          <rect width="600" height="800" fill="rgba(0,0,0,0)" filter="url(#il-grain)" opacity="0.5"/>
+        </svg>
+        <span class="illo-caption">Dahlia · Alive and unashamed</span>
+      </div>
+      <div class="sw sw-2"><span class="label" style="color: rgba(0,0,0,0.6);">FDF1F5</span></div>
+      <div class="sw sw-3"><span class="label" style="color: rgba(0,0,0,0.6);">EDA5D2</span></div>
+      <div class="sw sw-4"><span class="label" style="color: rgba(242, 236, 224, 0.9);">4A2E20</span></div>
+      <div class="description">
+        <div class="meta-label">Atmosphere</div>
+        <p class="body-text">Dahlias in late summer. Silk against bare skin. A truffle on a white plate. The flush before tears or before laughter — the body knowing something before the mind catches up. <em>Embodiment</em>, never <em>performance</em>.</p>
+      </div>
+      <div class="quote-block">
+        <div class="type-moment" style="font-size: clamp(34px, 5vw, 80px);">Make it <em>who you are.</em></div>
+      </div>
+    </div>
+    <div class="materials">
+      <div class="materials-label">Materials &amp; References</div>
+      <div class="materials-list">
+        Silk in motion <span class="dot" style="background: var(--pink);"></span>
+        Dahlia petals <span class="dot" style="background: var(--pink-soft);"></span>
+        Inside of a seashell <span class="dot" style="background: var(--blush);"></span>
+        Dark chocolate <span class="dot" style="background: var(--chocolate);"></span>
+        Skin in candlelight <span class="dot" style="background: var(--blush);"></span>
+        A room of women who don't have to explain themselves
+      </div>
+    </div>
+    <div class="hex-ticker">
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--pink);"></div>#DB61B5 · Pink</div>
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--pink-soft);"></div>#EDA5D2 · Soft</div>
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--blush);"></div>#FDF1F5 · Blush</div>
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--chocolate);"></div>#4A2E20 · Chocolate</div>
+    </div>
+  </div>
+</section>
+
+<section class="identity">
+  <div class="wrap">
+    <div class="identity-tag">Identity · Voice · System</div>
+
+    <div class="block">
+      <div class="block-label">Essence</div>
+      <div class="block-body">
+        <p>Make it <em style="color: var(--pink);">who you are</em>.</p>
+        <p class="small">InnerLab is the live monthly membership where InnerBoard frameworks become embodied. Where Academy teaches the work, InnerLab is where the work becomes the person doing it. The room. The practice. The community.</p>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Positioning</div>
+      <div class="block-body">
+        <p>You can know exactly what to do — and watch yourself do <em style="color: var(--pink);">the opposite anyway</em>.</p>
+        <p class="small">That is not a failure of understanding. It is a failure of practice. InnerLab is where that gap closes. Real situations, real coaching, in front of real people. The lab where insight becomes identity.</p>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Voice</div>
+      <div class="block-body">
+        <p class="small">Warm-direct. Spoken-aloud cadence. The voice of someone who is in the room with you, not delivering content at you. Permissive of mess. Allergic to performance. The opposite of curated.</p>
+        <div class="rules">
+          <div class="rule-col do">
+            <div class="head" style="color: var(--pink);">Sounds like</div>
+            <ul>
+              <li>"Make it who you are."</li>
+              <li>"This is your room."</li>
+              <li>"Insight becomes identity."</li>
+              <li>"Stop performing change. Start practicing it."</li>
+            </ul>
+          </div>
+          <div class="rule-col dont">
+            <div class="head">Never sounds like</div>
+            <ul>
+              <li>"Exclusive member benefits."</li>
+              <li>"Premium community access."</li>
+              <li>"Join an elite circle."</li>
+              <li>"Subscribe for inner work."</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Palette</div>
+      <div class="block-body">
+        <p class="small">Three temperatures of pink plus a grounding chocolate. The vibrant pink leads. The soft pink lifts on dark. The blush is barely-there. Chocolate grounds. Together: alive, tender, weighted.</p>
+        <div class="palette">
+          <div class="swatch"><div class="swatch-fill" style="background: #DB61B5;"></div><div class="swatch-meta"><div class="role-label">Primary</div><div class="hex">#DB61B5</div><div class="usage">Italic emphasis. Practice cards. CTAs.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #A8418C;"></div><div class="swatch-meta"><div class="role-label">Deep</div><div class="hex">#A8418C</div><div class="usage">Dark section radial depth.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #EDA5D2;"></div><div class="swatch-meta"><div class="role-label">Soft</div><div class="hex">#EDA5D2</div><div class="usage">Italic emphasis on dark backgrounds.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #FDF1F5;"></div><div class="swatch-meta"><div class="role-label">Off-palette · Blush</div><div class="hex">#FDF1F5</div><div class="usage">Barely-there blush. Tender background washes.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #4A2E20;"></div><div class="swatch-meta"><div class="role-label">Off-palette · Chocolate</div><div class="hex">#4A2E20</div><div class="usage">Deep chocolate. Grounding moments, weighted accents.</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Typography</div>
+      <div class="block-body">
+        <div class="type-display">From insight to <em style="color: var(--pink);">identity</em>.</div>
+        <p class="type-body">Same family fonts. Pink replaces the warm accents. Reads alive.</p>
+        <div class="type-spec">
+          <div class="type-spec-card"><div class="role-label">Practice cards</div><div class="font">Fraunces · Italic</div><div class="details">Big italic Fraunces for practice names: Masterclass, Coaching Lab, Reflection Lab, Tools, Community.</div></div>
+          <div class="type-spec-card"><div class="role-label">Reading lines</div><div class="font" style="font-family: 'Fraunces', serif;">Fraunces · 300</div><div class="details">Numbered archetype lines stacked with alternating margins. Pink italic landing word.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Anchor Lines</div>
+      <div class="block-body">
+        <ul class="anchors">
+          <li>Make it <em style="color: var(--pink);">who you are</em>.</li>
+          <li>The most important leadership role you'll ever hold is <em style="color: var(--pink);">with yourself</em>.</li>
+          <li>This is <em style="color: var(--pink);">your room</em>.</li>
+          <li>Insight is the beginning. <em style="color: var(--pink);">Identity</em> is what makes it permanent.</li>
+          <li>You can learn the work. Or you can <em style="color: var(--pink);">become</em> the work.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Applications</div>
+      <div class="block-body">
+        <p class="small"><strong>Member portal:</strong> live calendar of Masterclass, Coaching Lab, Reflection Lab. Pink accent. Personal greeting. Practice — not platform — language.</p>
+        <p class="small"><strong>Live sessions:</strong> Zoom backgrounds in pink/ivory. Lower-thirds use Fraunces italic. No corporate slide decks.</p>
+        <p class="small"><strong>Member emails:</strong> personal, short, warm. Signed by Leah. Never a marketing newsletter — always an invitation to practice.</p>
+        <p class="small"><strong>Retreat collateral:</strong> blush + chocolate as the dominant pair. Pink reserved for accents only. Photography over illustration.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============== 05 — INNERBOARD OS =============== -->
+<section class="brand-divider" id="brand-05">
+  <div class="wrap">
+    <div class="head">
+      <div class="num">05</div>
+      <div>
+        <div class="name">InnerBoard <em style="color: var(--steel);">OS</em></div>
+        <div class="swatches">
+          <div style="background: var(--steel);"></div>
+          <div style="background: var(--steel-deep);"></div>
+          <div style="background: var(--steel-soft);"></div>
+          <div style="background: var(--steel-pale);"></div>
+        </div>
+      </div>
+      <div class="role">The Operating System</div>
+    </div>
+  </div>
+</section>
+
+<section class="mood mood-os">
+  <div class="wrap">
+    <div class="section-label">Mood · Atmosphere · References</div>
+    <div class="mood-grid">
+      <div class="atmosphere-block">
+        <div class="atmosphere">Blueprint <em>quiet.</em><br>Operator <em>grade.</em></div>
+      </div>
+      <div class="sw sw-1 illo" style="background: var(--steel-deep);">
+        <svg viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="os-bg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0D3054"/>
+              <stop offset="100%" stop-color="#04162D"/>
+            </linearGradient>
+            <pattern id="os-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#4F6D8C" stroke-width="0.4" opacity="0.28"/>
+            </pattern>
+            <pattern id="os-grid-fine" width="8" height="8" patternUnits="userSpaceOnUse">
+              <path d="M 8 0 L 0 0 0 8" fill="none" stroke="#4F6D8C" stroke-width="0.15" opacity="0.18"/>
+            </pattern>
+            <linearGradient id="os-steel" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#A8BCD2"/>
+              <stop offset="50%" stop-color="#8AA3BF"/>
+              <stop offset="100%" stop-color="#4F6D8C"/>
+            </linearGradient>
+            <filter id="os-grain">
+              <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" stitchTiles="stitch"/>
+              <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.08 0"/>
+            </filter>
+          </defs>
+          <rect width="600" height="800" fill="url(#os-bg)"/>
+          <rect width="600" height="800" fill="url(#os-grid-fine)"/>
+          <rect width="600" height="800" fill="url(#os-grid)"/>
+          <!-- Arc being drawn by the compass -->
+          <path d="M 175 600 A 175 175 0 0 1 425 600" fill="none" stroke="#8AA3BF" stroke-width="1.5" opacity="0.7" stroke-dasharray="4 3"/>
+          <!-- Compass top pivot/hinge -->
+          <circle cx="300" cy="180" r="18" fill="url(#os-steel)" stroke="#4F6D8C" stroke-width="1"/>
+          <circle cx="300" cy="180" r="11" fill="#4F6D8C"/>
+          <circle cx="300" cy="180" r="5" fill="#E6E7EA"/>
+          <!-- Left compass arm -->
+          <path d="M 292 192 L 172 588 L 178 605 L 192 600 L 308 200 Z" fill="url(#os-steel)" stroke="#2D4054" stroke-width="0.7"/>
+          <!-- Right compass arm -->
+          <path d="M 308 192 L 428 588 L 422 605 L 408 600 L 292 200 Z" fill="url(#os-steel)" stroke="#2D4054" stroke-width="0.7"/>
+          <!-- Sharp point on left -->
+          <path d="M 172 588 L 178 605 L 184 615 L 188 600 Z" fill="#0D3054"/>
+          <!-- Pencil tip on right -->
+          <ellipse cx="418" cy="603" rx="6" ry="3.5" fill="#E6E7EA"/>
+          <rect x="412" y="595" width="12" height="8" fill="#8AA3BF"/>
+          <!-- Hairline markings near top -->
+          <g stroke="#E6E7EA" stroke-width="0.5" opacity="0.4">
+            <line x1="270" y1="155" x2="270" y2="162"/>
+            <line x1="278" y1="155" x2="278" y2="160"/>
+            <line x1="286" y1="155" x2="286" y2="162"/>
+            <line x1="294" y1="155" x2="294" y2="160"/>
+            <line x1="300" y1="152" x2="300" y2="162"/>
+            <line x1="306" y1="155" x2="306" y2="160"/>
+            <line x1="314" y1="155" x2="314" y2="162"/>
+            <line x1="322" y1="155" x2="322" y2="160"/>
+            <line x1="330" y1="155" x2="330" y2="162"/>
+          </g>
+          <!-- Small architectural detail marks (corners) -->
+          <g stroke="#8AA3BF" stroke-width="0.7" opacity="0.5" fill="none">
+            <path d="M 40 40 L 40 70 L 70 70"/>
+            <path d="M 560 40 L 560 70 L 530 70"/>
+            <path d="M 40 760 L 40 730 L 70 730"/>
+            <path d="M 560 760 L 560 730 L 530 730"/>
+          </g>
+          <!-- Subtle vignette + grain -->
+          <rect width="600" height="800" fill="rgba(0,0,0,0)" filter="url(#os-grain)" opacity="0.55"/>
+        </svg>
+        <span class="illo-caption">Compass · The architecture under the building</span>
+      </div>
+      <div class="sw sw-2"><span class="label" style="color: rgba(0,0,0,0.65);">8AA3BF</span></div>
+      <div class="sw sw-3"><span class="label" style="color: rgba(0,0,0,0.65);">E6E7EA</span></div>
+      <div class="description">
+        <div class="meta-label">Atmosphere</div>
+        <p class="body-text">A drafting table in cool morning light. Brushed steel. Navy ink on cool white. The unstaged confidence of an architect who has done this before — and who knows quiet systems outlast loud trainings.</p>
+      </div>
+      <div class="quote-block">
+        <div class="type-moment">Your people aren't <em>overwhelmed.</em><br>They are <em>under-clear.</em></div>
+      </div>
+    </div>
+    <div class="materials">
+      <div class="materials-label">Materials &amp; References</div>
+      <div class="materials-list">
+        Brushed steel <span class="dot" style="background: var(--steel);"></span>
+        Blueprint paper <span class="dot" style="background: var(--steel-pale);"></span>
+        Navy ink <span class="dot" style="background: var(--steel-deep);"></span>
+        Drafting compass <span class="dot" style="background: var(--steel);"></span>
+        Cold morning fog <span class="dot" style="background: var(--steel-soft);"></span>
+        The architecture drawing under the building
+      </div>
+    </div>
+    <div class="hex-ticker">
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--steel);"></div>#4F6D8C · Steel</div>
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--steel-deep);"></div>#0D3054 · Deep</div>
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--steel-soft);"></div>#8AA3BF · Soft</div>
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--steel-pale);"></div>#E6E7EA · Pale</div>
+    </div>
+  </div>
+</section>
+
+<section class="identity">
+  <div class="wrap">
+    <div class="identity-tag">Identity · Voice · System</div>
+
+    <div class="block">
+      <div class="block-label">Essence</div>
+      <div class="block-body">
+        <p>Your people aren't <em style="color: var(--steel);">overwhelmed</em>. They are <em style="color: var(--steel);">under-clear</em>.</p>
+        <p class="small">InnerBoard OS is the institutional operating system for organizations that want self-leadership to become inevitable — not aspirational. The architecture that makes training hold, clarity stick, and culture stop drifting.</p>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Positioning</div>
+      <div class="block-body">
+        <p>Training is loud. Operating systems are <em style="color: var(--steel);">quiet</em>.</p>
+        <p class="small">Where most leadership programs pile on more content, OS installs an architecture. Three layers — Clarity, Emotional Intelligence, Culture — operating beneath every meeting, hire, and one-on-one. Self-leadership becomes a default, not a heroic act.</p>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Voice</div>
+      <div class="block-body">
+        <p class="small">Institutional restraint. Quiet certainty. Speaks the way the best B2B brands do — confident, plain, free of jargon, allergic to corporate-speak. Editorial more than HR. Operator-grade.</p>
+        <div class="rules">
+          <div class="rule-col do">
+            <div class="head" style="color: var(--steel);">Sounds like</div>
+            <ul>
+              <li>"Self-leadership is not a leadership skill. It is a human one."</li>
+              <li>"The silent failure of every training program."</li>
+              <li>"The cost no one budgeted for."</li>
+              <li>"Make self-leadership inevitable."</li>
+            </ul>
+          </div>
+          <div class="rule-col dont">
+            <div class="head">Never sounds like</div>
+            <ul>
+              <li>"Engagement solutions."</li>
+              <li>"Employee experience platform."</li>
+              <li>"Talent enablement."</li>
+              <li>"L&amp;D transformation."</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Palette</div>
+      <div class="block-body">
+        <p class="small">Steel blue. The most institutional color in the family — operator-grade, professional, calm. Reads as systems, not sentiment. The cool pale grey gives OS its only departure from the warm ivory family base — used in places where institutional gravity is wanted.</p>
+        <div class="palette">
+          <div class="swatch"><div class="swatch-fill" style="background: #4F6D8C;"></div><div class="swatch-meta"><div class="role-label">Primary</div><div class="hex">#4F6D8C</div><div class="usage">Steel blue. Italic emphasis. Layer numbers. Brand mark.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #0D3054;"></div><div class="swatch-meta"><div class="role-label">Deep</div><div class="hex">#0D3054</div><div class="usage">Deep navy. Dark section radial depth.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #8AA3BF;"></div><div class="swatch-meta"><div class="role-label">Soft</div><div class="hex">#8AA3BF</div><div class="usage">Italic emphasis on dark backgrounds.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #E6E7EA;"></div><div class="swatch-meta"><div class="role-label">Pale</div><div class="hex">#E6E7EA</div><div class="usage">Cool pale grey. Institutional section backgrounds.</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Typography</div>
+      <div class="block-body">
+        <div class="type-display">Self-leadership, <em style="color: var(--steel);">at scale</em>.</div>
+        <p class="type-body">Same family fonts. Steel blue replaces warm accents. Reads operator-grade.</p>
+        <div class="type-spec">
+          <div class="type-spec-card"><div class="role-label">Operator headlines</div><div class="font">Fraunces · 200–300</div><div class="details">Hero claims and layer titles. Italic for the load-bearing word.</div></div>
+          <div class="type-spec-card"><div class="role-label">Body &amp; specs</div><div class="font" style="font-family: 'Instrument Sans', sans-serif;">Instrument Sans · 400</div><div class="details">Professional running text. Tabular data. Eyebrow tags in uppercase 0.32em tracking.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Anchor Lines</div>
+      <div class="block-body">
+        <ul class="anchors">
+          <li>Your people aren't <em style="color: var(--steel);">overwhelmed</em>. They are <em style="color: var(--steel);">under-clear</em>.</li>
+          <li>Self-leadership is not a leadership skill. It is a <em style="color: var(--steel);">human</em> one.</li>
+          <li>Training is loud. Operating systems are <em style="color: var(--steel);">quiet</em>.</li>
+          <li>The silent failure of every <em style="color: var(--steel);">training program</em>.</li>
+          <li>Install the architecture that lets training finally <em style="color: var(--steel);">hold</em>.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Applications</div>
+      <div class="block-body">
+        <p class="small"><strong>Sales decks &amp; institutional collateral:</strong> charcoal slides, steel-blue accents, Fraunces titles, Instrument Sans body. Tabular data over infographics. Editorial more than corporate.</p>
+        <p class="small"><strong>Implementation docs:</strong> three-layer framework consistently anchored. Clarity / Emotional Intelligence / Culture. Layer numbers in italic Fraunces.</p>
+        <p class="small"><strong>Outreach &amp; email:</strong> short, operator-grade, no buzzwords. Subject lines like *The cost no one budgeted for* — editorial provocations, not marketing.</p>
+        <p class="small"><strong>Print collateral:</strong> deep navy on cool white. Steel blue accents. Tabular data, no charts that aren't earned.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============== 06 — INQ CERTIFICATION =============== -->
+<section class="brand-divider" id="brand-06">
+  <div class="wrap">
+    <div class="head">
+      <div class="num">06</div>
+      <div>
+        <div class="name">INQ <em style="color: var(--gold);">Certification</em></div>
+        <div class="swatches">
+          <div style="background: var(--gold);"></div>
+          <div style="background: var(--gold-soft);"></div>
+          <div style="background: var(--slate);"></div>
+          <div style="background: var(--slate-mid);"></div>
+          <div style="background: var(--slate-soft);"></div>
+        </div>
+      </div>
+      <div class="role">The Credential</div>
+    </div>
+  </div>
+</section>
+
+<section class="mood mood-inq">
+  <div class="wrap">
+    <div class="section-label">Mood · Atmosphere · References</div>
+    <div class="mood-grid">
+      <div class="atmosphere-block">
+        <div class="atmosphere">Museum <em>gravity.</em><br>Gold on <em>slate.</em></div>
+      </div>
+      <div class="sw sw-1 illo" style="background: var(--slate);">
+        <svg viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="inq-bg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3A3631"/>
+              <stop offset="100%" stop-color="#1A1612"/>
+            </linearGradient>
+            <linearGradient id="inq-stone" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#6E6660"/>
+              <stop offset="50%" stop-color="#4A4540"/>
+              <stop offset="100%" stop-color="#2D2A26"/>
+            </linearGradient>
+            <linearGradient id="inq-bronze" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#E8CF7A"/>
+              <stop offset="40%" stop-color="#D4AF37"/>
+              <stop offset="70%" stop-color="#967D28"/>
+              <stop offset="100%" stop-color="#5C4A18"/>
+            </linearGradient>
+            <radialGradient id="inq-spotlight" cx="0.5" cy="0.3" r="0.8">
+              <stop offset="0%" stop-color="rgba(232,207,122,0.25)"/>
+              <stop offset="100%" stop-color="rgba(232,207,122,0)"/>
+            </radialGradient>
+            <filter id="inq-grain">
+              <feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="2" stitchTiles="stitch"/>
+              <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.09 0"/>
+            </filter>
+          </defs>
+          <rect width="600" height="800" fill="url(#inq-bg)"/>
+          <rect width="600" height="800" fill="url(#inq-spotlight)"/>
+          <!-- Slate stone slab (background) -->
+          <rect x="60" y="100" width="480" height="640" fill="url(#inq-stone)"/>
+          <!-- Stone striations -->
+          <g stroke="#B8B2A8" stroke-width="0.35" opacity="0.22">
+            <line x1="60" y1="170" x2="540" y2="170"/>
+            <line x1="60" y1="240" x2="540" y2="240"/>
+            <line x1="60" y1="320" x2="540" y2="320"/>
+            <line x1="60" y1="410" x2="540" y2="410"/>
+            <line x1="60" y1="490" x2="540" y2="490"/>
+            <line x1="60" y1="580" x2="540" y2="580"/>
+            <line x1="60" y1="670" x2="540" y2="670"/>
+          </g>
+          <!-- Stone texture flecks -->
+          <g fill="#B8B2A8" opacity="0.15">
+            <circle cx="120" cy="200" r="1"/>
+            <circle cx="200" cy="280" r="0.8"/>
+            <circle cx="350" cy="220" r="1.2"/>
+            <circle cx="450" cy="350" r="0.9"/>
+            <circle cx="180" cy="450" r="1"/>
+            <circle cx="380" cy="520" r="0.8"/>
+            <circle cx="280" cy="610" r="1.1"/>
+            <circle cx="440" cy="640" r="0.9"/>
+          </g>
+          <!-- Bronze plaque (centered, prominent) -->
+          <rect x="130" y="260" width="340" height="240" fill="url(#inq-bronze)"/>
+          <!-- Plaque outer edge bevel -->
+          <rect x="130" y="260" width="340" height="240" fill="none" stroke="#5C4A18" stroke-width="2.5"/>
+          <!-- Plaque inner border hairline -->
+          <rect x="142" y="272" width="316" height="216" fill="none" stroke="#5C4A18" stroke-width="0.6" opacity="0.65"/>
+          <!-- Gold leaf square tiles at top of plaque -->
+          <g>
+            <rect x="200" y="290" width="10" height="10" fill="#D4AF37" opacity="0.9"/>
+            <rect x="215" y="290" width="10" height="10" fill="#E8CF7A" opacity="0.75"/>
+            <rect x="230" y="290" width="10" height="10" fill="#D4AF37" opacity="0.95"/>
+            <rect x="360" y="290" width="10" height="10" fill="#D4AF37" opacity="0.9"/>
+            <rect x="375" y="290" width="10" height="10" fill="#E8CF7A" opacity="0.75"/>
+            <rect x="390" y="290" width="10" height="10" fill="#D4AF37" opacity="0.95"/>
+          </g>
+          <!-- Center ornamental gold square -->
+          <rect x="290" y="290" width="14" height="10" fill="#D4AF37"/>
+          <rect x="294" y="292" width="6" height="6" fill="#E8CF7A"/>
+          <!-- Engraved text hairlines -->
+          <g stroke="#5C4A18" stroke-width="1.2" opacity="0.7" stroke-linecap="round">
+            <line x1="195" y1="340" x2="405" y2="340"/>
+            <line x1="215" y1="362" x2="385" y2="362"/>
+            <line x1="195" y1="395" x2="405" y2="395"/>
+            <line x1="240" y1="420" x2="360" y2="420"/>
+          </g>
+          <!-- Small horizontal flourish lines -->
+          <g stroke="#5C4A18" stroke-width="0.6" opacity="0.55">
+            <line x1="240" y1="455" x2="360" y2="455"/>
+            <line x1="270" y1="465" x2="330" y2="465"/>
+          </g>
+          <!-- Mounting screws (corners of plaque) -->
+          <circle cx="155" cy="285" r="3" fill="#5C4A18"/>
+          <circle cx="445" cy="285" r="3" fill="#5C4A18"/>
+          <circle cx="155" cy="475" r="3" fill="#5C4A18"/>
+          <circle cx="445" cy="475" r="3" fill="#5C4A18"/>
+          <!-- Subtle vignette + grain -->
+          <rect width="600" height="800" fill="rgba(0,0,0,0)" filter="url(#inq-grain)" opacity="0.55"/>
+        </svg>
+        <span class="illo-caption">Plaque · Gold on slate</span>
+      </div>
+      <div class="sw sw-2"><span class="label" style="color: rgba(242, 236, 224, 0.9);">6E6660</span></div>
+      <div class="sw sw-3"><span class="label" style="color: rgba(0,0,0,0.65);">B8B2A8</span></div>
+      <div class="sw sw-4"><span class="label" style="color: rgba(0,0,0,0.7);">E8CF7A</span></div>
+      <div class="description">
+        <div class="meta-label">Atmosphere</div>
+        <p class="body-text">A bronze plaque on slate stone. The wall card next to a museum painting. The hush of a library reading room. Gold <em>against</em> grey — never gold <em>on</em> gold. The weight of being entrusted with someone else's transformation.</p>
+      </div>
+      <div class="quote-block">
+        <div class="type-moment" style="font-size: clamp(26px, 3vw, 42px);">Coach the <em>change</em><br>that actually <em>changes</em> people.</div>
+      </div>
+    </div>
+    <div class="materials">
+      <div class="materials-label">Materials &amp; References</div>
+      <div class="materials-list">
+        Gold leaf <span class="dot" style="background: var(--gold);"></span>
+        Bronze plaque <span class="dot" style="background: var(--gold);"></span>
+        Slate stone <span class="dot" style="background: var(--slate);"></span>
+        Museum wall card <span class="dot" style="background: var(--slate-soft);"></span>
+        Heavy ivory paper <span class="dot" style="background: var(--ivory);"></span>
+        A Pulitzer medallion against newsprint
+      </div>
+    </div>
+    <div class="hex-ticker">
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--gold);"></div>#D4AF37 · Gold</div>
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--gold-soft);"></div>#E8CF7A · Soft</div>
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--slate);"></div>#2D2A26 · Dark</div>
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--slate-mid);"></div>#6E6660 · Mid</div>
+      <div class="hex-pill"><div class="swatch-dot" style="background: var(--slate-soft);"></div>#B8B2A8 · Soft</div>
+    </div>
+  </div>
+</section>
+
+<section class="identity">
+  <div class="wrap">
+    <div class="identity-tag">Identity · Voice · System</div>
+
+    <div class="block">
+      <div class="block-label">Essence</div>
+      <div class="block-body">
+        <p>Coach the <em style="color: var(--gold);">change</em> that actually <em style="color: var(--gold);">changes</em> people.</p>
+        <p class="small">INQ Certification is the credential for coaches, guides, leaders, and anyone in the work of moving humans. Where other certifications give a tool, INQ gives the operating system every human is actually running underneath everything they do.</p>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Positioning</div>
+      <div class="block-body">
+        <p>Most coaching works on the <em>behavior</em>. INQ teaches you to work on what <em style="color: var(--gold);">produces</em> it.</p>
+        <p class="small">Outside-in coaching pushes against symptoms. INQ trains coaches to work the seven domains — Thought, Emotion, Identity, Belief, Energy, Behavior, Relationship — as one connected system. From the inside out.</p>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Voice</div>
+      <div class="block-body">
+        <p class="small">Authoritative without being academic. The voice of a master practitioner who has language for what other coaches sense but can't articulate. Confident in methodology, respectful of the work, allergic to coaching-industry clichés.</p>
+        <div class="rules">
+          <div class="rule-col do">
+            <div class="head" style="color: var(--gold);">Sounds like</div>
+            <ul>
+              <li>"From the inside out."</li>
+              <li>"Coach the person. Not the performance."</li>
+              <li>"The version of you that coaches from the inside out — starts here."</li>
+              <li>"Move what other coaches cannot."</li>
+            </ul>
+          </div>
+          <div class="rule-col dont">
+            <div class="head">Never sounds like</div>
+            <ul>
+              <li>"Build a 6-figure coaching business."</li>
+              <li>"Become a certified life coach."</li>
+              <li>"Coaching for transformation."</li>
+              <li>"Get your certification fast."</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Palette</div>
+      <div class="block-body">
+        <p class="small">Editorial gold paired with a three-step warm grayscale. Gold for emphasis, grayscale for editorial weight. The only metallic in the ecosystem because it is the only credentialing product.</p>
+        <div class="palette">
+          <div class="swatch"><div class="swatch-fill" style="background: #D4AF37;"></div><div class="swatch-meta"><div class="role-label">Primary</div><div class="hex">#D4AF37</div><div class="usage">Italic emphasis. Module numbers. Credential mark.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #E8CF7A;"></div><div class="swatch-meta"><div class="role-label">Gold · Soft</div><div class="hex">#E8CF7A</div><div class="usage">Champagne. Italic emphasis on dark backgrounds.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #2D2A26;"></div><div class="swatch-meta"><div class="role-label">Slate · Dark</div><div class="hex">#2D2A26</div><div class="usage">Warm charcoal-gray. Editorial gravity.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #6E6660;"></div><div class="swatch-meta"><div class="role-label">Slate · Mid</div><div class="hex">#6E6660</div><div class="usage">Eyebrows, captions, secondary text.</div></div></div>
+          <div class="swatch"><div class="swatch-fill" style="background: #B8B2A8;"></div><div class="swatch-meta"><div class="role-label">Slate · Soft</div><div class="hex">#B8B2A8</div><div class="usage">Soft borders, alternate backgrounds.</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Typography</div>
+      <div class="block-body">
+        <div class="type-display">The <em style="color: var(--gold);">credential</em> for the work<br>that actually moves people.</div>
+        <p class="type-body">Same family fonts. Gold replaces warm accents. Reads as authority.</p>
+        <div class="type-spec">
+          <div class="type-spec-card"><div class="role-label">Modules</div><div class="font">Fraunces · 300</div><div class="details">9 numbered modules in a 3×3 grid. Italic gold for the qualifier.</div></div>
+          <div class="type-spec-card"><div class="role-label">Domains</div><div class="font" style="font-family: 'Fraunces', serif; font-style: italic;">Fraunces · Italic</div><div class="details">Seven domains rendered as a vertical poster list. Each on its own line. Hairlines between.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Anchor Lines</div>
+      <div class="block-body">
+        <ul class="anchors">
+          <li>Coach the <em style="color: var(--gold);">change</em> that actually <em style="color: var(--gold);">changes</em> people.</li>
+          <li>The version of you that coaches from the <em style="color: var(--gold);">inside out</em> — starts here.</li>
+          <li>Coach the <em style="color: var(--gold);">person</em>. Not the performance.</li>
+          <li>The difference between a client who feels inspired for a week — and a client who is <em style="color: var(--gold);">no longer the same person</em> six months later.</li>
+          <li>Seven domains. <em style="color: var(--gold);">One connected system</em>.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-label">Applications</div>
+      <div class="block-body">
+        <p class="small"><strong>Credentialing materials:</strong> certificate design uses editorial gold accents on heavyweight ivory paper. Fraunces italic for the recipient's name. No filigree, no script flourishes.</p>
+        <p class="small"><strong>Discovery calls &amp; intake:</strong> the sales experience is a vetting, not a pitch. Materials and emails should feel like applying to a graduate program, not signing up for a course.</p>
+        <p class="small"><strong>Coach-facing community:</strong> private alumni room for INQ Certified coaches. Editorial newsletter cadence. Case studies, not testimonials.</p>
+        <p class="small"><strong>Print collateral:</strong> gold foil on heavy ivory. Slate dark cover. Inside pages on bright ivory.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============== 07 — FAMILY PORTRAIT =============== -->
+<section class="family" id="family">
+  <div class="wrap">
+    <div class="family-header">
+      <div style="font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--muted); font-weight: 500;">07 · The Family Portrait</div>
+      <h2>Sounds like a <em>family,</em><br>doesn't it.</h2>
+      <p class="sub">Six brands. Six accents. One typographic system. One ivory base. The colors live in conversation — never identical, never strangers.</p>
+    </div>
+
+    <div class="family-grid">
+      <div class="family-card" style="background: var(--leah-1); color: rgba(255,255,255,0.95);">
+        <div class="role">01 · Personal</div>
+        <div><div class="name">Leah <em>Roling</em></div><div class="hex">#D09342</div></div>
+      </div>
+      <div class="family-card" style="background: var(--rose); color: rgba(255,255,255,0.95);">
+        <div class="role">02 · Umbrella</div>
+        <div><div class="name">Inner<em>Board</em></div><div class="hex">#7A3A4A</div></div>
+      </div>
+      <div class="family-card" style="background: var(--teal); color: rgba(255,255,255,0.95);">
+        <div class="role">03 · Library</div>
+        <div><div class="name">InnerBoard <em>Academy</em></div><div class="hex">#1A5D63</div></div>
+      </div>
+      <div class="family-card" style="background: var(--pink); color: rgba(255,255,255,0.95);">
+        <div class="role">04 · Practice</div>
+        <div><div class="name">Inner<em>Lab</em></div><div class="hex">#DB61B5</div></div>
+      </div>
+      <div class="family-card" style="background: var(--steel); color: rgba(255,255,255,0.95);">
+        <div class="role">05 · Operating</div>
+        <div><div class="name">InnerBoard <em>OS</em></div><div class="hex">#4F6D8C</div></div>
+      </div>
+      <div class="family-card" style="background: var(--gold); color: rgba(0,0,0,0.78);">
+        <div class="role">06 · Credential</div>
+        <div><div class="name">INQ <em>Certification</em></div><div class="hex">#D4AF37</div></div>
+      </div>
+    </div>
+
+    <div class="pairings">
+      <div style="font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 24px;">Pairings · When two brands appear together</div>
+
+      <div class="pair-row">
+        <div class="pair-swatches"><div style="background: var(--leah-1);"></div><div style="background: var(--rose);"></div></div>
+        <div class="pair-info">
+          <div class="h">Leah <em>+</em> InnerBoard</div>
+          <div class="desc">The personal brand and the umbrella. Amber + rose are first cousins in the warm-earth family — they harmonize without competing. The default pairing whenever Leah introduces the methodology.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <div class="pair-swatches"><div style="background: var(--rose);"></div><div style="background: var(--teal);"></div></div>
+        <div class="pair-info">
+          <div class="h">InnerBoard <em>+</em> Academy</div>
+          <div class="desc">Rose and dark teal are nature's classic complement — botanical, library-aesthetic, sophisticated. Use when introducing Academy as a product of InnerBoard.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <div class="pair-swatches"><div style="background: var(--rose);"></div><div style="background: var(--pink);"></div></div>
+        <div class="pair-info">
+          <div class="h">InnerBoard <em>+</em> InnerLab</div>
+          <div class="desc">Same family of pinks, different temperatures. Rose is the contemplative parent, vibrant pink is the alive child. Works beautifully at different scales — never side-by-side at equal weight.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <div class="pair-swatches"><div style="background: var(--teal);"></div><div style="background: var(--gold);"></div></div>
+        <div class="pair-info">
+          <div class="h">Academy <em>+</em> INQ</div>
+          <div class="desc">The library and the credential. Dark teal + editorial gold is the institutional pairing — university crest, museum signage. Use whenever Academy and INQ are presented as the academic pair.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <div class="pair-swatches"><div style="background: var(--steel);"></div><div style="background: var(--gold);"></div></div>
+        <div class="pair-info">
+          <div class="h">OS <em>+</em> INQ</div>
+          <div class="desc">Steel blue and gold — corporate boardroom meets credential. Use for institutional-grade collateral, executive coaching materials, and any moment where authority and B2B credibility share the page.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <div class="pair-swatches"><div style="background: var(--leah-1);"></div><div style="background: var(--leah-2);"></div><div style="background: var(--leah-3);"></div><div style="background: var(--pink);"></div></div>
+        <div class="pair-info">
+          <div class="h">Leah <em>+</em> InnerLab</div>
+          <div class="desc">The personal brand and the membership. Peach-amber softens into the vibrant pink — a warm sunrise into full daylight. The pairing for InnerLab member welcome materials and onboarding emails written in Leah's voice.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="avoid">
+      <h3>Pairings to <em>avoid.</em></h3>
+      <div class="avoid-row">
+        <div class="avoid-swatches"><div style="background: var(--pink);"></div><div style="background: var(--gold);"></div></div>
+        <div class="reason">InnerLab pink + INQ gold reads as wedding-invitation, not brand-system. Two saturated jewel tones competing. If both must appear, demote one to a small accent.</div>
+      </div>
+      <div class="avoid-row">
+        <div class="avoid-swatches"><div style="background: var(--pink);"></div><div style="background: var(--steel);"></div></div>
+        <div class="reason">Vibrant pink + steel blue reads as tech-conference badge. Two cold-warm primaries fighting. Better: pair InnerLab with Academy or with InnerBoard rose, where temperatures rhyme.</div>
+      </div>
+      <div class="avoid-row">
+        <div class="avoid-swatches"><div style="background: var(--leah-1);"></div><div style="background: var(--gold);"></div></div>
+        <div class="reason">Leah amber + INQ gold are too close in temperature — they bleed into each other and lose distinction. If both on the page, separate with significant ivory negative space.</div>
+      </div>
+      <div class="avoid-row">
+        <div class="avoid-swatches"><div style="background: var(--teal);"></div><div style="background: var(--steel);"></div></div>
+        <div class="reason">Two cool blues at similar value. Academy and OS rarely share a page — they're meant for different audiences. If they must, give Academy the dominant role and OS a single small accent.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-mark">The <em>InnerBoard</em> Brand Book</div>
+    <p>This document is the master reference for the InnerBoard ecosystem — the personal brand, the umbrella, the four products. Use it when briefing designers, copywriters, photographers, or AI assistants. The colors are the easy part. These pages describe what the brands are <em>trying to feel like</em>, what they should never sound like, and how they live together when they share a page.</p>
+    <div class="foot-bottom">
+      <div>© <span id="yr"></span> InnerBoard Suite · All rights reserved.</div>
+      <div>Brand Book v1.0 · Living document</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

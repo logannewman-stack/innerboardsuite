@@ -69,20 +69,21 @@ const dotDelay = (i: number) => follow
   ? Math.round(delay + dur * timeAt((r * rad(angles[i] - angles[0])) / total))
   : delay + i * 80;
 
-const ink = tone === "teal" ? "#1e5b57" : "#ffffff";
+/* CSS colours (the page's product accent, or the dark section's glyph ink), so they ride in style, not attributes. */
+const ink = tone === "teal" ? "var(--pa-line)" : "var(--glyph-on-dark, #ffffff)";
 const arcO = ".35";
 const dotO = tone === "teal" ? ".7" : ".9";
 const easeCss = `cubic-bezier(${ease.join(",")})`;
 ---
 {draw === "load" ? (
   <svg class={`inq-glyph inq-glyph-${tone} inq-glyph-load ${className}`.trim()} viewBox="0 0 320 320" width="320" height="320" aria-hidden="true" focusable="false" fill="none" style={`--dur:${dur}ms;--arc-ease:${easeCss}`}>
-    <path class="inq-arc" d={d} pathLength="1" stroke={ink} stroke-opacity={arcO} stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style={`--d:${delay}ms`}></path>
-    {dots.map(([x, y], i) => <circle class="inq-dot" cx={f(x)} cy={f(y)} r="3" fill={ink} fill-opacity={dotO} style={`--d:${dotDelay(i)}ms`}></circle>)}
+    <path class="inq-arc" d={d} pathLength="1" stroke-opacity={arcO} stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style={`stroke:${ink};--d:${delay}ms`}></path>
+    {dots.map(([x, y], i) => <circle class="inq-dot" cx={f(x)} cy={f(y)} r="3" fill-opacity={dotO} style={`fill:${ink};--d:${dotDelay(i)}ms`}></circle>)}
   </svg>
 ) : (
   <svg class={`inq-glyph inq-glyph-${tone} ${className}`.trim()} viewBox="0 0 320 320" width="320" height="320" data-draw="enter" aria-hidden="true" focusable="false" fill="none" style={`--dur:${dur}ms`}>
-    <path class="draw-line" d={d} stroke={ink} stroke-opacity={arcO} stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style={`--d:${delay}ms;transition-timing-function:${easeCss}`}></path>
-    {dots.map(([x, y], i) => <circle class="draw-pop" cx={f(x)} cy={f(y)} r="3" fill={ink} fill-opacity={dotO} style={`--d:${dotDelay(i)}ms`}></circle>)}
+    <path class="draw-line" d={d} stroke-opacity={arcO} stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style={`stroke:${ink};--d:${delay}ms;transition-timing-function:${easeCss}`}></path>
+    {dots.map(([x, y], i) => <circle class="draw-pop" cx={f(x)} cy={f(y)} r="3" fill-opacity={dotO} style={`fill:${ink};--d:${dotDelay(i)}ms`}></circle>)}
   </svg>
 )}
 

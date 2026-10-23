@@ -33,7 +33,7 @@ const finePointer = () => window.matchMedia("(hover: hover) and (pointer: fine)"
 const clamp01 = (t: number) => Math.min(1, Math.max(0, t));
 const sine = (t: number) => 0.5 - 0.5 * Math.cos(Math.PI * clamp01(t));
 const qsa = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => Array.from(root.querySelectorAll<T>(sel));
-const DARK = new Set(["navy", "practice", "charcoal", "ink", "teal"]);
+const DARK = new Set(["navy", "practice", "charcoal", "ink", "teal", "slate"]);
 
 /** One event, sent to whichever analytics the page carries. Harmless with none. */
 export function track(name: string, props: Record<string, string> = {}) {
@@ -392,7 +392,7 @@ function header() {
       if (a && a.length >= 3 && (a.length < 4 || a[3] >= 0.5)) return c;
       if (n.matches("[data-tone]")) break;
     }
-    return DARK.has(html.dataset.theme || "") ? "" : "#0d1a2d";
+    return DARK.has(html.dataset.theme || "") ? "" : "#1b1916";
   };
   const isDark = (src: Element) => {
     const surface = src.getAttribute("data-surface");

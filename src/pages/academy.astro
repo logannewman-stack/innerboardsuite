@@ -56,12 +56,12 @@ const testimonials = [
  * binds it to the next word, so a name never ends a line on a bare ampersand. */
 const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</span>&nbsp;');
 ---
-<Base title={title} description={description} path="/academy" theme="teal" themeColor="#f7f4ee">
+<Base title={title} description={description} path="/academy" theme="teal" themeColor="#f2ece0">
   <!-- 2.3.1 Hero: type, the mark geometry drawing in, one margin rule -->
   <section class="ac-hero grain grain-cream" data-tone="ac-cream">
     <i class="lamp lamp-cream" aria-hidden="true" style="--lx:80%;--ly:0%"></i>
     <div class="wrap ac-hero-wrap">
-      <Geo class="ac-hero-geo" color="#1e5b57" opacity={0.14} stroke={1.25} ringsOnly />
+      <Geo class="ac-hero-geo" color="var(--pa-line)" opacity={0.14} stroke={1.25} ringsOnly />
       <i class="ac-rule ac-hero-rule rule-draw-v" aria-hidden="true" style="--d:.6s"></i>
       <div class="grid">
         <div class="ac-hero-copy">
@@ -258,7 +258,7 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
   .ac-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: var(--btn-gap); }
   /* The margin rule: a teal hairline on column 10's left edge, scaleY drawn from the top. */
   /* Column 10's left edge is 9 / 12 of (wrap + gap) from the wrap's left: computed from the wrap itself so it holds at every width, including the zoomed --max above 1800. */
-  .ac-rule { position: absolute; left: calc(75% + .75 * var(--gap)); top: 0; bottom: 0; width: 1px; background: rgba(30,91,87,.35); pointer-events: none; }
+  .ac-rule { position: absolute; left: calc(75% + .75 * var(--gap)); top: 0; bottom: 0; width: 1px; background: rgba(var(--pa-rgb),.35); pointer-events: none; }
   .js .ac-rule.rule-draw-v { transition-duration: 1.2s; }
   .ac-possible .eyebrow, .ac-filter .eyebrow, .ac-possible .link, .ac-filter .link { transition: color .5s var(--ease); }
 
@@ -308,7 +308,7 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
   /* The three cards share four rows through subgrid (rule, title, body, link): titles end on one line, bodies share a top line, links share a bottom line. */
   .ac-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: auto auto 1fr auto; column-gap: var(--gap); row-gap: 0; }
   .ac-card { padding: 32px 28px; display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 0; transition: transform 200ms var(--hover), box-shadow 200ms var(--hover); }
-  .ac-card-rule { display: block; height: 2px; background: #1e5b57; margin-bottom: 26px; }
+  .ac-card-rule { display: block; height: 2px; background: var(--pa-line); margin-bottom: 26px; }
   .ac-card-title { margin: 0; max-width: 12em; text-wrap: balance; align-self: end; }
   .ac-card-body { margin: 12px 0 0; color: var(--fg-2); }
   .ac-card-link { margin-top: 0; padding-top: 28px; justify-self: start; align-self: end; min-height: 44px; display: inline-flex; align-items: center; }
@@ -360,10 +360,10 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
   /* The margin rule returns for the section's full height (the wrap's top and bottom reach past the section padding), fading in at the top.
    * Ivory, not gold: the close is cream, teal and ink only, its italics and eyebrow ivory and its lamp a white glow (BRAND_FIX S5). */
   .ac-filter-wrap { position: relative; }
-  .ac-filter-rule { top: calc(-1 * var(--sec-l)); bottom: calc(-1 * var(--sec-l)); background: linear-gradient(180deg, transparent, rgba(247,244,238,.3) 120px); }
+  .ac-filter-rule { top: calc(-1 * var(--sec-l)); bottom: calc(-1 * var(--sec-l)); background: linear-gradient(180deg, transparent, rgba(242,236,224,.3) 120px); }
   .ac-filter-line { margin-top: var(--lead-gap); color: var(--fg-2); }
   /* Without the script the close keeps the eyebrow the scripted page gives it: ivory at .7, like the italics' ivory. */
-  html.no-js .ac-filter .eyebrow { color: rgba(247,244,238,.7); }
+  html.no-js .ac-filter .eyebrow { color: rgba(242,236,224,.7); }
 
   /* ── Tablet ──────────────────────────────────────────────────────────── */
   @media (max-width: 1068px) {

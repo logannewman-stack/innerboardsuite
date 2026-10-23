@@ -25,7 +25,7 @@ const { class: className = "" } = Astro.props;
 </svg>
 
 <style is:global>
-  .ac-stair { position: relative; width: 100%; max-width: var(--stair-w, 80px); height: auto; align-self: stretch; display: block; color: #1e5b57; opacity: .5; overflow: visible; pointer-events: none; }
+  .ac-stair { position: relative; width: 100%; max-width: var(--stair-w, 80px); height: auto; align-self: stretch; display: block; color: var(--pa-line); opacity: .5; overflow: visible; pointer-events: none; }
   .ac-stair .draw-pop { transform: scaleX(0); transform-origin: 0 50%; transform-box: fill-box; transition: transform .22s var(--slow); transition-delay: var(--d, 0s); }
   .ac-stair.in .draw-pop { transform: scaleX(1); }
   .no-js .ac-stair .draw-pop { transform: none; }

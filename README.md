@@ -19,15 +19,15 @@ Preview: https://innerboardsuite.vercel.app/ (the branch deploy). Production: ht
 | --- | --- | --- |
 | `/` | The Suite homepage: the front door to Practice, the Academy, INQ Certification and InnerBoard IOS. Eight sections in the client's order of October 20: the hero (the headline and the phone on the Coach home), the Practice panel (a scroll story, one feature per step), the subscription quiz (a scroll story on the blush mat, "Take the Quiz" pinned under the copy), the four recognition cards (they flip on click, tap, Enter and Space, never on their own), the Academy (typographic, the books image is held), the INQ teaser (navy), the mission, and the InnerBoard IOS panel. | InnerBoard Suite Logan Handoff FINAL and the INNERBOARD SUITE build brief (`brief/suite/`). Copy locked word for word. |
 | `/practice` | The Practice page: the app shown by the app itself. The hero (a desk window and a phone, a story), the loop, a day in Practice (a story on a sky mat that turns to evening), STEAR question by question (a story), the quiz (a story with "Take the quiz" pinned), "Yours", everything inside (a desk window on laptops, a phone on tablets and phones, a story), the three levels and the questions, and the closing floor of eighteen screens that drifts with the scroll. Every screen is a capture of the app. | The app's own copy and build maps; the only sentences we added are short captions naming a screen. |
-| `/academy` | The Academy: the curriculum, the three levels, the library of collections, the testimonials signed "Academy student", the two doors (InnerLab, INQ) and the filter. Cream and teal. | Academy Page Rebuild: Copy and Build Directions (`brief/academy/`). Links point where the live Academy page pointed. |
-| `/inq-certification` | INQ Certification: the mock-up's thirteen sections, the modules, the investment card ($6,997, the only price on the site), the FAQ. Cream and teal. | INQ Certification Page Mock-up (`brief/inq/`). |
+| `/academy` | The Academy: the curriculum, the three levels, the library of collections, the testimonials signed "Academy student", the two doors (InnerLab, INQ) and the filter. Ivory and Academy teal. | Academy Page Rebuild: Copy and Build Directions (`brief/academy/`). Links point where the live Academy page pointed. |
+| `/inq-certification` | INQ Certification: the mock-up's thirteen sections, the modules, the investment card ($6,997, the only price on the site), the FAQ. Ivory, INQ gold and slate. | INQ Certification Page Mock-up (`brief/inq/`). |
 | `/contact`, `/privacy`, `/terms` | Plain-language pages written by us; counsel review before launch. | |
 | `/404` | Served for any address that is not on the site: the header and footer, the brand mark, "This page isn't here." and two buttons (Start in Practice, the homepage). Not indexed, not in the sitemap. | |
 
 Every page has its own title (under 60 characters) and meta description (120 to 160 characters), each built from
 that page's own copy; a canonical URL; Open Graph and Twitter card tags with `public/og-image.png` (1200 x 630:
 the brand mark and wordmark, the hero headline as the site sets it, the Coach home on a phone); `favicon.svg`,
-`apple-touch-icon.png` and a theme-color in the page's first tone (`#f4efe4` on the Suite pages, `#f7f4ee` on the
+`apple-touch-icon.png` and a theme-color in the page's first tone (`#f2ece0` on the Suite pages and on the
 Academy and INQ). `robots.txt` allows everything and names the sitemap; the sitemap lists the seven real pages.
 
 ## Where things are
@@ -51,7 +51,8 @@ Academy and INQ). `robots.txt` allows everything and names the sitemap; the site
 
 **Tokens and themes.** `global.css` holds the palette (`@theme`), role tokens (`--bg --fg --fg-2 --fg-3 --line
 --accent --focus`) and the themes on `<html data-theme>`: `cream`, `ac-cream` (Academy and INQ, with
-`.theme-teal`), `navy`, `practice`, `charcoal`, `ink`, `teal`. Text always uses the role tokens, so a section that
+`.theme-teal`, and `.theme-inq` on INQ), `navy`, `practice`, `charcoal`, `ink`, `teal`, `slate`. The product pages'
+accent comes from the `--pa*` variables on `<html>`. Text always uses the role tokens, so a section that
 changes the page's tone carries its text with it. Type roles `.t-xl .t-l .t-m .t-s .t-state .t-title .t-lead
 .t-body .t-cap .t-folio .t-price`; Fraunces for display, Instrument Sans for the rest, both self-hosted in
 `public/fonts/` and preloaded. Pills (`.btn-gold`, `.btn-line`, `.btn-cream`, `.btn-teal`), paper cards, mats,
@@ -78,17 +79,23 @@ and bottom bar sit at the edges and in the phone's rounded corners, so any lean 
 
 ## Brand decisions
 
-- **No green.** The Practice panel, the Practice page's closing floor and every former forest surface are the
-  Practice navy `#0d3054` from the InnerBoard brand book (the app icon), with `#174270` for hover and gold lines on
-  it; the INQ teaser keeps its navy `#0d1a2d`, the InnerBoard IOS panel `#071b30` (the IOS site's navy).
-- **Gold italic accents.** Every `<em>` in a heading or statement is Fraunces italic 400 in the section's accent:
-  antique gold `#886020` on the Suite's cream, `#c9ab66` on the dark grounds. Filled buttons are `#b08d4f` with an
-  ink label. Eyebrows take the accent too.
-- **Academy and INQ teal.** Their own cream and teal system: `#f7f4ee`, `#efeae1`, cards `#fbf9f5`, teal `#1e5b57`
-  (buttons, eyebrows, italics), `#174845`, `#e3ece9`; white italics on teal, ivory on the dark close. The only
-  greens on the site are these teals.
+- **The InnerBoard brand book** (v1.0, `brief/brand/InnerBoard_Brand_Book_v1.0.html`) sets the palette, applied
+  October 23. The umbrella pages (home, Practice, contact, legal, 404) are InnerBoard: the family's ivory `#f2ece0`,
+  ink `#1b1916`, rose `#7a3a4a` for italics, eyebrows, links and filled buttons (ivory label), and dark rooms in the
+  ink with the deep rose `#5a2832` as their depth (the lamps) and soft rose `#a8757e` italics and buttons (ink label;
+  4.6 on the ink, so the book's soft rose works at every size). The Practice page's flip backs and small dark labels
+  take `#c49aa2`, the soft rose lifted to AA. Graphite `#3a3631` is the hover and dusk tone.
+- **Academy** (book 03): teal `#1a5d63` (buttons, eyebrows, italics, rules), a teal section with white type, the
+  close in the deep teal `#0d3438` with soft teal `#5ba0a7` italics, wheat cream `#ebe0c9` for the footer and a
+  bronze `#a26b3d` wash on alternate sections.
+- **INQ** (book 06): gold on slate. Slate `#2d2a26` sections (the homepage teaser, Why INQ works, the close) with
+  champagne `#e8cf7a` italics and gold `#d4af37` eyebrows and buttons (slate label). On the ivory the book's gold
+  measures 1.8, so it runs as fills, rules, dots and drawn lines, and its text (italics, links) in a deeper gold cut to
+  AA, `#806616`; eyebrows in slate mid `#6e6660`.
+- **InnerBoard IOS panel** keeps the IOS site's own navy `#071b30` and honey `#e4b676`, so it matches the site it
+  opens (Logan kept IOS in navy and tan). The logo is the client's, as supplied.
 - **One nav on every page**, exactly as the handoff locks it: Academy, INQ Certification, InnerBoard IOS and the
-  gold Start in Practice. "InnerBoard IOS" everywhere (capital I, O and S).
+  rose Start in Practice. "InnerBoard IOS" everywhere (capital I, O and S).
 - **Nothing of Leah.** No photographs, portraits or likeness anywhere; "Founded by Leah Roling." appears once, in
   the footer. The homepage hero carries the real Practice home screen in place of the handoff's photograph.
 - **Copy is the client's, word for word.** We removed only our own first-build labels (section numerals, the

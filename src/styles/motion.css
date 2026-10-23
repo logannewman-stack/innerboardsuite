@@ -67,20 +67,22 @@
 /* 1.7.5 Page tone: a dark bleed's own floor is in global.css (tone floors);
  * its lamp and grain live on a child that fades in with the theme. */
 [data-tone] { position: relative; }
-[data-tone="navy"] > .lamp, [data-tone="practice"] > .lamp, [data-tone="charcoal"] > .lamp, [data-tone="ink"] > .lamp, [data-tone="teal"] > .lamp { opacity: 0; transition: opacity .5s var(--ease); }
+[data-tone="navy"] > .lamp, [data-tone="practice"] > .lamp, [data-tone="charcoal"] > .lamp, [data-tone="ink"] > .lamp, [data-tone="teal"] > .lamp, [data-tone="slate"] > .lamp { opacity: 0; transition: opacity .5s var(--ease); }
 html[data-theme="navy"] [data-tone="navy"] > .lamp,
 html[data-theme="practice"] [data-tone="practice"] > .lamp,
 html[data-theme="charcoal"] [data-tone="charcoal"] > .lamp,
 html[data-theme="ink"] [data-tone="ink"] > .lamp,
-html[data-theme="teal"] [data-tone="teal"] > .lamp { opacity: 1; }
+html[data-theme="teal"] [data-tone="teal"] > .lamp,
+html[data-theme="slate"] [data-tone="slate"] > .lamp { opacity: 1; }
 [data-tone] > .lamp { z-index: 0; }
 [data-tone] > .wrap, [data-tone] > .wrap-wide { position: relative; z-index: 1; }
-.no-js [data-tone="navy"] { background: #0d1a2d; color: #f4efe4; --fg: #f4efe4; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(244,239,228,.14); --accent: #c9ab66; --btn-line: rgba(244,239,228,.32); --lit-off: rgba(244,239,228,.25); --focus: #c9ab66; }
-.no-js [data-tone="practice"] { background: #0d3054; color: #f4efe4; --fg: #f4efe4; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(201,171,102,.35); --accent: #c9ab66; --btn-line: rgba(244,239,228,.32); --lit-off: rgba(244,239,228,.25); --focus: #c9ab66; }
-.no-js [data-tone="charcoal"] { background: #26231f; color: #f4efe4; --fg: #f4efe4; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(244,239,228,.12); --accent: #c9ab66; --btn-line: rgba(244,239,228,.32); --lit-off: rgba(244,239,228,.25); --focus: #c9ab66; }
-.no-js [data-tone="ink"] { background: #1f1d1a; color: #f7f4ee; --fg: #f7f4ee; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(247,244,238,.12); --accent: #c9ab66; --btn-line: rgba(247,244,238,.32); --lit-off: rgba(247,244,238,.25); --focus: #c9ab66; }
-.theme-teal.no-js [data-tone="ink"] { --accent: #f7f4ee; --focus: #f7f4ee; }
-.no-js [data-tone="teal"] { background: #1e5b57; color: #fff; --fg: #fff; --fg-2: rgba(255,255,255,.78); --fg-3: rgba(255,255,255,.6); --line: rgba(255,255,255,.18); --accent: #fff; --btn-line: rgba(255,255,255,.4); --lit-off: rgba(255,255,255,.35); --focus: #fff; }
+.no-js [data-tone="navy"] { background: #1b1916; color: #f2ece0; --fg: #f2ece0; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(242,236,224,.14); --accent: #a8757e; --btn-line: rgba(242,236,224,.32); --lit-off: rgba(242,236,224,.25); --focus: #a8757e; }
+.no-js [data-tone="practice"] { background: #1b1916; color: #f2ece0; --fg: #f2ece0; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(168,117,126,.35); --accent: #a8757e; --btn-line: rgba(242,236,224,.32); --lit-off: rgba(242,236,224,.25); --focus: #a8757e; }
+.no-js [data-tone="charcoal"] { background: #1b1916; color: #f2ece0; --fg: #f2ece0; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(242,236,224,.12); --accent: #a8757e; --btn-line: rgba(242,236,224,.32); --lit-off: rgba(242,236,224,.25); --focus: #a8757e; }
+.no-js [data-tone="ink"] { background: #1b1916; color: #f2ece0; --fg: #f2ece0; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(242,236,224,.12); --accent: #a8757e; --btn-line: rgba(242,236,224,.32); --lit-off: rgba(242,236,224,.25); --focus: #a8757e; }
+.theme-teal.no-js [data-tone="ink"] { background: #0d3438; --accent: #5ba0a7; --focus: #5ba0a7; }
+.no-js [data-tone="slate"] { background: #2d2a26; color: #f2ece0; --fg: #f2ece0; --fg-2: #cdc6b8; --fg-3: #b8b2a8; --line: rgba(242,236,224,.14); --accent: #e8cf7a; --btn-line: rgba(242,236,224,.32); --lit-off: rgba(242,236,224,.25); --focus: #e8cf7a; }
+.no-js [data-tone="teal"] { background: #1a5d63; color: #fff; --fg: #fff; --fg-2: rgba(255,255,255,.78); --fg-3: rgba(255,255,255,.6); --line: rgba(255,255,255,.18); --accent: #fff; --btn-line: rgba(255,255,255,.4); --lit-off: rgba(255,255,255,.35); --focus: #fff; }
 .no-js [data-tone] > .lamp { opacity: 1; }
 
 /* 1.7.7 Scene: frames, cursor and ring are written by the story engine; none of them has a transition of its

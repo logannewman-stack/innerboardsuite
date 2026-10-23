@@ -98,7 +98,7 @@ const faq = [
   { q: "How do I know if INQ is right for me?", a: "Book a conversation. We'll learn about your goals and help you decide." }
 ];
 ---
-<Base title={title} description={description} path="/inq-certification" theme="teal" themeColor="#f7f4ee">
+<Base title={title} description={description} path="/inq-certification" theme="inq" themeColor="#f2ece0">
   <!-- ── Hero: type and four drawn rules (2.4.1) ───────────────────────── -->
   <section class="inq-hero" data-tone="ac-cream">
     <i class="lamp lamp-cream grain grain-cream" aria-hidden="true" style="--lx:80%;--ly:0%"></i>
@@ -164,7 +164,7 @@ const faq = [
   </section>
 
   <!-- ── Why INQ works: teal bleed, the lit loop and the glyph (2.4.3) ─── -->
-  <section class="inq-why" data-tone="teal">
+  <section class="inq-why" data-tone="slate">
     <i class="lamp lamp-teal grain" aria-hidden="true" style="--lx:85%;--ly:0%;--ga:.2"></i>
     <div class="wrap">
       <div class="grid">
@@ -362,7 +362,7 @@ const faq = [
         <ol class="grid inq-steps-list" role="list">
           {steps.map((s, i) => (
             <li class="inq-step rise" style={`--d:${i * 90}ms`}>
-              <svg class="inq-dot" viewBox="0 0 10 10" width="10" height="10" aria-hidden="true" focusable="false"><circle class="draw-pop" cx="5" cy="5" r="5" fill="#1e5b57" style={`--d:${i * 300}ms`}></circle></svg>
+              <svg class="inq-dot" viewBox="0 0 10 10" width="10" height="10" aria-hidden="true" focusable="false"><circle class="draw-pop" cx="5" cy="5" r="5" style={`fill:var(--pa-line);--d:${i * 300}ms`}></circle></svg>
               {i < steps.length - 1 && <i class="rule-draw-v inq-step-v" aria-hidden="true"></i>}
               <h3 class="t-s inq-step-name">{s.name}</h3>
               <p class="t-body inq-step-body">{s.body}</p>
@@ -391,7 +391,7 @@ const faq = [
   </section>
 
   <!-- ── The close: ink bleed (2.4.13) ────────────────────────────────── -->
-  <section class="inq-close" data-tone="ink">
+  <section class="inq-close" data-tone="slate">
     <i class="lamp lamp-teal grain" aria-hidden="true" style="--lx:50%;--ly:100%;--la:.1"></i>
     <div class="wrap">
       <div class="grid">
@@ -400,7 +400,7 @@ const faq = [
           <p class="t-s-quote inq-close-line rise">One creates a session. The other creates change.</p>
           <p class="t-lead inq-close-lead rise" style="--d:.3s">INQ is for anyone who's decided which one they're here to do.</p>
           <div class="inq-btns inq-close-btns rise" style="--d:.4s">
-            <a href={LINKS.inqEnroll} class="btn btn-cream" data-event="inq_enroll_click" data-event-location="close">Enroll now <Arrow /></a>
+            <a href={LINKS.inqEnroll} class="btn btn-teal" data-event="inq_enroll_click" data-event-location="close">Enroll now <Arrow /></a>
             <a href={LINKS.inqBook} class="btn btn-line" data-event="inq_book_click" data-event-location="close">Book a conversation</a>
           </div>
         </div>
@@ -446,8 +446,8 @@ const faq = [
   .inq-motto { margin-top: 20px; color: var(--fg); }
   .inq-values { list-style: none; margin: calc(var(--head-gap) + 8px) 0 0; padding: 0; row-gap: 40px; }
   .inq-value { grid-column: span 3; position: relative; }
-  .inq-rule { display: block; position: absolute; left: 0; right: 0; top: -47px; height: 48px; border-bottom: 1px solid #1e5b57; pointer-events: none; }
-  .inq-rule-2 { display: block; height: 2px; background: #1e5b57; }
+  .inq-rule { display: block; position: absolute; left: 0; right: 0; top: -47px; height: 48px; border-bottom: 1px solid var(--pa-line); pointer-events: none; }
+  .inq-rule-2 { display: block; height: 2px; background: var(--pa-line); }
   /* The 22 px under the rule belongs to the name, and the name's box reaches
    * 48 px above the line (the same box as the rule's), so the reveal observer
    * sees the name whenever it sees the rule: at 1280 x 800 the line sits two
@@ -500,14 +500,14 @@ const faq = [
   .inq-outcomes li:nth-child(n + 5) { grid-column: 7 / span 6; }
   .inq-hair { display: block; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--line); }
   .inq-hair-b { top: auto; bottom: 0; }
-  .inq-outcomes-edge { display: block; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: #1e5b57; z-index: 1; }
+  .inq-outcomes-edge { display: block; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--pa-line); z-index: 1; }
   .inq-outcomes-box .inq-outcomes-edge.rule-draw-v { transition-duration: 1.3s; transition-delay: .2s; }
   .inq-practice-head { grid-column: 1 / span 6; }
   .inq-practice-lead { margin-top: var(--lead-gap); max-width: 28em; color: var(--fg-2); }
   .inq-practice-list { grid-column: 8 / span 5; padding-top: calc(var(--fs-eyebrow) + var(--eyebrow-gap)); }
   .inq-practice-list li { position: relative; padding-left: 22px; font-family: var(--font-sans); font-size: var(--fs-lead); line-height: 1.45; color: var(--fg); text-wrap: pretty; }
   .inq-practice-list li + li { margin-top: 18px; }
-  .inq-practice-list li::before { content: ""; position: absolute; left: 0; top: .6em; width: 6px; height: 6px; border-radius: 50%; background: #1e5b57; }
+  .inq-practice-list li::before { content: ""; position: absolute; left: 0; top: .6em; width: 6px; height: 6px; border-radius: 50%; background: var(--pa-line); }
 
   /* 2.4.5 Learn it. Live it. Lead it. */
   .inq-method { list-style: none; margin: var(--head-gap) 0 0; padding: 32px 0 0; border-top: 1px solid var(--line); row-gap: 40px; }
@@ -531,7 +531,7 @@ const faq = [
   .inq-module { grid-row: 1 / -1; display: grid; grid-template-rows: subgrid; row-gap: 10px; padding: 32px 28px; border-radius: 20px; transition: transform 200ms var(--hover), box-shadow 200ms var(--hover); }
   .inq-module-name { margin: 0; color: var(--fg); text-wrap: balance; }
   .inq-module-body { margin: 0; color: var(--fg-2); }
-  .inq-module-bonus .eyebrow { color: #1e5b57; margin-bottom: 12px; }
+  .inq-module-bonus .eyebrow { color: var(--pa); margin-bottom: 12px; }
   @media (hover: hover) and (pointer: fine) {
     .inq-module:hover { transform: translateY(-2px); }
   }
@@ -549,7 +549,7 @@ const faq = [
   /* A lighter border (.18) and a lit top edge over the object shadow, so the
    * card reads as a thing on the table rather than a bordered box. */
   .inq-invest { padding: 56px; border-radius: 20px; }
-  .inq-invest.paper-teal.paper-white { border-color: rgba(30,91,87,.18); box-shadow: inset 0 1px 0 rgba(255,255,255,.7), var(--sh-object); }
+  .inq-invest.paper-teal.paper-white { border-color: rgba(var(--pa-rgb),.18); box-shadow: inset 0 1px 0 rgba(255,255,255,.7), var(--sh-object); }
   .inq-invest-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 40px; align-items: start; }
   .inq-invest-l { grid-column: 1 / span 6; }
   /* "What's included" shares the cap line of "INQ Certification": the eyebrow's
@@ -591,7 +591,7 @@ const faq = [
    * page goes ink, and the ground feathers into the close over the empty foot of
    * the section, so they never read as part of the dark close. On a cream page
    * the ground is the body's colour, so nothing shows. */
-  #faq.inq-faq-sec { background-image: linear-gradient(to bottom, #f7f4ee 0, #f7f4ee calc(100% - 96px), rgba(247,244,238,.86) calc(100% - 72px), rgba(247,244,238,.5) calc(100% - 48px), rgba(247,244,238,.14) calc(100% - 24px), rgba(247,244,238,0) 100%); }
+  #faq.inq-faq-sec { background-image: linear-gradient(to bottom, #f2ece0 0, #f2ece0 calc(100% - 96px), rgba(242,236,224,.86) calc(100% - 72px), rgba(242,236,224,.5) calc(100% - 48px), rgba(242,236,224,.14) calc(100% - 24px), rgba(242,236,224,0) 100%); }
   .inq-faq { align-items: start; }
   .inq-faq-head { grid-column: 1 / span 4; position: sticky; top: 120px; }
   .inq-faq-head h2 { margin: 0; }
@@ -677,7 +677,7 @@ const faq = [
     .inq-step { grid-column: 1 / -1; padding: 0 0 32px 26px; }
     .inq-step:last-child { padding-bottom: 0; }
     .inq-dot { top: calc(.56em * 1.12 + 2px); top: 8px; }
-    .inq-step-v { display: block; position: absolute; left: 4.5px; top: 18px; bottom: -8px; width: 1px; background: #1e5b57; }
+    .inq-step-v { display: block; position: absolute; left: 4.5px; top: 18px; bottom: -8px; width: 1px; background: var(--pa-line); }
     .inq-steps-close { margin-top: 40px; }
     /* The list ends 96 px earlier than the section, so its last rows sit on the questions' own ground, clear of the feather, when the close turns the page ink. */
     .inq-faq-list { margin-top: 32px; padding-bottom: 96px; }
