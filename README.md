@@ -26,8 +26,8 @@ Preview: https://innerboardsuite.vercel.app/ (the branch deploy). Production: ht
 
 Every page has its own title (under 60 characters) and meta description (120 to 160 characters), each built from
 that page's own copy; a canonical URL; Open Graph and Twitter card tags with `public/og-image.png` (1200 x 630:
-the brand mark and wordmark, the hero headline as the site sets it, the Coach home on a phone); `favicon.svg`,
-`apple-touch-icon.png` and a theme-color in the page's first tone (`#f2ece0` on the Suite pages and on the
+the client's InnerBoard logo on the ivory; its URL is built from the deploy's own host, so a texted preview link
+shows it); PNG favicons and the home screen icon from the same logo (`public/brand/`), and a theme-color in the page's first tone (`#f2ece0` on the Suite pages and on the
 Academy and INQ). `robots.txt` allows everything and names the sitemap; the sitemap lists the seven real pages.
 
 ## Where things are
