@@ -361,7 +361,7 @@ const quizBenefits = [
   .hm-btns { display: flex; flex-wrap: wrap; gap: 12px; }
   .hm-hero-btns { margin-top: 36px; }
   .hm-hero-phone { position: relative; z-index: 3; }
-  .hm-hero-phone .phone { box-shadow: inset 0 0 0 .55em #0c0b09, inset 0 0 0 .9em rgba(255,255,255,.06), 0 0 0 1px rgba(90,40,50,.18),
+  .hm-hero-phone .phone { box-shadow: inset 0 0 0 .55em #0c0b09, inset 0 0 0 .9em rgba(255,255,255,.06), 0 0 0 1px rgba(160,110,50,.22),
     0 2px 4px rgba(31,29,26,.14), 0 24px 40px -16px rgba(31,29,26,.34), 0 90px 120px -50px rgba(31,29,26,.5); }
   .hm-hero-phone .phone-floor { --floor-a: .38; }
   @media (min-width: 900px) {
@@ -391,7 +391,7 @@ const quizBenefits = [
   .js .hm-panel-story.is-live:not(.static) .story-stage > .hm-stage-lamp { display: block; }
   /* The features' icons (FeatureIcon, BRAND_FIX H3): gold-2 on the Practice navy; in the static ladder each row leads
    * with its icon, in the pinned step it sits on the eyebrow line in place of the dot. */
-  .hm-ico { width: 22px; height: 22px; color: #a8757e; flex: none; }
+  .hm-ico { width: 22px; height: 22px; color: #d09342; flex: none; }
   /* Static: the ladder of five, icon led, between thin gold rules, each row with its own still screen (the Coach
    * with the draft, the Dare checked, the Academy, Inner Lab, one breath). */
   .hm-ladder { --row-pad: 26px; position: relative; }
@@ -442,7 +442,7 @@ const quizBenefits = [
    * phone shows the result's first step. The knob moves by transform and the gold is an opacity layer (BRAND_FIX S8);
    * with --g unset (static, no script) it is on, as the card draws it. */
   .hm-tcard .tcard-row:nth-child(2) .tg { --on: calc(1 - clamp(0, (var(--g, 0) - 3.62) / .1, 1)); background: #d9cfbe; }
-  .hm-tcard .tcard-row:nth-child(2) .tg::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #7a3a4a; box-shadow: inset 0 1px 2px rgba(31,29,26,.18); opacity: var(--on); }
+  .hm-tcard .tcard-row:nth-child(2) .tg::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #d09342; box-shadow: inset 0 1px 2px rgba(31,29,26,.18); opacity: var(--on); }
   .hm-tcard .tcard-row:nth-child(2) .tg::after { left: 2px; transform: translateX(calc(var(--on) * 16px)); }
   /* Static: the four benefits side by side, each with its own still screen (the question, the result, its cost, its
    * first step); names, bodies and screens each start on one line (every item is a three row subgrid). Then the button

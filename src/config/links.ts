@@ -17,8 +17,9 @@ export const LINKS = {
   login: into("/login", "suite"),
   /** What's Holding You Back? / Take the Quiz: the anonymous quiz inside Practice. */
   quiz: into("/quiz", "suite"),
-  /** Explore Academy: the Academy page on this site. The storefront inside Practice is `academyApp`. */
-  academy: "/academy",
+  /** Academy, everywhere it is a link (the client, October 24: straight to where the courses are bought): the
+   * Academy inside Practice. The Academy page on this site stays at /academy, reached by its address. */
+  academy: into("/academy", "academy"),
   academyApp: into("/academy", "academy"),
   /** The live Academy page's own links, kept exactly as they point today (Academy doc: nothing about links changes). */
   live: {

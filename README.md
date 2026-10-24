@@ -79,12 +79,13 @@ and bottom bar sit at the edges and in the phone's rounded corners, so any lean 
 
 ## Brand decisions
 
-- **The InnerBoard brand book** (v1.0, `brief/brand/InnerBoard_Brand_Book_v1.0.html`) sets the palette, applied
-  October 23. The umbrella pages (home, Practice, contact, legal, 404) are InnerBoard: the family's ivory `#f2ece0`,
-  ink `#1b1916`, rose `#7a3a4a` for italics, eyebrows, links and filled buttons (ivory label), and dark rooms in the
-  ink with the deep rose `#5a2832` as their depth (the lamps) and soft rose `#a8757e` italics and buttons (ink label;
-  4.6 on the ink, so the book's soft rose works at every size). The Practice page's flip backs and small dark labels
-  take `#c49aa2`, the soft rose lifted to AA. Graphite `#3a3631` is the hover and dusk tone.
+- **The InnerBoard brand book** (v1.0, `brief/brand/InnerBoard_Brand_Book_v1.0.html`) sets the palette. The umbrella
+  pages (home, Practice, contact, legal, 404) take Leah Roling's palette (book 01; the client, October 24, after the
+  umbrella rose read as the wrong colours): the family's ivory `#f2ece0` and ink `#1b1916`, amber `#d09342` for filled
+  buttons (ink label), rules, toggles and icons, peach `#e4ae9b` for the atmosphere (the hero's lamp, the mats, the
+  alternate sections' wash), and the dark rooms in the ink with a honey glow, blush `#fbeee6` italics and amber
+  eyebrows. The book's amber measures 2.25 on the ivory, so its text runs in two deeper cuts: `#a37437` for display
+  italics (AA large) and `#7f5c2e` (`--accent-sm`) for eyebrows, folios and links (AA).
 - **Academy** (book 03): teal `#1a5d63` (buttons, eyebrows, italics, rules), a teal section with white type, the
   close in the deep teal `#0d3438` with soft teal `#5ba0a7` italics, wheat cream `#ebe0c9` for the footer and a
   bronze `#a26b3d` wash on alternate sections.
@@ -94,8 +95,8 @@ and bottom bar sit at the edges and in the phone's rounded corners, so any lean 
   AA, `#806616`; eyebrows in slate mid `#6e6660`.
 - **InnerBoard IOS panel** keeps the IOS site's own navy `#071b30` and honey `#e4b676`, so it matches the site it
   opens (Logan kept IOS in navy and tan). The logo is the client's, as supplied.
-- **One nav on every page**, exactly as the handoff locks it: Academy, INQ Certification, InnerBoard IOS and the
-  rose Start in Practice. "InnerBoard IOS" everywhere (capital I, O and S).
+- **One nav on every page**, exactly as the handoff locks it: Academy (into the Academy in Practice), INQ Certification, InnerBoard IOS and the
+  amber Start in Practice. "InnerBoard IOS" everywhere (capital I, O and S).
 - **Nothing of Leah.** No photographs, portraits or likeness anywhere; "Founded by Leah Roling." appears once, in
   the footer. The homepage hero carries the real Practice home screen in place of the handoff's photograph.
 - **Copy is the client's, word for word.** We removed only our own first-build labels (section numerals, the

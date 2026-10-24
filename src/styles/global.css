@@ -7,8 +7,10 @@
 @font-face { font-family: "Instrument Sans"; src: url("/fonts/instrument-sans-latin-wght-italic.woff2") format("woff2"); font-weight: 400 700; font-style: italic; font-display: swap; }
 
 /* ── Tokens ─────────────────────────────────────────────────────────────────
- * The InnerBoard brand book (v1.0, brief/brand): the umbrella's rose on the family's ivory, its ink and graphite
- * for the dark rooms with the deep rose for their depth. The Academy page takes Academy's teal, the INQ page INQ's
+ * The InnerBoard brand book (v1.0, brief/brand), Leah Roling's palette (the client, October 24): amber on the
+ * family's ivory, peach for the atmosphere and washes, blush for italics in the dark rooms, which are the ink with a
+ * honey glow. The book's amber measures 2.25 on the ivory, so it fills (buttons, rules, toggles) and its text runs in
+ * two deeper cuts: #a37437 for display italics (AA large) and #7f5c2e for eyebrows and links (AA). The Academy page takes Academy's teal, the INQ page INQ's
  * gold on slate (the product variables below). The InnerBoard IOS panel keeps the IOS site's navy and honey.
  */
 @theme {
@@ -21,10 +23,11 @@
   --color-ink: #1b1916;
   --color-ink-muted: #3d3a35;
   --color-ink-faint: #5c574f;
-  --color-rose: #7a3a4a;
-  --color-rose-deep: #5a2832;
-  --color-rose-soft: #a8757e;
-  --color-rose-blush: #ead6d9;
+  --color-amber: #d09342;
+  --color-amber-text: #a37437;
+  --color-amber-ink: #7f5c2e;
+  --color-peach: #e4ae9b;
+  --color-blush: #fbeee6;
   --color-graphite: #3a3631;
   --color-practice-line: rgba(242,236,224, 0.14);
   --color-slate: #2d2a26;
@@ -127,7 +130,7 @@
   --sh-object: 0 1px 2px rgba(31,29,26,.12), 0 14px 28px -12px rgba(31,29,26,.26), 0 64px 90px -44px rgba(31,29,26,.38);
   --sh-object-dark: 0 1px 2px rgba(0,0,0,.35), 0 18px 32px -12px rgba(0,0,0,.5), 0 80px 100px -40px rgba(0,0,0,.6);
   --sh-toast: 0 0 0 1px rgba(31,29,26,.06), 0 2px 6px rgba(31,29,26,.05), 0 12px 32px rgba(31,29,26,.1);
-  --line-gold: rgba(168,117,126,.35);
+  --line-gold: rgba(208,147,66,.35);
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 /* The header keeps its inline links down to 960 (audit 2, finding 10); below, the bar is 60 high. */
@@ -174,15 +177,15 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
 :root, [data-theme="cream"] {
   --bg: #f2ece0; --fg: #1b1916; --fg-2: #3d3a35; --fg-3: #5c574f;
   --line: rgba(31,29,26,.12); --line-strong: rgba(31,29,26,.22);
-  --accent: #7a3a4a;
+  --accent: #a37437; --accent-sm: #7f5c2e;
   --btn-line: rgba(31,29,26,.24); --btn-hover: rgba(31,29,26,.05); --lit-off: rgba(31,29,26,.5);
-  --focus: #7a3a4a; --paper: #faf7f0; --dark: 0;
+  --focus: #7f5c2e; --paper: #faf7f0; --dark: 0;
 }
 [data-theme="ac-cream"] { --bg: #f2ece0; --fg: #1b1916; --fg-2: #3d3a35; --fg-3: #5c574f; --line: #d8d1c4; --line-strong: #c9c0b0; --accent: var(--pa); --btn-line: var(--pa-ghost); --btn-hover: rgba(31,29,26,.05); --lit-off: rgba(31,29,26,.5); --focus: var(--pa); --paper: #fbf9f5; --dark: 0; }
-[data-theme="navy"]     { --bg: #1b1916; --fg: #f2ece0; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(242,236,224,.14); --line-strong: rgba(242,236,224,.32); --accent: #a8757e; --btn-line: rgba(242,236,224,.32); --btn-hover: rgba(242,236,224,.06); --lit-off: rgba(242,236,224,.4); --focus: #a8757e; --dark: 1; }
-[data-theme="practice"]   { --bg: #1b1916; --fg: #f2ece0; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(168,117,126,.35); --line-strong: rgba(242,236,224,.32); --accent: #a8757e; --btn-line: rgba(242,236,224,.32); --btn-hover: rgba(242,236,224,.06); --lit-off: rgba(242,236,224,.4); --focus: #a8757e; --dark: 1; }
-[data-theme="charcoal"] { --bg: #1b1916; --fg: #f2ece0; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(242,236,224,.12); --line-strong: rgba(242,236,224,.3); --accent: #a8757e; --btn-line: rgba(242,236,224,.32); --btn-hover: rgba(242,236,224,.06); --lit-off: rgba(242,236,224,.4); --focus: #a8757e; --dark: 1; }
-[data-theme="ink"]      { --bg: #1b1916; --fg: #f2ece0; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(242,236,224,.12); --line-strong: rgba(242,236,224,.3); --accent: #a8757e; --btn-line: rgba(242,236,224,.32); --btn-hover: rgba(242,236,224,.06); --lit-off: rgba(242,236,224,.4); --focus: #a8757e; --dark: 1; }
+[data-theme="navy"]     { --bg: #1b1916; --fg: #f2ece0; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(242,236,224,.14); --line-strong: rgba(242,236,224,.32); --accent: #fbeee6; --accent-sm: #d09342; --btn-line: rgba(242,236,224,.32); --btn-hover: rgba(242,236,224,.06); --lit-off: rgba(242,236,224,.4); --focus: #d09342; --dark: 1; }
+[data-theme="practice"]   { --bg: #1b1916; --fg: #f2ece0; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(208,147,66,.35); --line-strong: rgba(242,236,224,.32); --accent: #fbeee6; --accent-sm: #d09342; --btn-line: rgba(242,236,224,.32); --btn-hover: rgba(242,236,224,.06); --lit-off: rgba(242,236,224,.4); --focus: #d09342; --dark: 1; }
+[data-theme="charcoal"] { --bg: #1b1916; --fg: #f2ece0; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(242,236,224,.12); --line-strong: rgba(242,236,224,.3); --accent: #fbeee6; --accent-sm: #d09342; --btn-line: rgba(242,236,224,.32); --btn-hover: rgba(242,236,224,.06); --lit-off: rgba(242,236,224,.4); --focus: #d09342; --dark: 1; }
+[data-theme="ink"]      { --bg: #1b1916; --fg: #f2ece0; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(242,236,224,.12); --line-strong: rgba(242,236,224,.3); --accent: #fbeee6; --accent-sm: #d09342; --btn-line: rgba(242,236,224,.32); --btn-hover: rgba(242,236,224,.06); --lit-off: rgba(242,236,224,.4); --focus: #d09342; --dark: 1; }
 /* Academy's dark close: the book's deep teal, soft teal italics. */
 .theme-teal[data-theme="ink"] { --bg: #0d3438; --accent: #5ba0a7; --focus: #5ba0a7; }
 /* INQ's slate (brand book 06): champagne italics, gold eyebrows and buttons. */
@@ -193,13 +196,13 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
  * backs) carry their own text tokens so nothing inside follows the page. */
 [data-surface="dark"], .surface-dark {
   --fg: #f2ece0; --fg-2: #cdc6b8; --fg-3: #aaa396; --line: rgba(242,236,224,.14); --line-strong: rgba(242,236,224,.32);
-  --accent: #a8757e; --btn-line: rgba(242,236,224,.32); --btn-hover: rgba(242,236,224,.06); --lit-off: rgba(242,236,224,.4); --focus: #a8757e; --dark: 1;
+  --accent: #fbeee6; --accent-sm: #d09342; --btn-line: rgba(242,236,224,.32); --btn-hover: rgba(242,236,224,.06); --lit-off: rgba(242,236,224,.4); --focus: #d09342; --dark: 1;
   color: var(--fg);
 }
-.surface-practice { --line: rgba(168,117,126,.35); }
+.surface-practice { --line: rgba(208,147,66,.35); }
 [data-surface="light"], .surface-light {
   --fg: #1b1916; --fg-2: #3d3a35; --fg-3: #5c574f; --line: rgba(31,29,26,.12); --line-strong: rgba(31,29,26,.22);
-  --accent: #7a3a4a; --btn-line: rgba(31,29,26,.24); --btn-hover: rgba(31,29,26,.05); --lit-off: rgba(31,29,26,.5); --focus: #7a3a4a; --dark: 0;
+  --accent: #a37437; --accent-sm: #7f5c2e; --btn-line: rgba(31,29,26,.24); --btn-hover: rgba(31,29,26,.05); --lit-off: rgba(31,29,26,.5); --focus: #7f5c2e; --dark: 0;
   color: var(--fg);
 }
 .theme-teal [data-surface="light"], .theme-teal .surface-light { --accent: var(--pa); --btn-line: var(--pa-ghost); --focus: var(--pa); --line: #d8d1c4; }
@@ -229,7 +232,7 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
   p { text-wrap: pretty; }
   [id] { scroll-margin-top: 96px; }
   :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 6px; }
-  ::selection { background: #ead6d9; color: #1b1916; }
+  ::selection { background: #f6dccf; color: #1b1916; }
   img, picture, svg, video { display: block; max-width: 100%; }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -246,8 +249,8 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
   .grid:not([class*="grid-cols-"]):not([class*="gap-"]) { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
   /* The alternate tint, feathered over 72 px at both edges so the bands never meet in a hard line. It is
    * an image layer (--tone-tint) so the tone floor below composes with it. */
-  .sec-alt { --tone-tint: linear-gradient(to bottom, transparent, rgba(var(--wash, 90,40,50),.06) 72px, rgba(var(--wash, 90,40,50),.06) calc(100% - 72px), transparent); background-image: var(--tone-tint); }
-  .theme-teal .sec-alt { --wash: var(--pa-wash); }
+  .sec-alt { --tone-tint: linear-gradient(to bottom, transparent, rgba(var(--wash, 228,174,155),var(--wash-a, .16)) 72px, rgba(var(--wash, 228,174,155),var(--wash-a, .16)) calc(100% - 72px), transparent); background-image: var(--tone-tint); }
+  .theme-teal .sec-alt { --wash: var(--pa-wash); --wash-a: .06; }
 
   /* ── Tone floors (1.7.5) ────────────────────────────────────────────
    * Every section[data-tone] carries a floor: transparent at its top, its own tone's colour from 200 px
@@ -307,13 +310,13 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
   .quote-hang { hanging-punctuation: first; }
   @supports not (hanging-punctuation: first) { .quote-hang { text-indent: -.38em; } }
   .amp { font-family: var(--font-display); font-style: italic; font-weight: 400; color: var(--accent); }
-  .grad { background: linear-gradient(100deg, #ead6d9 0%, #c49aa2 48%, #a8757e 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .08em; }
+  .grad { background: linear-gradient(100deg, #fbeee6 0%, #e4ae9b 48%, #d09342 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .08em; }
   /* The gradient wins over the heading em colour rules above (0,1,1 against 0,1,0). */
   h1 em.grad, h2 em.grad, h3 em.grad, .t-xl em.grad, .t-l em.grad, .t-m em.grad, .t-s em.grad, .t-state em.grad { color: transparent; -webkit-text-fill-color: transparent; }
   .tabular { font-variant-numeric: tabular-nums; }
 
   /* ── Eyebrow ─────────────────────────────────────────────────────────── */
-  .eyebrow { display: block; font-family: var(--font-sans); font-size: var(--fs-eyebrow); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; line-height: 1; color: var(--accent); margin-bottom: var(--eyebrow-gap); }
+  .eyebrow { display: block; font-family: var(--font-sans); font-size: var(--fs-eyebrow); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; line-height: 1; color: var(--accent-sm, var(--accent)); margin-bottom: var(--eyebrow-gap); }
   @media (orientation: landscape) and (max-height: 500px) { .eyebrow { margin-bottom: 10px; } }
   .theme-teal .eyebrow { color: var(--pa-eyebrow); }
   [data-theme="teal"] .eyebrow, [data-theme="teal"] .theme-teal .eyebrow { color: rgba(255,255,255,.7); }
@@ -321,7 +324,7 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
   [data-theme="slate"] .eyebrow, [data-tone="slate"] .eyebrow { color: #d4af37; }
   /* A light surface keeps its own eyebrow ink whatever the page tone is (the teal theme's white eyebrow
    * must never land on paper, a mat or the footer). */
-  :is(.paper, .card, .paper-teal, .mat, .mat-blush, .tile, [data-surface="light"], .surface-light, .site-footer) .eyebrow { color: var(--accent); }
+  :is(.paper, .card, .paper-teal, .mat, .mat-blush, .tile, [data-surface="light"], .surface-light, .site-footer) .eyebrow { color: var(--accent-sm, var(--accent)); }
   .theme-teal :is(.paper, .card, .paper-teal, [data-surface="light"], .surface-light, .site-footer) .eyebrow { color: var(--accent); }
   /* Footer column labels and the mobile menu's labels keep the faint ink on the Suite pages (BRAND_FIX S4). */
   .site-footer .eyebrow, .menu-panel .eyebrow { color: var(--fg-3); }
@@ -336,10 +339,9 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
   }
   .btn svg { width: 14px; height: 14px; flex: none; transition: transform 200ms var(--hover); }
   .btn:active { transform: scale(.98); }
-  /* The umbrella's button: rose with an ivory label on the light; soft rose with an ink label in the dark rooms;
-   * INQ's gold with a slate label on slate. */
-  .btn-gold { background: #7a3a4a; color: #f2ece0; }
-  :is([data-tone="practice"], [data-tone="navy"], [data-tone="charcoal"], [data-tone="ink"], [data-surface="dark"], .surface-dark, .site-header.is-dark) .btn-gold { background: #a8757e; color: #1b1916; }
+  /* The umbrella's button: Leah's amber with an ink label, on the light and in the dark rooms alike; INQ's gold with
+   * a slate label on slate. */
+  .btn-gold { background: #d09342; color: #1b1916; }
   :is([data-tone="slate"]) .btn-gold { background: #d4af37; color: #2d2a26; }
   .btn-line { box-shadow: inset 0 0 0 1px var(--btn-line); color: var(--fg); }
   .btn-cream { background: #f2ece0; color: #1b1916; }
@@ -349,8 +351,7 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
    * (finding 14). :active and :focus-visible still answer every input. */
   @media (hover: hover) and (pointer: fine) {
     .btn:hover svg { transform: translateX(3px); }
-    .btn-gold:hover { background: #5a2832; }
-    :is([data-tone="practice"], [data-tone="navy"], [data-tone="charcoal"], [data-tone="ink"], [data-surface="dark"], .surface-dark, .site-header.is-dark) .btn-gold:hover { background: #c49aa2; }
+    .btn-gold:hover { background: #ddaa66; }
     :is([data-tone="slate"]) .btn-gold:hover { background: #e8cf7a; }
     .btn-line:hover { background: var(--btn-hover); }
     .btn-cream:hover { background: #ffffff; }
@@ -379,25 +380,25 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
     box-shadow: inset 0 1px 0 rgba(255,255,255,.9), inset 0 0 0 1px rgba(255,255,255,.5), var(--sh-paper);
     color: #1b1916;
   }
-  .paper, .card { --fg: #1b1916; --fg-2: #3d3a35; --fg-3: #5c574f; --line: rgba(31,29,26,.12); --lit-off: rgba(31,29,26,.5); --accent: #7a3a4a; --focus: #7a3a4a; --dark: 0; }
+  .paper, .card { --fg: #1b1916; --fg-2: #3d3a35; --fg-3: #5c574f; --line: rgba(31,29,26,.12); --lit-off: rgba(31,29,26,.5); --accent: #a37437; --accent-sm: #7f5c2e; --focus: #7f5c2e; --dark: 0; }
   .theme-teal .paper, .theme-teal .card { --paper: #fbf9f5; background-image: linear-gradient(var(--paper), var(--paper)), linear-gradient(180deg, #ffffff 0%, #e2ddd3 42%, #cdc6b8 100%); --accent: var(--pa); --focus: var(--pa); --btn-line: var(--pa-ghost); }
   .paper-teal { position: relative; border-image: none; border: 1px solid rgba(var(--pa-rgb),.4); background: var(--pa-tint); border-radius: var(--r-lg); box-shadow: var(--sh-paper); color: #1b1916; --fg: #1b1916; --fg-2: #3d3a35; --fg-3: #5c574f; --accent: var(--pa); --focus: var(--pa); --btn-line: var(--pa-ghost); --line: rgba(var(--pa-rgb),.25); --dark: 0; }
   .paper-teal.paper-white { background: #fbf9f5; border-color: rgba(var(--pa-rgb),.3); box-shadow: var(--sh-object); }
   .paper-lift { transition: transform 200ms var(--hover), box-shadow 200ms var(--hover); }
   .mat { position: relative; overflow: visible; background: #ebe4d5; border-radius: var(--r-lg); box-shadow: inset 0 1px 2px rgba(31,29,26,.06), inset 0 0 0 1px rgba(31,29,26,.05); }
-  .mat-blush { background: radial-gradient(60% 55% at 88% 0%, rgba(168,117,126,.2), transparent 70%), linear-gradient(160deg, #efe6d6 0%, #f0e1d8 58%, #ece0c9 100%); }
-  .panel-practice { position: relative; overflow: clip; background: #1b1916; border-radius: var(--r-lg); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); --line: rgba(168,117,126,.35); }
+  .mat-blush { background: radial-gradient(60% 55% at 88% 0%, rgba(228,174,155,.34), transparent 70%), linear-gradient(160deg, #efe6d6 0%, #f0e1d8 58%, #ece0c9 100%); }
+  .panel-practice { position: relative; overflow: clip; background: #1b1916; border-radius: var(--r-lg); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); --line: rgba(208,147,66,.35); }
   .panel-navy { position: relative; overflow: clip; background: #071b30; border-radius: var(--r-lg); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); }
   .theme-teal .card { border-color: transparent; }
 
   /* ── Lamp, grain ─────────────────────────────────────────────────────── */
   .lamp { position: absolute; inset: 0; pointer-events: none; border-radius: inherit; z-index: 0;
-    background: radial-gradient(55% 60% at var(--lx, 18%) var(--ly, 0%), rgba(122,58,74,calc(var(--la, .16) * 3)), transparent 70%); }
+    background: radial-gradient(55% 60% at var(--lx, 18%) var(--ly, 0%), rgba(208,147,66,calc(var(--la, .16) * 1.5)), transparent 70%); }
   [data-tone="slate"] > .lamp { background: radial-gradient(55% 60% at var(--lx, 18%) var(--ly, 0%), rgba(212,175,55,var(--la, .16)), transparent 70%); }
   .lamp-teal { background: radial-gradient(55% 60% at var(--lx, 85%) var(--ly, 100%), rgba(255,255,255,var(--la, .08)), transparent 70%); }
   /* Academy's deep teal close: the radial depth in its own teal, whatever class its lamp carries. */
   .theme-teal [data-tone="ink"] > .lamp { background: radial-gradient(55% 60% at var(--lx, 85%) var(--ly, 100%), rgba(26,93,99,calc(var(--la, .08) * 6)), transparent 70%); }
-  .lamp-cream { background: radial-gradient(50% 45% at var(--lx, 50%) var(--ly, 0%), rgba(255,255,255,.75), transparent 72%), linear-gradient(to top, rgba(122,58,74,.08), transparent 30%); animation: lights 2.2s var(--ease) both; }
+  .lamp-cream { background: radial-gradient(50% 45% at var(--lx, 50%) var(--ly, 0%), rgba(255,255,255,.75), transparent 72%), linear-gradient(to top, rgba(228,174,155,.16), transparent 30%); animation: lights 2.2s var(--ease) both; }
   @keyframes lights { from { opacity: 0; } }
   .grain { position: relative; }
   /* A lamp that also carries the grain stays an absolute layer over its section (.grain alone would make it
@@ -499,7 +500,7 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
   .tap::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #486786; opacity: calc(var(--fill, .5) * .7); }
   /* The halo: a soft gold ring on one of the app's own controls (a tab in its bottom bar), lit for a step. */
   .halo { position: absolute; left: 0; top: 0; width: 15cqw; aspect-ratio: 1; border-radius: 50%; pointer-events: none; z-index: 4; opacity: 0;
-    background: radial-gradient(closest-side, rgba(168,117,126,.42), rgba(168,117,126,.18) 62%, transparent); box-shadow: 0 0 0 1px rgba(168,117,126,.38);
+    background: radial-gradient(closest-side, rgba(208,147,66,.42), rgba(208,147,66,.18) 62%, transparent); box-shadow: 0 0 0 1px rgba(208,147,66,.38);
     transform: translate(calc(var(--x, 50) * 1cqw), calc(var(--y, 50) * 1cqh)) translate(-50%, -50%) scale(.86); }
   /* The lift: a device rises 10 px (and its floor shadow deepens) as a story step reaches it (--lift 0 to 1). */
   [data-device] { translate: 0 calc(var(--lift, 0) * -10px); }
@@ -576,10 +577,10 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
   .day-item.is-evening .t-cap-i { color: #cdc6b8; }
   .day-stage { position: relative; border-radius: var(--r-lg); overflow: hidden; background: #ebe4d5; box-shadow: inset 0 1px 2px rgba(31,29,26,.06), inset 0 0 0 1px rgba(31,29,26,.05); }
   .day-stage .sky { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
-  .day-stage .sky[data-sky="morning"] { opacity: 1; background: radial-gradient(60% 55% at 12% 0%, rgba(168,117,126,.3), transparent 70%), linear-gradient(180deg, #f7efdd, #ebe4d5); }
+  .day-stage .sky[data-sky="morning"] { opacity: 1; background: radial-gradient(60% 55% at 12% 0%, rgba(228,174,155,.4), transparent 70%), linear-gradient(180deg, #f7efdd, #ebe4d5); }
   .day-stage .sky[data-sky="midday"] { background: radial-gradient(55% 50% at 50% -10%, rgba(255,255,255,.6), transparent 70%), linear-gradient(180deg, #faf7f0, #f1ebdf); }
-  .day-stage .sky[data-sky="afternoon"] { background: radial-gradient(55% 55% at 88% 10%, rgba(122,58,74,.28), transparent 70%), linear-gradient(180deg, #f3e9d6, #e8dcc6); }
-  .day-stage .sky[data-sky="evening"] { background: radial-gradient(60% 55% at 50% 100%, rgba(168,117,126,.14), transparent 70%), linear-gradient(180deg, #3a3631, #1b1916); }
+  .day-stage .sky[data-sky="afternoon"] { background: radial-gradient(55% 55% at 88% 10%, rgba(208,147,66,.3), transparent 70%), linear-gradient(180deg, #f3e9d6, #e8dcc6); }
+  .day-stage .sky[data-sky="evening"] { background: radial-gradient(60% 55% at 50% 100%, rgba(208,147,66,.16), transparent 70%), linear-gradient(180deg, #3a3631, #1b1916); }
   .day-stage .phone .phone-floor { transition: transform .4s var(--ease); }
   .day-stage.is-night .phone { box-shadow: inset 0 0 0 .55em #0c0b09, inset 0 0 0 .9em rgba(255,255,255,.06), var(--sh-object-dark); }
   .day-caps { position: absolute; left: 24px; bottom: 24px; right: 128px; min-height: 1.4em; }
@@ -603,7 +604,7 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
   .js .q .a > div { visibility: hidden; transition: visibility 0s linear .45s; }
   .js .q.open .a > div, .js .q-btn[aria-expanded="true"] + .a > div { visibility: visible; transition-delay: 0s; }
   .q .a p { font-size: var(--fs-body); line-height: 1.55; color: var(--fg-2); max-width: 36em; padding-bottom: 24px; margin: 0; }
-  .q .a a { color: var(--accent); text-decoration: underline; text-underline-offset: .18em; }
+  .q .a a { color: var(--accent-sm, var(--accent)); text-decoration: underline; text-underline-offset: .18em; }
   .q.open .a, .q-btn[aria-expanded="true"] + .a { grid-template-rows: 1fr; }
   .no-js .q .a { grid-template-rows: 1fr; }
 
@@ -616,8 +617,8 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
   .flip-face { grid-area: 1 / 1; display: flex; flex-direction: column; justify-content: space-between; gap: 24px; padding: 32px; border-radius: var(--r-lg); backface-visibility: hidden; -webkit-backface-visibility: hidden; min-height: 330px; }
   /* A warm cream face with an antique gold edge (the handoff's "cream/gold fronts", BRAND_FIX S7); it follows
    * .paper, so it wins at equal specificity. */
-  .flip-front { color: #1b1916; --accent: #7a3a4a;
-    background: linear-gradient(#fbf8f1, #f5ecda) padding-box, linear-gradient(180deg, #efe3c8 0%, #a8757e 100%) border-box; }
+  .flip-front { color: #1b1916; --accent: #a37437; --accent-sm: #7f5c2e;
+    background: linear-gradient(#fbf8f1, #f5ecda) padding-box, linear-gradient(180deg, #efe3c8 0%, #d09342 100%) border-box; }
   .flip-back { transform: rotateY(180deg); background: #1b1916; color: #cdc6b8; overflow: hidden; --fg: #f2ece0; --fg-2: #cdc6b8; --fg-3: #aaa396; box-shadow: inset 0 1px 0 rgba(255,255,255,.07), inset 0 0 0 1px rgba(255,255,255,.06), var(--sh-paper); }
   .flip-back .lamp { --lx: 0%; --ly: 0%; --la: .16; }
   .flip-back.grain::after { opacity: .25; }
@@ -625,11 +626,11 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
   .flip-quote { font-family: var(--font-display); font-size: clamp(24px, 1.9vw, 32px); font-weight: 500; letter-spacing: -.015em; line-height: 1.12; color: #1b1916; text-wrap: pretty; hanging-punctuation: first; }
   @supports not (hanging-punctuation: first) { .flip-quote { text-indent: -.38em; } }
   .flip-front .eyebrow { margin-bottom: 0; }
-  .flip-back .eyebrow { color: #c49aa2; margin-bottom: 0; }
+  .flip-back .eyebrow { color: #d09342; margin-bottom: 0; }
   .flip-back .flip-reframe { font-family: var(--font-sans); font-size: var(--fs-lead); line-height: 1.45; color: #cdc6b8; max-width: 24em; }
   .flip-back .flip-reframe b { font-weight: inherit; color: #f2ece0; }
-  .flip-cue { display: inline-flex; align-items: center; gap: .45em; font-family: var(--font-sans); font-size: var(--fs-small); font-weight: 500; letter-spacing: -.005em; line-height: 1; color: #7a3a4a; }
-  .flip-back .flip-cue { color: #c49aa2; }
+  .flip-cue { display: inline-flex; align-items: center; gap: .45em; font-family: var(--font-sans); font-size: var(--fs-small); font-weight: 500; letter-spacing: -.005em; line-height: 1; color: #7f5c2e; }
+  .flip-back .flip-cue { color: #d09342; }
   .flip-cue svg { width: 14px; height: 14px; }
   .flip i.sheen { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; z-index: 2;
     background: linear-gradient(110deg, transparent 40%, rgba(255,255,255,.18) 50%, transparent 60%); background-size: 240% 100%; background-position: 0% 0; }
@@ -649,7 +650,7 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
   .tcard-row span { line-height: 1; font-weight: 450; }
   .tcard .tg { position: relative; display: block; width: 38px; height: 22px; border-radius: 999px; background: #d9cfbe; box-shadow: inset 0 1px 2px rgba(31,29,26,.18); flex: none; }
   .tcard .tg::after { content: ""; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
-  .tcard .tg.on { background: #7a3a4a; }
+  .tcard .tg.on { background: #d09342; }
   .tcard .tg.on::after { left: 18px; }
 
   /* ── The mark geometry ─────────────────────────────────────────────── */
@@ -672,12 +673,12 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
   @media (max-width: 734px) { .floor-plane { --floor-cols: 4; transform: rotateX(56deg) translate3d(-50%, 0, 0) scale(.72); } }
 
   /* ── Header (1.8) ──────────────────────────────────────────────────── */
-  .site-header { position: fixed; inset-inline: 0; top: 0; z-index: 50; height: var(--nav-h); color: #1b1916; --fg: #1b1916; --fg-2: #3d3a35; --fg-3: #5c574f; --focus: #7a3a4a;
+  .site-header { position: fixed; inset-inline: 0; top: 0; z-index: 50; height: var(--nav-h); color: #1b1916; --fg: #1b1916; --fg-2: #3d3a35; --fg-3: #5c574f; --focus: #7f5c2e;
     transition: background-color 240ms var(--ease), box-shadow 240ms var(--ease), color 240ms var(--ease), transform 450ms var(--sheet); }
   .site-header .hdr-row { display: flex; align-items: center; justify-content: space-between; height: var(--nav-h); view-transition-name: nav; }
   .site-header.is-scrolled { background: rgba(242,236,224,.82); -webkit-backdrop-filter: saturate(160%) blur(18px); backdrop-filter: saturate(160%) blur(18px); box-shadow: 0 1px 0 rgba(31,29,26,.08); }
   .site-header.theme-teal.is-scrolled { background: rgba(242,236,224,.86); }
-  .site-header.is-dark { color: #f2ece0; --fg: #f2ece0; --fg-2: #cdc6b8; --fg-3: #aaa396; --focus: #a8757e; }
+  .site-header.is-dark { color: #f2ece0; --fg: #f2ece0; --fg-2: #cdc6b8; --fg-3: #aaa396; --focus: #d09342; }
   /* Dark state: the bar takes the colour of what it sits on (the page's tone, or the dark surface under it,
    * which the script writes as --hdr-bg), at 90 percent with the blur, so nothing reads through it. */
   .site-header.is-dark.is-scrolled { background: color-mix(in srgb, var(--hdr-bg, var(--bg)) 90%, transparent); box-shadow: 0 1px 0 rgba(242,236,224,.1); }
@@ -702,7 +703,7 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
   .hdr-burger i:last-child { top: 25px; }
   .hdr-burger[aria-expanded="true"] i:first-child { top: 21.5px; transform: rotate(45deg); }
   .hdr-burger[aria-expanded="true"] i:last-child { top: 21.5px; transform: rotate(-45deg); }
-  .menu-panel { position: fixed; inset: var(--nav-h) 0 0 0; z-index: 49; background: #faf7f0; color: #1b1916; --fg: #1b1916; --fg-2: #3d3a35; --fg-3: #5c574f; --focus: #7a3a4a; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .35s var(--ease), visibility 0s linear .35s; overflow: auto; }
+  .menu-panel { position: fixed; inset: var(--nav-h) 0 0 0; z-index: 49; background: #faf7f0; color: #1b1916; --fg: #1b1916; --fg-2: #3d3a35; --fg-3: #5c574f; --focus: #7f5c2e; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .35s var(--ease), visibility 0s linear .35s; overflow: auto; }
   .menu-panel.is-open { opacity: 1; visibility: visible; pointer-events: auto; transition-delay: 0s; }
   @media (min-width: 960px) { .menu-panel { display: none; } }
   .menu-nav { display: flex; flex-direction: column; min-height: 100%; padding-block: 24px max(24px, env(safe-area-inset-bottom, 0px)); }
@@ -721,11 +722,11 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
   .hdr-row > a, .ftr-blurb-col > a { padding-block: 9px; margin-block: -9px; }
   html.menu-open .site-header { background: #faf7f0; box-shadow: none; color: #1b1916; }
   html.menu-open { overflow: hidden; }
-  .skip { position: absolute; left: 12px; top: 12px; z-index: 100; padding: 11px 16px; min-height: 44px; border-radius: 999px; background: #7a3a4a; color: #1b1916; font-family: var(--font-sans); font-size: var(--fs-small); font-weight: 500; transform: translateY(-200%); }
+  .skip { position: absolute; left: 12px; top: 12px; z-index: 100; padding: 11px 16px; min-height: 44px; border-radius: 999px; background: #d09342; color: #1b1916; font-family: var(--font-sans); font-size: var(--fs-small); font-weight: 500; transform: translateY(-200%); }
   .skip:focus { transform: none; }
 
   /* ── Footer (1.9) ──────────────────────────────────────────────────── */
-  .site-footer { position: relative; background: #ebe4d5; color: #1b1916; --fg: #1b1916; --fg-2: #3d3a35; --fg-3: #5c574f; --line: rgba(31,29,26,.12); --accent: #7a3a4a; --focus: #7a3a4a; --dark: 0; border-top: 1px solid rgba(31,29,26,.12); padding: clamp(72px, 10vh, 120px) 0 calc(32px + env(safe-area-inset-bottom, 0px)); }
+  .site-footer { position: relative; background: #ebe4d5; color: #1b1916; --fg: #1b1916; --fg-2: #3d3a35; --fg-3: #5c574f; --line: rgba(31,29,26,.12); --accent: #a37437; --accent-sm: #7f5c2e; --focus: #7f5c2e; --dark: 0; border-top: 1px solid rgba(31,29,26,.12); padding: clamp(72px, 10vh, 120px) 0 calc(32px + env(safe-area-inset-bottom, 0px)); }
   .site-footer.theme-teal { background: var(--pa-alt); --accent: var(--pa); --focus: var(--pa); }
   .site-footer.theme-teal .ftr-rule { background: linear-gradient(90deg, transparent, rgba(var(--pa-rgb),.3) 12% 88%, transparent); }
   /* Row one: the statement in columns 1 to 6 with the founder line under it, the three link columns in
@@ -763,7 +764,7 @@ html.theme-inq { --pa: #806616; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-b
   /* ── Legal pages ───────────────────────────────────────────────────── */
   .prose-ib h2 { font-size: 24px; margin-top: 40px; }
   .prose-ib p { margin-top: 14px; font-size: 16px; line-height: 1.65; color: var(--fg-2); }
-  .prose-ib a { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+  .prose-ib a { color: var(--accent-sm, var(--accent)); text-decoration: underline; text-underline-offset: 4px; }
 }
 
 /* The client's logo (October 21): the header wordmark in two cuts and the whole logo in the footer. */
