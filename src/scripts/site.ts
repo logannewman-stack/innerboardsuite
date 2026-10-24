@@ -1257,7 +1257,7 @@ class StoryRun {
       put(this.c, day.phone, "--sx", (-26 * wM + 26 * wA).toFixed(1) + "px");
       put(this.c, day.phone, "--floor-a", (0.3 + 0.25 * wE).toFixed(3));
     }
-    if (day.mat) put(this.c, day.mat, "--day-cap", `color-mix(in srgb, #5c574f, #cdc6b8 ${(wE * 100).toFixed(1)}%)`);
+    if (day.mat) put(this.c, day.mat, "--day-cap", `color-mix(in srgb, #6e6660, #b8b2a8 ${(wE * 100).toFixed(1)}%)`);
   }
 }
 /* One controller per story: bound while STORY_MQ matches, rebound when it or the wide line changes. */

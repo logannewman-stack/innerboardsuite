@@ -79,22 +79,26 @@ and bottom bar sit at the edges and in the phone's rounded corners, so any lean 
 
 ## Brand decisions
 
-- **The InnerBoard brand book** (v1.0, `brief/brand/InnerBoard_Brand_Book_v1.0.html`) sets the palette. The umbrella
-  pages (home, Practice, contact, legal, 404) take Leah Roling's palette (book 01; the client, October 24, after the
-  umbrella rose read as the wrong colours): the family's ivory `#f2ece0` and ink `#1b1916`, amber `#d09342` for filled
-  buttons (ink label), rules, toggles and icons, peach `#e4ae9b` for the atmosphere (the hero's lamp, the mats, the
-  alternate sections' wash), and the dark rooms in the ink with a honey glow, blush `#fbeee6` italics and amber
-  eyebrows. The book's amber measures 2.25 on the ivory, so its text runs in two deeper cuts: `#a37437` for display
-  italics (AA large) and `#7f5c2e` (`--accent-sm`) for eyebrows, folios and links (AA).
+- **The InnerBoard brand book, exactly** (v1.0, `brief/brand/InnerBoard_Brand_Book_v1.0.html`; the client, October
+  24: "comply to the company color guidelines and hex codes"). Every colour on the site is one of the book's hex
+  codes, or white or black for shadows and highlights, at full strength or as a transparent tint. The one exception
+  is `#f9f6ee`, the patch the typing animation paints inside the app's own screenshots to match their input fields. `npm run brand`
+  reads the build and fails on any other colour.
+  The umbrella pages (home, Practice, contact, legal, 404) take Leah Roling's palette (book 01): the ivory `#f2ece0`
+  and ink `#1b1916`; amber `#d09342` for italics, filled buttons (ink label), rules, toggles and icons; peach
+  `#e4ae9b` for the atmosphere, the selection and hovers; blush `#fbeee6` for paper, cards, mats and the footer, and
+  for italics in the dark rooms (the ink with a honey glow, amber eyebrows); muted text in the book's graphite
+  `#3a3631` and slate `#6e6660` / `#b8b2a8`. The book's amber is 2.25 on the ivory, so small type (eyebrows, folios,
+  links) runs in the ink; display italics take the amber exactly (the client's call, October 24).
 - **Academy** (book 03): teal `#1a5d63` (buttons, eyebrows, italics, rules), a teal section with white type, the
   close in the deep teal `#0d3438` with soft teal `#5ba0a7` italics, wheat cream `#ebe0c9` for the footer and a
   bronze `#a26b3d` wash on alternate sections.
 - **INQ** (book 06): gold on slate. Slate `#2d2a26` sections (the homepage teaser, Why INQ works, the close) with
-  champagne `#e8cf7a` italics and gold `#d4af37` eyebrows and buttons (slate label). On the ivory the book's gold
-  measures 1.8, so it runs as fills, rules, dots and drawn lines, and its text (italics, links) in a deeper gold cut to
-  AA, `#806616`; eyebrows in slate mid `#6e6660`.
-- **InnerBoard IOS panel** keeps the IOS site's own navy `#071b30` and honey `#e4b676`, so it matches the site it
-  opens (Logan kept IOS in navy and tan). The logo is the client's, as supplied.
+  champagne `#e8cf7a` italics and gold `#d4af37` eyebrows and buttons (slate label). On the ivory its italics are the
+  book's gold exactly (1.8, the client's call), its small type (links, labels) the slate `#2d2a26`, its eyebrows slate
+  mid `#6e6660`; fills, rules, dots and drawn lines in the gold; white cards.
+- **InnerBoard IOS panel** wears the book's InnerBoard OS colours (navy `#0d3054`, soft steel `#8aa3bf`, pale
+  `#e6e7ea`), as the site it opens does. The logo is the client's, as supplied.
 - **One nav on every page**, exactly as the handoff locks it: Academy (into the Academy in Practice), INQ Certification, InnerBoard IOS and the
   amber Start in Practice. "InnerBoard IOS" everywhere (capital I, O and S).
 - **Nothing of Leah.** No photographs, portraits or likeness anywhere; "Founded by Leah Roling." appears once, in

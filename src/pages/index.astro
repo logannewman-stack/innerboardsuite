@@ -361,8 +361,8 @@ const quizBenefits = [
   .hm-btns { display: flex; flex-wrap: wrap; gap: 12px; }
   .hm-hero-btns { margin-top: 36px; }
   .hm-hero-phone { position: relative; z-index: 3; }
-  .hm-hero-phone .phone { box-shadow: inset 0 0 0 .55em #0c0b09, inset 0 0 0 .9em rgba(255,255,255,.06), 0 0 0 1px rgba(160,110,50,.22),
-    0 2px 4px rgba(31,29,26,.14), 0 24px 40px -16px rgba(31,29,26,.34), 0 90px 120px -50px rgba(31,29,26,.5); }
+  .hm-hero-phone .phone { box-shadow: inset 0 0 0 .55em #1b1916, inset 0 0 0 .9em rgba(255,255,255,.06), 0 0 0 1px rgba(208,147,66,.3),
+    0 2px 4px rgba(27,25,22,.14), 0 24px 40px -16px rgba(27,25,22,.34), 0 90px 120px -50px rgba(27,25,22,.5); }
   .hm-hero-phone .phone-floor { --floor-a: .38; }
   @media (min-width: 900px) {
     .hm-hero { min-height: max(640px, calc(100vh - 40px)); min-height: max(640px, calc(100svh - 40px)); padding-bottom: 0; }
@@ -384,7 +384,7 @@ const quizBenefits = [
   .hm-panel-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
   .hm-panel-head { grid-column: 1 / span 7; grid-row: 1; align-self: last baseline; }
   .hm-panel-h2 { color: #f2ece0; }
-  .hm-panel-lead { grid-column: 8 / span 5; grid-row: 1; align-self: last baseline; color: #cdc6b8; max-width: 28em; margin: 0; }
+  .hm-panel-lead { grid-column: 8 / span 5; grid-row: 1; align-self: last baseline; color: #b8b2a8; max-width: 28em; margin: 0; }
   .hm-panel-story { margin-top: 48px; }
   /* The panel's lamp, moved into the stage behind the pinned phone: shown only while the story is pinned. */
   .hm-panel-story .story-stage > .hm-stage-lamp { display: none; }
@@ -400,13 +400,13 @@ const quizBenefits = [
   .hm-ladder > li > .hm-row { min-width: 0; }
   .hm-row-ico { display: block; margin-top: calc((var(--fs-title) * 1.2 - 22px) / 2); }
   .hm-ladder .ladder-name { color: #f2ece0; }
-  .hm-ladder .ladder-body { color: #cdc6b8; }
+  .hm-ladder .ladder-body { color: #b8b2a8; }
   .hm-ladder > li > .story-static { grid-column: 2; margin-top: 20px; }
   .hm-panel-rule { margin-block: 56px 48px; }
   .hm-panel-foot { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: end; }
   .hm-panel-close { grid-column: 1 / span 7; }
   .hm-panel-close-line { color: #f2ece0; }
-  .hm-panel-close-body { color: #cdc6b8; margin-top: 12px; }
+  .hm-panel-close-body { color: #b8b2a8; margin-top: 12px; }
   .hm-panel-btns { grid-column: 8 / span 5; justify-content: flex-end; }
   @media (min-width: 1069px) {
     /* Static on a laptop: the row's still screen at its right. */
@@ -436,13 +436,13 @@ const quizBenefits = [
    * copy), so its six switches and the gold on state show (ToggleCard is shared; its placement is the page's). */
   .hm-mat { justify-content: center; align-items: flex-end; padding-bottom: 22px; }
   .hm-quiz-phone { position: relative; flex: none; z-index: 2; }
-  .hm-tcard { position: relative; flex: none; z-index: 1; margin: 0 -12px 26px 0; width: clamp(186px, calc(6 * var(--colw) + 5 * var(--gap) - 320px), 236px); box-shadow: var(--sh-paper), 0 18px 30px -18px rgba(31,29,26,.35); }
+  .hm-tcard { position: relative; flex: none; z-index: 1; margin: 0 -12px 26px 0; width: clamp(186px, calc(6 * var(--colw) + 5 * var(--gap) - 320px), 236px); box-shadow: var(--sh-paper), 0 18px 30px -18px rgba(27,25,22,.35); }
   .no-js .hm-tcard { transform: rotate(-5deg); }
   /* The Approval switch (the card's second row) follows the scroll: it turns off from G 3.62 to 3.72, while the
    * phone shows the result's first step. The knob moves by transform and the gold is an opacity layer (BRAND_FIX S8);
    * with --g unset (static, no script) it is on, as the card draws it. */
-  .hm-tcard .tcard-row:nth-child(2) .tg { --on: calc(1 - clamp(0, (var(--g, 0) - 3.62) / .1, 1)); background: #d9cfbe; }
-  .hm-tcard .tcard-row:nth-child(2) .tg::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #d09342; box-shadow: inset 0 1px 2px rgba(31,29,26,.18); opacity: var(--on); }
+  .hm-tcard .tcard-row:nth-child(2) .tg { --on: calc(1 - clamp(0, (var(--g, 0) - 3.62) / .1, 1)); background: #b8b2a8; }
+  .hm-tcard .tcard-row:nth-child(2) .tg::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #d09342; box-shadow: inset 0 1px 2px rgba(27,25,22,.18); opacity: var(--on); }
   .hm-tcard .tcard-row:nth-child(2) .tg::after { left: 2px; transform: translateX(calc(var(--on) * 16px)); }
   /* Static: the four benefits side by side, each with its own still screen (the question, the result, its cost, its
    * first step); names, bodies and screens each start on one line (every item is a three row subgrid). Then the button
@@ -530,15 +530,15 @@ const quizBenefits = [
   .hm-ios-rule { position: absolute; left: -32px; top: 0; bottom: 0; display: block; }
   .hm-ios-h2 { color: #f2ece0; }
   .hm-ios h2 em.grad { color: transparent; -webkit-text-fill-color: transparent; }
-  .hm-ios-lead { color: #cdc6b8; max-width: 28em; margin-top: var(--lead-gap); }
+  .hm-ios-lead { color: #b8b2a8; max-width: 28em; margin-top: var(--lead-gap); }
   .hm-ios-lead-2 { margin-top: 1em; }
   .hm-ios-btn { grid-column: 9 / span 4; align-self: end; justify-self: end; }
-  /* The panel keeps the InnerBoard IOS site's own navy and honey, so it matches the site it opens. */
-  .hm-ios .hm-ios-panel { --accent: #e4b676; --focus: #e4b676; --line-gold: rgba(228,182,118,.35); }
-  .hm-ios .hm-ios-panel > .lamp { background: radial-gradient(55% 60% at var(--lx, 18%) var(--ly, 0%), rgba(228,182,118,var(--la, .16)), transparent 70%); }
-  .hm-ios h2 em.grad { background-image: linear-gradient(100deg, #f1dcb4 0%, #e4b676 48%, #c99a5b 100%); }
-  .hm-ios .hm-ios-panel .btn.btn-gold { background: #e4b676; color: #1b1916; }
-  @media (hover: hover) and (pointer: fine) { .hm-ios .hm-ios-panel .btn.btn-gold:hover { background: #ecc58e; } }
+  /* The panel wears InnerBoard OS's own book colours (navy, soft steel, pale), as the site it opens does. */
+  .hm-ios .hm-ios-panel { --accent: #8aa3bf; --accent-sm: #8aa3bf; --focus: #8aa3bf; --line-gold: rgba(138,163,191,.35); }
+  .hm-ios .hm-ios-panel > .lamp { background: radial-gradient(55% 60% at var(--lx, 18%) var(--ly, 0%), rgba(138,163,191,var(--la, .16)), transparent 70%); }
+  .hm-ios h2 em.grad { background-image: linear-gradient(100deg, #e6e7ea 0%, #8aa3bf 70%, #8aa3bf 100%); }
+  .hm-ios .hm-ios-panel .btn.btn-gold { background: #8aa3bf; color: #1b1916; }
+  @media (hover: hover) and (pointer: fine) { .hm-ios .hm-ios-panel .btn.btn-gold:hover { background: #e6e7ea; } }
 
   /* ── Tablet (735 to 1068) ─────────────────────────────────────────── */
   @media (max-width: 1068px) {
