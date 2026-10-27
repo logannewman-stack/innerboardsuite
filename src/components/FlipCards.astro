@@ -1,7 +1,7 @@
 ---
 /**
  * The four recognition cards (1.6). Flip on click, tap, Enter and Space;
- * never on their own. Paper fronts, Practice navy backs with a lamp and grain, both
+ * never on their own. Blush fronts with an amber edge, Practice navy backs, both
  * faces in one grid cell so the card takes the taller face. The quotes and
  * reframes are locked copy; our labels are the four cues and the sr sentence.
  * The closing statement renders after the list, as before.
@@ -29,14 +29,12 @@ const { class: className = "" } = Astro.props;
               <span class="flip-quote">"{card.front}"</span>
               <span class="flip-cue">Flip it <Arrow /></span><span class="sr-only">Press to flip the card.</span>
             </span>
-            <span class="flip-face flip-back grain">
-              <i class="lamp" aria-hidden="true"></i>
+            <span class="flip-face flip-back">
               <span class="eyebrow">Another way</span>
               <span class="flip-reframe">{lead && <b>{lead}</b>}{rest}</span>
               <span class="flip-cue">Flip it back</span>
             </span>
           </span>
-          <i class="sheen" aria-hidden="true"></i>
         </button>
       </li>
     );

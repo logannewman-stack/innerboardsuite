@@ -7,60 +7,22 @@
 @font-face { font-family: "Instrument Sans"; src: url("/fonts/instrument-sans-latin-wght-italic.woff2") format("woff2"); font-weight: 400 700; font-style: italic; font-display: swap; }
 
 /* ── Tokens ─────────────────────────────────────────────────────────────────
- * The InnerBoard brand book (v1.0, brief/brand), exactly: every colour on the site is one of the book's hex codes
- * (or white or black, for shadows and highlights), at full strength or as a transparent tint. The umbrella pages
- * take Leah Roling's palette (the client, October 24): amber #d09342 for italics, buttons, rules and toggles, peach
- * #e4ae9b for the atmosphere, blush #fbeee6 for paper and for italics in the dark rooms, on the ivory #f2ece0 with
- * the ink #1b1916; muted text in the book's graphite #3a3631 and slate #6e6660 / #b8b2a8. Where a book colour is too
- * faint for small type (the amber on the ivory, 2.25), eyebrows and links run in the ink (the client, October 24). The
- * Academy page takes Academy's teal, the INQ page INQ's gold on slate (the product variables below). The InnerBoard
- * IOS panel wears InnerBoard OS's navy and soft steel.
+ * The InnerBoard brand book (v1.0, brief/brand), exactly: every colour on the site is one of the book's hex codes,
+ * solid. Nothing blends: no see-through tints, gradients, glows, soft shadows, blurs or grain, because each of those
+ * paints a colour the book does not list (the client, October 27). A line, a soft label or a dim state takes the book
+ * colour that does that job: #b8b2a8 lines and #6e6660 soft type on the ivory, #3a3631 lines and #b8b2a8 soft type
+ * on the ink. The umbrella pages take Leah Roling's palette (the client, October 24): amber #d09342 for italics,
+ * buttons and toggles, peach #e4ae9b for rules, blush #fbeee6 for paper and for italics in the dark rooms, on the
+ * ivory #f2ece0 with the ink #1b1916. Where a book colour is too faint for small type (the amber on the ivory, 2.25),
+ * eyebrows and links run in the ink (the client, October 24). The Academy page takes Academy's teal, the INQ page
+ * INQ's gold on slate (the product variables below). The InnerBoard IOS panel wears InnerBoard OS's navy and steel.
+ * `npm run brand` fails the build's colours on anything else.
  */
 @theme {
   --color-cream: #f2ece0;
-  --color-cream-2: #fbeee6;
-  --color-cream-3: #fbeee6;
-  --color-line: #b8b2a8;
-  --color-line-strong: #b8b2a8;
-  --color-charcoal: #1b1916;
   --color-ink: #1b1916;
   --color-ink-muted: #3a3631;
   --color-ink-faint: #6e6660;
-  --color-amber: #d09342;
-  --color-amber-text: #d09342;
-  --color-amber-ink: #1b1916;
-  --color-peach: #e4ae9b;
-  --color-blush: #fbeee6;
-  --color-graphite: #3a3631;
-  --color-practice-line: rgba(242,236,224, 0.14);
-  --color-slate: #2d2a26;
-  --color-slate-mid: #6e6660;
-  --color-slate-soft: #b8b2a8;
-  --color-inq-gold: #d4af37;
-  --color-inq-gold-soft: #e8cf7a;
-  --color-on-dark: #f2ece0;
-  --color-on-dark-muted: #b8b2a8;
-  --color-on-dark-faint: rgba(242,236,224,.6);
-
-  /* Academy (brand book 03). */
-  --color-ac-card: #ffffff;
-  --color-ac-line: #b8b2a8;
-  --color-teal: #1a5d63;
-  --color-teal-deep: #0d3438;
-  --color-teal-soft: #5ba0a7;
-  --color-ac-bronze: #a26b3d;
-  --color-ac-wheat: #ebe0c9;
-
-  /* Practice, the app, as it draws itself: ivory and steel. */
-  --color-app-canvas: #f2ece0;
-  --color-app-surface: #f8f5ee;
-  --color-app-line: #b8b2a8;
-  --color-app-ink: #1b1916;
-  --color-app-muted: #4b4540;
-  --color-app-faint: #67605a;
-  --color-steel: #4f6d8c;
-  --color-steel-soft: #e6e7ea;
-  --color-aurora-2: #8aa3bf;
 
   --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
   --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
@@ -70,9 +32,6 @@
 
   --radius-card: 12px;
   --radius-sheet: 28px;
-
-  --shadow-card: 0 1px 2px rgba(27,25,22, 0.06), 0 10px 30px -14px rgba(27,25,22, 0.18);
-  --shadow-float: 0 20px 50px -30px rgba(27,25,22, 0.4);
 }
 
 /* The tone floor colour (1.7.5) is a registered colour so it cross fades with the body. */
@@ -129,12 +88,8 @@
   --r: clamp(12px, .9vw, 20px);
   --r-lg: clamp(20px, 1.7vw, 32px);
 
-  --sh-paper: 0 0 0 1px rgba(27,25,22,.05), 0 1px 2px rgba(27,25,22,.04), 0 10px 28px -10px rgba(27,25,22,.08), 0 36px 64px -32px rgba(27,25,22,.12);
-  --sh-object: 0 1px 2px rgba(27,25,22,.12), 0 14px 28px -12px rgba(27,25,22,.26), 0 64px 90px -44px rgba(27,25,22,.38);
-  --sh-object-dark: 0 1px 2px rgba(0,0,0,.35), 0 18px 32px -12px rgba(0,0,0,.5), 0 80px 100px -40px rgba(0,0,0,.6);
-  --sh-toast: 0 0 0 1px rgba(27,25,22,.06), 0 2px 6px rgba(27,25,22,.05), 0 12px 32px rgba(27,25,22,.1);
-  --line-gold: rgba(208,147,66,.35);
-  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  /* A rule: the book's peach on the light, the graphite in the dark rooms (set with the themes below). */
+  --line-gold: #e4ae9b;
 }
 /* The header keeps its inline links down to 960 (audit 2, finding 10); below, the bar is 60 high. */
 @media (max-width: 959px) { :root { --nav-h: 60px; } }
@@ -166,49 +121,54 @@
 .theme-teal { --r-lg: 20px; }
 /* The product pages' accent, set on <html> (the header, footer and accordion carry .theme-teal too and must not
  * reset it). --pa is the accent on the ivory (italics), --pa-sm small accent type, --pa-line rules, dots and drawn
- * lines, --pa-btn the filled button, --pa-ghost the outline button, --pa-tint and --pa-alt the light fills, --pa-wash
- * the alternate section's tint. INQ's gold #d4af37 measures 1.8 against the ivory: its italics are the book's gold
- * exactly, and its small type runs in INQ's own slate #2d2a26. */
-html.theme-teal { --pa: #1a5d63; --pa-sm: #1a5d63; --pa-rgb: 26,93,99; --pa-line: #1a5d63; --pa-btn: #1a5d63; --pa-btn-fg: #ffffff; --pa-btn-hover: #0d3438;
-  --pa-ghost: #1a5d63; --pa-tint: rgba(26,93,99,.1); --pa-alt: #ebe0c9; --pa-eyebrow: #1a5d63; --pa-wash: 162,107,61; }
-html.theme-inq { --pa: #d4af37; --pa-sm: #2d2a26; --pa-rgb: 212,175,55; --pa-line: #d4af37; --pa-btn: #d4af37; --pa-btn-fg: #2d2a26; --pa-btn-hover: #e8cf7a;
-  --pa-ghost: #2d2a26; --pa-tint: rgba(184,178,168,.28); --pa-alt: #f2ece0; --pa-eyebrow: #6e6660; --pa-wash: 110,102,96; --glyph-on-dark: #d4af37; }
+ * lines, --pa-btn the filled button, --pa-ghost the outline button, --pa-tint the outline button's hover fill,
+ * --pa-alt the footer, --pa-band the alternate section, --pa-paper and --pa-edge a card. INQ's gold #d4af37 measures
+ * 1.8 against the ivory: its italics are the book's gold exactly, and its small type runs in INQ's own slate #2d2a26.
+ * Academy's cards are its cream on the ivory; INQ has no light colour of its own, so its cards are the ivory with a
+ * slate hairline. */
+html.theme-teal { --pa: #1a5d63; --pa-sm: #1a5d63; --pa-line: #1a5d63; --pa-btn: #1a5d63; --pa-btn-fg: #f2ece0; --pa-btn-hover: #0d3438;
+  --pa-ghost: #1a5d63; --pa-tint: #ebe0c9; --pa-alt: #ebe0c9; --pa-band: #ebe0c9; --pa-paper: #ebe0c9; --pa-edge: #ebe0c9; --pa-eyebrow: #1a5d63; }
+html.theme-inq { --pa: #d4af37; --pa-sm: #2d2a26; --pa-line: #d4af37; --pa-btn: #d4af37; --pa-btn-fg: #2d2a26; --pa-btn-hover: #e8cf7a;
+  --pa-ghost: #2d2a26; --pa-tint: #e8cf7a; --pa-alt: #f2ece0; --pa-band: #f2ece0; --pa-paper: #f2ece0; --pa-edge: #b8b2a8; --pa-eyebrow: #6e6660; --glyph-on-dark: #d4af37; }
 
 /* 1.2 Role tokens by theme. The page root carries data-theme; the body paints
  * --bg and --fg and cross fades them. Surfaces inside (plates, panels, paper,
  * mats, frames) paint their own colours and never change with the theme. */
 :root, [data-theme="cream"] {
   --bg: #f2ece0; --fg: #1b1916; --fg-2: #3a3631; --fg-3: #6e6660;
-  --line: rgba(27,25,22,.12); --line-strong: rgba(27,25,22,.22);
+  --line: #b8b2a8; --line-strong: #6e6660; --line-gold: #e4ae9b;
   --accent: #d09342; --accent-sm: #1b1916;
-  --btn-line: rgba(27,25,22,.24); --btn-hover: rgba(27,25,22,.05); --lit-off: rgba(27,25,22,.5);
-  --focus: #1b1916; --paper: #fbeee6; --dark: 0;
+  --btn-line: #6e6660; --btn-hover: #fbeee6; --lit-off: #6e6660; --rail-fill: #1b1916; --rail-track: #b8b2a8;
+  --focus: #1b1916; --paper: #fbeee6; --paper-edge: #fbeee6; --dark: 0;
 }
-[data-theme="ac-cream"] { --bg: #f2ece0; --fg: #1b1916; --fg-2: #3a3631; --fg-3: #6e6660; --line: #b8b2a8; --line-strong: #b8b2a8; --accent: var(--pa); --accent-sm: var(--pa-sm); --btn-line: var(--pa-ghost); --btn-hover: rgba(27,25,22,.05); --lit-off: rgba(27,25,22,.5); --focus: var(--pa-sm); --paper: #ffffff; --dark: 0; }
-[data-theme="navy"]     { --bg: #1b1916; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: rgba(242,236,224,.6); --line: rgba(242,236,224,.14); --line-strong: rgba(242,236,224,.32); --accent: #fbeee6; --accent-sm: #d09342; --btn-line: rgba(242,236,224,.32); --btn-hover: rgba(242,236,224,.06); --lit-off: rgba(242,236,224,.4); --focus: #d09342; --dark: 1; }
-[data-theme="practice"]   { --bg: #1b1916; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: rgba(242,236,224,.6); --line: rgba(208,147,66,.35); --line-strong: rgba(242,236,224,.32); --accent: #fbeee6; --accent-sm: #d09342; --btn-line: rgba(242,236,224,.32); --btn-hover: rgba(242,236,224,.06); --lit-off: rgba(242,236,224,.4); --focus: #d09342; --dark: 1; }
-[data-theme="charcoal"] { --bg: #1b1916; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: rgba(242,236,224,.6); --line: rgba(242,236,224,.12); --line-strong: rgba(242,236,224,.3); --accent: #fbeee6; --accent-sm: #d09342; --btn-line: rgba(242,236,224,.32); --btn-hover: rgba(242,236,224,.06); --lit-off: rgba(242,236,224,.4); --focus: #d09342; --dark: 1; }
-[data-theme="ink"]      { --bg: #1b1916; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: rgba(242,236,224,.6); --line: rgba(242,236,224,.12); --line-strong: rgba(242,236,224,.3); --accent: #fbeee6; --accent-sm: #d09342; --btn-line: rgba(242,236,224,.32); --btn-hover: rgba(242,236,224,.06); --lit-off: rgba(242,236,224,.4); --focus: #d09342; --dark: 1; }
-/* Academy's dark close: the book's deep teal, soft teal italics. */
-.theme-teal[data-theme="ink"] { --bg: #0d3438; --accent: #5ba0a7; --focus: #5ba0a7; }
+[data-theme="ac-cream"] { --bg: #f2ece0; --fg: #1b1916; --fg-2: #3a3631; --fg-3: #6e6660; --line: #b8b2a8; --line-strong: #b8b2a8; --accent: var(--pa); --accent-sm: var(--pa-sm); --btn-line: var(--pa-ghost); --btn-hover: var(--pa-tint); --lit-off: #6e6660; --rail-fill: #1b1916; --rail-track: #b8b2a8; --line-gold: var(--pa-line); --focus: var(--pa-sm); --paper: var(--pa-paper); --paper-edge: var(--pa-edge); --dark: 0; }
+[data-theme="navy"], [data-theme="practice"], [data-theme="charcoal"], [data-theme="ink"] {
+  --bg: #1b1916; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: #b8b2a8; --line: #3a3631; --line-strong: #6e6660; --line-gold: #3a3631;
+  --accent: #fbeee6; --accent-sm: #d09342; --btn-line: #6e6660; --btn-hover: #3a3631; --lit-off: #6e6660; --rail-fill: #fbeee6; --rail-track: #3a3631;
+  --focus: #d09342; --dark: 1; }
+/* Academy's dark close: the book's deep teal, soft teal italics, its lines in Academy's teal. */
+.theme-teal[data-theme="ink"] { --bg: #0d3438; --accent: #5ba0a7; --focus: #5ba0a7; --line: #1a5d63; --line-strong: #5ba0a7; --line-gold: #1a5d63;
+  --btn-line: #5ba0a7; --btn-hover: #1a5d63; --lit-off: #5ba0a7; --rail-fill: #5ba0a7; --rail-track: #1a5d63; }
 /* INQ's slate (brand book 06): champagne italics, gold eyebrows and buttons. */
-[data-theme="slate"]    { --bg: #2d2a26; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: #b8b2a8; --line: rgba(242,236,224,.14); --line-strong: rgba(242,236,224,.32); --accent: #e8cf7a; --btn-line: rgba(242,236,224,.32); --btn-hover: rgba(242,236,224,.06); --lit-off: rgba(242,236,224,.4); --focus: #e8cf7a; --dark: 1; }
-[data-theme="teal"]     { --bg: #1a5d63; --fg: #ffffff; --fg-2: rgba(255,255,255,.78); --fg-3: rgba(255,255,255,.6); --line: rgba(255,255,255,.18); --line-strong: rgba(255,255,255,.4); --accent: #ffffff; --btn-line: rgba(255,255,255,.4); --btn-hover: rgba(255,255,255,.08); --lit-off: rgba(255,255,255,.55); --focus: #ffffff; --dark: 1; }
+[data-theme="slate"] { --bg: #2d2a26; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: #b8b2a8; --line: #3a3631; --line-strong: #6e6660; --line-gold: #6e6660;
+  --accent: #e8cf7a; --btn-line: #6e6660; --btn-hover: #3a3631; --lit-off: #6e6660; --rail-fill: #e8cf7a; --rail-track: #3a3631; --focus: #e8cf7a; --dark: 1; }
+/* Academy's teal: ivory type, Academy's cream for the softer lines of type, its soft teal for rules. */
+[data-theme="teal"] { --bg: #1a5d63; --fg: #f2ece0; --fg-2: #ebe0c9; --fg-3: #ebe0c9; --line: #5ba0a7; --line-strong: #5ba0a7; --line-gold: #5ba0a7;
+  --accent: #f2ece0; --btn-line: #ebe0c9; --btn-hover: #0d3438; --lit-off: #b8b2a8; --rail-fill: #f2ece0; --rail-track: #5ba0a7; --focus: #f2ece0; --dark: 1; }
 
 /* Dark surfaces on cream pages (the Practice navy and navy panels, the flip
  * backs) carry their own text tokens so nothing inside follows the page. */
 [data-surface="dark"], .surface-dark {
-  --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: rgba(242,236,224,.6); --line: rgba(242,236,224,.14); --line-strong: rgba(242,236,224,.32);
-  --accent: #fbeee6; --accent-sm: #d09342; --btn-line: rgba(242,236,224,.32); --btn-hover: rgba(242,236,224,.06); --lit-off: rgba(242,236,224,.4); --focus: #d09342; --dark: 1;
+  --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: #b8b2a8; --line: #3a3631; --line-strong: #6e6660; --line-gold: #3a3631;
+  --accent: #fbeee6; --accent-sm: #d09342; --btn-line: #6e6660; --btn-hover: #3a3631; --lit-off: #6e6660; --rail-fill: #fbeee6; --rail-track: #3a3631; --focus: #d09342; --dark: 1;
   color: var(--fg);
 }
-.surface-practice { --line: rgba(208,147,66,.35); }
 [data-surface="light"], .surface-light {
-  --fg: #1b1916; --fg-2: #3a3631; --fg-3: #6e6660; --line: rgba(27,25,22,.12); --line-strong: rgba(27,25,22,.22);
-  --accent: #d09342; --accent-sm: #1b1916; --btn-line: rgba(27,25,22,.24); --btn-hover: rgba(27,25,22,.05); --lit-off: rgba(27,25,22,.5); --focus: #1b1916; --dark: 0;
+  --fg: #1b1916; --fg-2: #3a3631; --fg-3: #6e6660; --line: #b8b2a8; --line-strong: #6e6660; --line-gold: #e4ae9b;
+  --accent: #d09342; --accent-sm: #1b1916; --btn-line: #6e6660; --btn-hover: #fbeee6; --lit-off: #6e6660; --rail-fill: #1b1916; --rail-track: #b8b2a8; --focus: #1b1916; --dark: 0;
   color: var(--fg);
 }
-.theme-teal [data-surface="light"], .theme-teal .surface-light { --accent: var(--pa); --accent-sm: var(--pa-sm); --btn-line: var(--pa-ghost); --focus: var(--pa-sm); --line: #b8b2a8; }
+.theme-teal [data-surface="light"], .theme-teal .surface-light { --accent: var(--pa); --accent-sm: var(--pa-sm); --btn-line: var(--pa-ghost); --btn-hover: var(--pa-tint); --focus: var(--pa-sm); --line-gold: var(--pa-line); }
 
 @layer base {
   html { -webkit-text-size-adjust: 100%; font-optical-sizing: auto; }
@@ -250,19 +210,18 @@ html.theme-inq { --pa: #d4af37; --pa-sm: #2d2a26; --pa-rgb: 212,175,55; --pa-lin
   /* The twelve column grid. The :not() guard keeps it off an element that lays itself out with Tailwind's
    * `grid gap-* lg:grid-cols-*` utilities (the contact page's three cards). */
   .grid:not([class*="grid-cols-"]):not([class*="gap-"]) { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
-  /* The alternate tint, feathered over 72 px at both edges so the bands never meet in a hard line. It is
-   * an image layer (--tone-tint) so the tone floor below composes with it. */
-  .sec-alt { --tone-tint: linear-gradient(to bottom, transparent, rgba(var(--wash, 228,174,155),var(--wash-a, .16)) 72px, rgba(var(--wash, 228,174,155),var(--wash-a, .16)) calc(100% - 72px), transparent); background-image: var(--tone-tint); }
-  .theme-teal .sec-alt { --wash: var(--pa-wash); --wash-a: .06; }
+  /* The alternate section: a solid band of the book's blush (Academy's cream on the Academy page, none on INQ),
+   * painted as the section's floor while the page is in its tone. */
+  .sec-alt { --band: #fbeee6; }
+  .theme-teal .sec-alt { --band: var(--pa-band); }
 
   /* ── Tone floors (1.7.5) ────────────────────────────────────────────
-   * Every section[data-tone] carries a floor: transparent at its top, its own tone's colour from 200 px
-   * down, so the top still cross fades with the body. The floor is painted exactly while the page is in
-   * that section's tone, and fades with the body (--tone-floor is a registered colour), so text in the
+   * Every section[data-tone] carries a floor: its own tone's colour, solid, painted exactly while the page is
+   * in that section's tone and faded with the body (--tone-floor is a registered colour), so text in the
    * theme's --fg tokens and the ground under it always agree: a floor painted ahead of its tone would put
    * the light page's ink on a dark floor (the close h2 before the switch). The page end holds because the
    * tone engine skips the footer, so the closing bleed stays the theme, and its floor with it, to the
-   * bottom. Pages need no rule of their own. */
+   * bottom. An alternate section's floor is its band. Pages need no rule of their own. */
   [data-tone="cream"] { --tone-bg: #f2ece0; }
   [data-tone="ac-cream"] { --tone-bg: #f2ece0; }
   [data-tone="navy"] { --tone-bg: #1b1916; }
@@ -272,20 +231,13 @@ html.theme-inq { --pa: #d4af37; --pa-sm: #2d2a26; --pa-rgb: 212,175,55; --pa-lin
   [data-tone="teal"] { --tone-bg: #1a5d63; }
   [data-tone="slate"] { --tone-bg: #2d2a26; }
   .theme-teal [data-tone="ink"] { --tone-bg: #0d3438; }
-  main [data-tone] { background-image: var(--tone-tint, none), linear-gradient(to bottom, transparent 0, var(--tone-floor) 200px); transition: --tone-floor .5s var(--ease); }
+  main [data-tone] { background-color: var(--tone-floor); transition: --tone-floor .5s var(--ease); }
   html[data-theme="cream"] main [data-tone="cream"], html[data-theme="ac-cream"] main [data-tone="ac-cream"],
   html[data-theme="navy"] main [data-tone="navy"], html[data-theme="practice"] main [data-tone="practice"],
   html[data-theme="charcoal"] main [data-tone="charcoal"], html[data-theme="ink"] main [data-tone="ink"],
-  html[data-theme="teal"] main [data-tone="teal"], html[data-theme="slate"] main [data-tone="slate"] { --tone-floor: var(--tone-bg); }
-
-  /* Atmosphere at a section's edges: a lamp or grain layer that is a direct child of a section (and a
-   * section's own grain) fades out over its lower half, so it never ends in a hard horizontal seam; below
-   * the first section it also fades in over the top 200 px (the band where the tone floor meets the body),
-   * so it never starts in one either. A page can override the mask on its own lamp. */
-  [data-tone] > .lamp, [data-tone] > i.grain, [data-tone].grain::after { -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent); mask-image: linear-gradient(to bottom, #000 55%, transparent); }
-  main > [data-tone]:not(:first-child) > :is(.lamp, i.grain), main > [data-tone].grain:not(:first-child)::after { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 200px, #000 55%, transparent); mask-image: linear-gradient(to bottom, transparent 0, #000 200px, #000 55%, transparent); }
-  .rule-gold { height: 1px; border: 0; background: linear-gradient(90deg, transparent, var(--line-gold) 12% 88%, transparent); }
-  .rule-gold-v { width: 1px; background: linear-gradient(180deg, transparent, var(--line-gold) 12% 88%, transparent); }
+  html[data-theme="teal"] main [data-tone="teal"], html[data-theme="slate"] main [data-tone="slate"] { --tone-floor: var(--band, var(--tone-bg)); }
+  .rule-gold { height: 1px; border: 0; background: var(--line-gold); }
+  .rule-gold-v { width: 1px; background: var(--line-gold); }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
   /* ── 1.3 Type roles ─────────────────────────────────────────────────── */
@@ -313,22 +265,18 @@ html.theme-inq { --pa: #d4af37; --pa-sm: #2d2a26; --pa-rgb: 212,175,55; --pa-lin
   .quote-hang { hanging-punctuation: first; }
   @supports not (hanging-punctuation: first) { .quote-hang { text-indent: -.38em; } }
   .amp { font-family: var(--font-display); font-style: italic; font-weight: 400; color: var(--accent); }
-  .grad { background: linear-gradient(100deg, #fbeee6 0%, #e4ae9b 48%, #d09342 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .08em; }
-  /* The gradient wins over the heading em colour rules above (0,1,1 against 0,1,0). */
-  h1 em.grad, h2 em.grad, h3 em.grad, .t-xl em.grad, .t-l em.grad, .t-m em.grad, .t-s em.grad, .t-state em.grad { color: transparent; -webkit-text-fill-color: transparent; }
   .tabular { font-variant-numeric: tabular-nums; }
 
   /* ── Eyebrow ─────────────────────────────────────────────────────────── */
   .eyebrow { display: block; font-family: var(--font-sans); font-size: var(--fs-eyebrow); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; line-height: 1; color: var(--accent-sm, var(--accent)); margin-bottom: var(--eyebrow-gap); }
   @media (orientation: landscape) and (max-height: 500px) { .eyebrow { margin-bottom: 10px; } }
   .theme-teal .eyebrow { color: var(--pa-eyebrow); }
-  [data-theme="teal"] .eyebrow, [data-theme="teal"] .theme-teal .eyebrow { color: rgba(255,255,255,.7); }
-  .theme-teal[data-theme="ink"] .eyebrow { color: rgba(242,236,224,.7); }
+  [data-theme="teal"] .eyebrow, [data-theme="teal"] .theme-teal .eyebrow, .theme-teal[data-theme="ink"] .eyebrow { color: #ebe0c9; }
   [data-theme="slate"] .eyebrow, [data-tone="slate"] .eyebrow { color: #d4af37; }
   /* A light surface keeps its own eyebrow ink whatever the page tone is (the teal theme's white eyebrow
    * must never land on paper, a mat or the footer). */
   :is(.paper, .card, .paper-teal, .mat, .mat-blush, .tile, [data-surface="light"], .surface-light, .site-footer) .eyebrow { color: var(--accent-sm, var(--accent)); }
-  .theme-teal :is(.paper, .card, .paper-teal, [data-surface="light"], .surface-light, .site-footer) .eyebrow { color: var(--accent); }
+  .theme-teal :is(.paper, .card, .paper-teal, [data-surface="light"], .surface-light, .site-footer) .eyebrow { color: var(--accent-sm, var(--accent)); }
   /* Footer column labels and the mobile menu's labels keep the faint ink on the Suite pages (BRAND_FIX S4). */
   .site-footer .eyebrow, .menu-panel .eyebrow { color: var(--fg-3); }
 
@@ -357,7 +305,7 @@ html.theme-inq { --pa: #d4af37; --pa-sm: #2d2a26; --pa-rgb: 212,175,55; --pa-lin
     .btn-gold:hover { background: #e4ae9b; }
     :is([data-tone="slate"]) .btn-gold:hover { background: #e8cf7a; }
     .btn-line:hover { background: var(--btn-hover); }
-    .btn-cream:hover { background: #ffffff; }
+    .btn-cream:hover { background: #fbeee6; }
     .btn-teal:hover { background: var(--pa-btn-hover); }
     .btn-line-teal:hover { background: var(--pa-tint); }
     .link:hover, .link-arrow:hover { text-decoration: underline; }
@@ -375,50 +323,25 @@ html.theme-inq { --pa: #d4af37; --pa-sm: #2d2a26; --pa-rgb: 212,175,55; --pa-lin
   .link svg, .link-arrow svg { width: 14px; height: 14px; flex: none; transition: transform 200ms var(--hover); }
 
   /* ── Paper, mats, the plate ──────────────────────────────────────────── */
-  .paper, .card {
-    position: relative;
-    background: linear-gradient(var(--paper, #fbeee6), var(--paper, #fbeee6)) padding-box,
-      linear-gradient(180deg, #ffffff 0%, #f2ece0 42%, #b8b2a8 100%) border-box;
-    border: 1px solid transparent; border-radius: var(--r-lg);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.9), inset 0 0 0 1px rgba(255,255,255,.5), var(--sh-paper);
-    color: #1b1916;
-  }
-  .paper, .card { --fg: #1b1916; --fg-2: #3a3631; --fg-3: #6e6660; --line: rgba(27,25,22,.12); --lit-off: rgba(27,25,22,.5); --accent: #d09342; --accent-sm: #1b1916; --focus: #1b1916; --dark: 0; }
-  .theme-teal .paper, .theme-teal .card { --paper: #ffffff; background-image: linear-gradient(var(--paper), var(--paper)), linear-gradient(180deg, #ffffff 0%, #f2ece0 42%, #b8b2a8 100%); --accent: var(--pa); --accent-sm: var(--pa-sm); --focus: var(--pa-sm); --btn-line: var(--pa-ghost); }
-  .paper-teal { position: relative; border-image: none; border: 1px solid rgba(var(--pa-rgb),.4); background: var(--pa-tint); border-radius: var(--r-lg); box-shadow: var(--sh-paper); color: #1b1916; --fg: #1b1916; --fg-2: #3a3631; --fg-3: #6e6660; --accent: var(--pa); --accent-sm: var(--pa-sm); --focus: var(--pa-sm); --btn-line: var(--pa-ghost); --line: rgba(var(--pa-rgb),.25); --dark: 0; }
-  .paper-teal.paper-white { background: #ffffff; border-color: rgba(var(--pa-rgb),.3); box-shadow: var(--sh-object); }
-  .paper-lift { transition: transform 200ms var(--hover), box-shadow 200ms var(--hover); }
-  .mat { position: relative; overflow: visible; background: #fbeee6; border-radius: var(--r-lg); box-shadow: inset 0 1px 2px rgba(27,25,22,.06), inset 0 0 0 1px rgba(27,25,22,.05); }
-  .mat-blush { background: radial-gradient(60% 55% at 88% 0%, rgba(228,174,155,.34), transparent 70%), linear-gradient(160deg, #fbeee6 0%, #f2ece0 58%, #fbeee6 100%); }
-  .panel-practice { position: relative; overflow: clip; background: #1b1916; border-radius: var(--r-lg); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); --line: rgba(208,147,66,.35); }
-  .panel-navy { position: relative; overflow: clip; background: #0d3054; border-radius: var(--r-lg); box-shadow: inset 0 1px 0 rgba(255,255,255,.07); }
-  .theme-teal .card { border-color: transparent; }
-
-  /* ── Lamp, grain ─────────────────────────────────────────────────────── */
-  .lamp { position: absolute; inset: 0; pointer-events: none; border-radius: inherit; z-index: 0;
-    background: radial-gradient(55% 60% at var(--lx, 18%) var(--ly, 0%), rgba(208,147,66,calc(var(--la, .16) * 1.5)), transparent 70%); }
-  [data-tone="slate"] > .lamp { background: radial-gradient(55% 60% at var(--lx, 18%) var(--ly, 0%), rgba(212,175,55,var(--la, .16)), transparent 70%); }
-  .lamp-teal { background: radial-gradient(55% 60% at var(--lx, 85%) var(--ly, 100%), rgba(255,255,255,var(--la, .08)), transparent 70%); }
-  /* Academy's deep teal close: the radial depth in its own teal, whatever class its lamp carries. */
-  .theme-teal [data-tone="ink"] > .lamp { background: radial-gradient(55% 60% at var(--lx, 85%) var(--ly, 100%), rgba(26,93,99,calc(var(--la, .08) * 6)), transparent 70%); }
-  .lamp-cream { background: radial-gradient(50% 45% at var(--lx, 50%) var(--ly, 0%), rgba(255,255,255,.75), transparent 72%), linear-gradient(to top, rgba(228,174,155,.16), transparent 30%); animation: lights 2.2s var(--ease) both; }
-  @keyframes lights { from { opacity: 0; } }
-  .grain { position: relative; }
-  /* A lamp that also carries the grain stays an absolute layer over its section (.grain alone would make it
-   * position: relative, an empty inline box, and the lamp would never show). */
-  .lamp.grain { position: absolute; inset: 0; display: block; }
-  .grain::after { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; background-image: var(--grain); background-size: 180px 180px; opacity: var(--ga, .32); mix-blend-mode: overlay; z-index: 0; }
-  .grain-cream::after { opacity: .18; mix-blend-mode: multiply; }
-  /* The lamp is its own layer (z-index, the theme fade, the bottom mask), so its grain cannot overlay the
-   * page beneath and would read as a grey haze at full strength: inside a lamp it runs at .3 of --ga. */
-  .lamp.grain::after { z-index: auto; opacity: calc(var(--ga, .32) * .3); }
+  /* Paper is a flat field of a book colour: Leah's blush on the Suite pages (its own fill sets it off the ivory, so
+   * it needs no edge), Academy's cream, or INQ's ivory with a slate hairline. */
+  .paper, .card { position: relative; background: var(--paper, #fbeee6); border: 1px solid var(--paper-edge, #fbeee6); border-radius: var(--r-lg); color: #1b1916; }
+  .paper, .card { --fg: #1b1916; --fg-2: #3a3631; --fg-3: #6e6660; --line: #b8b2a8; --lit-off: #6e6660; --accent: #d09342; --accent-sm: #1b1916; --btn-hover: #f2ece0; --focus: #1b1916; --dark: 0; }
+  .theme-teal .paper, .theme-teal .card { --paper: var(--pa-paper); --paper-edge: var(--pa-edge); --accent: var(--pa); --accent-sm: var(--pa-sm); --focus: var(--pa-sm); --btn-line: var(--pa-ghost); }
+  /* The product card with the product's own edge (INQ's bonus module and investment card): the page's paper inside a
+   * hairline of the product line colour. */
+  .paper-teal { position: relative; border: 1px solid var(--pa-line); background: var(--pa-paper); border-radius: var(--r-lg); color: #1b1916; --fg: #1b1916; --fg-2: #3a3631; --fg-3: #6e6660; --accent: var(--pa); --accent-sm: var(--pa-sm); --focus: var(--pa-sm); --btn-line: var(--pa-ghost); --line: #b8b2a8; --dark: 0; }
+  .paper-lift { transition: transform 200ms var(--hover); }
+  .mat { position: relative; overflow: visible; background: #fbeee6; border-radius: var(--r-lg); }
+  .panel-practice { position: relative; overflow: clip; background: #1b1916; border-radius: var(--r-lg); }
+  .panel-navy { position: relative; overflow: clip; background: #0d3054; border-radius: var(--r-lg); }
 
   /* ── Ruled list ──────────────────────────────────────────────────────── */
   .ladder { list-style: none; margin: 0; padding: 0; }
   .ladder > li { position: relative; display: grid; grid-template-columns: minmax(160px, 220px) 1fr; column-gap: var(--gap); padding-block: 22px; border-top: 1px solid var(--line); }
   .ladder > li:last-child { border-bottom: 1px solid var(--line); }
   .ladder-gold > li, .ladder-gold > li:last-child { border-top: 0; border-bottom: 0; }
-  .ladder-gold > li::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--line-gold) 12% 88%, transparent); }
+  .ladder-gold > li::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--line-gold); }
   .ladder-gold > li:last-child { padding-bottom: 22px; }
   .ladder > li::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 450ms var(--slow); z-index: 1; }
   .ladder-name { font-family: var(--font-display); font-size: var(--fs-title); font-weight: 500; letter-spacing: -.008em; line-height: 1.2; color: var(--fg); transition: color 350ms var(--ease); }
@@ -432,15 +355,12 @@ html.theme-inq { --pa: #d4af37; --pa-sm: #2d2a26; --pa-rgb: 212,175,55; --pa-lin
   .ladder a { color: inherit; text-decoration: none; }
   @media (max-width: 734px) { .ladder > li { grid-template-columns: 1fr; row-gap: 6px; padding-block: 18px; } }
 
-  /* ── Tile: a paper card with a masked, bezel-less screen ───────────── */
-  .tile { --pad: clamp(24px, 2.2vw, 40px); padding: var(--pad); display: flex; flex-direction: column; }
-  .tile-media { position: relative; margin-top: clamp(20px, 2vw, 40px); min-height: 196px; flex: 1; contain: paint; overflow: hidden; margin-inline: calc(-1 * var(--pad)); margin-bottom: calc(-1 * var(--pad));
-    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 56px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 56px), transparent); }
-  .tile-media .screen { position: absolute; top: 0; display: block; height: auto; max-width: none; box-shadow: 0 0 0 1px rgba(27,25,22,.08); border-radius: calc(var(--r-lg) * .6) calc(var(--r-lg) * .6) 0 0; }
+  /* ── Tile: a paper card with a bezel-less screen, cropped by the card's own edge ── */
+  .tile { --pad: clamp(24px, 2.2vw, 40px); padding: var(--pad); display: flex; flex-direction: column; overflow: hidden; }
+  .tile-media { position: relative; margin-top: clamp(20px, 2vw, 40px); min-height: 196px; flex: 1; contain: paint; overflow: hidden; margin-inline: calc(-1 * var(--pad)); margin-bottom: calc(-1 * var(--pad)); }
+  .tile-media .screen { position: absolute; top: 0; display: block; height: auto; max-width: none; box-shadow: 0 0 0 1px #b8b2a8; border-radius: calc(var(--r-lg) * .6) calc(var(--r-lg) * .6) 0 0; }
   .tile-media-ct .screen { left: 50%; width: var(--screen-w, 70%); transform: translateX(-50%); }
-  .tile-media-tl { -webkit-mask-image: linear-gradient(to right, #000 74%, transparent 99%), linear-gradient(to bottom, #000 calc(100% - 56px), transparent); -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, #000 74%, transparent 99%), linear-gradient(to bottom, #000 calc(100% - 56px), transparent); mask-composite: intersect; }
   .tile-media-tl .screen { left: var(--pad); width: var(--screen-w, 150%); border-radius: calc(var(--r-lg) * .6) 0 0 0; }
-  .tile-media-tr { -webkit-mask-image: linear-gradient(to left, #000 74%, transparent 99%), linear-gradient(to bottom, #000 calc(100% - 56px), transparent); -webkit-mask-composite: source-in; mask-image: linear-gradient(to left, #000 74%, transparent 99%), linear-gradient(to bottom, #000 calc(100% - 56px), transparent); mask-composite: intersect; }
   .tile-media-tr .screen { right: var(--pad); width: var(--screen-w, 150%); border-radius: 0 calc(var(--r-lg) * .6) 0 0; }
   .js .tile .screen { transition: transform 1.2s var(--slow) .35s; }
   .js .tile:not(.in) .screen { transform: translateY(12px); }
@@ -449,12 +369,9 @@ html.theme-inq { --pa: #d4af37; --pa-sm: #2d2a26; --pa-rgb: 212,175,55; --pa-lin
   .tile-body { font-size: var(--fs-body); line-height: 1.55; color: var(--fg-2); margin-top: 8px; }
 
   /* ── Phone: a drawn device in em of the screen width (1.6) ─────────── */
+  /* The body is the ink with a graphite rim, so the phone keeps its edge on the ivory and in the dark rooms alike. */
   .phone { --pw: 300px; font-size: calc(var(--pw) / 100); width: 106em; position: relative; margin: 0; flex: none;
-    border-radius: 17em; padding: 3em; background: linear-gradient(155deg, #3a3631 0%, #1b1916 48%, #3a3631 100%);
-    box-shadow: inset 0 0 0 .55em #1b1916, inset 0 0 0 .9em rgba(255,255,255,.06), var(--sh-object); }
-  .phone-dark { box-shadow: inset 0 0 0 .55em #1b1916, inset 0 0 0 .9em rgba(255,255,255,.06), var(--sh-object-dark); }
-  .phone::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 3;
-    background: linear-gradient(118deg, rgba(255,255,255,.14) 0%, transparent 18%, transparent 82%, rgba(255,255,255,.06) 100%); }
+    border-radius: 17em; padding: 3em; background: #1b1916; box-shadow: inset 0 0 0 .6em #3a3631; }
   .phone-screen { position: relative; width: 100em; aspect-ratio: 390 / 844; border-radius: 14em; overflow: hidden; background: #f2ece0; container-type: size; z-index: 1; }
   .phone-screen .cam, .win-screen .cam { position: absolute; inset: 0; transform-origin: 0 0; transition: transform var(--cd, 0ms) var(--scene); }
   .phone-screen picture, .win-screen picture { display: contents; }
@@ -482,53 +399,44 @@ html.theme-inq { --pa: #d4af37; --pa-sm: #2d2a26; --pa-rgb: 212,175,55; --pa-lin
   .ds-strip .ds-foot { clip-path: inset(var(--foot) 0 0 0); }
   .ds-strip .scroll-body { position: absolute; left: 0; top: 0; width: 100em; transform: translate3d(0, calc(-1 * var(--off, 0) * 1em), 0); }
   .ds-strip .scroll-body img { position: absolute; left: 0; width: 100em; height: auto; max-width: none; }
-  .ds-strip .scroll-body .ds-next { clip-path: inset(var(--head, 6.2%) 0 0 0); -webkit-mask-image: linear-gradient(to bottom, transparent var(--head, 6.2%), #000 calc(var(--head, 6.2%) + 2em)); mask-image: linear-gradient(to bottom, transparent var(--head, 6.2%), #000 calc(var(--head, 6.2%) + 2em)); }
-  /* The edge mask: while the camera is in (scale above 1) the outer 3 px of the screen fade to the app canvas,
-   * a soft edge on the crop, never wide enough to lie over the first glyph of a line. A lean must keep every
-   * frame edge, and the phone's rounded corners, clear of what the app draws; on the current captures (header and
-   * bottom bar at the edges) no phone lean does, so the pages author none (October 21, 2026). */
-  .phone-screen::after, .win-screen::after { content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; transition: opacity .45s var(--ease);
-    background: linear-gradient(90deg, #f2ece0 0, rgba(242,236,224,0) 3px, rgba(242,236,224,0) calc(100% - 3px), #f2ece0 100%); }
-  .phone-screen.cam-on::after, .win-screen.cam-on::after { opacity: 1; transition-duration: .2s; }
-  .phone-floor { position: absolute; left: -10%; right: -10%; bottom: -5em; height: 10em; border-radius: 50%; z-index: -1; pointer-events: none;
-    background: radial-gradient(50% 50% at 50% 50%, rgba(27,25,22,var(--floor-a, .3)), transparent 70%); filter: blur(1em); transform: translateX(var(--sx, 0px)); }
-  .phone-dark .phone-floor { --floor-a: .55; }
+  .ds-strip .scroll-body .ds-next { clip-path: inset(var(--head, 6.2%) 0 0 0); }
   .phone figcaption { position: absolute; top: 100%; left: 0; right: 0; margin-top: 14px; font-size: 14px; text-align: center; max-width: none; }
-  .slot { position: absolute; inset: 10px; border: 1px dashed rgba(27,25,22,.14); border-radius: 10px; pointer-events: none; z-index: 0; }
+  .slot { position: absolute; inset: 10px; border: 1px dashed #b8b2a8; border-radius: 10px; pointer-events: none; z-index: 0; }
   .has-frame .slot { display: none; }
   /* The ring: scrubbed by the story engine (arrive, press, release around each press point), never on a
-   * timer. Its fill deepens while it presses (--fill). Positioned in capture coordinates through the camera. */
-  .tap { position: absolute; left: 0; top: 0; width: 9cqw; height: 9cqw; border-radius: 50%; border: 1.5px solid #f2ece0; opacity: 0; pointer-events: none; z-index: 4;
-    box-shadow: 0 1px 3px rgba(27,25,22,.25); transform: translate(0, 0) translate(-50%, -50%) scale(.6); }
-  .tap::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #4f6d8c; opacity: calc(var(--fill, .5) * .7); }
-  /* The halo: a soft gold ring on one of the app's own controls (a tab in its bottom bar), lit for a step. */
+   * timer. It grows in and out (the engine writes its scale) rather than fading, so wherever the scroll rests it is
+   * the book's colours at full strength: an ivory ring with a steel dot that swells while it presses (--fill).
+   * Positioned in capture coordinates through the camera. */
+  .tap { position: absolute; left: 0; top: 0; width: 9cqw; height: 9cqw; border-radius: 50%; border: 1.5px solid #f2ece0; pointer-events: none; z-index: 4;
+    transform: translate(0, 0) translate(-50%, -50%) scale(0); }
+  .tap::after { content: ""; position: absolute; inset: 22%; border-radius: inherit; background: #4f6d8c; transform: scale(calc(.4 + var(--fill, .5) * .6)); }
+  /* The halo: a gold ring on one of the app's own controls (a tab in its bottom bar), lit for a step. */
   .halo { position: absolute; left: 0; top: 0; width: 15cqw; aspect-ratio: 1; border-radius: 50%; pointer-events: none; z-index: 4; opacity: 0;
-    background: radial-gradient(closest-side, rgba(208,147,66,.42), rgba(208,147,66,.18) 62%, transparent); box-shadow: 0 0 0 1px rgba(208,147,66,.38);
+    border: 1.5px solid #d09342;
     transform: translate(calc(var(--x, 50) * 1cqw), calc(var(--y, 50) * 1cqh)) translate(-50%, -50%) scale(.86); }
-  /* The lift: a device rises 10 px (and its floor shadow deepens) as a story step reaches it (--lift 0 to 1). */
+  /* The lift: a device rises 10 px as a story step reaches it (--lift 0 to 1). */
   [data-device] { translate: 0 calc(var(--lift, 0) * -10px); }
-  [data-device] .phone-floor { background: radial-gradient(50% 50% at 50% 50%, rgba(27,25,22,calc(var(--floor-a, .3) + var(--lift, 0) * .1)), transparent 70%); }
 
   /* ── Window: a browser window for desktop captures ─────────────────── */
   .win { --ww: 1200px; font-size: calc(var(--ww) / 100); width: min(100%, var(--ww)); border-radius: 1em; overflow: hidden; position: relative; margin: 0;
-    background: #fbeee6; box-shadow: 0 0 0 1px rgba(27,25,22,.12), inset 0 1px 0 rgba(255,255,255,.6), var(--sh-object); }
+    background: #fbeee6; box-shadow: 0 0 0 1px #b8b2a8; }
   .win-bar { height: 3.2em; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 1.2em; }
   .win-dots { display: flex; align-items: center; }
-  .win-dots i { display: inline-block; width: .72em; height: .72em; border-radius: 50%; background: rgba(27,25,22,.18); margin-right: .55em; }
-  .win-url { display: flex; align-items: center; justify-content: center; gap: .45em; width: 34em; height: 1.9em; border-radius: .95em; background: #fbeee6; box-shadow: inset 0 0 0 1px rgba(27,25,22,.08);
+  .win-dots i { display: inline-block; width: .72em; height: .72em; border-radius: 50%; background: #b8b2a8; margin-right: .55em; }
+  .win-url { display: flex; align-items: center; justify-content: center; gap: .45em; width: 34em; height: 1.9em; border-radius: .95em; background: #f2ece0;
     font-family: var(--font-sans); font-size: .82em; font-weight: 500; line-height: 1.9em; color: #6e6660; text-align: center; white-space: nowrap; }
   .win-url svg { width: .85em; height: .85em; flex: none; }
   .win-screen { position: relative; aspect-ratio: 16 / 10; background: #f2ece0; overflow: hidden; container-type: size; }
   /* The drawn cursor is scoped to the window screen, so the price sign of
    * 2.4.10 (<span class="cur">$</span>) keeps its name without colliding. */
-  .win-screen .cur { position: absolute; left: 0; top: 0; width: 1.5em; min-width: 11px; opacity: 0; z-index: 4; pointer-events: none; filter: drop-shadow(0 1px 1.2px rgba(0,0,0,.35));
+  .win-screen .cur { position: absolute; left: 0; top: 0; width: 1.5em; min-width: 11px; opacity: 0; z-index: 4; pointer-events: none;
     transform: translate(var(--tx, 0px), var(--ty, 0px)) translate(-23%, -12%); transition: transform var(--cd, 0ms) var(--scene), opacity .25s; }
   .win-screen .cur svg { width: 100%; height: auto; display: block; }
   .win-screen .cur.on { opacity: 1; }
   .win-screen .cur svg { transform-origin: 23% 12%; transition: transform 100ms var(--ease); }
-  .win-dark { background: #1b1916; box-shadow: 0 0 0 1px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.1), var(--sh-object-dark); }
-  .win-dark .win-dots i { background: rgba(255,255,255,.22); }
-  .win-dark .win-url { background: rgba(255,255,255,.08); color: rgba(242,236,224,.7); box-shadow: none; }
+  .win-dark { background: #1b1916; box-shadow: 0 0 0 1px #3a3631; }
+  .win-dark .win-dots i { background: #3a3631; }
+  .win-dark .win-url { background: #3a3631; color: #b8b2a8; }
   .win-caps { position: relative; margin-top: 16px; min-height: 1.4em; }
   /* Stacked captions dip like the frames: the old one is gone by 140 ms, the new one starts at 110 ms. */
   .win-caps .win-cap { position: absolute; left: 0; top: 0; margin: 0; opacity: 0; transition: opacity .14s var(--ease); }
@@ -575,17 +483,16 @@ html.theme-inq { --pa: #d4af37; --pa-sm: #2d2a26; --pa-rgb: 212,175,55; --pa-lin
   .day-item-in { max-width: 30em; }
   .day-item .t-body { color: var(--fg-2); margin-top: 14px; }
   .day-item .story-static { margin-top: 28px; }
-  .day-item.is-evening { background: #1b1916; color: #f2ece0; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: rgba(242,236,224,.6); --line: rgba(242,236,224,.14); padding-inline: 24px; border-radius: var(--r-lg); border-top: 0; border-bottom: 0; }
-  .day-item.is-evening .phone { box-shadow: inset 0 0 0 .55em #1b1916, inset 0 0 0 .9em rgba(255,255,255,.06), var(--sh-object-dark); }
+  .day-item.is-evening { background: #1b1916; color: #f2ece0; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: #b8b2a8; --line: #3a3631; padding-inline: 24px; border-radius: var(--r-lg); border-top: 0; border-bottom: 0; }
   .day-item.is-evening .t-cap-i { color: #b8b2a8; }
-  .day-stage { position: relative; border-radius: var(--r-lg); overflow: hidden; background: #fbeee6; box-shadow: inset 0 1px 2px rgba(27,25,22,.06), inset 0 0 0 1px rgba(27,25,22,.05); }
-  .day-stage .sky { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
-  .day-stage .sky[data-sky="morning"] { opacity: 1; background: radial-gradient(60% 55% at 12% 0%, rgba(228,174,155,.4), transparent 70%), linear-gradient(180deg, #fbeee6, #fbeee6); }
-  .day-stage .sky[data-sky="midday"] { background: radial-gradient(55% 50% at 50% -10%, rgba(255,255,255,.6), transparent 70%), linear-gradient(180deg, #fbeee6, #f2ece0); }
-  .day-stage .sky[data-sky="afternoon"] { background: radial-gradient(55% 55% at 88% 10%, rgba(208,147,66,.3), transparent 70%), linear-gradient(180deg, #f2ece0, #fbeee6); }
-  .day-stage .sky[data-sky="evening"] { background: radial-gradient(60% 55% at 50% 100%, rgba(208,147,66,.16), transparent 70%), linear-gradient(180deg, #3a3631, #1b1916); }
-  .day-stage .phone .phone-floor { transition: transform .4s var(--ease); }
-  .day-stage.is-night .phone { box-shadow: inset 0 0 0 .55em #1b1916, inset 0 0 0 .9em rgba(255,255,255,.06), var(--sh-object-dark); }
+  /* The sky: one solid book colour per time of day (blush, ivory, peach, ink); the engine shows the one nearest the
+   * scroll and the change cross fades in time, so a resting scroll always shows one colour. */
+  .day-stage { position: relative; border-radius: var(--r-lg); overflow: hidden; background: #fbeee6; }
+  .day-stage .sky { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity .6s var(--ease); }
+  .day-stage .sky[data-sky="morning"] { opacity: 1; background: #fbeee6; }
+  .day-stage .sky[data-sky="midday"] { background: #f2ece0; }
+  .day-stage .sky[data-sky="afternoon"] { background: #e4ae9b; }
+  .day-stage .sky[data-sky="evening"] { background: #1b1916; }
   .day-caps { position: absolute; left: 24px; bottom: 24px; right: 128px; min-height: 1.4em; }
   .day-cap { position: absolute; left: 0; bottom: 0; margin: 0; opacity: 0; transition: opacity .14s var(--ease), color .4s var(--ease); color: var(--day-cap, #6e6660); font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 14px; line-height: 1.4; }
   .day-cap.on { opacity: 1; transition: opacity .26s var(--ease) .11s, color .4s var(--ease); }
@@ -618,13 +525,10 @@ html.theme-inq { --pa: #d4af37; --pa-sm: #2d2a26; --pa-rgb: 212,175,55; --pa-lin
   .flip-inner { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); width: 100%; min-height: 330px; height: auto; transform-style: preserve-3d; transition: transform 640ms var(--spring); border-radius: var(--r-lg); }
   .flip[aria-pressed="true"] .flip-inner { transform: rotateY(180deg); }
   .flip-face { grid-area: 1 / 1; display: flex; flex-direction: column; justify-content: space-between; gap: 24px; padding: 32px; border-radius: var(--r-lg); backface-visibility: hidden; -webkit-backface-visibility: hidden; min-height: 330px; }
-  /* A warm cream face with an antique gold edge (the handoff's "cream/gold fronts", BRAND_FIX S7); it follows
-   * .paper, so it wins at equal specificity. */
-  .flip-front { color: #1b1916; --accent: #d09342; --accent-sm: #1b1916;
-    background: linear-gradient(#fbeee6, #f2ece0) padding-box, linear-gradient(180deg, #e4ae9b 0%, #d09342 100%) border-box; }
-  .flip-back { transform: rotateY(180deg); background: #1b1916; color: #b8b2a8; overflow: hidden; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: rgba(242,236,224,.6); box-shadow: inset 0 1px 0 rgba(255,255,255,.07), inset 0 0 0 1px rgba(255,255,255,.06), var(--sh-paper); }
-  .flip-back .lamp { --lx: 0%; --ly: 0%; --la: .16; }
-  .flip-back.grain::after { opacity: .25; }
+  /* A blush face with an amber edge (the handoff's "cream/gold fronts", BRAND_FIX S7); it follows .paper, so it
+   * wins at equal specificity. */
+  .flip-front { color: #1b1916; --accent: #d09342; --accent-sm: #1b1916; --paper: #fbeee6; --paper-edge: #d09342; }
+  .flip-back { transform: rotateY(180deg); background: #1b1916; color: #b8b2a8; overflow: hidden; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: #b8b2a8; }
   .flip-back > * { position: relative; z-index: 1; }
   .flip-quote { font-family: var(--font-display); font-size: clamp(24px, 1.9vw, 32px); font-weight: 500; letter-spacing: -.015em; line-height: 1.12; color: #1b1916; text-wrap: pretty; hanging-punctuation: first; }
   @supports not (hanging-punctuation: first) { .flip-quote { text-indent: -.38em; } }
@@ -635,60 +539,53 @@ html.theme-inq { --pa: #d4af37; --pa-sm: #2d2a26; --pa-rgb: 212,175,55; --pa-lin
   .flip-cue { display: inline-flex; align-items: center; gap: .45em; font-family: var(--font-sans); font-size: var(--fs-small); font-weight: 500; letter-spacing: -.005em; line-height: 1; color: #1b1916; }
   .flip-back .flip-cue { color: #d09342; }
   .flip-cue svg { width: 14px; height: 14px; }
-  .flip i.sheen { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; z-index: 2;
-    background: linear-gradient(110deg, transparent 40%, rgba(255,255,255,.18) 50%, transparent 60%); background-size: 240% 100%; background-position: 0% 0; }
-  .flip.flipping i.sheen { opacity: 1; animation: sheen 640ms var(--ease) forwards; }
   .flip.flipping { animation: lift 640ms var(--ease); z-index: 3; }
-  @keyframes sheen { from { background-position: 0% 0; } to { background-position: 100% 0; } }
   @keyframes lift { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
-  @keyframes lift-shadow { 0% { box-shadow: var(--sh-paper); } 50% { box-shadow: 0 0 0 1px rgba(27,25,22,.05), 0 2px 4px rgba(27,25,22,.04), 0 20px 56px -10px rgba(27,25,22,.08), 0 72px 128px -32px rgba(27,25,22,.12); } 100% { box-shadow: var(--sh-paper); } }
-  .flip.flipping .flip-front { animation: lift-shadow 640ms var(--ease); }
   @media (hover: hover) and (pointer: fine) { .flip:hover { transform: translateY(-2px); z-index: 3; } }
   .flip-close { margin-top: 64px; }
 
   /* ── Toggle card (home quiz only) ──────────────────────────────────── */
   .tcard { width: 236px; height: 300px; padding: 28px 24px; display: flex; flex-direction: column; justify-content: center; gap: 0; font-family: var(--font-sans); font-size: 15px; color: #1b1916; user-select: none; }
   .tcard-row { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; }
-  .tcard-row + .tcard-row { border-top: 1px solid rgba(27,25,22,.08); }
+  .tcard-row + .tcard-row { border-top: 1px solid #b8b2a8; }
   .tcard-row span { line-height: 1; font-weight: 450; }
-  .tcard .tg { position: relative; display: block; width: 38px; height: 22px; border-radius: 999px; background: #b8b2a8; box-shadow: inset 0 1px 2px rgba(27,25,22,.18); flex: none; }
-  .tcard .tg::after { content: ""; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+  .tcard .tg { position: relative; display: block; width: 38px; height: 22px; border-radius: 999px; background: #b8b2a8; flex: none; }
+  .tcard .tg::after { content: ""; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #f2ece0; }
   .tcard .tg.on { background: #d09342; }
   .tcard .tg.on::after { left: 18px; }
 
   /* ── The mark geometry ─────────────────────────────────────────────── */
   /* z-index 0: under the copy, which sits in a positioned wrapper at z-index 1 (a bleed's .wrap already is). */
-  .geo { position: absolute; z-index: 0; width: var(--geo-size, 1100px); height: var(--geo-size, 1100px); max-width: none; max-height: none; pointer-events: none; color: currentColor; opacity: 1; }
-  .geo path, .geo circle.ring { fill: none; stroke: currentColor; stroke-width: var(--geo-sw, 1); opacity: var(--geo-o, .08); }
-  .geo circle.dot { fill: currentColor; stroke: none; opacity: calc(var(--geo-o, .08) * 2); }
+  /* The mark's lines in the faintest book colour that still reads on the ground (the Geo `color`, solid). */
+  .geo { position: absolute; z-index: 0; width: var(--geo-size, 1100px); height: var(--geo-size, 1100px); max-width: none; max-height: none; pointer-events: none; }
+  .geo path, .geo circle.ring { fill: none; stroke: currentColor; stroke-width: var(--geo-sw, 1); }
+  .geo circle.dot { fill: currentColor; stroke: none; }
 
   /* ── The floor (Practice final only) ───────────────────────────────── */
   .floor { position: absolute; inset: 0; perspective: 1100px; perspective-origin: 50% 28%; overflow: hidden; pointer-events: none; }
   .floor-plane { --tile-w: 172px; --tile-h: 372px; --tile-gap: 28px; --floor-cols: 6; --floor-rows: 3; --floor-shift: calc(var(--floor-rows) * (var(--tile-h) + var(--tile-gap)));
     position: absolute; left: 50%; top: 30%; width: calc(var(--floor-cols) * var(--tile-w) + (var(--floor-cols) - 1) * var(--tile-gap));
-    transform: rotateX(56deg) translate3d(-50%, 0, 0) scale(.92); transform-origin: 50% 0;
-    mask-image: linear-gradient(to bottom, transparent, #000 18%); -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%); }
+    transform: rotateX(56deg) translate3d(-50%, 0, 0) scale(.92); transform-origin: 50% 0; }
   /* The strip drifts with the scroll only (SCROLL_SPEC S11): the engine writes --fp from 0 to 1 over the
    * section's way to the end of the page. With the scroll still, the floor is still. */
   .floor-strip { display: grid; grid-template-columns: repeat(var(--floor-cols), var(--tile-w)); gap: var(--tile-gap); padding-bottom: var(--tile-gap); margin: 0; list-style: none; transform: translate3d(0, calc(-1 * var(--fp, 0) * var(--floor-shift)), 0); }
-  .floor-strip img { width: var(--tile-w); height: var(--tile-h); object-fit: cover; object-position: top; border-radius: var(--sp-2); box-shadow: 0 0 0 1px rgba(255,255,255,.08); opacity: .9; background: #f2ece0; }
-  .floor-fade { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(60% 60% at 50% 45%, transparent 60%, #1b1916 100%), linear-gradient(to bottom, #1b1916 0%, rgba(27,25,22,.9) 22%, transparent 48%); }
+  .floor-strip img { width: var(--tile-w); height: var(--tile-h); object-fit: cover; object-position: top; border-radius: var(--sp-2); background: #f2ece0; }
   @media (max-width: 734px) { .floor-plane { --floor-cols: 4; transform: rotateX(56deg) translate3d(-50%, 0, 0) scale(.72); } }
 
   /* ── Header (1.8) ──────────────────────────────────────────────────── */
   .site-header { position: fixed; inset-inline: 0; top: 0; z-index: 50; height: var(--nav-h); color: #1b1916; --fg: #1b1916; --fg-2: #3a3631; --fg-3: #6e6660; --focus: #1b1916;
     transition: background-color 240ms var(--ease), box-shadow 240ms var(--ease), color 240ms var(--ease), transform 450ms var(--sheet); }
   .site-header .hdr-row { display: flex; align-items: center; justify-content: space-between; height: var(--nav-h); view-transition-name: nav; }
-  .site-header.is-scrolled { background: rgba(242,236,224,.82); -webkit-backdrop-filter: saturate(160%) blur(18px); backdrop-filter: saturate(160%) blur(18px); box-shadow: 0 1px 0 rgba(27,25,22,.08); }
-  .site-header.theme-teal.is-scrolled { background: rgba(242,236,224,.86); }
-  .site-header.is-dark { color: #f2ece0; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: rgba(242,236,224,.6); --focus: #d09342; }
+  /* Scrolled, the bar is solid: the ivory with a slate hairline under it (nothing reads through, nothing blurs). */
+  .site-header.is-scrolled { background: #f2ece0; box-shadow: 0 1px 0 #b8b2a8; }
+  .site-header.is-dark { color: #f2ece0; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: #b8b2a8; --focus: #d09342; }
   /* Dark state: the bar takes the colour of what it sits on (the page's tone, or the dark surface under it,
-   * which the script writes as --hdr-bg), at 90 percent with the blur, so nothing reads through it. */
-  .site-header.is-dark.is-scrolled { background: color-mix(in srgb, var(--hdr-bg, var(--bg)) 90%, transparent); box-shadow: 0 1px 0 rgba(242,236,224,.1); }
+   * which the script writes as --hdr-bg), solid, with a hairline in the dark rooms' line colour. */
+  .site-header.is-dark.is-scrolled { background: var(--hdr-bg, var(--bg)); box-shadow: 0 1px 0 var(--hdr-line, #3a3631); }
+  html.theme-teal:not(.theme-inq) .site-header { --hdr-line: #0d3438; }
   .site-header.nav-hidden { transform: translateY(calc(-100% - 2px)); }
   /* Without the script the bar never learns it has scrolled, so it is painted from the start. */
-  .no-js .site-header { background: rgba(242,236,224,.92); box-shadow: 0 1px 0 rgba(27,25,22,.08); }
-  .no-js .site-header.theme-teal { background: rgba(242,236,224,.92); }
+  .no-js .site-header { background: #f2ece0; box-shadow: 0 1px 0 #b8b2a8; }
   .hdr-links { display: none; align-items: center; gap: 28px; }
   @media (min-width: 960px) { .hdr-links { display: flex; } }
   @media (min-width: 960px) and (max-width: 1068px) { .hdr-links { gap: 22px; } }
@@ -710,7 +607,7 @@ html.theme-inq { --pa: #d4af37; --pa-sm: #2d2a26; --pa-rgb: 212,175,55; --pa-lin
   .menu-panel.is-open { opacity: 1; visibility: visible; pointer-events: auto; transition-delay: 0s; }
   @media (min-width: 960px) { .menu-panel { display: none; } }
   .menu-nav { display: flex; flex-direction: column; min-height: 100%; padding-block: 24px max(24px, env(safe-area-inset-bottom, 0px)); }
-  .menu-link { display: flex; flex-direction: column; gap: 6px; padding: 18px 0; border-top: 1px solid rgba(27,25,22,.12); color: #1b1916; text-decoration: none; font-family: var(--font-display); font-size: var(--fs-s); font-weight: 500; letter-spacing: -.012em; line-height: 1.12; opacity: 0; transform: translateY(-8px); transition: opacity .3s var(--ease), transform .3s var(--sheet); }
+  .menu-link { display: flex; flex-direction: column; gap: 6px; padding: 18px 0; border-top: 1px solid #b8b2a8; color: #1b1916; text-decoration: none; font-family: var(--font-display); font-size: var(--fs-s); font-weight: 500; letter-spacing: -.012em; line-height: 1.12; opacity: 0; transform: translateY(-8px); transition: opacity .3s var(--ease), transform .3s var(--sheet); }
   .menu-link .sub { font-family: var(--font-sans); font-size: var(--fs-eyebrow); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #6e6660; }
   .menu-panel.is-open .menu-link { opacity: 1; transform: none; transition-delay: calc(.06s + var(--i, 0) * .03s); }
   .menu-cta { margin-top: auto; padding-top: 24px; }
@@ -729,9 +626,9 @@ html.theme-inq { --pa: #d4af37; --pa-sm: #2d2a26; --pa-rgb: 212,175,55; --pa-lin
   .skip:focus { transform: none; }
 
   /* ── Footer (1.9) ──────────────────────────────────────────────────── */
-  .site-footer { position: relative; background: #fbeee6; color: #1b1916; --fg: #1b1916; --fg-2: #3a3631; --fg-3: #6e6660; --line: rgba(27,25,22,.12); --accent: #d09342; --accent-sm: #1b1916; --focus: #1b1916; --dark: 0; border-top: 1px solid rgba(27,25,22,.12); padding: clamp(72px, 10vh, 120px) 0 calc(32px + env(safe-area-inset-bottom, 0px)); }
+  .site-footer { position: relative; background: #fbeee6; color: #1b1916; --fg: #1b1916; --fg-2: #3a3631; --fg-3: #6e6660; --line: #b8b2a8; --line-gold: #e4ae9b; --accent: #d09342; --accent-sm: #1b1916; --focus: #1b1916; --dark: 0; border-top: 1px solid #b8b2a8; padding: clamp(72px, 10vh, 120px) 0 calc(32px + env(safe-area-inset-bottom, 0px)); }
   .site-footer.theme-teal { background: var(--pa-alt); --accent: var(--pa); --accent-sm: var(--pa-sm); --focus: var(--pa-sm); }
-  .site-footer.theme-teal .ftr-rule { background: linear-gradient(90deg, transparent, rgba(var(--pa-rgb),.3) 12% 88%, transparent); }
+  .site-footer.theme-teal { --line-gold: var(--pa-line); }
   /* Row one: the statement in columns 1 to 6 with the founder line under it, the three link columns in
    * columns 7 to 12 beside it (their eyebrows on the statement's first line). Then the gold rule, then
    * the legal row. */
@@ -739,7 +636,7 @@ html.theme-inq { --pa: #d4af37; --pa-sm: #2d2a26; --pa-rgb: 212,175,55; --pa-lin
   .ftr-blurb-col { grid-column: 1 / span 6; }
   .ftr-blurb { margin-top: 28px; font-family: var(--font-display); font-size: var(--fs-s); font-weight: 400; letter-spacing: -.012em; line-height: 1.2; max-width: 22em; color: var(--fg); text-wrap: pretty; }
   .ftr-founder { margin: 20px 0 0; font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: var(--fs-cap-i); line-height: 1.4; color: var(--fg-3); }
-  .ftr-rule { height: 1px; margin-top: 64px; background: linear-gradient(90deg, transparent, var(--line-gold) 12% 88%, transparent); }
+  .ftr-rule { height: 1px; margin-top: 64px; background: var(--line-gold); }
   .ftr-cols { grid-column: 7 / span 6; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; column-gap: var(--gap); row-gap: 32px; padding-top: calc(26px + 28px + .1em); }
   .ftr-col { min-width: 0; }
   .ftr-col .eyebrow { margin-bottom: 14px; }

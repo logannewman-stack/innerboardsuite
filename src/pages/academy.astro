@@ -58,10 +58,9 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
 ---
 <Base title={title} description={description} path="/academy" theme="teal" themeColor="#f2ece0">
   <!-- 2.3.1 Hero: type, the mark geometry drawing in, one margin rule -->
-  <section class="ac-hero grain grain-cream" data-tone="ac-cream">
-    <i class="lamp lamp-cream" aria-hidden="true" style="--lx:80%;--ly:0%"></i>
+  <section class="ac-hero" data-tone="ac-cream">
     <div class="wrap ac-hero-wrap">
-      <Geo class="ac-hero-geo" color="var(--pa-line)" opacity={0.14} stroke={1.25} ringsOnly />
+      <Geo class="ac-hero-geo" color="#ebe0c9" stroke={1.25} ringsOnly />
       <i class="ac-rule ac-hero-rule rule-draw-v" aria-hidden="true" style="--d:.6s"></i>
       <div class="grid">
         <div class="ac-hero-copy">
@@ -189,7 +188,6 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
 
   <!-- 2.3.6 What becomes possible: a teal bleed, three ruled columns -->
   <section class="ac-possible" data-tone="teal">
-    <i class="lamp lamp-teal grain" aria-hidden="true" style="--lx:85%;--ly:72%;--ga:.2"></i>
     <div class="wrap">
       <div class="grid">
         <div class="ac-head7">
@@ -232,7 +230,6 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
 
   <!-- 2.3.8 The filter: an ink bleed -->
   <section class="ac-filter" data-tone="ink">
-    <i class="lamp lamp-teal grain" aria-hidden="true" style="--lx:15%;--ly:0%;--la:.1"></i>
     <div class="wrap ac-filter-wrap">
       <i class="ac-rule ac-filter-rule rule-draw-v" aria-hidden="true" style="--d:.5s"></i>
       <div class="grid">
@@ -258,13 +255,12 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
   .ac-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: var(--btn-gap); }
   /* The margin rule: a teal hairline on column 10's left edge, scaleY drawn from the top. */
   /* Column 10's left edge is 9 / 12 of (wrap + gap) from the wrap's left: computed from the wrap itself so it holds at every width, including the zoomed --max above 1800. */
-  .ac-rule { position: absolute; left: calc(75% + .75 * var(--gap)); top: 0; bottom: 0; width: 1px; background: rgba(var(--pa-rgb),.35); pointer-events: none; }
+  .ac-rule { position: absolute; left: calc(75% + .75 * var(--gap)); top: 0; bottom: 0; width: 1px; background: #5ba0a7; pointer-events: none; }
   .js .ac-rule.rule-draw-v { transition-duration: 1.2s; }
   .ac-possible .eyebrow, .ac-filter .eyebrow, .ac-possible .link, .ac-filter .link { transition: color .5s var(--ease); }
 
   /* ── 2.3.1 Hero ─────────────────────────────────────────────────────── */
   .ac-hero { position: relative; overflow: hidden; min-height: min(100svh, 880px); padding-top: var(--nav-h); display: flex; flex-direction: column; }
-  .ac-hero > .lamp { z-index: 0; }
   .ac-hero-wrap { position: relative; z-index: 1; flex: 1; }
   /* The mark here is the ring alone: no crosshair, no dot. It sits in the wrap so it can be placed from the margin rule:
    * the ring (r 480 in the 1100 box, so its left edge is 70 px in) touches the rule at column 10's left edge, centred 430 px
@@ -307,13 +303,13 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
   .ac-lib-label { margin-top: var(--head-gap); margin-bottom: 20px; }
   /* The three cards share four rows through subgrid (rule, title, body, link): titles end on one line, bodies share a top line, links share a bottom line. */
   .ac-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: auto auto 1fr auto; column-gap: var(--gap); row-gap: 0; }
-  .ac-card { padding: 32px 28px; display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 0; transition: transform 200ms var(--hover), box-shadow 200ms var(--hover); }
+  .ac-card { padding: 32px 28px; display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 0; transition: transform 200ms var(--hover); }
   .ac-card-rule { display: block; height: 2px; background: var(--pa-line); margin-bottom: 26px; }
   .ac-card-title { margin: 0; max-width: 12em; text-wrap: balance; align-self: end; }
   .ac-card-body { margin: 12px 0 0; color: var(--fg-2); }
   .ac-card-link { margin-top: 0; padding-top: 28px; justify-self: start; align-self: end; min-height: 44px; display: inline-flex; align-items: center; }
   @media (hover: hover) and (pointer: fine) {
-    .ac-card:hover { transform: translateY(-2px); background-image: linear-gradient(var(--paper), var(--paper)), linear-gradient(180deg, #ffffff 0%, #f2ece0 42%, #b8b2a8 100%); }
+    .ac-card:hover { transform: translateY(-2px); }
   }
   .ac-ledgers { margin-top: 72px; row-gap: 48px; }
   .ac-ledger-l { grid-column: 1 / span 6; padding-right: 32px; }
@@ -341,7 +337,7 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
   /* ── 2.3.7 Go further ───────────────────────────────────────────────── */
   .ac-further { padding-block: var(--sec); }
   .ac-doors { margin-top: var(--head-gap); row-gap: var(--gap); }
-  .ac-door { padding: 36px; min-height: 264px; display: flex; flex-direction: column; transition: transform 200ms var(--hover), box-shadow 200ms var(--hover); }
+  .ac-door { padding: 36px; min-height: 264px; display: flex; flex-direction: column; transition: transform 200ms var(--hover); }
   .ac-door-2 { grid-column: 7 / span 6; }
   .ac-door-1 { grid-column: 1 / span 6; }
   .ac-door .eyebrow { margin-bottom: var(--eyebrow-gap); }
@@ -352,18 +348,18 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
   .ac-card, .ac-door { position: relative; }
   .ac-card-link::after, .ac-door-link::after { content: ""; position: absolute; inset: 0; border-radius: var(--r-lg); }
   @media (hover: hover) and (pointer: fine) {
-    .ac-door:hover { transform: translateY(-4px); box-shadow: inset 0 1px 0 rgba(255,255,255,.9), inset 0 0 0 1px rgba(255,255,255,.5), var(--sh-object); }
+    .ac-door:hover { transform: translateY(-4px); }
   }
 
   /* ── 2.3.8 The filter ───────────────────────────────────────────────── */
   .ac-filter { padding-block: var(--sec-l); overflow: hidden; }
   /* The margin rule returns for the section's full height (the wrap's top and bottom reach past the section padding), fading in at the top.
-   * Ivory, not gold: the close is cream, teal and ink only, its italics and eyebrow ivory and its lamp a white glow (BRAND_FIX S5). */
+   * Ivory, not gold: the close is cream, teal and ink only, its italics and eyebrow ivory (BRAND_FIX S5). */
   .ac-filter-wrap { position: relative; }
-  .ac-filter-rule { top: calc(-1 * var(--sec-l)); bottom: calc(-1 * var(--sec-l)); background: linear-gradient(180deg, transparent, rgba(242,236,224,.3) 120px); }
+  .ac-filter-rule { top: calc(-1 * var(--sec-l)); bottom: calc(-1 * var(--sec-l)); background: var(--line); }
   .ac-filter-line { margin-top: var(--lead-gap); color: var(--fg-2); }
   /* Without the script the close keeps the eyebrow the scripted page gives it: ivory at .7, like the italics' ivory. */
-  html.no-js .ac-filter .eyebrow { color: rgba(242,236,224,.7); }
+  html.no-js .ac-filter .eyebrow { color: #ebe0c9; }
 
   /* ── Tablet ──────────────────────────────────────────────────────────── */
   @media (max-width: 1068px) {
@@ -416,7 +412,7 @@ const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</sp
     .ac-hero-copy { grid-column: 1 / -1; padding-top: 48px; padding-bottom: 40px; }
     /* The ring alone at .08 behind the h1's right half: centre 30 px past the right edge, 300 px down the section, 700 px box. */
     .ac-hero .ac-hero-geo { width: 700px; height: 700px; left: calc(100% + var(--gutter) + 30px - 350px); top: calc(300px - var(--nav-h) - 350px); }
-    .ac-hero .ac-hero-geo circle.ring { opacity: .08; stroke-width: 1.6; }
+    .ac-hero .ac-hero-geo circle.ring { stroke-width: 1.6; }
     .ac-rule { display: none; }
     .ac-btns { flex-direction: column; }
     .ac-btns .btn { width: 100%; }

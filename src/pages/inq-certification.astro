@@ -101,7 +101,6 @@ const faq = [
 <Base title={title} description={description} path="/inq-certification" theme="inq" themeColor="#f2ece0">
   <!-- ── Hero: type and four drawn rules (2.4.1) ───────────────────────── -->
   <section class="inq-hero" data-tone="ac-cream">
-    <i class="lamp lamp-cream grain grain-cream" aria-hidden="true" style="--lx:80%;--ly:0%"></i>
     <div class="wrap">
       <div class="grid">
         <div class="inq-hero-copy">
@@ -165,7 +164,6 @@ const faq = [
 
   <!-- ── Why INQ works: teal bleed, the lit loop and the glyph (2.4.3) ─── -->
   <section class="inq-why" data-tone="slate">
-    <i class="lamp lamp-teal grain" aria-hidden="true" style="--lx:85%;--ly:0%;--ga:.2"></i>
     <div class="wrap">
       <div class="grid">
         <div class="inq-why-main">
@@ -324,7 +322,7 @@ const faq = [
   <!-- ── Your investment: the one object with depth (2.4.10) ──────────── -->
   <section id="investment" class="inq-sec" data-tone="ac-cream">
     <div class="wrap">
-      <div class="paper-teal paper-white inq-invest rise-obj" data-tilt="1.5">
+      <div class="paper-teal inq-invest rise-obj" data-tilt="1.5">
         <div class="inq-invest-grid">
           <div class="inq-invest-l">
             <p class="eyebrow">Your investment</p>
@@ -392,7 +390,6 @@ const faq = [
 
   <!-- ── The close: ink bleed (2.4.13) ────────────────────────────────── -->
   <section class="inq-close" data-tone="slate">
-    <i class="lamp lamp-teal grain" aria-hidden="true" style="--lx:50%;--ly:100%;--la:.1"></i>
     <div class="wrap">
       <div class="grid">
         <div class="inq-close-in">
@@ -433,10 +430,9 @@ const faq = [
    * 9 to 12, 400 px at 1440 and centred near x 1180, y 420 (its box ends one
    * gutter past the wrap, and its ring's foot sits level with the buttons' foot), drawing on load at 500 ms over 1.8 s with its five dots
    * popping as the pen reaches them. From 1068 down it sits top right, clear
-   * of the copy; on phones it goes behind the h1's right edge at low opacity,
+   * of the copy; on phones it goes behind the h1's right edge in the soft gold,
    * under the copy. */
   .inq-hero { padding-top: calc(var(--nav-h) + 78px); padding-bottom: var(--sec); overflow-x: clip; }
-  .inq-hero > .lamp { z-index: 0; }
   .inq-hero-copy { grid-column: 1 / span 10; grid-row: 1; position: relative; z-index: 1; isolation: isolate; }
   .inq-h1 { max-width: 11.8em; margin: 0; }
   @media (min-width: 735px) { .inq-h1 { font-size: clamp(44px, min(5.4vw, 9.4vh), 96px); } }
@@ -528,7 +524,7 @@ const faq = [
    * not at a fixed height. The bonus card's eyebrow sits in the name track. */
   .inq-modules { list-style: none; margin: var(--head-gap) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: auto; gap: 20px; }
   .inq-modules > li { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 10px; }
-  .inq-module { grid-row: 1 / -1; display: grid; grid-template-rows: subgrid; row-gap: 10px; padding: 32px 28px; border-radius: 20px; transition: transform 200ms var(--hover), box-shadow 200ms var(--hover); }
+  .inq-module { grid-row: 1 / -1; display: grid; grid-template-rows: subgrid; row-gap: 10px; padding: 32px 28px; border-radius: 20px; transition: transform 200ms var(--hover); }
   .inq-module-name { margin: 0; color: var(--fg); text-wrap: balance; }
   .inq-module-body { margin: 0; color: var(--fg-2); }
   .inq-module-bonus .eyebrow { color: var(--pa-sm); margin-bottom: 12px; }
@@ -546,10 +542,7 @@ const faq = [
   .inq-who-line { grid-column: 1 / span 8; margin: 0; color: var(--fg); }
 
   /* 2.4.10 Your investment */
-  /* A lighter border (.18) and a lit top edge over the object shadow, so the
-   * card reads as a thing on the table rather than a bordered box. */
   .inq-invest { padding: 56px; border-radius: 20px; }
-  .inq-invest.paper-teal.paper-white { border-color: rgba(var(--pa-rgb),.18); box-shadow: inset 0 1px 0 rgba(255,255,255,.7), var(--sh-object); }
   .inq-invest-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 40px; align-items: start; }
   .inq-invest-l { grid-column: 1 / span 6; }
   /* "What's included" shares the cap line of "INQ Certification": the eyebrow's
@@ -588,10 +581,10 @@ const faq = [
    * (the system's tone line, BRAND_FIX S1), which is while the last questions
    * can still be on screen. So this one light section paints its own ground and
    * keeps its own (light surface) inks: the rows stay cream and dark when the
-   * page goes ink, and the ground feathers into the close over the empty foot of
-   * the section, so they never read as part of the dark close. On a cream page
-   * the ground is the body's colour, so nothing shows. */
-  #faq.inq-faq-sec { background-image: linear-gradient(to bottom, #f2ece0 0, #f2ece0 calc(100% - 96px), rgba(242,236,224,.86) calc(100% - 72px), rgba(242,236,224,.5) calc(100% - 48px), rgba(242,236,224,.14) calc(100% - 24px), rgba(242,236,224,0) 100%); }
+   * page goes ink, and the section ends in a clean edge on the close, so they
+   * never read as part of the dark close. On a cream page the ground is the
+   * body's colour, so nothing shows. */
+  #faq.inq-faq-sec { background-color: #f2ece0; }
   .inq-faq { align-items: start; }
   .inq-faq-head { grid-column: 1 / span 4; position: sticky; top: 120px; }
   .inq-faq-head h2 { margin: 0; }
@@ -599,11 +592,7 @@ const faq = [
 
   /* 2.4.13 The close */
   .inq-close { padding-block: var(--sec-l); overflow: hidden; text-align: center; }
-  /* The close's lamp and grain fade in over the section's first 200 px, with
-   * its floor, so the grain never starts in a hard line under the questions'
-   * feathered ground. The lamp at its foot (50% 100%) is a white glow, never
-   * gold: the close's italics are ivory, as the mock-up sets them (BRAND_FIX S5). */
-  .inq-close > .lamp { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 200px); mask-image: linear-gradient(to bottom, transparent 0, #000 200px); }
+  /* The close's italics are ivory, as the mock-up sets them (BRAND_FIX S5). */
   .inq-close-in { grid-column: 3 / span 8; }
   .inq-close-h2 { margin: 0 auto; }
   .inq-close-line { margin: var(--lead-gap) auto 0; color: var(--fg); max-width: none; }
@@ -643,10 +632,10 @@ const faq = [
   @media (max-width: 734px) {
     .inq-hero { padding-top: calc(var(--nav-h) + 56px); }
     /* Phone: 220 px behind the h1's right edge, under the copy, its top at y
-     * 120 of the section (the wrap starts at y 116). The arc is already at .35
-     * and the dots at .7, so .45 here leaves a faint drawn ring (the arc at
-     * about .16) that reads as drawn without competing with the h1. */
-    .inq-hero-art { right: -60px; top: 4px; opacity: .45; }
+     * 120 of the section (the wrap starts at y 116). Arc and dots both in the
+     * soft gold, a faint drawn ring that reads as drawn without competing with
+     * the h1. */
+    .inq-hero-art { right: -60px; top: 4px; --glyph-dot: #e8cf7a; }
     .inq-hero-glyph { width: 220px; }
     .inq-btns { flex-direction: column; }
     .inq-btns .btn { width: 100%; }

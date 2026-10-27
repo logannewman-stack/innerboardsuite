@@ -7,7 +7,7 @@
 /* 1.7.2 Reveals */
 /* The wipe is a mask, not a clip-path: Chromium counts clip-path in
  * IntersectionObserver geometry, so a clipped heading would never be seen. */
-.js .wipe { -webkit-mask-image: linear-gradient(to right, #000 0 49.5%, transparent 50.5%); mask-image: linear-gradient(to right, #000 0 49.5%, transparent 50.5%); -webkit-mask-size: 200% 100%; mask-size: 200% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: 100% 0; mask-position: 100% 0; padding-block: .2em; margin-block: -.2em; transition: -webkit-mask-position 1.15s var(--slow), mask-position 1.15s var(--slow); transition-delay: calc(var(--i, 0) * 110ms + var(--d, 0s)); }
+.js .wipe { -webkit-mask-image: linear-gradient(to right, #000 50%, transparent 50%); mask-image: linear-gradient(to right, #000 50%, transparent 50%); -webkit-mask-size: 200% 100%; mask-size: 200% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: 100% 0; mask-position: 100% 0; padding-block: .2em; margin-block: -.2em; transition: -webkit-mask-position 1.15s var(--slow), mask-position 1.15s var(--slow); transition-delay: calc(var(--i, 0) * 110ms + var(--d, 0s)); }
 .js .wipe.in { -webkit-mask-position: 0% 0; mask-position: 0% 0; }
 .js .rise, .js .reveal { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--slow), transform .9s var(--slow); transition-delay: var(--d, .2s); }
 .js .rise.in, .js .reveal.in, .js .reveal.is-in { opacity: 1; transform: none; }
@@ -33,8 +33,6 @@
 .js .rule-draw-v.in, .js .in .rule-draw-v { transform: scaleY(1); }
 .js .tcard-in { transform: rotate(-9deg) translate(12px, 24px); opacity: 0; transition: transform 1.2s var(--slow), opacity 1.2s var(--slow); transition-delay: var(--d, .46s); }
 .js .tcard-in.in { transform: rotate(-5deg); opacity: 1; }
-.js .phone-floor { opacity: 0; transition: opacity 1.2s var(--slow) .3s, transform .4s var(--ease), background-color .4s var(--ease); }
-.js .in .phone-floor, .js .phone.in .phone-floor, .js .floor-on .phone-floor { opacity: 1; }
 
 /* 1.7.3 Line rise */
 .hl { display: block; }
@@ -64,26 +62,14 @@
 .js [data-lit="lines"] > .lw.on, .js [data-lit="lines"] > li.on { color: var(--fg); }
 .js em.lw.on, .js [data-lit="lines"] > em.lw.on { color: var(--accent); }
 
-/* 1.7.5 Page tone: a dark bleed's own floor is in global.css (tone floors);
- * its lamp and grain live on a child that fades in with the theme. */
+/* 1.7.5 Page tone: a dark bleed's own floor is in global.css (tone floors). */
 [data-tone] { position: relative; }
-[data-tone="navy"] > .lamp, [data-tone="practice"] > .lamp, [data-tone="charcoal"] > .lamp, [data-tone="ink"] > .lamp, [data-tone="teal"] > .lamp, [data-tone="slate"] > .lamp { opacity: 0; transition: opacity .5s var(--ease); }
-html[data-theme="navy"] [data-tone="navy"] > .lamp,
-html[data-theme="practice"] [data-tone="practice"] > .lamp,
-html[data-theme="charcoal"] [data-tone="charcoal"] > .lamp,
-html[data-theme="ink"] [data-tone="ink"] > .lamp,
-html[data-theme="teal"] [data-tone="teal"] > .lamp,
-html[data-theme="slate"] [data-tone="slate"] > .lamp { opacity: 1; }
-[data-tone] > .lamp { z-index: 0; }
 [data-tone] > .wrap, [data-tone] > .wrap-wide { position: relative; z-index: 1; }
-.no-js [data-tone="navy"] { background: #1b1916; color: #f2ece0; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: rgba(242,236,224,.6); --line: rgba(242,236,224,.14); --accent: #fbeee6; --accent-sm: #d09342; --btn-line: rgba(242,236,224,.32); --lit-off: rgba(242,236,224,.25); --focus: #d09342; }
-.no-js [data-tone="practice"] { background: #1b1916; color: #f2ece0; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: rgba(242,236,224,.6); --line: rgba(208,147,66,.35); --accent: #fbeee6; --accent-sm: #d09342; --btn-line: rgba(242,236,224,.32); --lit-off: rgba(242,236,224,.25); --focus: #d09342; }
-.no-js [data-tone="charcoal"] { background: #1b1916; color: #f2ece0; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: rgba(242,236,224,.6); --line: rgba(242,236,224,.12); --accent: #fbeee6; --accent-sm: #d09342; --btn-line: rgba(242,236,224,.32); --lit-off: rgba(242,236,224,.25); --focus: #d09342; }
-.no-js [data-tone="ink"] { background: #1b1916; color: #f2ece0; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: rgba(242,236,224,.6); --line: rgba(242,236,224,.12); --accent: #fbeee6; --accent-sm: #d09342; --btn-line: rgba(242,236,224,.32); --lit-off: rgba(242,236,224,.25); --focus: #d09342; }
-.theme-teal.no-js [data-tone="ink"] { background: #0d3438; --accent: #5ba0a7; --focus: #5ba0a7; }
-.no-js [data-tone="slate"] { background: #2d2a26; color: #f2ece0; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: #b8b2a8; --line: rgba(242,236,224,.14); --accent: #e8cf7a; --btn-line: rgba(242,236,224,.32); --lit-off: rgba(242,236,224,.25); --focus: #e8cf7a; }
-.no-js [data-tone="teal"] { background: #1a5d63; color: #fff; --fg: #fff; --fg-2: rgba(255,255,255,.78); --fg-3: rgba(255,255,255,.6); --line: rgba(255,255,255,.18); --accent: #fff; --btn-line: rgba(255,255,255,.4); --lit-off: rgba(255,255,255,.35); --focus: #fff; }
-.no-js [data-tone] > .lamp { opacity: 1; }
+.no-js :is([data-tone="navy"], [data-tone="practice"], [data-tone="charcoal"], [data-tone="ink"]) { background: #1b1916; color: #f2ece0; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: #b8b2a8; --line: #3a3631; --line-gold: #3a3631; --accent: #fbeee6; --accent-sm: #d09342; --btn-line: #6e6660; --btn-hover: #3a3631; --lit-off: #6e6660; --focus: #d09342; }
+.theme-teal.no-js [data-tone="ink"] { background: #0d3438; --accent: #5ba0a7; --focus: #5ba0a7; --line: #1a5d63; --line-gold: #1a5d63; --btn-line: #5ba0a7; --btn-hover: #1a5d63; --lit-off: #5ba0a7; }
+.no-js [data-tone="slate"] { background: #2d2a26; color: #f2ece0; --fg: #f2ece0; --fg-2: #b8b2a8; --fg-3: #b8b2a8; --line: #3a3631; --line-gold: #6e6660; --accent: #e8cf7a; --btn-line: #6e6660; --btn-hover: #3a3631; --lit-off: #6e6660; --focus: #e8cf7a; }
+.no-js [data-tone="teal"] { background: #1a5d63; color: #f2ece0; --fg: #f2ece0; --fg-2: #ebe0c9; --fg-3: #ebe0c9; --line: #5ba0a7; --line-gold: #5ba0a7; --accent: #f2ece0; --btn-line: #ebe0c9; --btn-hover: #0d3438; --lit-off: #b8b2a8; --focus: #f2ece0; }
+.no-js .sec-alt { background: var(--band); }
 
 /* 1.7.7 Scene: frames, cursor and ring are written by the story engine; none of them has a transition of its
  * own except the cursor's 100 ms press. Without the script the ring, the cursor and the halos are hidden. */
@@ -109,7 +95,7 @@ html[data-theme="slate"] [data-tone="slate"] > .lamp { opacity: 1; }
 .no-js .draw-pop { transform: none; }
 .loop-row { transition: color .4s var(--ease); }
 /* The dim follows the page tone (the rows sit on a bleed that cross fades), so they never vanish on cream. */
-.js [data-draw="scroll"] ~ ol > li:not(.on), .js .loop-rows > li:not(.on) { color: color-mix(in srgb, var(--fg) 40%, transparent); }
+.js [data-draw="scroll"] ~ ol > li:not(.on), .js .loop-rows > li:not(.on) { color: var(--lit-off); }
 
 /* 1.7.15 The floor: see .floor-strip in global.css (scroll driven, --fp from site.ts). */
 
@@ -138,8 +124,8 @@ html[data-theme="slate"] [data-tone="slate"] > .lamp { opacity: 1; }
   /* An anchored stage (taller than the viewport, stuck by its anchor): everything above the anchor is masked
    * while pinned, so no text is ever read under the header. */
   :where(.js [data-story].is-anchored.is-pinned:not(.static)) > .story-track > .story-stage {
-    -webkit-mask-image: linear-gradient(to bottom, transparent calc(var(--anchor-y, 0px) - 8px), #000 var(--anchor-y, 0px));
-    mask-image: linear-gradient(to bottom, transparent calc(var(--anchor-y, 0px) - 8px), #000 var(--anchor-y, 0px)); }
+    -webkit-mask-image: linear-gradient(to bottom, transparent var(--anchor-y, 0px), #000 var(--anchor-y, 0px));
+    mask-image: linear-gradient(to bottom, transparent var(--anchor-y, 0px), #000 var(--anchor-y, 0px)); }
 
   /* ── Story v2, both layouts (STORY_V2 1.3 to 1.7) ───────────────────────
    * The stage holds the device column (.story-device-col: the rail, then the device box) and the copy column
@@ -201,17 +187,15 @@ html[data-theme="slate"] [data-tone="slate"] > .lamp { opacity: 1; }
   :where(.js [data-story-ui="steps"][data-story-h="s"]:not(.static)) { --fs-story-h: var(--fs-s); }
 
   /* The rail (StoryMarks variant="rail", 1.7): n segments and the "01 / 05" counter. Its fill is --f from the
-   * engine. Colours from the role tokens: on a light ground the fill is the ink and the track the ink at .14; on a
-   * dark ground (--dark: 1) the fill is the accent (gold-2) and the track the cream at .2. A page may set
+   * engine. Colours from the role tokens (--rail-fill, --rail-track, set with each theme): on a light ground the fill
+   * is the ink on a slate track; on a dark ground the fill is the accent on a graphite track. A page may set
    * --rail-fill and --rail-track on the story. */
   :where(.js [data-story-ui="steps"]:not(.static)) .story-rail {
-    --rail-fill-c: color-mix(in srgb, var(--accent) calc(var(--dark, 0) * 100%), var(--fg));
-    --rail-track-c: color-mix(in srgb, var(--fg) calc(14% + var(--dark, 0) * 6%), transparent);
     position: relative; z-index: 2; display: flex; flex: none; align-items: center; width: auto; margin: 0; padding: 0; gap: 16px; }
   :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars { display: flex; min-width: 0; }
   :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button { position: relative; flex: 1 1 0; min-width: 0; min-height: 0; padding: 0; margin: 0; border: 0; background: none; cursor: pointer; border-radius: 2px; }
-  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button::before { content: ""; position: absolute; border-radius: 1px; background: var(--rail-track, var(--rail-track-c)); }
-  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button > i { position: absolute; border-radius: 1px; background: var(--rail-fill, var(--rail-fill-c)); }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button::before { content: ""; position: absolute; border-radius: 1px; background: var(--rail-track); }
+  :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button > i { position: absolute; border-radius: 1px; background: var(--rail-fill); }
   :where(.js [data-story-ui="steps"]:not(.static)) .story-rail-bars > button[hidden] { display: none; }
   :where(.js [data-story-ui="steps"]:not(.static)) .story-count { flex: none; margin: 0; font-family: var(--font-sans); font-size: 12px; font-weight: 500; letter-spacing: .16em; line-height: 1;
     font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--fg-3); }
@@ -394,7 +378,7 @@ html[data-theme="slate"] [data-tone="slate"] > .lamp { opacity: 1; }
 
 /* ── Reduced motion: nothing moves, nothing is hidden, stages are static ── */
 @media (prefers-reduced-motion: reduce) {
-  .js .wipe, .js .rise, .js .reveal, .js .seq > *, .js .rule-draw, .js .rule-draw-v, .js .tcard-in, .js .phone-floor, .js .lines-ready .w { opacity: 1; transform: none; translate: none; clip-path: none; -webkit-mask-image: none; mask-image: none; transition: none; }
+  .js .wipe, .js .rise, .js .reveal, .js .seq > *, .js .rule-draw, .js .rule-draw-v, .js .tcard-in, .js .lines-ready .w { opacity: 1; transform: none; translate: none; clip-path: none; -webkit-mask-image: none; mask-image: none; transition: none; }
   /* .rise-obj rises with `translate`, so only that is reset: a transform a page uses for layout (centring) survives. */
   .js .rise-obj { opacity: 1; translate: none; transition: none; }
   .js [data-draw="scroll"] .draw-head { opacity: 1; }
@@ -415,9 +399,7 @@ html[data-theme="slate"] [data-tone="slate"] > .lamp { opacity: 1; }
   .flip[aria-pressed="true"] .flip-front { visibility: hidden; }
   .flip[aria-pressed="true"] .flip-back { transform: none; }
   .flip:not([aria-pressed="true"]) .flip-back { visibility: hidden; }
-  .flip.flipping, .flip.flipping i.sheen, .flip.flipping .flip-front { animation: none; }
-  .flip i.sheen { display: none; }
-  .lamp-cream { animation: none; }
+  .flip.flipping { animation: none; }
   .site-header { transition: transform 450ms var(--sheet) !important; }
   .menu-link { transition: none; }
 }

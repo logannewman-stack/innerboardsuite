@@ -10,10 +10,10 @@
  * an arc enters, e.g. cx="calc(100% + 140px)" cy="-120px". With `cx`/`cy` set, leave left and top (and
  * right and bottom) out of your class. `ringsOnly` (also `rings-only`) draws the ring alone: no crosshair
  * and no point. `stroke` sets the stroke width in viewBox units (default 1, which is 1 px at size 1100).
+ * `color` is a solid book colour (default: the section's line colour); the lines are never see-through.
  */
 interface Props {
   color?: string;
-  opacity?: number;
   class?: string;
   style?: string;
   size?: number;
@@ -23,7 +23,7 @@ interface Props {
   "rings-only"?: boolean;
   stroke?: number;
 }
-const { color = "currentColor", opacity = 0.08, class: className = "", style = "", size = 1100, cx, cy, stroke } = Astro.props;
+const { color = "var(--line)", class: className = "", style = "", size = 1100, cx, cy, stroke } = Astro.props;
 const ringsOnly = Boolean(Astro.props.ringsOnly ?? Astro.props["rings-only"] ?? false);
 const place = [
   cx != null ? `left:calc(${cx} - var(--geo-size) / 2)` : "",
@@ -31,7 +31,7 @@ const place = [
   stroke != null ? `--geo-sw:${stroke}` : ""
 ].filter(Boolean).map((d) => d + ";").join("");
 ---
-<svg class={`geo ${ringsOnly ? "geo-rings" : ""} ${className}`.replace(/\s+/g, " ").trim()} viewBox="-550 -550 1100 1100" style={`color:${color};--geo-o:${opacity};--geo-size:${size}px;--dur:1600ms;${place}${style}`} data-geo data-draw="enter" aria-hidden="true" focusable="false">
+<svg class={`geo ${ringsOnly ? "geo-rings" : ""} ${className}`.replace(/\s+/g, " ").trim()} viewBox="-550 -550 1100 1100" style={`color:${color};--geo-size:${size}px;--dur:1600ms;${place}${style}`} data-geo data-draw="enter" aria-hidden="true" focusable="false">
   <circle class="ring draw-line" cx="0" cy="0" r="480"></circle>
   {!ringsOnly && <path class="draw-line" d="M-540 0H540" style="--d:.15s"></path>}
   {!ringsOnly && <path class="draw-line" d="M0-540V540" style="--d:.3s"></path>}

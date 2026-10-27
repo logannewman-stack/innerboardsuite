@@ -5,13 +5,13 @@
  * masked so only the app's header, the month, the title, the "Live it." line
  * and the Masterclass card show. The screen is --lab-w wide (300 px at 1440,
  * down to 220 px at the narrowest desktop so the name never meets it; 300 on
- * tablets), its box 11/15 of that tall (220 px at 1440) with the mask from
- * 8/15 (160 px), so the crop is the same at every width. The line about
+ * tablets), its box 11/15 of that tall (220 px at 1440), a clean crop that is
+ * the same at every width. The line about
  * October's dates starts at glyph row 743 of the 1688 px capture, 0.95 of
  * --lab-w down (286 px at 1440, 298 px before the 12 px rise), and is never
  * rendered because the box ends at 0.73 of --lab-w. On phones the screen is
  * 200 px in a 160 px box and the line starts at 190 px. The screen rises
- * 12 px inside its mask 350 ms after the card arrives.
+ * 12 px inside its box 350 ms after the card arrives.
  */
 import Arrow from "./Arrow.astro";
 import { LINKS } from "../config/links";
@@ -35,18 +35,17 @@ const { class: className = "", style = "" } = Astro.props;
   /* The text column clears the screen: less the card's 36 px padding, the screen plus its 6 px inset, then 24 px of air.
    * It is not positioned, so the link's stretched box (academy.astro) covers the whole card; the screen never overlaps it. */
   .ac-door-1 .ac-lab-text { width: calc(100% - var(--lab-w) + 6px); display: flex; flex-direction: column; flex: 1; }
-  .ac-lab-media { position: absolute; top: 6px; right: 6px; width: calc(var(--lab-w) + 48px); height: calc(var(--lab-w) * 11 / 15); overflow: hidden; contain: paint; pointer-events: none; z-index: 0; border-radius: 0 14px 0 0;
-    -webkit-mask-image: linear-gradient(to bottom, #000 calc(var(--lab-w) * 8 / 15), transparent calc(var(--lab-w) * 11 / 15)); mask-image: linear-gradient(to bottom, #000 calc(var(--lab-w) * 8 / 15), transparent calc(var(--lab-w) * 11 / 15)); }
+  .ac-lab-media { position: absolute; top: 6px; right: 6px; width: calc(var(--lab-w) + 48px); height: calc(var(--lab-w) * 11 / 15); overflow: hidden; contain: paint; pointer-events: none; z-index: 0; border-radius: 0 14px 0 0; }
   .ac-lab-screen { position: absolute; top: 0; right: 0; width: var(--lab-w); height: auto; max-width: none; display: block; border-radius: 0 14px 0 0; background: #f2ece0;
-    box-shadow: 0 0 0 1px rgba(27,25,22,.08), 0 1px 2px rgba(27,25,22,.12), 0 14px 28px -14px rgba(27,25,22,.26), 0 50px 76px -44px rgba(27,25,22,.38);
+    box-shadow: 0 0 0 1px #b8b2a8;
     transition: transform 1.2s var(--slow) .35s; }
   .js .ac-door-1:not(.in) .ac-lab-screen { transform: translateY(12px); }
-  /* Tablets: the card is full width and short, so it keeps 38 px of paper under the screen's faded edge. */
+  /* Tablets: the card is full width and short, so it keeps 38 px of paper under the screen's edge. */
   @media (max-width: 1068px) { .ac-door-1 { --lab-w: 300px; } .ac-door.ac-door-1 { min-height: calc(var(--lab-w) * 11 / 15 + 44px); } }
   @media (max-width: 734px) {
     .ac-door-1 .ac-lab-text { width: 100%; }
     .ac-door-1 .ac-door-name { margin-top: 128px; }
-    .ac-lab-media { width: 240px; height: 160px; -webkit-mask-image: linear-gradient(to bottom, #000 114px, transparent 160px); mask-image: linear-gradient(to bottom, #000 114px, transparent 160px); }
+    .ac-lab-media { width: 240px; height: 160px; }
     .ac-lab-screen { width: 200px; }
   }
   @media (prefers-reduced-motion: reduce) { .js .ac-door-1:not(.in) .ac-lab-screen { transform: none; } }

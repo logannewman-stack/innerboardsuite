@@ -1,7 +1,7 @@
 ---
 /**
  * The home hero's object (STORY_V2 2.2): the phone alone on the cream, large,
- * with its own floor shadow, resting on the Coach home. It is not a scroll
+ * resting on the Coach home. It is not a scroll
  * story any more: the hero never pins, so the first notch of scroll moves the
  * page. The ring on the composer and the draft typing in now open the Practice navy
  * panel's story right under it, on the same screen, under the headline
@@ -15,13 +15,12 @@
 import PhoneFrame from "./PhoneFrame.astro";
 ---
 <div class="hm-hero-phone">
-  <div class="hm-hero-device rise-obj floor-on" style="--d:.3s">
+  <div class="hm-hero-device rise-obj" style="--d:.3s">
     <PhoneFrame
       id="hero-phone"
       width={400}
       style="--pw:inherit"
       eager
-      shadow="light"
       tilt={3}
       label="Practice on a phone: the Daily Practice Coach."
       screens={[

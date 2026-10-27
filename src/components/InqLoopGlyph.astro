@@ -5,11 +5,11 @@
  * is the Practice page's loop, returning without its words: the words are in
  * the copy beside it. Two tones:
  *
- *  - "white" (default), on the teal bleed: arc white .35, dots white .9. The
+ *  - "white" (default), on a dark bleed: a slate arc and gold dots. The
  *    arc draws over 1.8 s and the dots pop 80 ms apart as the section's centre
  *    passes 60% of the viewport (the aside around it carries the
  *    data-reveal-at gate, so the pull line arrives with the loop).
- *  - "teal", the hero's drawn object on cream: arc teal .35, dots teal .7.
+ *  - "teal", the hero's drawn object on cream: a soft gold arc, gold dots.
  *    With `follow` each dot pops the moment the arc reaches it, so the five
  *    points of the loop land in sequence as the pen passes them.
  *
@@ -20,7 +20,9 @@
  * dash and its end state in the same frame for an SVG already in view, and the
  * stroke would simply appear). `delay` (ms) holds the arc back (the hero draws
  * at 500 ms), `ease` is the arc's timing function as four bezier numbers.
- * Under reduced motion and without the script it is fully drawn.
+ * Under reduced motion and without the script it is fully drawn. Every colour is
+ * a solid book colour (a page may set --glyph-arc and --glyph-dot); nothing is
+ * drawn see-through.
  */
 interface Props {
   class?: string;
@@ -69,21 +71,21 @@ const dotDelay = (i: number) => follow
   ? Math.round(delay + dur * timeAt((r * rad(angles[i] - angles[0])) / total))
   : delay + i * 80;
 
-/* CSS colours (the page's product accent, or the dark section's glyph ink), so they ride in style, not attributes. */
-const ink = tone === "teal" ? "var(--pa-line)" : "var(--glyph-on-dark, #ffffff)";
-const arcO = ".35";
-const dotO = tone === "teal" ? ".7" : ".9";
+/* CSS colours (the page's product accent, or the dark section's glyph ink), so they ride in style, not attributes:
+ * the arc a step quieter than the dots. */
+const arc = tone === "teal" ? "var(--glyph-arc, #e8cf7a)" : "var(--glyph-arc, #6e6660)";
+const dot = tone === "teal" ? "var(--glyph-dot, var(--pa-line))" : "var(--glyph-dot, var(--glyph-on-dark, #f2ece0))";
 const easeCss = `cubic-bezier(${ease.join(",")})`;
 ---
 {draw === "load" ? (
   <svg class={`inq-glyph inq-glyph-${tone} inq-glyph-load ${className}`.trim()} viewBox="0 0 320 320" width="320" height="320" aria-hidden="true" focusable="false" fill="none" style={`--dur:${dur}ms;--arc-ease:${easeCss}`}>
-    <path class="inq-arc" d={d} pathLength="1" stroke-opacity={arcO} stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style={`stroke:${ink};--d:${delay}ms`}></path>
-    {dots.map(([x, y], i) => <circle class="inq-dot" cx={f(x)} cy={f(y)} r="3" fill-opacity={dotO} style={`fill:${ink};--d:${dotDelay(i)}ms`}></circle>)}
+    <path class="inq-arc" d={d} pathLength="1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style={`stroke:${arc};--d:${delay}ms`}></path>
+    {dots.map(([x, y], i) => <circle class="inq-dot" cx={f(x)} cy={f(y)} r="3" style={`fill:${dot};--d:${dotDelay(i)}ms`}></circle>)}
   </svg>
 ) : (
   <svg class={`inq-glyph inq-glyph-${tone} ${className}`.trim()} viewBox="0 0 320 320" width="320" height="320" data-draw="enter" aria-hidden="true" focusable="false" fill="none" style={`--dur:${dur}ms`}>
-    <path class="draw-line" d={d} stroke-opacity={arcO} stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style={`stroke:${ink};--d:${delay}ms;transition-timing-function:${easeCss}`}></path>
-    {dots.map(([x, y], i) => <circle class="draw-pop" cx={f(x)} cy={f(y)} r="3" fill-opacity={dotO} style={`fill:${ink};--d:${dotDelay(i)}ms`}></circle>)}
+    <path class="draw-line" d={d} stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style={`stroke:${arc};--d:${delay}ms;transition-timing-function:${easeCss}`}></path>
+    {dots.map(([x, y], i) => <circle class="draw-pop" cx={f(x)} cy={f(y)} r="3" style={`fill:${dot};--d:${dotDelay(i)}ms`}></circle>)}
   </svg>
 )}
 

@@ -43,7 +43,7 @@ const description =
  * app (October 21, 2026; it has the real courses). Inner Lab is shown down to The Masterclass: its calendar note and
  * the month's resources are not shown, so the frame fades to the app's ivory just under the Masterclass card (a mask
  * on that frame only, PhoneFrame `fade`), keeping the app's own bottom bar, whose Tools tab the next step taps. */
-const labFade = "linear-gradient(to bottom, #000 38%, transparent 40.6%, transparent 91.3%, #000 91.8%)";
+const labFade = "linear-gradient(to bottom, #000 39.3%, transparent 39.3%, transparent 91.5%, #000 91.5%)";
 const panelScreens = [
   { name: "home", alt: "The Coach home as a visitor.", w: 600, h: 1298 },
   { name: "coach-draft", alt: "The Daily Practice Coach with a sentence typed in the composer.", w: 780, h: 1688,
@@ -101,8 +101,7 @@ const quizBenefits = [
   preload={{ href: "/app/home.webp", srcset: "/app/home-390.webp 390w, /app/home.webp 600w", sizes: "400px", type: "image/webp" }}>
   <!-- 1. Hero: the copy and the phone on the Coach home, one first screen. It does not pin; it ends 40 px above the
        fold, so the Practice navy panel's top edge shows under it (STORY_V2 2.2). -->
-  <section class="hm-hero grain grain-cream" data-tone="cream">
-    <i class="lamp lamp-cream" aria-hidden="true" style="--lx:50%;--ly:0%"></i>
+  <section class="hm-hero" data-tone="cream">
     <div class="wrap hm-hero-wrap">
       <div class="grid">
         <div class="hm-hero-copy">
@@ -122,8 +121,7 @@ const quizBenefits = [
   <!-- 2. Practice: the Practice navy panel. The phone pins at the left with the rail; one feature's copy at a time at the
        right, five steps (STORY_V2 2.3). The buttons follow the story with the closing line. -->
   <section id="practice" class="hm-practice" data-tone="cream">
-    <div class="wrap-wide panel-practice grain surface-practice hm-panel" data-surface="dark">
-      <i class="lamp" aria-hidden="true" style="--lx:18%;--ly:0%;--la:.07"></i>
+    <div class="wrap-wide panel-practice surface-practice hm-panel" data-surface="dark">
       <div class="hm-panel-in">
         <div class="hm-panel-grid">
           <div class="hm-panel-head">
@@ -135,11 +133,10 @@ const quizBenefits = [
         <div class="story hm-panel-story" data-story="practice" data-story-ui="steps" data-side="left" data-kind="phone" data-warm style="--story-w:5.4;--step-l:64svh;--step-l-n:58svh">
           <div class="story-track">
             <div class="story-stage">
-              <i class="lamp hm-stage-lamp" aria-hidden="true" style="--lx:30%;--ly:50%;--la:.16"></i>
               <div class="story-device-col">
                 <StoryMarks variant="rail" labels={features.map((f) => f.name)} label="Practice, feature by feature" />
-                <div class="story-device-box story-phone hm-panel-phone floor-on" style="--pw-max:320px;--pw-max-n:240px">
-                  <PhoneFrame device="panel" width={320} style="--pw:inherit" shadow="dark" label="Practice on a phone, feature by feature."
+                <div class="story-device-box story-phone hm-panel-phone" style="--pw-max:320px;--pw-max-n:240px">
+                  <PhoneFrame device="panel" width={320} style="--pw:inherit" label="Practice on a phone, feature by feature."
                     screens={panelScreens} />
                 </div>
               </div>
@@ -154,7 +151,7 @@ const quizBenefits = [
                         <p class="ladder-body story-body">{f.body}</p>
                         <span class="sr-only story-alt">{f.alt}</span>
                       </div>
-                      {f.st && <div class="story-static floor-on"><PhoneFrame width={200} shadow="dark" screens={[f.st]} /></div>}
+                      {f.st && <div class="story-static"><PhoneFrame width={200} screens={[f.st]} /></div>}
                     </li>
                   ))}
                 </ol>
@@ -209,7 +206,7 @@ const quizBenefits = [
                     <b class="t-title story-h">{b.name}</b>
                     <p class="t-body story-body">{b.body}</p>
                     <span class="sr-only story-alt">{b.alt}</span>
-                    {b.fig && <div class="story-static floor-on"><PhoneFrame width={200} screens={[b.fig]} /></div>}
+                    {b.fig && <div class="story-static"><PhoneFrame width={200} screens={[b.fig]} /></div>}
                   </li>
                 ))}
               </ul>
@@ -264,8 +261,7 @@ const quizBenefits = [
 
   <!-- 6. INQ Certification teaser: a navy bleed, the page turns to evening -->
   <section id="inq" class="hm-inq" data-tone="slate">
-    <i class="lamp grain" aria-hidden="true" style="--lx:85%;--ly:0%"></i>
-    <Geo class="hm-geo-inq" color="#f2ece0" opacity={0.08} ringsOnly />
+    <Geo class="hm-geo-inq" color="#3a3631" ringsOnly />
     <div class="wrap grid">
       <div class="hm-inq-copy">
         <p class="eyebrow rise">INQ Certification | Lead it</p>
@@ -300,14 +296,13 @@ const quizBenefits = [
 
   <!-- 8. InnerBoard IOS: the navy panel, the page's last and largest action -->
   <section id="ios" class="hm-ios" data-tone="cream">
-    <div class="wrap-wide panel-navy grain hm-ios-panel" data-surface="dark">
-      <i class="lamp" aria-hidden="true" style="--lx:12%;--ly:72%;--la:.12"></i>
-      <Geo class="hm-geo-ios" color="#f2ece0" opacity={0.08} ringsOnly />
+    <div class="wrap-wide panel-navy hm-ios-panel" data-surface="dark">
+      <Geo class="hm-geo-ios" color="#4f6d8c" ringsOnly />
       <div class="hm-ios-in">
         <div class="hm-ios-copy">
           <i class="rule-gold-v rule-draw-v hm-ios-rule" aria-hidden="true"></i>
           <p class="eyebrow rise">InnerBoard IOS | Scale it</p>
-          <h2 class="t-m wipe hm-ios-h2">Imagine what happens when <em class="grad">an entire team grows.</em></h2>
+          <h2 class="t-m wipe hm-ios-h2">Imagine what happens when <em>an entire team grows.</em></h2>
           <p class="t-lead hm-ios-lead rise">Personal growth changes how one person shows up. Imagine what becomes possible when an entire organization learns to think differently, lead themselves, and bring their best to work.</p>
           <p class="t-lead hm-ios-lead hm-ios-lead-2 rise" style="--d:.3s">InnerBoard IOS brings a people operating system into organizations, helping build the confidence, capability, and accountability that strengthen culture and drive results.</p>
         </div>
@@ -345,15 +340,11 @@ const quizBenefits = [
   /* ── 1. Hero (STORY_V2 2.2) ───────────────────────────────────────── */
   /* One composition in every case (script, no script, reduced motion). Laptops and landscape tablets (900 and up):
    * the first screen less 40 px, the copy in columns 1 to 7, the phone on the Coach home at the right, its right
-   * edge on the content edge, centred between the header line and the hero's bottom (40 px kept for its floor
-   * shadow), so it no longer hangs past the fold and the Practice navy panel's lit top edge shows in the last 40 px.
+   * edge on the content edge, centred between the header line and the hero's bottom (40 px kept below it), so
+   * it no longer hangs past the fold and the Practice navy panel's top edge shows in the last 40 px.
    * Tablets and phones (under 900): the copy, then the phone under it, then the panel. The hero is its own
-   * stacking context, so the phone's long shadow passes under the panel that follows. */
+   * stacking context. */
   .hm-hero { position: relative; isolation: isolate; padding: var(--nav-h) 0 40px; overflow: visible; }
-  .hm-hero > .lamp { z-index: 0; }
-  /* The lamp's gold foot and the grain fade out before the hero's bottom edge, so the hero ends in the page's
-   * cream rather than on a line. */
-  .hm-hero > .lamp-cream, .hm-hero.grain::after { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 96px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 96px), transparent); }
   .hm-hero-wrap { position: relative; z-index: 2; }
   .hm-hero-copy { grid-column: 1 / span 7; padding-top: 90px; }
   .hm-h1 { max-width: 7.8em; margin: 0; }
@@ -361,9 +352,6 @@ const quizBenefits = [
   .hm-btns { display: flex; flex-wrap: wrap; gap: 12px; }
   .hm-hero-btns { margin-top: 36px; }
   .hm-hero-phone { position: relative; z-index: 3; }
-  .hm-hero-phone .phone { box-shadow: inset 0 0 0 .55em #1b1916, inset 0 0 0 .9em rgba(255,255,255,.06), 0 0 0 1px rgba(208,147,66,.3),
-    0 2px 4px rgba(27,25,22,.14), 0 24px 40px -16px rgba(27,25,22,.34), 0 90px 120px -50px rgba(27,25,22,.5); }
-  .hm-hero-phone .phone-floor { --floor-a: .38; }
   @media (min-width: 900px) {
     .hm-hero { min-height: max(640px, calc(100vh - 40px)); min-height: max(640px, calc(100svh - 40px)); padding-bottom: 0; }
     .hm-hero-copy { padding-top: clamp(24px, 6vh, 90px); padding-top: clamp(24px, 6svh, 90px); }
@@ -386,9 +374,6 @@ const quizBenefits = [
   .hm-panel-h2 { color: #f2ece0; }
   .hm-panel-lead { grid-column: 8 / span 5; grid-row: 1; align-self: last baseline; color: #b8b2a8; max-width: 28em; margin: 0; }
   .hm-panel-story { margin-top: 48px; }
-  /* The panel's lamp, moved into the stage behind the pinned phone: shown only while the story is pinned. */
-  .hm-panel-story .story-stage > .hm-stage-lamp { display: none; }
-  .js .hm-panel-story.is-live:not(.static) .story-stage > .hm-stage-lamp { display: block; }
   /* The features' icons (FeatureIcon, BRAND_FIX H3): gold-2 on the Practice navy; in the static ladder each row leads
    * with its icon, in the pinned step it sits on the eyebrow line in place of the dot. */
   .hm-ico { width: 22px; height: 22px; color: #d09342; flex: none; }
@@ -436,13 +421,14 @@ const quizBenefits = [
    * copy), so its six switches and the gold on state show (ToggleCard is shared; its placement is the page's). */
   .hm-mat { justify-content: center; align-items: flex-end; padding-bottom: 22px; }
   .hm-quiz-phone { position: relative; flex: none; z-index: 2; }
-  .hm-tcard { position: relative; flex: none; z-index: 1; margin: 0 -12px 26px 0; width: clamp(186px, calc(6 * var(--colw) + 5 * var(--gap) - 320px), 236px); box-shadow: var(--sh-paper), 0 18px 30px -18px rgba(27,25,22,.35); }
+  .hm-tcard { position: relative; flex: none; z-index: 1; margin: 0 -12px 26px 0; width: clamp(186px, calc(6 * var(--colw) + 5 * var(--gap) - 320px), 236px); --paper: #f2ece0; --paper-edge: #b8b2a8; }
   .no-js .hm-tcard { transform: rotate(-5deg); }
   /* The Approval switch (the card's second row) follows the scroll: it turns off from G 3.62 to 3.72, while the
-   * phone shows the result's first step. The knob moves by transform and the gold is an opacity layer (BRAND_FIX S8);
-   * with --g unset (static, no script) it is on, as the card draws it. */
+   * phone shows the result's first step. The knob moves by transform and the gold draws back behind it (a clip, so
+   * the track is only ever the gold and the slate, BRAND_FIX S8); with --g unset (static, no script) it is on, as
+   * the card draws it. */
   .hm-tcard .tcard-row:nth-child(2) .tg { --on: calc(1 - clamp(0, (var(--g, 0) - 3.62) / .1, 1)); background: #b8b2a8; }
-  .hm-tcard .tcard-row:nth-child(2) .tg::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #d09342; box-shadow: inset 0 1px 2px rgba(27,25,22,.18); opacity: var(--on); }
+  .hm-tcard .tcard-row:nth-child(2) .tg::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #d09342; clip-path: inset(0 calc((1 - var(--on)) * 100%) 0 0 round 11px); }
   .hm-tcard .tcard-row:nth-child(2) .tg::after { left: 2px; transform: translateX(calc(var(--on) * 16px)); }
   /* Static: the four benefits side by side, each with its own still screen (the question, the result, its cost, its
    * first step); names, bodies and screens each start on one line (every item is a three row subgrid). Then the button
@@ -498,7 +484,7 @@ const quizBenefits = [
    * in case the prop is ever dropped), its centre off the section: one
    * quarter arc enters the top right, above the buttons, and the margin rule
    * stays the only vertical. */
-  .hm-inq { padding-block: var(--sec-l); overflow: hidden; --line-gold: rgba(212,175,55,.4); }
+  .hm-inq { padding-block: var(--sec-l); overflow: hidden; --line-gold: #d4af37; }
   .hm-geo-inq path, .hm-geo-inq .dot, .hm-geo-ios path, .hm-geo-ios .dot { display: none; }
   /* Centre 100 px right of the section and 160 px above it: a 350 x 310 arc,
    * at least 44 px clear of every line and button from 1069 to 1920. */
@@ -529,14 +515,11 @@ const quizBenefits = [
   .hm-ios-copy { grid-column: 1 / span 7; position: relative; }
   .hm-ios-rule { position: absolute; left: -32px; top: 0; bottom: 0; display: block; }
   .hm-ios-h2 { color: #f2ece0; }
-  .hm-ios h2 em.grad { color: transparent; -webkit-text-fill-color: transparent; }
   .hm-ios-lead { color: #b8b2a8; max-width: 28em; margin-top: var(--lead-gap); }
   .hm-ios-lead-2 { margin-top: 1em; }
   .hm-ios-btn { grid-column: 9 / span 4; align-self: end; justify-self: end; }
   /* The panel wears InnerBoard OS's own book colours (navy, soft steel, pale), as the site it opens does. */
-  .hm-ios .hm-ios-panel { --accent: #8aa3bf; --accent-sm: #8aa3bf; --focus: #8aa3bf; --line-gold: rgba(138,163,191,.35); }
-  .hm-ios .hm-ios-panel > .lamp { background: radial-gradient(55% 60% at var(--lx, 18%) var(--ly, 0%), rgba(138,163,191,var(--la, .16)), transparent 70%); }
-  .hm-ios h2 em.grad { background-image: linear-gradient(100deg, #e6e7ea 0%, #8aa3bf 70%, #8aa3bf 100%); }
+  .hm-ios .hm-ios-panel { --accent: #8aa3bf; --accent-sm: #8aa3bf; --focus: #8aa3bf; --line-gold: #4f6d8c; --line: #4f6d8c; }
   .hm-ios .hm-ios-panel .btn.btn-gold { background: #8aa3bf; color: #1b1916; }
   @media (hover: hover) and (pointer: fine) { .hm-ios .hm-ios-panel .btn.btn-gold:hover { background: #e6e7ea; } }
 
@@ -609,10 +592,9 @@ const quizBenefits = [
     .hm-ladder { --row-pad: 18px; }
     .hm-ladder > li, .hm-ladder > li:last-child { grid-template-columns: 22px minmax(0, 1fr); column-gap: 14px; row-gap: 0; }
     .hm-panel-btns { margin-top: 24px; }
-    /* The mat is full bleed: it clips its own sideways overflow (nothing of it is lost), and the quiz phone's
-     * floor shadow stays inside the phone's width, so a 360 screen never scrolls sideways (audit 2, P1). */
+    /* The mat is full bleed: it clips its own sideways overflow (nothing of it is lost), so a 360 screen never
+     * scrolls sideways (audit 2, P1). */
     .hm-mat { overflow-x: clip; margin-inline: calc(-1 * var(--gutter)); border-radius: 0; padding: 0 0 20px 10px; }
-    .hm-quiz-phone .phone-floor { left: 0; right: 0; }
     /* Phone and card side by side inside the phone's width: a slimmer card (shared component, scoped here) and a
      * phone of up to 200, tucked 4 px, so every switch stays clear of the phone at 390 and at 360. */
     .hm-tcard { width: 150px; height: 228px; padding: 16px 14px; font-size: 12.5px; margin: 0 -4px 22px 0; }
@@ -634,12 +616,12 @@ const quizBenefits = [
     .hm-note { margin-top: 28px; padding: 24px; order: 3; }
     .hm-academy-btns { order: 4; margin-top: 32px; align-self: stretch; }
     .hm-inq { padding-block: var(--sec); }
-    .hm-geo-inq { --geo-o: .06 !important; right: -700px; top: -900px; }
+    .hm-geo-inq { right: -700px; top: -900px; }
     .hm-inq-copy { grid-column: 1 / -1; }
     .hm-inq-lead { margin-top: 22px; }
     /* The margin rule becomes a 48 px horizontal rule above the buttons. */
     .hm-inq-rule { display: block; grid-column: 1 / -1; grid-row: 2; width: 48px; height: 1px; margin: 36px 0 0; justify-self: start; align-self: auto;
-      background: linear-gradient(90deg, var(--line-gold), var(--line-gold) 70%, transparent); transform-origin: left; }
+      background: var(--line-gold); transform-origin: left; }
     .js .hm-inq-rule { transform: scaleX(0); }
     .js .hm-inq-rule.in, .js .in .hm-inq-rule { transform: scaleX(1); }
     .hm-inq-btns { grid-row: 3; flex-direction: column; margin-top: 24px; }
@@ -648,8 +630,8 @@ const quizBenefits = [
     .hm-mission-lit { margin-top: 36px; }
     .hm-mission-close { margin-top: 44px; }
     .hm-ios-panel { width: calc(100% - 24px); border-radius: 20px; padding: 48px 24px; }
-    .hm-geo-ios { --geo-o: .06 !important; right: -700px; top: -930px; }
-    .hm-ios-rule { position: static; width: 48px; height: 1px; margin: 0 0 24px; background: linear-gradient(90deg, var(--line-gold), var(--line-gold) 70%, transparent); transform-origin: left; }
+    .hm-geo-ios { right: -700px; top: -930px; }
+    .hm-ios-rule { position: static; width: 48px; height: 1px; margin: 0 0 24px; background: var(--line-gold); transform-origin: left; }
     .js .hm-ios-rule { transform: scaleX(0); }
     .js .hm-ios-rule.in, .js .in .hm-ios-rule { transform: scaleX(1); }
     .hm-ios-btn { margin-top: 32px; width: 100%; }
@@ -668,7 +650,7 @@ const quizBenefits = [
 
   /* ── The two stories, pinned (the step layout, STORY_V2 1.4 and 1.5) ─────────────────────
    * The system lays out the stage (the device column and the copy column), the rail and its counter, the copy
-   * change and the roles (eyebrow, headline, body, button row). The page adds the Practice navy's lamp and colours, the
+   * change and the roles (eyebrow, headline, body, button row). The page adds the Practice navy's colours, the
    * quiz mat's devices, and puts back what the static layout's grids would otherwise carry into the pinned one. */
   @media (prefers-reduced-motion: no-preference) and (min-width: 1069px) and (min-height: 600px),
          (prefers-reduced-motion: no-preference) and (max-width: 1068px) and (min-height: 560px) {

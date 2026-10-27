@@ -19,8 +19,9 @@
  *   `off` sets the strip's offset in em for a static figure.
  * - `fade`: a CSS mask image for the capture (a group, div.ds.ds-group, painted
  *   the app's own ivory, #f2ece0, under the masked capture), so a part of a
- *   screen the site must not show fades out to the app's ground. Nothing is
- *   drawn over the capture; the mask is on that frame only.
+ *   screen the site must not show gives way to the app's ground. Its edges are
+ *   hard (two stops at one position), so nothing blends with the ivory. Nothing
+ *   is drawn over the capture; the mask is on that frame only.
  * Every capture with a /app/{name}-390.webp variant gets a srcset, so a small
  * phone on a 1x screen loads 390 px instead of 600 or 780 (scripts/small.mjs).
  */
@@ -34,8 +35,6 @@ interface Props {
   width: number;
   eager?: boolean;
   rest?: number;
-  shadow?: "light" | "dark";
-  floor?: boolean;
   class?: string;
   id?: string;
   label?: string;
@@ -47,7 +46,7 @@ interface Props {
   halos?: Halo[];
   off?: number;
 }
-const { screens, width, eager = false, rest = 0, shadow = "light", floor = true, class: className = "", id, label, caption, parallax, tilt, style = "", device, halos = [], off } = Astro.props;
+const { screens, width, eager = false, rest = 0, class: className = "", id, label, caption, parallax, tilt, style = "", device, halos = [], off } = Astro.props;
 const has = (file: string) => existsSync(new URL(`../../public/app/${file}`, import.meta.url));
 const restIdx = Math.min(Math.max(0, rest), screens.length - 1);
 const sizes = `${width}px`;
@@ -74,7 +73,7 @@ const frames = screens.map((s, i) => {
 });
 ---
 <figure
-  class={`phone ${shadow === "dark" ? "phone-dark" : ""} ${className}`.trim()}
+  class={`phone ${className}`.trim()}
   id={id}
   style={`--pw:${width}px;${style}`}
   data-frames
@@ -120,6 +119,5 @@ const frames = screens.map((s, i) => {
     <span class="tap" aria-hidden="true"></span>
     {halos.map((h, i) => <i class="halo" data-halo={i} aria-hidden="true" style={`--x:${h.x};--y:${h.y}`}></i>)}
   </div>
-  {floor && <i class="phone-floor" aria-hidden="true"></i>}
   {caption && <figcaption class="t-cap-i">{caption}</figcaption>}
 </figure>

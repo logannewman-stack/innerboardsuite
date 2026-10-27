@@ -6,7 +6,7 @@
  * the rail rides inside it; the copy column shows one step at a time, its
  * label, name and body. The story engine pins it under the header; the scroll
  * alone decides the step, the frame, every tap, swap and lean (each step's
- * `act`), and blends the sky with the day; the section's data-tone turns navy
+ * `act`), and turns the sky with the day; the section's data-tone turns navy
  * on the last step.
  *
  * Without the script, under reduced motion or on a short screen it is static:
@@ -58,7 +58,7 @@ const skies = ["morning", "midday", "afternoon", "evening"];
         <StoryMarks variant="rail" class="day-rail" labels={steps.map((s) => s.name)} label={marksLabel} />
         <div class="story-device-box day-stage">
           {skies.map((k) => <i class="sky" data-sky={k} aria-hidden="true"></i>)}
-          <PhoneFrame class="floor-on" device="day" screens={frames} width={width} style="--pw:inherit" label={label} />
+          <PhoneFrame class="" device="day" screens={frames} width={width} style="--pw:inherit" label={label} />
           <div class="day-caps" aria-hidden="true">
             {steps.map((s, i) => <p class={`day-cap${i === 0 ? " on" : ""}`} data-cap={i}>{s.caption}</p>)}
           </div>

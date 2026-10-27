@@ -824,7 +824,7 @@ class StoryRun {
   subs: HTMLElement[][] = []; subIdx: number[] = []; gEls: HTMLElement[] = [];
   stick = 0; D = 0; navH = 72; svh = 0; k = -1; G = 0; p = 0; pinned = false; visible = false; ok = false; lastGs = "";
   off: Array<() => void> = []; c: Cache = new Map();
-  day: { skies: (HTMLElement | null)[]; caps: HTMLElement[]; section: HTMLElement | null; base: string; mat: HTMLElement | null; phone: HTMLElement | null } | null = null;
+  day: { skies: (HTMLElement | null)[]; caps: HTMLElement[]; section: HTMLElement | null; base: string; mat: HTMLElement | null } | null = null;
   constructor(root: HTMLElement, idx: number) {
     this.root = root;
     this.id = root.dataset.story || "story-" + idx;
@@ -874,7 +874,7 @@ class StoryRun {
       this.day = {
         skies: ["morning", "midday", "afternoon", "evening"].map((k) => this.stage.querySelector<HTMLElement>(`[data-sky="${k}"]`)),
         caps: qsa(".day-cap", this.stage), section, base: section?.dataset.tone || "cream",
-        mat: this.stage.querySelector<HTMLElement>(".day-stage"), phone: this.devs[0]?.el || null
+        mat: this.stage.querySelector<HTMLElement>(".day-stage")
       };
     }
     this.bindKeys();
@@ -1003,7 +1003,6 @@ class StoryRun {
       this.day.caps.forEach((c, j) => c.classList.toggle("on", j === 0));
       if (this.day.section) this.day.section.dataset.tone = this.day.base;
       this.day.mat?.classList.remove("is-night");
-      this.day.phone?.style.removeProperty("--sx"); this.day.phone?.style.removeProperty("--floor-a");
       this.day.mat?.style.removeProperty("--day-cap");
     }
     this.k = -1; this.lastGs = "";
@@ -1200,21 +1199,21 @@ class StoryRun {
       d.shown = want;
     } else if (sc.index() !== want) sc.show(want, true);
     d.prevG = G;
-    /* The ring: arrives over -.10 to -.03, presses -.03 to 0, releases 0 to .08 around each press point. */
+    /* The ring: grows in over -.10 to -.03, presses -.03 to 0, shrinks away 0 to .08 around each press point. It
+     * never fades, so wherever the scroll rests it is solid (the brand's colours at full strength). */
     if (sc.tap) {
       let best: K3 | null = null, bu = 1;
       for (const rg of d.rings) { const u = G - rg[0]; if (u >= -0.1 && u <= 0.08 && Math.abs(u) < Math.abs(bu)) { best = rg; bu = u; } }
       if (best) {
         const u = bu;
-        let op: number, s: number, fill: number;
-        if (u < -0.03) { const q = (u + 0.1) / 0.07; op = 0.9 * q; s = 0.6 + 0.18 * q; fill = 0.5; }
-        else if (u < 0) { const q = (u + 0.03) / 0.03; op = 0.9; s = 0.78 - 0.18 * q; fill = 0.5 + 0.4 * q; }
-        else { const q = u / 0.08; op = 0.9 * (1 - q); s = 0.6 + 0.6 * q; fill = 0.9; }
+        let s: number, fill: number;
+        if (u < -0.03) { const q = (u + 0.1) / 0.07; s = 0.78 * q; fill = 0.5; }
+        else if (u < 0) { const q = (u + 0.03) / 0.03; s = 0.78 - 0.18 * q; fill = 0.5 + 0.4 * q; }
+        else { const q = u / 0.08; s = 0.6 * (1 - q); fill = 0.9; }
         const [x, y] = sc.toScreen(best[1], best[2]);
         put(c, sc.tap, "transform", `translate(${x.toFixed(2)}cqw, ${y.toFixed(2)}cqh) translate(-50%, -50%) scale(${s.toFixed(3)})`);
-        put(c, sc.tap, "opacity", op.toFixed(3));
         put(c, sc.tap, "--fill", fill.toFixed(3));
-      } else put(c, sc.tap, "opacity", "0");
+      } else put(c, sc.tap, "transform", "scale(0)");
     }
     /* The cursor (windows): visible while live, pressed within -.012 to +.02 of a click. */
     if (sc.cur && d.win) {
@@ -1235,29 +1234,26 @@ class StoryRun {
       for (const [g0, g1, from, to] of s.ranges) { if (G >= g1) off = to; else if (G > g0) { off = from + (to - from) * sine((G - g0) / (g1 - g0)); break; } else break; }
       put(c, s.body, "--off", off.toFixed(3));
     }
-    /* Halos: in over t 0 to .1, out over .9 to 1 (or to haloEnd), in capture coordinates through the camera. */
+    /* Halos: grow in over t 0 to .1, shrink away over .9 to 1 (or to haloEnd), in capture coordinates through the
+     * camera. Like the ring they scale rather than fade, so a resting scroll never leaves one half see-through. */
     for (const h of d.halos) {
-      let o = 0, hs = 0.86;
-      for (const e of h.on) if (e.k === k && t <= e.end) { const a = clamp01(t / 0.1); o = a * (1 - clamp01((t - (e.end - 0.1)) / 0.1)); hs = 0.86 + 0.14 * a; }
+      let v = 0;
+      for (const e of h.on) if (e.k === k && t <= e.end) v = clamp01(t / 0.1) * (1 - clamp01((t - (e.end - 0.1)) / 0.1));
       const [x, y] = sc.toScreen(h.x, h.y);
-      put(c, h.el, "transform", `translate(${x.toFixed(2)}cqw, ${y.toFixed(2)}cqh) translate(-50%, -50%) scale(${hs.toFixed(3)})`);
-      put(c, h.el, "opacity", o.toFixed(3));
+      put(c, h.el, "transform", `translate(${x.toFixed(2)}cqw, ${y.toFixed(2)}cqh) translate(-50%, -50%) scale(${v.toFixed(3)})`);
+      put(c, h.el, "opacity", v > 0 ? "1" : "0");
     }
     if (d.lift) { const [g0, g1] = d.lift; put(c, d.el, "--lift", (G <= g0 ? 0 : G >= g1 ? 1 : sine((G - g0) / (g1 - g0))).toFixed(3)); }
   }
-  /* The day story (S5): four sky layers blend with G, the floor shadow swings, the caption reads the step. */
+  /* The day story (S5): one sky at a time, the one nearest G (each a solid book colour; CSS cross fades them in
+   * time, never held part way by the scroll), and the caption in the colour that reads on it. */
   drawDay(G: number) {
     const day = this.day!;
     const s = clamp01((G - 0.5) / Math.max(1, this.n - 1));
-    let wM = 1 - clamp01((s - 0.25) / 0.25), wD = 1 - clamp01(Math.abs(s - 0.5) / 0.25), wA = 1 - clamp01(Math.abs(s - 0.75) / 0.25), wE = clamp01((s - 0.75) / 0.25);
-    const sum = wM + wD + wA + wE || 1;
-    wM /= sum; wD /= sum; wA /= sum; wE /= sum;
-    [wM, wD, wA, wE].forEach((v, i) => { const sk = day.skies[i]; if (sk) put(this.c, sk, "opacity", v.toFixed(3)); });
-    if (day.phone) {
-      put(this.c, day.phone, "--sx", (-26 * wM + 26 * wA).toFixed(1) + "px");
-      put(this.c, day.phone, "--floor-a", (0.3 + 0.25 * wE).toFixed(3));
-    }
-    if (day.mat) put(this.c, day.mat, "--day-cap", `color-mix(in srgb, #6e6660, #b8b2a8 ${(wE * 100).toFixed(1)}%)`);
+    const w = [1 - clamp01((s - 0.25) / 0.25), 1 - clamp01(Math.abs(s - 0.5) / 0.25), 1 - clamp01(Math.abs(s - 0.75) / 0.25), clamp01((s - 0.75) / 0.25)];
+    const on = w.indexOf(Math.max(...w));
+    w.forEach((_, i) => { const sk = day.skies[i]; if (sk) put(this.c, sk, "opacity", i === on ? "1" : "0"); });
+    if (day.mat) put(this.c, day.mat, "--day-cap", ["#6e6660", "#6e6660", "#1b1916", "#b8b2a8"][on]);
   }
 }
 /* One controller per story: bound while STORY_MQ matches, rebound when it or the wide line changes. */

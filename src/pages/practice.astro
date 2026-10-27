@@ -172,8 +172,7 @@ const faq = [
 <Base title={title} description={description} path="/practice"
   preload={{ href: "/app/desk-coach-draft.webp", srcset: "/app/desk-coach-draft.webp 1600w, /app/desk-coach-draft-2x.webp 2880w", sizes: "1320px", type: "image/webp", media: "(min-width: 1069px)" }}>
   <!-- Hero: the copy scrolls away first; then the scene is a scroll story (S4) -->
-  <section class="pr-hero grain grain-cream" data-tone="cream">
-    <i class="lamp lamp-cream" aria-hidden="true" style="--lx:50%;--ly:0%"></i>
+  <section class="pr-hero" data-tone="cream">
     <div class="wrap pr-hero-wrap">
       <div class="grid">
         <div class="pr-hero-copy">
@@ -209,16 +208,16 @@ const faq = [
                   <p class="win-cap t-cap-i" data-cap="1">The Tools hub.</p>
                 </div>
                 <div class="pr-scene-phones">
-                  <div class="pr-scene-phone pr-scene-l rise-obj floor-on" style="--d:.48s">
+                  <div class="pr-scene-phone pr-scene-l rise-obj" style="--d:.48s">
                     <PhoneFrame device="tools" width={212} style="--pw:inherit" caption="The Tools hub." screens={[heroTools]} />
                   </div>
-                  <div class="pr-scene-phone pr-scene-r rise-obj floor-on" style="--d:.6s">
+                  <div class="pr-scene-phone pr-scene-r rise-obj" style="--d:.6s">
                     <PhoneFrame device="close" width={224} style="--pw:inherit" caption="Close the day." screens={[heroClose]} />
                   </div>
                 </div>
               </div>
               <!-- Tablets and phones, while pinned: one phone, the Tools hub, then Close the day. -->
-              <div class="story-phone pr-scene-pn floor-on" style="--pw-max-n:240px">
+              <div class="story-phone pr-scene-pn" style="--pw-max-n:240px">
                 <PhoneFrame device="pn" width={240} style="--pw:inherit" screens={[heroTools, heroClose]} />
               </div>
             </div>
@@ -248,7 +247,6 @@ const faq = [
 
   <!-- The loop: a charcoal bleed, the line drawn down the words and back to Thought (2.2.2) -->
   <section id="loop" class="pr-loop" data-tone="charcoal">
-    <i class="lamp grain" aria-hidden="true" style="--lx:80%;--ly:72%;--la:.1"></i>
     <div class="wrap">
       <div class="grid">
         <div class="pr-loop-head">
@@ -265,7 +263,6 @@ const faq = [
 
   <!-- A day in Practice: the sky stage as a scroll story (S5) -->
   <section id="day" class="pr-day" data-tone="cream">
-    <i class="lamp grain pr-day-lamp" aria-hidden="true" style="--lx:50%;--ly:72%;--la:.1"></i>
     <div class="wrap">
       <div class="grid">
         <div class="pr-day-head">
@@ -356,10 +353,10 @@ const faq = [
             <div class="story-device-col">
               <StoryMarks variant="rail" labels={quizSteps.map((s) => s.h)} label="The quiz, from a question to the result" />
               <div class="story-device-box mat pr-quiz-mat">
-                <div class="pr-quiz-q rise-obj floor-on" style="--d:.3s">
+                <div class="pr-quiz-q rise-obj" style="--d:.3s">
                   <PhoneFrame device="q" width={212} style="--pw:inherit" screens={[{ name: "quiz-q1", alt: "The quiz, question one of eighteen: when I get less done than I planned, I'm disappointed in myself, from Never to Almost always.", w: 600, h: 1298 }]} />
                 </div>
-                <div class="pr-quiz-r rise-obj floor-on" style="--d:.42s">
+                <div class="pr-quiz-r rise-obj" style="--d:.42s">
                   <PhoneFrame device="r" width={244} style="--pw:inherit" screens={[{ name: "quiz-results", alt: "The quiz result: Approval, with what you're paying for, what it's actually costing you, where you're paying, and your first step.", w: 600, h: 1298 }]} />
                 </div>
               </div>
@@ -382,7 +379,6 @@ const faq = [
 
   <!-- Yours: a navy bleed, the lit statement (2.2.6) -->
   <section id="private" class="pr-private" data-tone="navy">
-    <i class="lamp grain" aria-hidden="true" style="--lx:10%;--ly:0%;--la:.14"></i>
     <div class="wrap">
       <div class="grid">
         <div class="pr-private-copy">
@@ -437,7 +433,7 @@ const faq = [
   <!-- Final: a Practice navy bleed, the floor that drifts with the scroll (S11) -->
   <section class="pr-final" data-tone="practice" data-warm>
     <PracticeFloor />
-    <Geo class="pr-geo" color="#f2ece0" opacity={0.06} />
+    <Geo class="pr-geo" color="#3a3631" />
     <div class="wrap pr-final-wrap">
       <div class="grid">
         <div class="pr-final-copy">
@@ -462,11 +458,6 @@ const faq = [
   /* 2.2.1 Hero */
   .pr-hero { position: relative; display: flex; flex-direction: column; padding-top: var(--nav-h); padding-bottom: var(--sec); overflow-x: clip; }
   .pr-hero > .wrap, .pr-hero > .wrap-wide { flex: none; }
-  .pr-hero > .lamp { z-index: 0; }
-  /* The cream lamp and grain belong to the cream page: once the page turns charcoal under #loop they fade with
-   * the body (the shared mask already feathers their bottom edge). */
-  .pr-hero > .lamp-cream, .pr-hero.grain-cream::after { transition: opacity .5s var(--ease); }
-  html:not([data-theme="cream"]) .pr-hero > .lamp-cream, html:not([data-theme="cream"]) .pr-hero.grain-cream::after { opacity: 0; }
   .pr-hero-wrap { position: relative; z-index: 2; }
   .pr-hero-copy { grid-column: 1 / span 9; padding-top: 90px; }
   .pr-h1 { max-width: 11em; margin: 0; }
@@ -516,7 +507,7 @@ const faq = [
   .pr-loop-def { color: var(--fg-2); max-width: none; transition: color .4s var(--ease); }
   .js .pr-loop-rows > li:not(.on) .pr-loop-def { color: inherit; }
   /* The dim follows the page tone, so the words never vanish while the tone is still cross fading. */
-  .js .pr-loop .pr-loop-rows > li:not(.on) { color: color-mix(in srgb, var(--fg) 40%, transparent); }
+  .js .pr-loop .pr-loop-rows > li:not(.on) { color: var(--lit-off); }
   /* The arrowhead is part of the drawn return path (PracticeLoopLine); the engine's `.done` is sticky,
    * so `.draw-head` is only the one time pulse over it and ends invisible. */
   .js svg.pr-loop-back .draw-head { opacity: 0; }
@@ -525,15 +516,14 @@ const faq = [
 
   /* 2.2.3 A day in Practice (S5: DayStage owns the story layout) */
   .pr-day { padding-block: var(--sec); }
-  .pr-day > .lamp { opacity: 0; }
   .pr-day-head { grid-column: 1 / span 8; }
   .pr-day-stage { margin-top: var(--head-gap); }
   /* The Morning step: the today capture was taken in the afternoon, so its greeting sits above the crop.
    * This is a crop of the real capture (moved up 18.4% and set at 1.04, inside the capture's side padding);
-   * nothing is drawn or covered, and its lower edge fades out before the app's bottom bar. The frame is a
+   * nothing is drawn or covered, and it ends in a clean edge before the app's bottom bar. The frame is a
    * group (type: []), so the crop sits inside it and the wipe clips the untransformed frame box. */
   #day .ds-group img[src$="/today.jpg"], #day .ds-group img[src$="/today.webp"] { transform-origin: 50% 0; transform: translateY(-18.4%) scale(1.04);
-    -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent 91.5%); mask-image: linear-gradient(to bottom, #000 88%, transparent 91.5%); }
+    -webkit-mask-image: linear-gradient(to bottom, #000 89.7%, transparent 89.7%); mask-image: linear-gradient(to bottom, #000 89.7%, transparent 89.7%); }
   /* The evening step shows the Journal whole, as the app draws it (its header, the filters, the month and the
    * entry, on the app's own ground), so the phone reads as a finished screen against the night. */
 
@@ -580,8 +570,6 @@ const faq = [
   :where(.pr-quiz-mat) { grid-column: 6 / span 7; grid-row: 1 / -1; align-self: center; height: 664px; }
   .pr-quiz-q { --pw: 212px; position: absolute; left: 76px; bottom: 64px; z-index: 1; }
   .pr-quiz-r { --pw: 244px; position: absolute; right: 60px; bottom: 40px; z-index: 2; }
-  /* The light moves between the phones on the step (a 350 ms opacity on the device, never a capture over a capture). */
-  .pr-quiz-mat .phone { transition: opacity .35s var(--ease); }
 
   /* 2.2.6 Yours */
   .pr-private { padding-block: var(--sec-l); }
@@ -617,25 +605,23 @@ const faq = [
 
   /* 2.2.9 Final */
   .pr-final { position: relative; height: max(640px, 92svh); overflow: clip; isolation: isolate; display: flex; align-items: flex-start; }
-  /* The floor and the glow fade in with the Practice navy tone, so the page never hard cuts at the section's top edge. */
-  .pr-final .floor { z-index: 0; opacity: 0; transition: opacity .5s var(--ease); }
+  /* The floor fades in with the Practice navy tone (in time, never held part way), so the page never hard cuts at
+   * the section's top edge. It is cut at a horizon under the buttons (their foot plus 35 to 100 px at every size,
+   * measured from 360 x 640 to 1920 x 1080), so no capture runs behind the copy and nothing fades. */
+  .pr-final .floor { z-index: 0; opacity: 0; transition: opacity .5s var(--ease); clip-path: inset(calc(14vh + 300px) 0 0 0); }
   html[data-theme="practice"] .pr-final .floor, .no-js .pr-final .floor { opacity: 1; }
-  /* The floor's grain starts under the section's top edge, so it never draws a line across the Practice navy page there. */
-  .pr-final .floor-fade.grain::after { -webkit-mask-image: linear-gradient(to bottom, transparent, #000 200px); mask-image: linear-gradient(to bottom, transparent, #000 200px); }
   .pr-geo { right: -260px; bottom: -420px; z-index: 0; }
   .pr-final-wrap { position: relative; z-index: 2; margin-top: 14vh; }
   .pr-final-copy { grid-column: 3 / span 8; position: relative; text-align: center; }
-  .pr-final-copy::before { content: ""; position: absolute; inset: -80px -120px; background: radial-gradient(50% 60% at 50% 40%, rgba(27,25,22,.85), transparent 75%); z-index: -1; pointer-events: none; opacity: 0; transition: opacity .5s var(--ease); }
-  html[data-theme="practice"] .pr-final-copy::before, .no-js .pr-final-copy::before { opacity: 1; }
   .pr-final-h2 { margin-inline: auto; }
   .pr-final-lead { color: var(--fg-2); margin: var(--lead-gap) auto 0; }
-  /* The tone floor of this closing bleed starts under the copy (at 58%, which is below the fold for as long
-   * as the page is still cream), so the copy is never read in the cream ink on a Practice navy ground, and the
-   * section's lower part is Practice navy whatever the theme. */
-  main .pr-final[data-tone] { background-image: linear-gradient(to bottom, transparent 0, transparent 58%, var(--tone-floor, transparent) calc(58% + 120px)); }
+  /* The section's lower part (from 58%, below the fold for as long as the page is still cream) is the Practice navy
+   * whatever the theme, under the floor; above it the section shows the page's own tone, so the copy is never read
+   * in the cream ink on a Practice navy ground. */
+  .pr-final::after { content: ""; position: absolute; left: 0; right: 0; top: 58%; bottom: 0; z-index: -1; background: #1b1916; pointer-events: none; }
   .pr-final-btns { justify-content: center; }
   /* The outline button stands on a solid Practice navy ground, so no capture of the floor runs through its label (audit 2). */
-  html[data-theme="practice"] .pr-final .btn-line, .no-js .pr-final .btn-line { background-color: rgba(27,25,22,.92); }
+  html[data-theme="practice"] .pr-final .btn-line, .no-js .pr-final .btn-line { background-color: #1b1916; }
   @media (hover: hover) and (pointer: fine) { html[data-theme="practice"] .pr-final .btn-line:hover { background-color: #3a3631; } }
 
   @media (max-width: 1068px) {
@@ -701,11 +687,12 @@ const faq = [
     .pr-final { height: 88svh; }
     .pr-final-wrap { margin-top: 10vh; }
     .pr-final-copy { grid-column: 1 / -1; }
-    /* Audit 2: the glow reaches under the buttons, and the floor starts under them, so no capture runs behind a label. */
-    .pr-final-copy::before { inset: -48px -40px -120px; background: radial-gradient(60% 65% at 50% 45%, rgba(27,25,22,.92), transparent 78%); }
+    /* Audit 2: the floor starts under the buttons, so no capture runs behind a label. */
+    .pr-final .floor { clip-path: inset(calc(10vh + 290px) 0 0 0); }
     .pr-final .floor-plane { top: 50%; }
     .floor-strip li:nth-child(n + 13) { display: none; }
   }
+  @media (max-width: 734px) { .pr-final .floor { clip-path: inset(calc(10vh + 360px) 0 0 0); } }
 
   /* Short laptops (1280 x 720, 1366 x 768): at least 200 px of the first app frame in the first screen (audit 2, finding 1). */
   @media (min-width: 1069px) and (max-height: 820px) { .pr-hero-copy { padding-top: 32px; } .pr-scene { margin-top: 24px; } .pr-h1 { font-size: min(var(--fs-xl), 9vh); } }
@@ -744,7 +731,6 @@ const faq = [
     .js .pr-quiz-story:not(.static) > .story-track { display: block; }
     .js .pr-quiz-story:not(.static) .pr-quiz-body { margin: 0; max-width: none; color: inherit; }
     .js .pr-quiz-story:not(.static) .pr-quiz-mat .rise-obj { translate: none; }
-    .js .pr-quiz-story:not(.static)[data-k="0"] .pr-quiz-r .phone, .js .pr-quiz-story:not(.static)[data-k="1"] .pr-quiz-q .phone { opacity: .55; }
     .js .pr-quiz-wrap:has(> .pr-quiz-story:not(.static)) .pr-quiz-note { margin-top: 24px; max-width: 28em; }
 
     /* S8: the row's link is the step: its name the headline, its line the body, the arrow 20 px under it. */
@@ -797,7 +783,7 @@ const faq = [
     /* S7: both phones sized by the mat, standing together at its centre (the results phone a little in front). */
     .js .pr-quiz-story:not(.static) .pr-quiz-q { --pw: min(212px, calc((100cqh - 90px) / 2.224), 40cqw); left: auto; right: calc(50% + 4px); bottom: 40px; }
     .js .pr-quiz-story:not(.static) .pr-quiz-r { --pw: min(244px, calc((100cqh - 40px) / 2.224), 46cqw); right: auto; left: calc(50% - 20px); bottom: 16px; }
-    /* The mats' devices stand inside them: their floor shadows end at the mat's edge. */
+    /* The mats' devices stand inside them: nothing of them runs past the mat's edge. */
     .js .pr-stear-story:not(.static) .pr-stear-mat, .js .pr-quiz-story:not(.static) .pr-quiz-mat { overflow: clip; }
 
     /* S8: the phone with the app's bottom bar; the window's alts are not read here. */
@@ -834,8 +820,5 @@ const faq = [
     .js .pr-scene-phone .phone figcaption { opacity: 1; transition: none; }
     .js .pr-loop-rows > li:not(.on) .pr-loop-def { color: var(--fg-2); }
     .js .pr-loop .pr-loop-rows > li:not(.on) { color: inherit; }
-  }
-  @media (prefers-contrast: more) {
-    .js .pr-quiz-story[data-k] .pr-quiz-mat .phone { opacity: 1; }
   }
 </style>

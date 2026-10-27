@@ -55,8 +55,8 @@ Academy and INQ). `robots.txt` allows everything and names the sitemap; the site
 accent comes from the `--pa*` variables on `<html>`. Text always uses the role tokens, so a section that
 changes the page's tone carries its text with it. Type roles `.t-xl .t-l .t-m .t-s .t-state .t-title .t-lead
 .t-body .t-cap .t-folio .t-price`; Fraunces for display, Instrument Sans for the rest, both self-hosted in
-`public/fonts/` and preloaded. Pills (`.btn-gold`, `.btn-line`, `.btn-cream`, `.btn-teal`), paper cards, mats,
-panels, one lamp and a grain per dark surface.
+`public/fonts/` and preloaded. Pills (`.btn-gold`, `.btn-line`, `.btn-cream`, `.btn-teal`), paper cards, mats and
+panels, every one a flat field of a book colour.
 
 **Motion** (`site.ts`, one scroll loop, every mechanic with a reduced motion and a no JS fallback): reveals
 (`.rise`, `.rise-obj`, `.wipe`), the headline line rise (`data-lines`), lit statements (`data-lit`), the page tone
@@ -80,23 +80,29 @@ and bottom bar sit at the edges and in the phone's rounded corners, so any lean 
 ## Brand decisions
 
 - **The InnerBoard brand book, exactly** (v1.0, `brief/brand/InnerBoard_Brand_Book_v1.0.html`; the client, October
-  24: "comply to the company color guidelines and hex codes"). Every colour on the site is one of the book's hex
-  codes, or white or black for shadows and highlights, at full strength or as a transparent tint. The one exception
-  is `#f9f6ee`, the patch the typing animation paints inside the app's own screenshots to match their input fields. `npm run brand`
-  reads the build and fails on any other colour.
+  24: "comply to the company color guidelines and hex codes"; October 27: "only use the hex codes in the file").
+  Every colour the site paints is one of the book's 28 hex codes, solid. Nothing blends: no see-through tints, no
+  gradients, glows, grain, soft shadows, blurs or blend modes, no white or black, and no part-faded layer at rest
+  (a fade while something moves is fine; a scroll-scrubbed ring or halo grows and shrinks instead of fading). Edges
+  that shadows used to draw are 1 px hairlines in a book colour or nothing; masks only cut with a clean edge. The one
+  exception is `#f9f6ee`, the patch the typing animation paints inside the app's own screenshots to match their input
+  fields; images (the screenshots, the logos) keep their own colours. `npm run brand` reads the build and fails on
+  anything else.
   The umbrella pages (home, Practice, contact, legal, 404) take Leah Roling's palette (book 01): the ivory `#f2ece0`
   and ink `#1b1916`; amber `#d09342` for italics, filled buttons (ink label), rules, toggles and icons; peach
-  `#e4ae9b` for the atmosphere, the selection and hovers; blush `#fbeee6` for paper, cards, mats and the footer, and
-  for italics in the dark rooms (the ink with a honey glow, amber eyebrows); muted text in the book's graphite
-  `#3a3631` and slate `#6e6660` / `#b8b2a8`. The book's amber is 2.25 on the ivory, so small type (eyebrows, folios,
+  `#e4ae9b` for rules, the selection, hovers and the day story's afternoon; blush `#fbeee6` for paper, cards, mats,
+  the alternate band and the footer, and for italics in the dark rooms (flat ink, amber eyebrows); muted text in the
+  book's graphite `#3a3631` and slate `#6e6660` / `#b8b2a8`. Lines are `#b8b2a8` on the ivory and `#3a3631` on the
+  ink. The book's amber is 2.25 on the ivory, so small type (eyebrows, folios,
   links) runs in the ink; display italics take the amber exactly (the client's call, October 24).
-- **Academy** (book 03): teal `#1a5d63` (buttons, eyebrows, italics, rules), a teal section with white type, the
-  close in the deep teal `#0d3438` with soft teal `#5ba0a7` italics, wheat cream `#ebe0c9` for the footer and a
-  bronze `#a26b3d` wash on alternate sections.
+- **Academy** (book 03): teal `#1a5d63` (buttons, eyebrows, italics, rules), a teal section with ivory type, the
+  close in the deep teal `#0d3438` with soft teal `#5ba0a7` italics, and cream `#ebe0c9` for cards, the alternate
+  band and the footer.
 - **INQ** (book 06): gold on slate. Slate `#2d2a26` sections (the homepage teaser, Why INQ works, the close) with
   champagne `#e8cf7a` italics and gold `#d4af37` eyebrows and buttons (slate label). On the ivory its italics are the
   book's gold exactly (1.8, the client's call), its small type (links, labels) the slate `#2d2a26`, its eyebrows slate
-  mid `#6e6660`; fills, rules, dots and drawn lines in the gold; white cards.
+  mid `#6e6660`; fills, rules, dots and drawn lines in the gold; ivory cards with a slate `#b8b2a8` hairline (the
+  bonus module and the investment card with a gold one).
 - **InnerBoard IOS panel** wears the book's InnerBoard OS colours (navy `#0d3054`, soft steel `#8aa3bf`, pale
   `#e6e7ea`), as the site it opens does. The logo is the client's, as supplied.
 - **One nav on every page**, exactly as the handoff locks it: Academy (into the Academy in Practice), INQ Certification, InnerBoard IOS and the
