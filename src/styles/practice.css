@@ -388,14 +388,11 @@ main section.view{display:block;animation:rise .5s ease both}
 .coll .icon svg{width:46px;height:46px;fill:none;stroke:var(--gold);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .coll{grid-template-rows:96px auto}
 .lead-it{display:block;font-style:italic;font-weight:400;color:var(--gold)}
-.journey{margin-top:40px;position:relative}
-.journey svg{width:100%;height:auto;display:block}
-.journey-list{display:none;list-style:none;margin:32px 0 0;padding:0;border-left:3px solid var(--line)}
+.journey-list{list-style:none;margin:32px 0 0;padding:0;border-left:3px solid var(--line)}
 .journey-list li{position:relative;padding:0 0 22px 28px}
 .journey-list li::before{content:attr(data-n);position:absolute;left:-17px;top:-2px;width:30px;height:30px;border-radius:50%;background:var(--surface);border:1px solid var(--gold);display:grid;place-items:center;font-family:var(--display);color:var(--gold);font-size:.95rem}
 .journey-list b{display:block;font-family:var(--display);font-weight:500;font-size:1.25rem;line-height:1.2}
 .journey-list small{color:var(--muted)}
-@media(max-width:720px){.journey svg{display:none}.journey-list{display:block}}
 
 /* practice loop infographic */
 .loop{position:relative;margin-top:48px}
@@ -559,3 +556,8 @@ footer{background:var(--navy);color:var(--on-navy-muted);padding-block:56px 40px
 .app-screen img{display:block;width:100%;height:100%;object-fit:cover}
 .hero-phone{justify-self:end}
 @media(max-width:900px){.hero-phone{justify-self:center;--w:260px !important}}
+
+/* INQ: the app's journey in a phone beside the modules (the design's journey path, from the app as its note asks). */
+.journey-app{display:grid;grid-template-columns:auto minmax(0,1fr);gap:72px;align-items:center;margin-top:44px}
+.journey-app .journey-list{margin:0}
+@media(max-width:860px){.journey-app{grid-template-columns:1fr;gap:40px}.journey-app .journey-list{margin-left:17px}}

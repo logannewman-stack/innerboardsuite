@@ -1,10 +1,12 @@
 ---
-/** INQ Certification (the inq view of the client's design): who it is for, the journey, the credential, two steps to start. */
+/**
+ * INQ Certification (the inq view of the client's design): who it is for, the journey (the app's own journey path,
+ * as the design's note asks, beside the modules), the credential, two steps to start.
+ */
 import Layout from "../layouts/Practice.astro";
+import AppPhone from "../components/AppPhone.astro";
 import { MODULES } from "../data/practice";
 import { LINKS } from "../config/links";
-/* A module name in lines of at most n characters (the journey drawing's labels). */
-const wrap = (t: string, n: number) => t.split(" ").reduce((l: string[], w) => { const last = l[l.length - 1]; if ((last + " " + w).trim().length > n) l.push(w); else l[l.length - 1] = (last + " " + w).trim(); return l; }, [""]);
 ---
 <Layout title="INQ Certification · The Practice" description="Master the methodology. Lead the transformation. A professional certification for coaches, leaders, and practitioners who bring the InnerBoard methodology to the people they serve." path="/inq" nav="learn">
 <section class="view" id="inq">
@@ -35,20 +37,10 @@ const wrap = (t: string, n: number) => t.split(" ").reduce((l: string[], w) => {
       <p class="eyebrow">The INQ journey</p>
       <h2 class="h2">Built from the inside out, one module at a time.</h2>
       <p class="lede" style="margin-top:14px">Each module builds on the one before it. You start with your own awareness, emotions, and identity. Then you take the work into your relationships, your energy, and your choices. Only then do you learn to coach it, so by certification you’re leading others through work you’ve already done yourself.</p>
-      <div class="journey" id="journey">
-        <svg viewBox="0 0 1000 580" role="img" aria-label="INQ journey: Modules 0 through 8 and a bonus module along a winding path">
-          <path d="M50 80 H880 A95 95 0 0 1 880 270 H130 A95 95 0 0 0 130 460 H950" fill="none" style="stroke:var(--band)" stroke-width="16" stroke-linecap="round"></path>
-          {MODULES.map((m) => (
-            <g>
-              <circle cx={m.x} cy={m.y} r="30" style="fill:var(--surface);stroke:var(--gold)" stroke-width="1.5"></circle>
-              <text x={m.x} y={m.y + 8} text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="22" style="fill:var(--gold)">{m.n}</text>
-              <text text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="17" style="fill:var(--ink)">{wrap(m.name, 24).map((line, k) => <tspan x={m.x} y={m.y + 58 + k * 20}>{line}</tspan>)}</text>
-              <text x={m.x} y={m.y + 58 + wrap(m.name, 24).length * 20 + 2} text-anchor="middle" font-family="Instrument Sans,Arial,sans-serif" font-size="12.5" style="fill:var(--muted)">{m.lessons} lessons</text>
-            </g>
-          ))}
-        </svg>
+      <div class="journey-app">
+        <AppPhone screen="inq-journey" width={300} alt="INQ Certification in The Practice app: your journey towards becoming a certified INQ coach, stop by stop, starting with Module 0, Accreditation." />
+        <ol class="journey-list" id="journeyList">{MODULES.map((m) => <li data-n={m.n}><b>{m.name}</b><small>{m.lessons} lessons</small></li>)}</ol>
       </div>
-      <ol class="journey-list" id="journeyList">{MODULES.map((m) => <li data-n={m.n}><b>{m.name}</b><small>{m.lessons} lessons</small></li>)}</ol>
     </div>
   </div>
 

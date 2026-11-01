@@ -23,7 +23,7 @@ Preview: https://innerboardsuite.vercel.app/ (the branch deploy). Production: ht
 | `/story` | Why practice | The brand belief, the ten reasons (open and close without the script), the manifesto |
 | `/academy` | Academy | The curriculum, why these skills matter, the twelve collections and their lessons by level, every lesson ends with a rep |
 | `/lab` | The Lab | Where practice meets real life, Academy or the Lab, what is included, how it works |
-| `/inq` | INQ Certification | Who it is for, the INQ journey (drawn on the server), the credential, two steps to start |
+| `/inq` | INQ Certification | Who it is for, the INQ journey (the app's own path, beside the modules), the credential, two steps to start |
 | `/ios` | InnerBoard OS | The challenge, the cost, the IOS model, the workflow and the Company OS Score, the outcome, the Company OS Score form, the book |
 | `/app` | The app | The Practice app, the membership, how it connects |
 | `/club` | The Practice Club | The movement, founding members, the club out in the world, challenges, the founding collection |
@@ -38,9 +38,10 @@ host, so a texted link shows it), and the P mark as favicon and home screen icon
 - `src/layouts/Practice.astro`: the head, the header, the page, the footer, the script.
 - `src/components/Header.astro`, `Footer.astro`: the design's header (with the InnerBoard submenu) and footer.
 - `src/components/AppPhone.astro`: a real screen of the app in a phone (the client, November 1: real screenshots,
-  in a phone's shape, in place of the design's drawn app previews). Three screens, captured from the live app as a
+  in a phone's shape, in place of the design's drawn app previews). Four screens, captured from the live app as a
   visitor on a phone (390 x 844 at 2x, light theme, a weekday morning): Today on the home page, Set Up Your Day on
-  `/app`, and a scored Company OS Score on `/ios`. They live in `public/images/practice/app/` (780 x 1688, plus a
+  `/app`, a scored Company OS Score on `/ios`, and the INQ journey on `/inq` (in place of the design's drawn path, as
+  its own note asks: "the INQ journey path from The Practice app"), beside the module list. They live in `public/images/practice/app/` (780 x 1688, plus a
   390 px variant); `scripts/capture.mjs` recaptures any route.
 - `src/pages/*.astro`: one page per view, the design's markup with real routes for its hash links.
 - `src/data/practice.ts`: the content the design drew from its script, word for word: the ten reasons, the twelve

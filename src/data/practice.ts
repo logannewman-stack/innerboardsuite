@@ -4,7 +4,7 @@
  */
 export interface Reason { title: string; sub: string; body: string; practice: string; changes: string; line: string }
 export interface Collection { name: string; title: string; desc: string; levels: string[][]; image: string }
-export interface Module { n: string; name: string; lessons: number; x: number; y: number }
+export interface Module { n: string; name: string; lessons: number }
 
 export const REASONS: Reason[] = [
   {
@@ -397,76 +397,56 @@ export const COLLECTIONS: Collection[] = [
   }
 ];
 
-/** The INQ modules, with each one's place on the journey path (a 1000 x 580 drawing). */
+/** The INQ modules, in order. */
 export const MODULES: Module[] = [
   {
     "n": "0",
     "name": "Accreditation",
-    "lessons": 10,
-    "x": 120,
-    "y": 80
+    "lessons": 10
   },
   {
     "n": "1",
     "name": "Radical Awareness",
-    "lessons": 14,
-    "x": 370,
-    "y": 80
+    "lessons": 14
   },
   {
     "n": "2",
     "name": "Mastering Emotions",
-    "lessons": 13,
-    "x": 620,
-    "y": 80
+    "lessons": 13
   },
   {
     "n": "3",
     "name": "Identity Design & Reinvention",
-    "lessons": 10,
-    "x": 850,
-    "y": 80
+    "lessons": 10
   },
   {
     "n": "4",
     "name": "Relationships as the Mirror",
-    "lessons": 11,
-    "x": 790,
-    "y": 270
+    "lessons": 11
   },
   {
     "n": "5",
     "name": "Energy as a Leadership Strategy",
-    "lessons": 13,
-    "x": 540,
-    "y": 270
+    "lessons": 13
   },
   {
     "n": "6",
     "name": "Alignment in Action",
-    "lessons": 9,
-    "x": 290,
-    "y": 270
+    "lessons": 9
   },
   {
     "n": "7",
     "name": "Coaching Others: Becoming the Work",
-    "lessons": 8,
-    "x": 190,
-    "y": 460
+    "lessons": 8
   },
   {
     "n": "8",
     "name": "Integration & Certification: Being the Work",
-    "lessons": 6,
-    "x": 470,
-    "y": 460
+    "lessons": 6
   },
   {
     "n": "B",
     "name": "Bonus: The Entrepreneurial Path",
-    "lessons": 12,
-    "x": 760,
-    "y": 460
+    "lessons": 12
   }
 ];
