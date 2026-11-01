@@ -1,0 +1,75 @@
+---
+/**
+ * The page shell for every page: the head (title, description, canonical, Open Graph and Twitter tags, the
+ * icons), the header, the page, the footer and the one script. `nav` marks the header item the page belongs to.
+ * `noindex` (the 404 page) drops the canonical and asks search engines not to index it.
+ */
+import "../styles/practice.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE } from "../config/links";
+
+interface Props {
+  title: string;
+  description: string;
+  path?: string;
+  nav?: "learn" | "app" | "ios" | "club";
+  image?: string;
+  imageAlt?: string;
+  noindex?: boolean;
+}
+const { title, description, path = "/", nav, image = "/og-image.png", imageAlt = "The Practice by InnerBoard. You can lead the life you want. It just takes practice.", noindex = false } = Astro.props;
+const canonical = new URL(path, SITE.url).toString();
+/* The link preview must load from the host that serves this build: on Vercel the production URL (its vercel.app
+ * address until the domain is attached), or the branch URL for previews. Without Vercel, the site's own domain. */
+const host = process.env.VERCEL_ENV === "production" ? process.env.VERCEL_PROJECT_PRODUCTION_URL : (process.env.VERCEL_BRANCH_URL || process.env.VERCEL_URL);
+const origin = host ? `https://${host}` : SITE.url;
+const imageUrl = new URL(image, origin).toString();
+const shareUrl = new URL(path, origin).toString();
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    <meta name="theme-color" content="#FBF8F3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1B2332" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="/brand/icon-32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/brand/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png" sizes="180x180" />
+    <link rel="preload" href="/fonts/fraunces-latin-opsz-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/instrument-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={shareUrl} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+    <noscript><style>
+      /* Without the script: the menu is open on small screens and the InnerBoard submenu lies open under its label. */
+      .submenu[hidden]{display:block!important;position:static;box-shadow:none;border:0;padding:0 0 8px 12px;min-width:0}
+      @media(max-width:980px){.navlinks{display:flex}.menu-btn{display:none}}
+    </style></noscript>
+  </head>
+  <body>
+    <Header nav={nav} />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <script>import "../scripts/practice.ts";</script>
+  </body>
+</html>

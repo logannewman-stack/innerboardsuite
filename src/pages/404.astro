@@ -1,42 +1,19 @@
 ---
 /**
- * innerboardsuite.com/404: the page Vercel serves for any address that is not on the site (a static build's
- * 404.html is served for unmatched routes). The header, the footer and the brand mark, one functional line and
- * two ways on: the homepage, and Start in Practice (with its passthrough and click event, as every link into the
- * app). Not indexed, not in the sitemap.
+ * The page Vercel serves for any address that is not on the site (a static build's 404.html). Not indexed, not in
+ * the sitemap.
  */
-import Base from "../layouts/Base.astro";
-import Arrow from "../components/Arrow.astro";
-import { LINKS } from "../config/links";
-
-const title = "This page isn't here · InnerBoard";
-const description =
-  "This page isn't here. Self-leadership from the inside out. The framework, the practice ground, and the community for the work of becoming yourself.";
+import Layout from "../layouts/Practice.astro";
+import { ROUTES } from "../config/links";
 ---
-<Base title={title} description={description} path="/404" noindex>
-  <section class="nf" data-tone="cream">
-    <div class="wrap nf-wrap">
-      <img class="nf-mark rise" src="/brand/logo.png" width="500" height="500" alt="InnerBoard" />
-      <h1 class="t-l nf-h1 rise" style="--d:.08s">This page isn't here.</h1>
-      <div class="nf-btns rise" style="--d:.16s">
-        <a href={LINKS.practice} class="btn btn-gold" data-passthrough data-event="practice_click" data-event-location="404">Start in Practice <Arrow /></a>
-        <a href="/" class="btn btn-line">Go to the homepage</a>
+<Layout title="This page isn’t here · The Practice" description="This page isn’t here. You can lead the life you want. It just takes practice." path="/404" noindex>
+  <section class="view">
+    <div class="phero nf">
+      <div class="wrap center stack">
+        <p class="eyebrow">Life takes reps.</p>
+        <h1>This page isn’t here.</h1>
+        <div class="ctas" style="justify-content:center"><a class="btn btn-solid" href={ROUTES.app}>Start Practicing <span class="arr">→</span></a><a class="btn btn-line" href={ROUTES.home}>Go to the homepage</a></div>
       </div>
     </div>
   </section>
-</Base>
-
-<style is:global>
-  /* One screen less the footer's top: the mark, the line and the buttons centred on the cream. */
-  .nf { position: relative; isolation: isolate; display: flex; align-items: center; min-height: max(520px, calc(100svh - 120px)); padding: calc(var(--nav-h) + 48px) 0 var(--sec); }
-  .nf-wrap { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; text-align: center; }
-  .nf-mark { width: 168px; height: 168px; display: block; margin-inline: auto; }
-  .nf-h1 { margin: 32px auto 0; max-width: none; text-wrap: balance; }
-  .nf-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: var(--btn-gap); }
-  @media (max-width: 734px) {
-    .nf-mark { width: 136px; height: 136px; }
-    .nf-btns { flex-direction: column; align-self: stretch; }
-    .nf-btns .btn { width: 100%; }
-  }
-  @media (orientation: landscape) and (max-height: 500px) { .nf { padding-top: calc(var(--nav-h) + 24px); min-height: 0; } }
-</style>
+</Layout>

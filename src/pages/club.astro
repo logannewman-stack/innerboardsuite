@@ -1,0 +1,75 @@
+---
+/** The Practice Club (the club view of the client's design): the movement, founding members, challenges, the collection. */
+import Layout from "../layouts/Practice.astro";
+
+---
+<Layout title="The Practice Club" description="For the people doing the work. Not because you’re broken. Because you’re alive, and your life is worth practicing for." path="/club" nav="club">
+<section class="view" id="club">
+  <div class="club-hero">
+    <div class="wrap grid">
+      <div>
+        <img loading="lazy" decoding="async" class="tpc-hero" src="/images/practice/tpc-light.png" alt="TPC" width="46" height="88">
+        <p class="eyebrow">The movement · Est. 2026</p>
+        <h1 style="margin-top:18px">The Practice Club</h1>
+        <p class="tagline">For the people doing the work.</p>
+        <p class="lede">Not because you’re broken. Because you’re alive, and your life is worth practicing for.</p>
+        <div class="ctas"><a class="btn btn-solid" href="#club-join">Join the Movement <span class="arr">→</span></a></div>
+      </div>
+      <figure class="club-collage"><img loading="lazy" decoding="async" width="900" height="1125" src="/images/practice/club-collage.webp" alt="The Practice Club: cream hoodie, Life Takes Reps cap, Be Your Own Proof tote, and Reps Over Regret"></figure>
+      </div>
+    </div>
+  </div>
+
+  <div class="band ticker-band">
+    <div class="ticker" aria-label="Life takes reps. Be your own proof. Reps over regret. Better takes practice. Bring one thing.">
+      <div class="ticker-track"><div class="ticker-set"><span>Life takes reps.</span><i aria-hidden="true"></i><span>Be your own proof.</span><i aria-hidden="true"></i><span>Reps over regret.</span><i aria-hidden="true"></i><span>Better takes practice.</span><i aria-hidden="true"></i><span>Bring one thing.</span><i aria-hidden="true"></i></div><div class="ticker-set" aria-hidden="true"><span>Life takes reps.</span><i aria-hidden="true"></i><span>Be your own proof.</span><i aria-hidden="true"></i><span>Reps over regret.</span><i aria-hidden="true"></i><span>Better takes practice.</span><i aria-hidden="true"></i><span>Bring one thing.</span><i aria-hidden="true"></i></div></div>
+    </div>
+  </div>
+
+  <div class="band paper">
+    <div class="wrap founding">
+      <div class="tpc-panel"><img loading="lazy" decoding="async" src="/images/practice/tpc-dark.png" alt="The Practice Club TPC monogram" width="153" height="292"></div>
+      <div class="stack">
+        <p class="eyebrow">Founding members</p>
+        <h2>The first ones in.</h2>
+        <p class="lede">The founding members are the people who decided not to wait until life settled down. Parents, partners, owners, and leaders who chose to start practicing now. They help set the tone for what this club becomes, and they carry the founding mark to show it.</p>
+        <p class="lede">You don’t have to have it figured out. You have to be willing.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="band">
+    <div class="wrap">
+      <p class="eyebrow">In real life</p>
+      <h2 class="h2">The club, out in the world.</h2>
+      <div class="tiles" style="margin-bottom:72px">
+        <div class="tile"><div class="ph photo"><img loading="lazy" decoding="async" width="800" height="450" src="/images/practice/club-early-reps.webp" alt="Two members walking a park path in Practice Club and Be Your Own Proof hoodies"></div><div class="tb"><h4>Early reps</h4><p>Showing up before the day asks anything of you.</p></div></div>
+        <div class="tile"><div class="ph photo"><img loading="lazy" decoding="async" width="800" height="450" src="/images/practice/club-conversations.webp" alt="Two women in club hoodies talking at a kitchen table"></div><div class="tb"><h4>The real conversations</h4><p>Where the practice matters most.</p></div></div>
+        <div class="tile"><div class="ph photo"><img loading="lazy" decoding="async" width="800" height="450" src="/images/practice/club-at-work.webp" alt="A team meeting around a table with a Be Your Own Proof tote"></div><div class="tb"><h4>Leading at work</h4><p>Taking the practice into the room.</p></div></div>
+      </div>
+      <p class="eyebrow">Club challenges</p>
+      <h2 class="h2">Practice together.</h2>
+      <div class="challenges">
+        <div class="challenge"><small>Reps over regret</small><h4>The Pause</h4><p>Catch one reaction a day before it happens. Log the rep. Notice what changes at home.</p></div>
+        <div class="challenge"><small>Be your own proof</small><h4>Keep One Promise</h4><p>Pick one small commitment to yourself and keep it, day after day.</p></div>
+        <div class="challenge"><small>Bring one thing</small><h4>The Hard Conversation</h4><p>Name the conversation you’ve been avoiding. Practice it. Then have it.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="club">
+    <div class="merch merch-photos" aria-label="The Practice Club merch"><figure class="mph"><img loading="lazy" decoding="async" width="162" height="244" src="/images/practice/merch-hoodie.webp" alt="Cream hoodie, The Practice Club"><figcaption>Hoodie</figcaption></figure><figure class="mph"><img loading="lazy" decoding="async" width="156" height="142" src="/images/practice/merch-cap.webp" alt="Navy and cream caps"><figcaption>Cap</figcaption></figure><figure class="mph"><img loading="lazy" decoding="async" width="154" height="184" src="/images/practice/merch-tote.webp" alt="Canvas tote that reads Life Takes Reps"><figcaption>Tote</figcaption></figure></div>
+    <div class="copy">
+      <p class="tags">The founding collection</p>
+      <h2>Wear the work.</h2>
+      <p>Sweatshirts, tees, hats, and totes.</p>
+      <p class="lede">Lifestyle pieces made to be worn, not giveaways. Each one carries a line from the club.</p>
+      <span class="btn btn-line" style="align-self:flex-start" aria-disabled="true">Shop opens soon</span>
+    </div>
+  </div>
+
+  <div class="band navy on-navy" id="club-join">
+    <div class="wrap closer"><h2>Your life is worth<br>practicing for.</h2><div class="ctas"><a class="btn btn-solid" href="/app">Join the Movement <span class="arr">→</span></a><a class="btn btn-line" href="/story">Read the manifesto</a></div></div>
+  </div>
+</section>
+</Layout>

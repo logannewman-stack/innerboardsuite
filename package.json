@@ -9,17 +9,11 @@
     "preview": "astro preview",
     "check": "astro check",
     "sweep": "node scripts/sweep.mjs",
-    "brand": "node scripts/brand.mjs",
-    "tiles": "node scripts/tiles.mjs",
-    "desk2x": "node scripts/desk2x.mjs",
-    "small": "node scripts/small.mjs",
-    "scrolled": "node scripts/scrolled.mjs"
+    "brand": "node scripts/brand.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.6.0",
-    "@tailwindcss/vite": "^4.1.0",
-    "astro": "^5.0.0",
-    "tailwindcss": "^4.1.0"
+    "astro": "^5.0.0"
   },
   "devDependencies": {
     "sharp": "^0.34.5"

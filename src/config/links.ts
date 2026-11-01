@@ -1,60 +1,38 @@
 /**
- * Every destination on the site, in one place.
- *
- * The build tracker's "Links to Confirm" tab lists the ones still pending.
- * Each pending entry below carries the best real destination available
- * today so no button on the site goes nowhere; swap the value when the final
- * URL is approved. Nothing else on the site hard-codes a destination.
+ * Every destination on the site, in one place. The pages of this site are `ROUTES`; everything that leaves the
+ * site is `LINKS`.
  */
 export const APP = "https://practiceinnerboard.com";
 
-/** A link into Practice, carrying where it was handed out (`profiles.came_from`). */
+/** A link into the Practice app, carrying where it was handed out (`profiles.came_from`). */
 export const into = (path = "/", from = "suite") => `${APP}${path}${path.includes("?") ? "&" : "?"}from=${from}`;
 
-export const LINKS = {
-  /** Start in Practice (nav, hero, Practice section). Pending: confirm the app URL. */
-  practice: into("/", "suite"),
-  login: into("/login", "suite"),
-  /** What's Holding You Back? / Take the Quiz: the anonymous quiz inside Practice. */
-  quiz: into("/quiz", "suite"),
-  /** Academy, everywhere it is a link (the client, October 24: straight to where the courses are bought): the
-   * Academy inside Practice. The Academy page on this site stays at /academy, reached by its address. */
-  academy: into("/academy", "academy"),
-  academyApp: into("/academy", "academy"),
-  /** The live Academy page's own links, kept exactly as they point today (Academy doc: nothing about links changes). */
-  live: {
-    humanFoundations: "https://innerboardsuite.com/human-foundations",
-    wisdomCollection: "https://innerboardsuite.com/wisdom-collection",
-    certifiedMindMethod: "https://innerboardsuite.com/certified-mind-method",
-    innerlab: "https://innerboardsuite.com/innerlab-5011",
-    innerlabMembership: "https://innerboardsuite.com/innerlab-lp",
-    quizPage: "https://innerboardsuite.com/quiz-page",
-    login: "https://www.skool.com/login"
-  },
-  /** The Practice sales page on this site. */
-  practicePage: "/practice",
-  /** The INQ Certification page on this site. */
-  inq: "/inq-certification",
-  /** Book a Conversation (INQ). Pending: the INQ booking URL. */
-  inqBook: "mailto:info@innerboardsuite.com?subject=INQ%20Certification%3A%20book%20a%20conversation",
-  /** Enroll now (INQ). Pending: checkout or enrollment URL. Interim: the same conversation. */
-  inqEnroll: "mailto:info@innerboardsuite.com?subject=INQ%20Certification%3A%20enroll",
-  /** The Certified Mind Method, its Academy course. Pending: the course URL. */
-  certifiedMind: "https://innerboardsuite.com/certified-mind-method",
-  /** InnerLab, inside Practice. */
-  innerlab: into("/lab", "innerlab"),
-  /** Explore InnerBoard IOS. Known. */
-  ios: "https://innerboardos.com",
-  /** The book, inside Practice. */
-  book: into("/book", "suite"),
-  contact: "/contact",
-  contactEmail: "info@innerboardsuite.com",
+export const ROUTES = {
+  home: "/",
+  story: "/story",
+  academy: "/academy",
+  lab: "/lab",
+  inq: "/inq",
+  ios: "/ios",
+  app: "/app",
+  club: "/club",
   privacy: "/privacy",
   terms: "/terms"
 } as const;
 
+export const LINKS = {
+  /** Start Practicing, where it means open the app itself (the app page's membership). */
+  start: into("/", "suite"),
+  /** Enroll now (INQ): the INQ Certification inside the app. */
+  inqEnroll: into("/certifications/inq", "inq"),
+  /** Start a conversation (INQ). Pending: the INQ booking URL. */
+  inqTalk: "mailto:info@innerboardsuite.com?subject=INQ%20Certification%3A%20start%20a%20conversation",
+  /** Where the Company OS Score request goes until the site has a form backend. */
+  osEmail: "info@innerboardsuite.com",
+  contactEmail: "info@innerboardsuite.com"
+} as const;
+
 export const SITE = {
-  name: "InnerBoard",
-  url: "https://innerboardsuite.com",
-  founder: "Leah Roling"
+  name: "The Practice",
+  url: "https://innerboardsuite.com"
 } as const;

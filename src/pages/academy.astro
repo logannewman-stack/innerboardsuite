@@ -1,437 +1,86 @@
 ---
 /**
- * innerboardsuite.com/academy
- *
- * Built to BUILD_SPEC 2.3 on the system of part 1. The copy is the locked
- * copy of "Academy Page Rebuild: Copy and Build Directions" (D1), verbatim,
- * every <em> where the file has it; the only removal is the three summary
- * items beside the hero, which were our own sentences. Cream and teal:
- * teal pills, teal eyebrows, paper at 20 px. The page's drawn moments are
- * the mark geometry and the margin rule on the hero and the stair line
- * beside the three levels; its object with depth is the InnerLab card.
+ * Academy (the academy view of the client's design): the curriculum, why these skills matter, the twelve
+ * collections (pick one to see its lessons at each level), and how every lesson ends with a rep.
  */
-import Base from "../layouts/Base.astro";
-import Arrow from "../components/Arrow.astro";
-import Geo from "../components/Geo.astro";
-import AcademyStair from "../components/AcademyStair.astro";
-import AcademyLabCard from "../components/AcademyLabCard.astro";
-import { LINKS } from "../config/links";
-
-const title = "InnerBoard Academy · The curriculum school never offered";
-const description =
-  "The curriculum school never offered. Self-paced courses in the skills nobody taught you: what to do with a racing mind, a big feeling, a hard conversation.";
-
-const levels = [
-  { name: "Foundations", body: "Where you start seeing what's actually driving you. The starting place in every collection. Your thoughts, your reactions, and why you keep doing what you do." },
-  { name: "Practicum", body: "You get it. You still do it. This is where that changes. Real situations, honest questions, and practice that holds up when life pushes back." },
-  { name: "Graduate", body: "For the moments with the most at stake. The hardest conversations, the oldest habits, and the places you still lose yourself." }
-];
-
-const core = [
-  { name: "Human Foundations", body: "Thought, emotion, identity, belief, and the daily practice of self-leadership.", href: LINKS.live.humanFoundations },
-  { name: "The Wisdom Collective", body: "48 books. 7 research-grounded frameworks. The science underneath why this work works.", href: LINKS.live.wisdomCollection },
-  { name: "The Certified Mind Method", body: "The complete method behind INQ Certification: five tools that create real follow-through in your own life and with anyone you lead. One course, purchased as one.", href: LINKS.certifiedMind }
-];
-const lifeStage = [
-  { name: "Teens", body: "Identity, big emotions, confidence, and the early practice of self-leadership. Built for ages 14 to 18." },
-  { name: "Young Adult Life", body: "Self-trust, direction, and building stability while building a life. For ages 18 to 25." },
-  { name: "Life Transitions & Midlife", body: "For the season when everything is shifting and you're finding your footing." },
-  { name: "Parenting & Family Life", body: "How what's going on inside you shapes your family, and how to lead your home from the inside out." }
-];
-const domain = [
-  { name: "Relationships & Connection", body: "How you communicate, what you keep repeating, where your boundaries are, and building real connection." },
-  { name: "Work, Career & Professional Life", body: "Who you are at work, how you hold steady under pressure, and owning your part." },
-  { name: "Purpose & Life Design", body: "From drifting to directing. Built on design, not motivation." },
-  { name: "Spiritual Growth & Inner Expansion", body: "Presence, stillness, trust, and the parts of life you feel more than you can explain." },
-  { name: "Money & Financial Life", body: "The beliefs driving what you do with money. The part underneath every budget and strategy." },
-  { name: "Grief & Loss", body: "Death, divorce, the loss of who you were. How to meet an ending, and what becomes possible after it." }
-];
-const testimonials = [
-  "I thought I just was not a patient person. Turns out I had no idea what was driving my reactions. Now I do.",
-  "I have tried every productivity system. None of it lasted. This was the first time I understood why, and what to actually do about it.",
-  "I came in looking for a tool. I walked out with a different way of seeing."
-];
-
-/** The ampersand rule (1.3 item 8): the glyph changes face, the sentence does not. A no-break space
- * binds it to the next word, so a name never ends a line on a bare ampersand. */
-const amp = (name: string) => name.replace(/ & /g, ' <span class="amp">&amp;</span>&nbsp;');
+import Layout from "../layouts/Practice.astro";
+import { COLLECTIONS, LEVEL_NOTES } from "../data/practice";
+const first = COLLECTIONS[0];
 ---
-<Base title={title} description={description} path="/academy" theme="teal" themeColor="#f2ece0">
-  <!-- 2.3.1 Hero: type, the mark geometry drawing in, one margin rule -->
-  <section class="ac-hero" data-tone="ac-cream">
-    <div class="wrap ac-hero-wrap">
-      <Geo class="ac-hero-geo" color="#ebe0c9" stroke={1.25} ringsOnly />
-      <i class="ac-rule ac-hero-rule rule-draw-v" aria-hidden="true" style="--d:.6s"></i>
-      <div class="grid">
-        <div class="ac-hero-copy">
-          <p class="eyebrow rise" style="--d:.45s">InnerBoard Academy · Learn</p>
-          <h1 class="t-xl ac-h1" data-lines><span class="hl">The curriculum school <em>never</em> offered.</span></h1>
-          <p class="t-lead ac-lead rise" style="--d:.52s">Self-paced courses in the skills nobody taught you: what to do with a racing mind, a big feeling, a hard conversation. Start at the beginning, or start where you are.</p>
-          <div class="ac-btns rise" style="--d:.58s">
-            <a href="#library" class="btn btn-teal">Browse the collections <Arrow /></a>
+<Layout title="Academy · The Practice" description="The curriculum school never offered. Practical lessons on demand to help you think, respond, communicate, decide, and lead in your real life." path="/academy" nav="learn">
+<section class="view" id="academy">
+  <div class="phero">
+    <div class="wrap split">
+      <div class="stack">
+        <p class="eyebrow">InnerBoard Academy · Learn it</p>
+        <a class="incl" href="/app#membership">Included with The Practice membership</a>
+        <h1>The curriculum school never offered.</h1>
+        <p class="lede">Practical lessons on demand to help you think, respond, communicate, decide, and lead in your real life.</p>
+        <div class="ctas"><a class="btn btn-solid" href="#collections">Explore the Academy <span class="arr">→</span></a></div>
+      </div>
+      <div class="ph photo hero-gfx"><img loading="lazy" decoding="async" width="1200" height="960" src="/images/practice/academy-books.webp" alt="Academy books on a shelf: Self Awareness, Confidence, Relationships, Communication, Decision Making, Leadership, Purpose, Parenting, Emotional Regulation"></div>
+    </div>
+  </div>
+
+  <div class="band">
+    <div class="wrap why">
+      <div class="stack">
+        <p class="eyebrow">Why these skills matter</p>
+        <h2 class="h2" style="margin-top:0">You were taught math and history. Were you ever taught how to live your life, and how to lead it?</h2>
+      </div>
+      <div class="points">
+        <div><h4>Your reactions shape your relationships.</h4><p>Most regret starts with a response we never practiced. These skills give you more choice in hard moments.</p></div>
+        <div><h4>Confidence comes from evidence.</h4><p>Learning a skill, then using it, builds trust in yourself in a way waiting never will.</p></div>
+        <div><h4>Leadership starts inside.</h4><p>How you lead yourself shows up at home, at work, and with the people you love.</p></div>
+        <div><h4>Experience alone isn’t enough.</h4><p>You can repeat the same year twenty times. Or you can spend twenty years getting better.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="band paper" id="collections">
+    <div class="wrap">
+      <p class="eyebrow">The 12 collections</p>
+      <h2 class="h2">Start with what you’re living right now.</h2>
+      <div class="collections" id="collGrid">
+        {COLLECTIONS.map((c, i) => <button type="button" class="coll" aria-pressed={i === 0 ? "true" : "false"}><div class="cimg"><img src={c.image} alt="" width="640" height="360" loading="lazy" decoding="async" /></div><span>{c.name}</span></button>)}
+      </div>
+      <div class="detail">
+        <div class="stack" style="gap:14px">
+          <img class="coll-hero" id="collImg" src={first.image} alt={first.name} width="640" height="360" loading="lazy" decoding="async" />
+          <p class="eyebrow" id="collEyebrow">Self Awareness</p>
+          <h3 id="collTitle">Understand yourself. Lead your life.</h3>
+          <p class="lede" id="collDesc">Build greater self awareness, recognize your patterns, and make more intentional choices.</p>
+          <a class="btn btn-solid" href="/app" style="align-self:flex-start">Start this collection <span class="arr">→</span></a>
+        </div>
+        <div>
+          <div class="tabs" role="tablist" aria-label="Learning level">
+            <button role="tab" aria-selected="true" data-level="0" id="tab0">Foundations</button>
+            <button role="tab" aria-selected="false" data-level="1" id="tab1">Practicum</button>
+            <button role="tab" aria-selected="false" data-level="2" id="tab2">Graduate</button>
           </div>
-          <p class="ac-hero-note rise" style="--d:.6s">For the moment you're done reacting the same way and getting the same result.</p>
+          <p class="levelnote" id="levelNote">{LEVEL_NOTES[0]}</p>
+          <ol class="lessons" id="lessons">{first.levels[0].map((t, i) => <li><b>{String(i + 1).padStart(2, "0")}</b><span>{t}</span><small>Lesson + rep</small></li>)}</ol>
+          <script type="application/json" id="collData" set:html={JSON.stringify({ c: COLLECTIONS, notes: LEVEL_NOTES })}></script>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- 2.3.2 The gap: the sequenced litany -->
-  <section class="ac-gap" data-tone="ac-cream">
-    <div class="wrap ac-gap-wrap">
-      <div class="grid">
-        <div class="ac-gap-left">
-          <p class="eyebrow rise">The gap</p>
-          <ul class="ac-litany" data-lit="lines" role="list">
-            <li class="t-s-pull">You learned the dates.</li>
-            <li class="t-s-pull">You learned where the appendix sits.</li>
-            <li class="t-s-pull">You learned how to diagram a sentence.</li>
-          </ul>
-        </div>
-        <div class="ac-gap-right">
-          <h2 class="t-l wipe" style="--d:.9s">Nobody taught you how to <em>lead yourself.</em></h2>
-          <p class="t-s-quote ac-gap-line rise" style="--d:1.2s">The most important skill of your life, <em>left for you to figure out on your own.</em></p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 2.3.3 How it works: the three levels as a stair -->
-  <section class="ac-how sec-alt" data-tone="ac-cream">
+  <div class="band">
     <div class="wrap">
-      <div class="grid">
-        <div class="ac-head8">
-          <p class="eyebrow rise">How it works</p>
-          <h2 class="t-l wipe">Twelve collections. One <em>direction.</em></h2>
-          <p class="t-lead ac-head-lead rise" style="--d:.3s">Every collection stands on its own. There's no required order. Start with what's hardest right now and go as deep as you want.</p>
-        </div>
-      </div>
-      <div class="ac-ladder-wrap">
-        <AcademyStair />
-        <ul class="ladder ac-ladder" role="list">
-          {levels.map((level, i) => (
-            <li class="rise" style={`--d:${i * 70}ms`}>
-              <p class="ladder-name">{level.name}</p>
-              <p class="ladder-body">{level.body}</p>
-            </li>
-          ))}
-        </ul>
-        <i class="ac-rule ac-how-rule rule-draw-v" aria-hidden="true" style="--d:.4s"></i>
+      <p class="eyebrow">From lesson to daily practice</p>
+      <h2 class="h2">Every lesson ends with a rep.</h2>
+      <p class="lede" style="margin-top:14px">Lessons connect straight to the Practice Coach, so what you learn in the morning is something you try by the afternoon. Here’s a sample.</p>
+      <div class="flow">
+        <div><small>The lesson · 9 min</small><h4>The pause</h4><p>Why the space between what happens and how you respond is where most of your choices live.</p></div>
+        <div><small>Today’s rep</small><h4>Pause once</h4><p class="quote">Before you answer the next text or comment that bothers you, wait. Take one breath and ask: what do I actually want here?</p></div>
+        <div><small>Reflect in the app</small><h4>What happened?</h4><p>The Practice Coach asks what you noticed, what was different, and what you want to try next. Your streak grows.</p></div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- 2.3.4 The library: three paper cards and a ledger -->
-  <section class="ac-lib" id="library" data-tone="ac-cream">
-    <div class="wrap">
-      <div class="grid">
-        <div class="ac-head8">
-          <p class="eyebrow rise">The library</p>
-          <h2 class="t-l wipe">Find your <em>door in.</em></h2>
-          <p class="t-lead ac-head-lead rise" style="--d:.3s">Most people start with Human Foundations. Start anywhere else if you already know where you want to begin.</p>
-        </div>
-      </div>
-
-      <p class="eyebrow ac-lib-label rise">Core curriculum · Available now</p>
-      <ul class="ac-cards" role="list">
-        {core.map((c, i) => (
-          <li class="paper ac-card rise-obj" style={`--d:${0.2 + i * 0.09}s`}>
-            <i class="ac-card-rule rule-draw" aria-hidden="true" style={`--d:${0.5 + i * 0.09}s`}></i>
-            <h3 class="t-s ac-card-title">{c.name}</h3>
-            <p class="t-body ac-card-body">{c.body}</p>
-            <a href={c.href} class="link ac-card-link">Open the collection <Arrow /></a>
-          </li>
-        ))}
-      </ul>
-
-      <div class="grid ac-ledgers">
-        <div class="ac-ledger ac-ledger-l">
-          <p class="eyebrow rise">Life stage collections</p>
-          <ul class="ac-index" role="list">
-            {lifeStage.map((c, i) => (
-              <li class="rise" style={`--d:${i * 40}ms`}>
-                <span class="ac-soon">Coming soon</span>
-                <p class="t-title ac-row-name" set:html={amp(c.name)}></p>
-                <p class="t-body ac-row-body">{c.body}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div class="ac-ledger ac-ledger-r">
-          <p class="eyebrow rise">Domain collections</p>
-          <ul class="ac-index" role="list">
-            {domain.map((c, i) => (
-              <li class="rise" style={`--d:${i * 40}ms`}>
-                <span class="ac-soon">Coming soon</span>
-                <p class="t-title ac-row-name" set:html={amp(c.name)}></p>
-                <p class="t-body ac-row-body">{c.body}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 2.3.5 Why it works: the lit thesis -->
-  <section class="ac-why" data-tone="ac-cream">
-    <div class="wrap ac-why-wrap">
-      <div class="grid">
-        <div class="ac-why-left">
-          <p class="eyebrow rise">Why it works</p>
-          <h2 class="t-m wipe">Most courses teach you something <em>new.</em> InnerBoard <em>names</em> something true.</h2>
-        </div>
-        <p class="t-state ac-why-state" data-lit><b class="lb">The frameworks are not ideas to memorize.</b> They are <em>mirrors.</em> You read them and recognize yourself: what has been running, what it has been costing you, what has been possible the whole time. That is the moment a course stops being content and becomes change.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 2.3.6 What becomes possible: a teal bleed, three ruled columns -->
-  <section class="ac-possible" data-tone="teal">
-    <div class="wrap">
-      <div class="grid">
-        <div class="ac-head7">
-          <p class="eyebrow rise">What becomes possible</p>
-          <h2 class="t-l wipe">Real shifts. Real <em>lives.</em></h2>
-        </div>
-      </div>
-      <ul class="ac-quotes" role="list">
-        {testimonials.map((t, i) => (
-          <li class="ac-quote rise" style={`--d:${i * 90}ms`}>
-            <p class="t-s-quote quote-hang ac-quote-text">"{t}"</p>
-            <p class="eyebrow ac-sig">Academy student</p>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
-  <!-- 2.3.7 Go further: two paper doors, one with a screen -->
-  <section class="ac-further" data-tone="ac-cream">
-    <div class="wrap">
-      <div class="grid">
-        <div class="ac-head8">
-          <p class="eyebrow rise">Want to go further?</p>
-          <h2 class="t-l wipe">The Academy is where it <em>starts.</em></h2>
-          <p class="t-lead ac-head-lead rise" style="--d:.3s">It doesn't have to be where it ends.</p>
-        </div>
-      </div>
-      <div class="grid ac-doors">
-        <AcademyLabCard style="--d:.2s" />
-        <div class="paper ac-door ac-door-2 rise-obj" style="--d:.32s">
-          <p class="eyebrow">Lead</p>
-          <h3 class="t-m ac-door-name">INQ <em>Certify</em>.</h3>
-          <p class="t-body ac-door-body">If the Graduate work lights you up, INQ is what comes next.</p>
-          <a href={LINKS.inq} class="link ac-door-link">Explore Certify <Arrow /></a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 2.3.8 The filter: an ink bleed -->
-  <section class="ac-filter" data-tone="ink">
-    <div class="wrap ac-filter-wrap">
-      <i class="ac-rule ac-filter-rule rule-draw-v" aria-hidden="true" style="--d:.5s"></i>
-      <div class="grid">
-        <div class="ac-head9">
-          <p class="eyebrow rise">The filter</p>
-          <h2 class="t-l wipe">There is what you have <em>learned.</em> And what you were <em>never taught.</em></h2>
-          <p class="t-s-quote ac-filter-line rise" style="--d:.5s">This is the curriculum.</p>
-          <div class="ac-btns rise" style="--d:.62s">
-            <a href={LINKS.live.humanFoundations} class="btn btn-cream" data-event="academy_start_click" data-event-location="filter">Start with Human Foundations <Arrow /></a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</Base>
-
-<style is:global>
-  /* ── Shared on this page ────────────────────────────────────────────── */
-  .ac-head7 { grid-column: 1 / span 7; }
-  .ac-head8 { grid-column: 1 / span 8; }
-  .ac-head9 { grid-column: 1 / span 9; }
-  .ac-head-lead { margin-top: var(--lead-gap); color: var(--fg-2); }
-  .ac-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: var(--btn-gap); }
-  /* The margin rule: a teal hairline on column 10's left edge, scaleY drawn from the top. */
-  /* Column 10's left edge is 9 / 12 of (wrap + gap) from the wrap's left: computed from the wrap itself so it holds at every width, including the zoomed --max above 1800. */
-  .ac-rule { position: absolute; left: calc(75% + .75 * var(--gap)); top: 0; bottom: 0; width: 1px; background: #5ba0a7; pointer-events: none; }
-  .js .ac-rule.rule-draw-v { transition-duration: 1.2s; }
-  .ac-possible .eyebrow, .ac-filter .eyebrow, .ac-possible .link, .ac-filter .link { transition: color .5s var(--ease); }
-
-  /* ── 2.3.1 Hero ─────────────────────────────────────────────────────── */
-  .ac-hero { position: relative; overflow: hidden; min-height: min(100svh, 880px); padding-top: var(--nav-h); display: flex; flex-direction: column; }
-  .ac-hero-wrap { position: relative; z-index: 1; flex: 1; }
-  /* The mark here is the ring alone: no crosshair, no dot. It sits in the wrap so it can be placed from the margin rule:
-   * the ring (r 480 in the 1100 box, so its left edge is 70 px in) touches the rule at column 10's left edge, centred 430 px
-   * down the section (x 1517, y 430 at 1440), so rule and ring read as one drawn mark. */
-  .ac-hero .ac-hero-geo { left: calc(75% + .75 * var(--gap) + .5px - 70px); top: calc(430px - var(--nav-h) - 550px); z-index: 0; max-width: none; }
-  .ac-hero .ac-hero-geo .draw-line { transition-delay: calc(var(--d, 0s) + .4s); }
-  .ac-hero-rule { top: 90px; }
-  .ac-hero-copy { position: relative; z-index: 1; grid-column: 1 / span 9; padding-top: 90px; padding-bottom: clamp(72px, 10vh, 120px); }
-  /* Greedy wrap, not balance: with the 8.6em measure the break is "The curriculum / school never / offered." at every width (balance set "school" alone on a line at tablet). */
-  .ac-h1 { max-width: 8.6em; margin: 0; text-wrap: wrap; }
-  .ac-lead { margin-top: var(--lead-gap); color: var(--fg-2); }
-  .ac-hero-note { margin-top: 20px; font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 16px; line-height: 1.4; color: var(--fg-3); max-width: 40em; }
-
-  /* ── 2.3.2 The gap ──────────────────────────────────────────────────── */
-  .ac-gap-wrap { border-top: 1px solid var(--line); padding-block: var(--sec-l); }
-  .ac-gap-left { grid-column: 1 / span 6; }
-  .ac-litany { list-style: none; margin: 0; padding: 0; display: grid; row-gap: 14px; }
-  .ac-litany > li { color: var(--fg); text-wrap: balance; max-width: none; }
-  .ac-gap-right { grid-column: 7 / span 6; padding-top: calc(var(--fs-eyebrow) + var(--eyebrow-gap)); }
-  /* The italic clause takes its own line, so "left for" never ends line one. */
-  .ac-gap-line { margin-top: var(--lead-gap); color: var(--fg-2); max-width: 20em; text-wrap: balance; }
-  .ac-gap-line em { display: block; text-wrap: balance; }
-  .ac-gap-line em, .ac-filter-line em { font-style: italic; font-weight: 400; color: var(--accent); }
-
-  /* ── 2.3.3 How it works ─────────────────────────────────────────────── */
-  .ac-how { padding-block: var(--sec); }
-  /* The stair sits in column 1 and the ladder in columns 2 to 9, so the row hairlines end before the margin rule at column 10's edge. */
-  .ac-ladder-wrap { --stair-w: 80px; --step: 32px; position: relative; margin-top: var(--head-gap); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
-  .ac-ladder-wrap > .ac-stair { grid-column: 1; grid-row: 1; }
-  .ac-ladder { grid-column: 2 / span 8; grid-row: 1; display: grid; grid-auto-rows: 1fr; }
-  .ac-ladder > li { grid-template-columns: 240px minmax(0, 1fr); align-content: start; }
-  .ac-ladder > li:nth-child(2) { padding-left: var(--step); }
-  .ac-ladder > li:nth-child(3) { padding-left: calc(2 * var(--step)); }
-  .ac-ladder .ladder-name { font-size: var(--fs-s); letter-spacing: -.012em; line-height: 1.12; margin: 0; }
-  .ac-ladder .ladder-body { max-width: 36em; margin: 0; }
-  .ac-how-rule { top: 0; bottom: 0; }
-
-  /* ── 2.3.4 The library ──────────────────────────────────────────────── */
-  .ac-lib { padding-block: var(--sec); }
-  .ac-lib-label { margin-top: var(--head-gap); margin-bottom: 20px; }
-  /* The three cards share four rows through subgrid (rule, title, body, link): titles end on one line, bodies share a top line, links share a bottom line. */
-  .ac-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: auto auto 1fr auto; column-gap: var(--gap); row-gap: 0; }
-  .ac-card { padding: 32px 28px; display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 0; transition: transform 200ms var(--hover); }
-  .ac-card-rule { display: block; height: 2px; background: var(--pa-line); margin-bottom: 26px; }
-  .ac-card-title { margin: 0; max-width: 12em; text-wrap: balance; align-self: end; }
-  .ac-card-body { margin: 12px 0 0; color: var(--fg-2); }
-  .ac-card-link { margin-top: 0; padding-top: 28px; justify-self: start; align-self: end; min-height: 44px; display: inline-flex; align-items: center; }
-  @media (hover: hover) and (pointer: fine) {
-    .ac-card:hover { transform: translateY(-2px); }
-  }
-  .ac-ledgers { margin-top: 72px; row-gap: 48px; }
-  .ac-ledger-l { grid-column: 1 / span 6; padding-right: 32px; }
-  .ac-ledger-r { grid-column: 7 / span 6; }
-  .ac-index { list-style: none; margin: 0; padding: 0; }
-  .ac-index > li { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name soon" "body soon"; column-gap: 24px; padding-block: 18px; border-top: 1px solid var(--line); }
-  .ac-index > li:last-child { border-bottom: 1px solid var(--line); }
-  .ac-row-name { grid-area: name; margin: 0; text-wrap: balance; }
-  .ac-row-body { grid-area: body; margin-top: 4px; color: var(--fg-3); max-width: 30em; }
-  .ac-soon { grid-area: soon; align-self: start; justify-self: end; font-family: var(--font-sans); font-size: var(--fs-cap); font-weight: 500; line-height: 1.45; color: var(--accent); font-variant-numeric: tabular-nums; white-space: nowrap; padding-top: .2em; }
-
-  /* ── 2.3.5 Why it works ─────────────────────────────────────────────── */
-  .ac-why-wrap { border-top: 1px solid var(--line); padding-block: var(--sec); }
-  /* The section reads top to bottom: the h2, then the lit statement under it at a 21em measure, both in columns 1 to 9. */
-  .ac-why-left { grid-column: 1 / span 9; }
-  .ac-why-state { grid-column: 1 / span 9; margin: var(--head-gap) 0 0; max-width: 21em; }
-
-  /* ── 2.3.6 What becomes possible ────────────────────────────────────── */
-  .ac-possible { padding-block: var(--sec-l); overflow: hidden; }
-  .ac-quotes { list-style: none; margin: var(--head-gap) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 40px; }
-  .ac-quote { display: flex; flex-direction: column; border-top: 1px solid var(--line); padding-top: 28px; }
-  .ac-quote-text { color: var(--fg); margin: 0; }
-  .ac-sig { margin: auto 0 0; padding-top: 28px; }
-
-  /* ── 2.3.7 Go further ───────────────────────────────────────────────── */
-  .ac-further { padding-block: var(--sec); }
-  .ac-doors { margin-top: var(--head-gap); row-gap: var(--gap); }
-  .ac-door { padding: 36px; min-height: 264px; display: flex; flex-direction: column; transition: transform 200ms var(--hover); }
-  .ac-door-2 { grid-column: 7 / span 6; }
-  .ac-door-1 { grid-column: 1 / span 6; }
-  .ac-door .eyebrow { margin-bottom: var(--eyebrow-gap); }
-  .ac-door-name { margin: 0; }
-  .ac-door-body { margin-top: 14px; color: var(--fg-2); }
-  .ac-door-link { margin-top: auto; padding-top: 28px; align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; }
-  /* Each card holds one link, so the whole card is its tap target (audit 2): the link's box stretches over the card, same href. */
-  .ac-card, .ac-door { position: relative; }
-  .ac-card-link::after, .ac-door-link::after { content: ""; position: absolute; inset: 0; border-radius: var(--r-lg); }
-  @media (hover: hover) and (pointer: fine) {
-    .ac-door:hover { transform: translateY(-4px); }
-  }
-
-  /* ── 2.3.8 The filter ───────────────────────────────────────────────── */
-  .ac-filter { padding-block: var(--sec-l); overflow: hidden; }
-  /* The margin rule returns for the section's full height (the wrap's top and bottom reach past the section padding), fading in at the top.
-   * Ivory, not gold: the close is cream, teal and ink only, its italics and eyebrow ivory (BRAND_FIX S5). */
-  .ac-filter-wrap { position: relative; }
-  .ac-filter-rule { top: calc(-1 * var(--sec-l)); bottom: calc(-1 * var(--sec-l)); background: var(--line); }
-  .ac-filter-line { margin-top: var(--lead-gap); color: var(--fg-2); }
-  /* Without the script the close keeps the eyebrow the scripted page gives it: ivory at .7, like the italics' ivory. */
-  html.no-js .ac-filter .eyebrow { color: #ebe0c9; }
-
-  /* ── Tablet ──────────────────────────────────────────────────────────── */
-  @media (max-width: 1068px) {
-    /* The hero is as tall as its copy on tablets: a full-screen hero left about 360 px of empty cream under the note (audit 2). */
-    .ac-hero { min-height: 0; }
-    .ac-hero-copy { grid-column: 1 / span 11; padding-top: 64px; padding-bottom: 72px; }
-    .ac-gap-left, .ac-gap-right { grid-column: 1 / -1; }
-    .ac-gap-right { padding-top: 40px; }
-    .ac-head7, .ac-head8, .ac-head9 { grid-column: 1 / span 10; }
-    .ac-ladder > li { grid-template-columns: 180px minmax(0, 1fr); }
-    .ac-ladder-wrap { --stair-w: 40px; --step: 16px; grid-template-columns: 40px minmax(0, 1fr); column-gap: 12px; }
-    .ac-ladder { grid-column: 2; }
-    .ac-how-rule { display: none; }
-    .ac-ledger-l, .ac-ledger-r { grid-column: 1 / -1; }
-    .ac-ledger-l { padding-right: 0; }
-    .ac-ledgers { row-gap: 48px; }
-    .ac-cards { column-gap: 16px; }
-    .ac-card { padding: 24px; }
-    .ac-why-left, .ac-why-state { grid-column: 1 / span 10; }
-    .ac-quotes { grid-template-columns: 1fr; row-gap: 0; }
-    .ac-quote { padding-bottom: 36px; }
-    .ac-quote:last-child { border-bottom: 1px solid var(--line); }
-    .ac-sig { padding-top: 22px; }
-    .ac-door-1, .ac-door-2 { grid-column: 1 / -1; }
-    .ac-door { padding: 32px; min-height: 0; }
-  }
-
-  /* Tablets only (735 to 1068): the core cards in two columns, the third across both, still sharing the subgrid rows
-   * (rule, title, body, link) so titles, bodies and links line up; a 16 px row between the two card rows. The gap above
-   * the litany is the standard section padding, not the large one. */
-  @media (min-width: 735px) and (max-width: 1068px) {
-    /* The copy stays left of the margin rule (column 10's edge): at 768 the note ran through it. */
-    .ac-hero-copy { grid-column: 1 / span 9; }
-    .ac-hero-note { text-wrap: balance; }
-    .ac-gap-wrap { padding-block: var(--sec); }
-    .ac-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(4, auto) 16px repeat(4, auto); }
-    .ac-card:last-child { grid-column: 1 / -1; grid-row: 6 / span 4; }
-    .ac-card:last-child .ac-card-title { max-width: none; }
-    /* Each ledger keeps the desktop row: the body fills its column and "Coming soon" sits just past it. */
-    .ac-ledger-l, .ac-ledger-r { max-width: 600px; }
-  }
-  /* 900 to 1068: the two ledgers side by side, as on desktop. */
-  @media (min-width: 900px) and (max-width: 1068px) {
-    .ac-ledger-l { grid-column: 1 / span 6; padding-right: 32px; max-width: none; }
-    .ac-ledger-r { grid-column: 7 / span 6; max-width: none; }
-  }
-
-  /* ── Phone ───────────────────────────────────────────────────────────── */
-  @media (max-width: 734px) {
-    .ac-hero-copy { grid-column: 1 / -1; padding-top: 48px; padding-bottom: 40px; }
-    /* The ring alone at .08 behind the h1's right half: centre 30 px past the right edge, 300 px down the section, 700 px box. */
-    .ac-hero .ac-hero-geo { width: 700px; height: 700px; left: calc(100% + var(--gutter) + 30px - 350px); top: calc(300px - var(--nav-h) - 350px); }
-    .ac-hero .ac-hero-geo circle.ring { stroke-width: 1.6; }
-    .ac-rule { display: none; }
-    .ac-btns { flex-direction: column; }
-    .ac-btns .btn { width: 100%; }
-    .ac-gap-left, .ac-gap-right, .ac-head7, .ac-head8, .ac-head9, .ac-why-left, .ac-why-state, .ac-ledger-l, .ac-ledger-r { grid-column: 1 / -1; }
-    .ac-gap-right { padding-top: 40px; }
-    .ac-ladder > li { grid-template-columns: 1fr; row-gap: 6px; padding-block: 20px; }
-    .ac-cards { grid-template-columns: 1fr; grid-template-rows: none; row-gap: 16px; }
-    .ac-card { padding: 28px 24px; display: flex; flex-direction: column; grid-row: auto; }
-    .ac-card-title { align-self: auto; }
-    .ac-card-link { padding-top: 24px; align-self: flex-start; }
-    .ac-ledgers { margin-top: 56px; row-gap: 40px; }
-    .ac-index > li { column-gap: 16px; }
-    .ac-why-state { margin-top: 36px; }
-    /* No hanging mark on phones: the opening quotation mark sits inside the text column, clear of the gutter. */
-    .ac-quote-text { text-indent: 0; hanging-punctuation: none; }
-    .ac-doors { row-gap: 16px; }
-    .ac-door { padding: 24px; min-height: 0; }
-    .ac-door-link { padding-top: 24px; }
-  }
-  /* A phone in landscape: the buttons in the first screen (audit 2, finding 2). */
-  @media (orientation: landscape) and (max-height: 500px) { .ac-hero-copy { padding-top: 16px; } }
-</style>
+  <div class="band navy on-navy">
+    <div class="wrap closer"><h2>Start where you are.<br>Build a life you’re proud of.</h2><a class="btn btn-solid" href="#collections">Explore the Academy <span class="arr">→</span></a></div>
+  </div>
+</section>
+</Layout>

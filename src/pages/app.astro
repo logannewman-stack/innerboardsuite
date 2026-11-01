@@ -1,0 +1,75 @@
+---
+/** The app (the app view of the client's design): The Practice app, the membership, and how it all connects. */
+import Layout from "../layouts/Practice.astro";
+import { LINKS } from "../config/links";
+---
+<Layout title="The App · The Practice" description="A place to practice your one life. The Practice Coach, daily practices, lessons, and progress in one place. Your practice belongs to you." path="/app" nav="app">
+<section class="view" id="app">
+  <div class="phero">
+    <div class="wrap split">
+      <div class="stack">
+        <p class="eyebrow">The Practice app</p>
+        <h1>A place to practice your one life.</h1>
+        <p class="lede">The Practice Coach, daily practices, lessons, and progress in one place. Your practice belongs to you. Only you can see it.</p>
+        <ul class="checks">
+          <li>The Practice Coach</li>
+          <li>Personalized guidance</li>
+          <li>The full Academy library, included</li>
+          <li>The Coaching Lab and the Masterclass, included</li>
+          <li>Track your progress</li>
+          <li>The Lab, INQ, and IOS in the same app</li>
+          <li>Membership in The Practice Club</li>
+        </ul>
+        <div class="ctas"><span class="btn btn-solid" aria-disabled="true">App Store · coming soon</span><span class="btn btn-line" aria-disabled="true">Google Play · coming soon</span></div>
+      </div>
+      <div class="phone" aria-label="Phone preview of The Practice">
+        <div class="in">
+          <span style="color:#6b7080">Daily Practice</span>
+          <span class="ttl">How do you want to show up today?</span>
+          <div class="chips"><span>Grounded</span><span>Focused</span><span>Confident</span><span>Patient</span></div>
+          <span class="cta">Begin your daily practice</span>
+          <div class="card"><b>The Practice Coach</b>Work through what matters.</div>
+          <div class="card"><b>Your Learning</b>Pick up where you left off.</div>
+          <div class="card"><b>Reps this week</b>5 of 7 days</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="band bone" id="membership">
+    <div class="wrap member">
+      <div class="stack">
+        <p class="eyebrow">The Practice membership</p>
+        <h2 class="h2" style="margin-top:0">One membership. The whole practice.</h2>
+        <p class="lede">When you join The Practice, the Academy and the Lab come with it, and the Practice Coach is with you the whole way.</p>
+        <figure class="member-shot"><img loading="lazy" decoding="async" width="1000" height="563" src="/images/practice/lab-call.webp" alt="Members on a live coaching lab call"><figcaption>The Coaching Lab, included with your membership.</figcaption></figure>
+        <div class="ctas"><a class="btn btn-solid" href={LINKS.start}>Start Practicing <span class="arr">→</span></a></div>
+        <p class="member-note">INQ Certification and IOS for organizations are offered separately.</p>
+      </div>
+      <ul class="included">
+        <li><span>Academy</span><div><b>The full course library</b><p>The Academy collections are included at no extra cost, from Foundations through Graduate.</p></div></li>
+        <li><span>The Lab</span><div><b>The Coaching Lab and the Masterclass</b><p>The Coaching Lab, the monthly Masterclass, challenges, and community.</p></div></li>
+        <li><span>Practice Coach</span><div><b>The Practice Coach, throughout</b><p>The Practice Coach is built into the lessons, the labs, and your day, so support is there between sessions.</p></div></li>
+        <li><span>The Club</span><div><b>Membership in The Practice Club</b><p>Club challenges and the community of people doing the work.</p></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="band">
+    <div class="wrap center">
+      <p class="eyebrow">How it connects</p>
+      <h2 class="h2">One brand. One app. One experience.</h2>
+      <div class="arch">
+        <div class="top"><b>THE PRACTICE</b><small>by InnerBoard</small></div>
+        <div class="stem"></div>
+        <div class="four">
+          <a href="/academy"><b>Academy</b><small>Learn it</small></a>
+          <a href="/lab"><b>The Lab</b><small>Live it</small></a>
+          <a href="/inq"><b>INQ</b><small>Lead it</small></a>
+          <a href="/ios"><b>IOS</b><small>Scale it</small></a>
+        </div>
+        <a class="base" href="/club" style="text-decoration:none"><b>THE PRACTICE CLUB</b><small>Community · Lifestyle · Merchandise · Belonging</small></a>
+      </div>
+    </div>
+  </div>
+</section>
+</Layout>

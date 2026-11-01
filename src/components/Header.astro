@@ -1,48 +1,34 @@
 ---
 /**
- * The header (1.8): fixed, transparent at the top, frosted after 24 px, dark
- * over dark sections (1.7.6), hidden on scroll down. The three locked links
- * with their sub labels, the gold pill. Below 1069 px the links collapse to
- * the burger and a full screen sheet (rendered after the header so neither
- * the blur nor the hide transform contains it).
+ * The header: the wordmark, the InnerBoard menu (Academy, the Lab, INQ), The Practice, For Organizations, The Club,
+ * and Start Practicing. `nav` marks the section the page belongs to (aria-current). The menu and the InnerBoard
+ * submenu open with the script; without it the noscript styles in the layout show them open.
  */
-import Wordmark from "./Wordmark.astro";
-import Arrow from "./Arrow.astro";
-import { LINKS } from "../config/links";
-interface Props { theme?: "cream" | "teal" }
-const { theme = "cream" } = Astro.props;
-const nav = [
-  { href: LINKS.academy, label: "Academy", sub: "Learn It", external: true },
-  { href: "/inq-certification", label: "INQ Certification", sub: "Lead It" },
-  { href: LINKS.ios, label: "InnerBoard IOS", sub: "Scaling for Teams", external: true }
-];
-const current = Astro.url.pathname.replace(/\.html$/, "").replace(/\/$/, "") || "/";
+import { ROUTES } from "../config/links";
+interface Props { nav?: "learn" | "app" | "ios" | "club" }
+const { nav } = Astro.props;
+const cur = (n: string) => (nav === n ? "page" : undefined);
 ---
-<header data-header class={`site-header ${theme === "teal" ? "theme-teal" : ""}`.trim()}>
-  <div class="wrap">
-    <div class="hdr-row">
-      <Wordmark />
-      <nav aria-label="Primary" class="hdr-links">
-        {nav.map((item) => (
-          <a href={item.href} class="hdr-link" aria-current={current === item.href ? "page" : undefined} rel={item.external ? "noopener" : undefined}>
-            {item.label}<span class="sub">{item.sub}</span>
-          </a>
-        ))}
-        <a href={LINKS.practice} class="btn btn-sm btn-gold hdr-cta" data-passthrough data-event="practice_click" data-event-location="header">Start in Practice <Arrow /></a>
-      </nav>
-      <button type="button" class="hdr-burger" data-menu-button aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><i></i><i></i></button>
-    </div>
+<header class="site">
+  <div class="wrap nav">
+    <a class="brand" href={ROUTES.home} aria-label="The Practice home">
+      <span class="wordmark"><span class="wm-main">PRACTICE</span><span class="wm-sub">BY INNERBOARD ™</span></span>
+    </a>
+    <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="navlinks">Menu</button>
+    <ul class="navlinks" id="navlinks">
+      <li>
+        <button class="drop-btn" id="learnBtn" type="button" aria-expanded="false" aria-controls="learnMenu" data-nav="learn" aria-current={cur("learn")}>InnerBoard</button>
+        <ul class="submenu" id="learnMenu" hidden>
+          <li><a href={ROUTES.academy}><b>Academy · Learn it</b><small>Lessons on real life skills.</small></a></li>
+          <li><a href={ROUTES.lab}><b>The Lab · Live it</b><small>The Coaching Lab, the Masterclass, community.</small></a></li>
+          <li><a href={ROUTES.inq}><b>INQ · Lead it</b><small>Certification for coaches and leaders.</small></a></li>
+        </ul>
+      </li>
+      <li><a href={ROUTES.app} data-nav="app" aria-current={cur("app")}>The Practice</a></li>
+      <li><a href={ROUTES.ios} data-nav="ios" aria-current={cur("ios")}>For Organizations</a></li>
+      <li><a href={ROUTES.club} data-nav="club" aria-current={cur("club")}>The Club</a></li>
+      <li class="mobile-cta"><a class="btn btn-solid" href={ROUTES.app} style="border:0;padding:14px 20px">Start Practicing <span class="arr">→</span></a></li>
+    </ul>
+    <a class="btn btn-solid" href={ROUTES.app}>Start Practicing <span class="arr">→</span></a>
   </div>
 </header>
-<div id="mobile-menu" data-menu-panel class="menu-panel">
-  <nav aria-label="Primary, mobile" class="wrap menu-nav">
-    {nav.map((item, i) => (
-      <a href={item.href} class="menu-link" style={`--i:${i}`} rel={item.external ? "noopener" : undefined}>
-        {item.label}<span class="sub">{item.sub}</span>
-      </a>
-    ))}
-    <div class="menu-cta menu-link" style="--i:3">
-      <a href={LINKS.practice} class="btn btn-gold" data-passthrough data-event="practice_click" data-event-location="mobile-menu">Start in Practice <Arrow /></a>
-    </div>
-  </nav>
-</div>

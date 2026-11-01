@@ -4,35 +4,113 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    { "source": "/human-foundations", "destination": "https://practiceinnerboard.com/academy?from=academy", "permanent": false },
-    { "source": "/wisdom-collection", "destination": "https://practiceinnerboard.com/academy?from=academy", "permanent": false },
-    { "source": "/certified-mind-method", "destination": "https://practiceinnerboard.com/academy?from=academy", "permanent": false },
-    { "source": "/innerlab-5011", "destination": "https://practiceinnerboard.com/lab?from=innerlab", "permanent": false },
-    { "source": "/innerlab-lp", "destination": "https://practiceinnerboard.com/lab?from=innerlab", "permanent": false },
-    { "source": "/quiz-page", "destination": "https://practiceinnerboard.com/quiz?from=suite", "permanent": false },
-    { "source": "/certification", "destination": "/inq-certification", "permanent": true }
+    {
+      "source": "/human-foundations",
+      "destination": "https://practiceinnerboard.com/academy?from=academy",
+      "permanent": false
+    },
+    {
+      "source": "/wisdom-collection",
+      "destination": "https://practiceinnerboard.com/academy?from=academy",
+      "permanent": false
+    },
+    {
+      "source": "/certified-mind-method",
+      "destination": "https://practiceinnerboard.com/academy?from=academy",
+      "permanent": false
+    },
+    {
+      "source": "/innerlab-5011",
+      "destination": "https://practiceinnerboard.com/lab?from=innerlab",
+      "permanent": false
+    },
+    {
+      "source": "/innerlab-lp",
+      "destination": "https://practiceinnerboard.com/lab?from=innerlab",
+      "permanent": false
+    },
+    {
+      "source": "/quiz-page",
+      "destination": "https://practiceinnerboard.com/quiz?from=suite",
+      "permanent": false
+    },
+    {
+      "source": "/practice",
+      "destination": "/app",
+      "permanent": true
+    },
+    {
+      "source": "/inq-certification",
+      "destination": "/inq",
+      "permanent": true
+    },
+    {
+      "source": "/certification",
+      "destination": "/inq",
+      "permanent": true
+    },
+    {
+      "source": "/innerlab",
+      "destination": "/lab",
+      "permanent": true
+    },
+    {
+      "source": "/contact",
+      "destination": "/",
+      "permanent": false
+    }
   ],
   "headers": [
     {
       "source": "/fonts/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800, stale-while-revalidate=2592000" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800, stale-while-revalidate=2592000"
+        }
+      ]
     },
     {
-      "source": "/(app|images)/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800, stale-while-revalidate=2592000" }]
+      "source": "/images/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800, stale-while-revalidate=2592000"
+        }
+      ]
     },
     {
       "source": "/_astro/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     },
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
-        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        }
       ]
     }
   ]

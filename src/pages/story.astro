@@ -1,0 +1,46 @@
+---
+/** Why practice (the story view of the client's design): the brand belief, the ten reasons and the manifesto. */
+import Layout from "../layouts/Practice.astro";
+import { REASONS } from "../data/practice";
+---
+<Layout title="Why Practice · The Practice" description="Life is not a spectator sport. The 10 reasons practicing this one life matters, and the manifesto: for the people doing the work." path="/story" nav="club">
+<section class="view" id="story">
+  <div class="phero">
+    <div class="wrap">
+      <p class="eyebrow ruled">Our brand belief</p>
+      <h1 style="font-size:clamp(2.8rem,6.2vw,5.2rem);margin-top:18px;max-width:14ch">Life is not a spectator sport.</h1>
+      <p class="lede" style="margin-top:22px">We are not promising a perfect life. We are inviting you to take a more active part in the only one you have. Not because you are inadequate, behind, or need fixing. Because you are alive. That is reason enough.</p>
+    </div>
+  </div>
+  <div class="band">
+    <div class="wrap">
+      <p class="eyebrow">The 10 reasons practicing this one life matters</p>
+      <ol class="reasons" id="reasons">
+        {REASONS.map((r, i) => (
+          <li class="reason">
+            <details open={i === 0}>
+              <summary><span class="n">{String(i + 1).padStart(2, "0")}</span><span class="t">{r.title}<small>{r.sub}</small></span><span class="plus" aria-hidden="true">+</span></summary>
+              <div class="panel"><p>{r.body}</p><dl><div><dt>What you practice</dt><dd>{r.practice}</dd></div><div><dt>What it changes</dt><dd>{r.changes}</dd></div></dl><p class="line">{r.line}</p></div>
+            </details>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+  <div class="band navy on-navy">
+    <div class="wrap">
+      <div class="manifesto">
+        <p class="eyebrow">The manifesto</p>
+        <p class="big">For the people doing the work.</p>
+        <p>You get one life. One opportunity to live it. To love. To learn. To build relationships. To become someone you’re proud to be.</p>
+        <p>And yet, so often, you spend your time trying to get through life. You manage the schedules. You take care of everyone else. And you tell yourself you’ll get back to your own life when things settle down.</p>
+        <p class="gold">But life doesn’t wait. These are the years. These are the relationships. These are the moments.</p>
+        <p>You can practice patience. You can practice courage. You can practice how you think, how you respond, and what you do next.</p>
+        <p>If you want to improve, you practice. Why wouldn’t you practice the one thing you’ll spend your whole life doing?</p>
+        <p class="big">Better takes practice.<br>Life takes reps.</p>
+        <p class="gold">Welcome to The Practice Club.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</Layout>
