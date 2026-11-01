@@ -1,0 +1,25 @@
+---
+/**
+ * A real screen of the Practice app in a phone: the capture (390 x 844 at 2x, the live app as a visitor, light
+ * theme; see scripts/capture.mjs) inside a dark body with rounded corners, sized by `width` (CSS px). Every
+ * capture has a 390 px variant for small and 1x screens.
+ */
+interface Props { screen: string; alt: string; width?: number; class?: string; eager?: boolean }
+const { screen, alt, width = 280, class: className = "", eager = false } = Astro.props;
+const src = `/images/practice/app/${screen}`;
+---
+<figure class={`app-phone ${className}`.trim()} style={`--w:${width}px`}>
+  <div class="app-screen">
+    <img
+      src={`${src}.webp`}
+      srcset={`${src}-390.webp 390w, ${src}.webp 780w`}
+      sizes={`${width}px`}
+      width="780"
+      height="1688"
+      alt={alt}
+      loading={eager ? "eager" : "lazy"}
+      fetchpriority={eager ? "high" : undefined}
+      decoding="async"
+    />
+  </div>
+</figure>

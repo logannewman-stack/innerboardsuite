@@ -4,7 +4,7 @@
  * practice, how practice works (the rep circle), the four pathways, the membership and the Club.
  */
 import Layout from "../layouts/Practice.astro";
-const DAYS = ["S", "M", "T", "W", "T", "F", "S"];
+import AppPhone from "../components/AppPhone.astro";
 ---
 <Layout title="The Practice by InnerBoard" description="You can lead the life you want. It just takes practice. A place to practice how you think, lead, and live." path="/">
 <section class="view" id="home">
@@ -19,35 +19,7 @@ const DAYS = ["S", "M", "T", "W", "T", "F", "S"];
           <a class="btn btn-line" href="#how">What are you practicing?</a>
         </div>
       </div>
-      <div class="device" aria-label="Preview of The Practice app">
-        <div class="screen">
-          <div class="side">
-            <div class="mini"><img loading="lazy" decoding="async" src="/images/practice/mark.png" alt="" width="26" height="26"><span>PRACTICE<small>by InnerBoard</small></span></div>
-            <a class="on" href="/app">Today</a><a href="#how">Do the Reps</a><a href="/ios">InnerBoard OS</a><a href="/club">Practice Club</a>
-            <div class="side-club"><small>Practice Club</small><p>For the people doing the work.</p><a class="side-btn" href="/club">Join the Club</a></div>
-          </div>
-          <div class="main">
-            <span class="hi">Hey there.</span>
-            <span class="ttl">The Practice Coach</span>
-            <form id="oneThing">
-              <label for="oneInput" class="sr">What’s on your mind today?</label>
-              <input id="oneInput" placeholder="What’s on your mind today?" autocomplete="off">
-              <button type="submit">Start</button>
-            </form>
-            <span class="note" id="oneNote" aria-live="polite"></span>
-            <a class="setup" href="#how"><span>Set Up Your Day</span><span>Get Started →</span></a>
-            <div class="dare">
-              <small>Rep of the day</small>
-              <p>Ask for help with one thing you’d usually carry alone.</p>
-              <button type="button" id="dareBtn" aria-pressed="false">I did it</button>
-            </div>
-            <div class="streak">
-              <span id="streakLabel"><strong>3 days</strong> in a row</span>
-              <div class="row" id="streakRow">{DAYS.map((d, i) => <i class={i >= 1 && i <= 3 ? "done" : undefined}>{d}</i>)}</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <AppPhone class="hero-phone" screen="today" width={300} eager alt="The Practice app, Today: the Practice Coach asking what’s on your mind today, Set Up Your Day, the rep of the day, and the days you showed up." />
     </div>
   </div>
 

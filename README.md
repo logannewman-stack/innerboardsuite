@@ -19,7 +19,7 @@ Preview: https://innerboardsuite.vercel.app/ (the branch deploy). Production: ht
 
 | Page | The design's view | What is on it |
 | --- | --- | --- |
-| `/` | The Practice | The hero with the app preview, why practice, the rep circle, the four pathways, the membership, the Club |
+| `/` | The Practice | The hero with the app (Today), why practice, the rep circle, the four pathways, the membership, the Club |
 | `/story` | Why practice | The brand belief, the ten reasons (open and close without the script), the manifesto |
 | `/academy` | Academy | The curriculum, why these skills matter, the twelve collections and their lessons by level, every lesson ends with a rep |
 | `/lab` | The Lab | Where practice meets real life, Academy or the Lab, what is included, how it works |
@@ -37,13 +37,17 @@ host, so a texted link shows it), and the P mark as favicon and home screen icon
 
 - `src/layouts/Practice.astro`: the head, the header, the page, the footer, the script.
 - `src/components/Header.astro`, `Footer.astro`: the design's header (with the InnerBoard submenu) and footer.
+- `src/components/AppPhone.astro`: a real screen of the app in a phone (the client, November 1: real screenshots,
+  in a phone's shape, in place of the design's drawn app previews). Three screens, captured from the live app as a
+  visitor on a phone (390 x 844 at 2x, light theme, a weekday morning): Today on the home page, Set Up Your Day on
+  `/app`, and a scored Company OS Score on `/ios`. They live in `public/images/practice/app/` (780 x 1688, plus a
+  390 px variant); `scripts/capture.mjs` recaptures any route.
 - `src/pages/*.astro`: one page per view, the design's markup with real routes for its hash links.
 - `src/data/practice.ts`: the content the design drew from its script, word for word: the ten reasons, the twelve
   collections and their lessons, the INQ modules.
 - `src/styles/practice.css`: the design's stylesheet as written (fonts self-hosted, the hash routing removed), with
   the few additions the site needs at the end.
-- `src/scripts/practice.ts`: the menu and submenu, the app preview (the rep of the day and the streak, remembered in
-  the visitor's browser; the one thing), the Academy collections and levels, the Company OS Score form.
+- `src/scripts/practice.ts`: the menu and submenu, the Academy collections and levels, the Company OS Score form.
 - `src/config/links.ts`: every route and every outside destination.
 - `public/images/practice/`: the design's photos as WebP, the P mark, the INQ mark, the TPC monograms, the book
   cover. `public/fonts/`: Fraunces (with its optical size axis, which the design's display type uses) and
@@ -52,7 +56,8 @@ host, so a texted link shows it), and the P mark as favicon and home screen icon
 ## Decisions
 
 - **The design as written.** Copy, layout, photos and palette are the design's. Its hash views became pages, so
-  every view has its own address, title and preview; nothing else about the layout changed.
+  every view has its own address, title and preview. Its three drawn app previews (the home hero, the app page's
+  phone, the sample score card) are real screens of the app in a phone, at the client's request.
 - **Colours.** Every colour is one of the design's hex codes (the client: "only use the hex codes in the file"):
   navy `#1B2332`, paper `#F3EDE5`, bone `#E7DCCF`, white `#FBF8F3`, gold `#B08D57`, gold soft `#CBB089`, line
   `#D8CCBC`, muted `#5D6270`, OS blue `#213B60`, OS ink `#2C4E7E`, its dark mode and the shades of its drawn

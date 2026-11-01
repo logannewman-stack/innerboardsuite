@@ -1,6 +1,7 @@
 ---
 /** The app (the app view of the client's design): The Practice app, the membership, and how it all connects. */
 import Layout from "../layouts/Practice.astro";
+import AppPhone from "../components/AppPhone.astro";
 import { LINKS } from "../config/links";
 ---
 <Layout title="The App · The Practice" description="A place to practice your one life. The Practice Coach, daily practices, lessons, and progress in one place. Your practice belongs to you." path="/app" nav="app">
@@ -22,17 +23,7 @@ import { LINKS } from "../config/links";
         </ul>
         <div class="ctas"><span class="btn btn-solid" aria-disabled="true">App Store · coming soon</span><span class="btn btn-line" aria-disabled="true">Google Play · coming soon</span></div>
       </div>
-      <div class="phone" aria-label="Phone preview of The Practice">
-        <div class="in">
-          <span style="color:#6b7080">Daily Practice</span>
-          <span class="ttl">How do you want to show up today?</span>
-          <div class="chips"><span>Grounded</span><span>Focused</span><span>Confident</span><span>Patient</span></div>
-          <span class="cta">Begin your daily practice</span>
-          <div class="card"><b>The Practice Coach</b>Work through what matters.</div>
-          <div class="card"><b>Your Learning</b>Pick up where you left off.</div>
-          <div class="card"><b>Reps this week</b>5 of 7 days</div>
-        </div>
-      </div>
+      <AppPhone screen="setup-day" width={280} alt="The Practice app, Set Up Your Day: good morning, how are you arriving, and one thing you’re grateful for this morning." />
     </div>
   </div>
   <div class="band bone" id="membership">

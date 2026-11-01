@@ -1,7 +1,6 @@
 /**
- * The site's one script (the design's own, page by page): the menu and the InnerBoard submenu, the app preview on
- * the home page (the rep of the day and the streak, remembered in this browser; the one thing you bring), the
- * Academy's collections and levels, and the Company OS Score form. Everything it touches is in the page already, so
+ * The site's one script (the design's own, page by page): the menu and the InnerBoard submenu, the Academy's
+ * collections and levels, and the Company OS Score form. Everything it touches is in the page already, so
  * without it every page still reads in full.
  */
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T | null;
@@ -16,32 +15,6 @@ if (menu && menuBtn && learnBtn && learnMenu) {
   menuBtn.addEventListener("click", () => { const open = menu.classList.toggle("open"); menuBtn.setAttribute("aria-expanded", String(open)); if (open) setLearn(true); });
   /* A link to a place on the same page closes the menu behind it. */
   menu.addEventListener("click", (e) => { if ((e.target as Element).closest("a")) { menu.classList.remove("open"); menuBtn.setAttribute("aria-expanded", "false"); setLearn(false); } });
-}
-
-/* Home: the app preview. */
-const store = {
-  get: (k: string) => { try { return localStorage.getItem(k); } catch { return null; } },
-  set: (k: string, v: string) => { try { localStorage.setItem(k, v); } catch { /* private window: the preview just forgets */ } }
-};
-const row = $("streakRow"), dareBtn = $("dareBtn"), streakLabel = $("streakLabel");
-if (row && dareBtn && streakLabel) {
-  const draw = () => {
-    const did = store.get("tp-dare") === "1";
-    [...row.children].forEach((d, i) => d.classList.toggle("done", (i >= 1 && i <= 3) || (did && i === 4)));
-    streakLabel.innerHTML = `<strong>${did ? 4 : 3} days</strong> in a row`;
-    dareBtn.setAttribute("aria-pressed", String(did));
-    dareBtn.textContent = did ? "Rep logged ✓" : "I did it";
-  };
-  dareBtn.addEventListener("click", () => { store.set("tp-dare", store.get("tp-dare") === "1" ? "0" : "1"); draw(); });
-  draw();
-}
-const oneThing = $<HTMLFormElement>("oneThing"), oneInput = $<HTMLInputElement>("oneInput"), oneNote = $("oneNote");
-if (oneThing && oneInput && oneNote) {
-  oneThing.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const v = oneInput.value.trim();
-    oneNote.textContent = v ? `Got it. “${v}” is today’s one thing. Let’s start there.` : "Bring one thing. Even a small one counts.";
-  });
 }
 
 /* Academy: pick a collection, then a level, to see its lessons. */

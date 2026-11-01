@@ -5,6 +5,7 @@
  * with what was entered (the site has no form backend).
  */
 import Layout from "../layouts/Practice.astro";
+import AppPhone from "../components/AppPhone.astro";
 
 ---
 <Layout title="InnerBoard OS · The Practice" description="You’ve built the business. Now build the people who can grow it. InnerBoard IOS develops the confidence, capability, and ownership of the people you already pay." path="/ios" nav="ios">
@@ -118,28 +119,7 @@ import Layout from "../layouts/Practice.astro";
           <p class="lede">Start with the Company OS Score. It shows your team’s strengths, development needs, role expectations, and what’s influencing performance right now. This becomes your baseline.</p>
           <a class="textlink" href="#ios-contact">Get your Company OS Score →</a>
         </div>
-        <div class="score" aria-label="Company OS Score screen in The Practice app, sample data">
-          <div class="score-top">
-            <span class="score-brand"><img loading="lazy" decoding="async" src="/images/practice/mark.png" alt="" width="26" height="26">Company OS Score</span>
-            <span class="score-tag">Sample</span>
-          </div>
-          <div class="score-main">
-            <div class="dial" style="--v:64"><span>64</span><small>of 100</small></div>
-            <div><strong>Developing</strong><p>Strong leadership base. Execution depends on a few people.</p></div>
-          </div>
-          <ul class="bars">
-            <li><span>Leadership</span><i style="--w:72%"></i><b>72</b></li>
-            <li><span>Culture</span><i style="--w:58%"></i><b>58</b></li>
-            <li><span>Behavior</span><i style="--w:61%"></i><b>61</b></li>
-            <li><span>Results</span><i style="--w:66%"></i><b>66</b></li>
-            <li><span>Valuation</span><i style="--w:55%"></i><b>55</b></li>
-          </ul>
-          <div class="q">
-            <small>Question 12</small>
-            <p>Decisions in my area get made without waiting on the owner.</p>
-            <div class="scale"><span>1</span><span>2</span><span class="on">3</span><span>4</span><span>5</span></div>
-          </div>
-        </div>
+        <AppPhone screen="company-os-score" width={290} alt="The Company OS Score in The Practice app: 64 out of 100, in transition, with the three lowest areas and the chapters that fix them." />
       </div>
 
       <ol class="steps" start="2">
