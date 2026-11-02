@@ -18,7 +18,7 @@ interface Props {
   imageAlt?: string;
   noindex?: boolean;
 }
-const { title, description, path = "/", nav, image = "/og-image.png", imageAlt = "The Practice by InnerBoard. You can lead the life you want. It just takes practice.", noindex = false } = Astro.props;
+const { title, description, path = "/", nav, image = "/og-image.png", imageAlt = "The Practice by InnerBoard. You can live the life you want. It just takes practice.", noindex = false } = Astro.props;
 const canonical = new URL(path, SITE.url).toString();
 /* The link preview must load from the host that serves this build: on Vercel the production URL (its vercel.app
  * address until the domain is attached), or the branch URL for previews. Without Vercel, the site's own domain. */

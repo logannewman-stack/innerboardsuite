@@ -102,8 +102,8 @@ main section.view{display:block;animation:rise .5s ease both}
 /* hero */
 .hero{padding-block:72px 64px;background:linear-gradient(105deg,var(--surface) 0%,var(--band) 100%);overflow:hidden}
 .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
-.hero h1{font-size:clamp(3rem,7.6vw,6.6rem);font-weight:500;text-transform:uppercase;line-height:.94;letter-spacing:-.025em;margin-top:22px;font-variation-settings:"opsz" 144}
-.hero h1 em{display:block;font-style:italic;font-weight:400;text-transform:none;letter-spacing:-.01em;font-size:.44em;line-height:1.1;margin-top:.4em}
+.hero h1{font-size:clamp(2.4rem,6.08vw,5.28rem);font-weight:500;text-transform:uppercase;line-height:.94;letter-spacing:-.025em;margin-top:22px;font-variation-settings:"opsz" 144}
+.hero h1 em{display:block;font-style:italic;font-weight:400;text-transform:none;letter-spacing:-.01em;font-size:.55em;line-height:1.1;margin-top:.32em}
 .hero .sub{font-family:var(--display);font-size:clamp(1.35rem,2.3vw,1.8rem);margin-top:22px;line-height:1.2}
 .hero .ctas{margin-top:34px}
 @media(max-width:900px){.hero-grid{grid-template-columns:1fr}}
