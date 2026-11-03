@@ -1,10 +1,11 @@
 ---
 /**
  * InnerBoard OS (the ios view of the client's design): the people operating system for organizations, the IOS
- * workflow, the Company OS Score, and the book behind it. The Company OS Score form opens an email to the team
- * with what was entered (the site has no form backend).
+ * workflow, the Company OS Score, and the book behind it. Every Company OS Score button goes straight to the
+ * assessment in the app; the form does too, carrying what was entered (after the #) for the app to take up.
  */
 import Layout from "../layouts/Practice.astro";
+import { LINKS } from "../config/links";
 import AppPhone from "../components/AppPhone.astro";
 
 ---
@@ -19,9 +20,9 @@ import AppPhone from "../components/AppPhone.astro";
         <p class="sub-ios">You can build a team that leads itself. It just takes practice.</p>
         <p class="sub-ios">Your business has an operating system. Your people need one too.</p>
         <p class="lede">InnerBoard IOS helps you accelerate the value of the people you already pay by developing the confidence, capability, and ownership to do their best work.</p>
-        <div class="ctas"><a class="btn btn-solid" href="#ios-contact">Get Your Company OS Score <span class="arr">→</span></a><a class="btn btn-line" href="#ios-contact">Talk to Our Team</a></div>
+        <div class="ctas"><a class="btn btn-solid" href={LINKS.osScore}>Get Your Company OS Score <span class="arr">→</span></a><a class="btn btn-line" href={LINKS.osTalk}>Talk to Our Team</a></div>
       </div>
-      <div class="ph photo hero-gfx"><img loading="lazy" decoding="async" width="1000" height="563" src="/images/practice/ios-team.webp" alt="A leadership team in conversation around a conference table"></div>
+      <div class="ph photo hero-gfx"><img loading="lazy" decoding="async" width="1400" height="788" src="/images/practice/leah-team.webp" alt="Leah working with a leadership team around a table"></div>
     </div>
   </div>
 
@@ -117,7 +118,7 @@ import AppPhone from "../components/AppPhone.astro";
           <span class="stepnum">1</span>
           <h3>Assess</h3>
           <p class="lede">Start with the Company OS Score. It shows your team’s strengths, development needs, role expectations, and what’s influencing performance right now. This becomes your baseline.</p>
-          <a class="textlink" href="#ios-contact">Get your Company OS Score →</a>
+          <a class="textlink" href={LINKS.osScore}>Get your Company OS Score →</a>
         </div>
         <AppPhone screen="company-os-score" width={290} alt="The Company OS Score in The Practice app: 64 out of 100, in transition, with the three lowest areas and the chapters that fix them." />
       </div>
@@ -138,7 +139,7 @@ import AppPhone from "../components/AppPhone.astro";
         <p class="eyebrow">One connected system</p>
         <h2 class="h2" style="margin-top:0">Continuous development, not a one time training.</h2>
         <p class="lede">Each step feeds the next. What you measure shapes what your people develop next, and certified leaders keep it running inside your business.</p>
-        <div class="ctas"><a class="btn btn-solid" href="#ios-contact">Get Your Company OS Score <span class="arr">→</span></a></div>
+        <div class="ctas"><a class="btn btn-solid" href={LINKS.osScore}>Get Your Company OS Score <span class="arr">→</span></a></div>
       </div>
       <svg class="cycle" viewBox="0 0 420 420" role="img" aria-label="Cycle: Assess, Develop, Apply, Practice, Measure, Certify, then back to Assess">
         <defs><marker id="ah" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#CBB089"/></marker></defs>
@@ -185,14 +186,13 @@ import AppPhone from "../components/AppPhone.astro";
         <h2>Get your Company OS Score.</h2>
         <p class="lede">Tell us a little about your organization. We’ll start with your baseline and walk you through the IOS workflow.</p>
       </div>
-      <form class="form" id="iosForm">
+      <form class="form" id="iosForm" data-to={LINKS.osScore}>
         <label for="f-name">Name<input id="f-name" required autocomplete="name"></label>
         <label for="f-org">Organization<input id="f-org" required autocomplete="organization"></label>
         <label for="f-email">Work email<input id="f-email" type="email" required autocomplete="email"></label>
         <label for="f-size">Team size<select id="f-size"><option>Under 25</option><option>25 to 100</option><option>100 to 500</option><option>500 plus</option></select></label>
         <label class="full" for="f-goal">What would you like to improve?<textarea id="f-goal"></textarea></label>
         <div class="full ctas"><button class="btn btn-solid" type="submit">Get Your Company OS Score <span class="arr">→</span></button></div>
-        <p class="msg" id="iosMsg" aria-live="polite"></p>
       </form>
     </div>
   </div>
@@ -204,7 +204,7 @@ import AppPhone from "../components/AppPhone.astro";
         <p class="eyebrow">The thinking behind IOS</p>
         <h2 class="h2" style="margin-top:0"><em>Replaceable</em>, by Leah Roling.</h2>
         <p class="lede">Why your people are capable of more than their job description, and how to build it into the way your business runs.</p>
-        <div class="ctas"><a class="btn btn-solid" href="#ios-contact">Talk to Our Team <span class="arr">→</span></a></div>
+        <div class="ctas"><a class="btn btn-solid" href={LINKS.book} rel="noopener">Buy the Book <span class="arr">→</span></a></div>
       </div>
     </div>
   </div>

@@ -1,15 +1,15 @@
 ---
-import { ROUTES } from "../config/links";
+import { LINKS, ROUTES } from "../config/links";
 ---
 <footer>
   <div class="wrap">
     <div class="foot">
       <div>
-        <span class="wordmark on-dark"><span class="wm-main">PRACTICE</span><span class="wm-sub">BY INNERBOARD ™</span></span>
+        <img class="wm-img wm-foot" src="/images/practice/logo-practice-light.webp" alt="Practice by InnerBoard" width="560" height="140" loading="lazy" decoding="async" />
         <p class="tag">You can live the life you want.<br />It just takes practice.</p>
       </div>
       <div><h5>InnerBoard</h5><ul><li><a href={ROUTES.academy}>Academy</a></li><li><a href={ROUTES.lab}>The Lab</a></li><li><a href={ROUTES.inq}>INQ Certification</a></li></ul></div>
-      <div><h5>For Organizations</h5><ul><li><a href={ROUTES.ios}>InnerBoard OS</a></li><li><a href={`${ROUTES.ios}#ios-contact`}>Get Your Company OS Score</a></li></ul></div>
+      <div><h5>For Organizations</h5><ul><li><a href={ROUTES.ios}>InnerBoard OS</a></li><li><a href={LINKS.osScore}>Get Your Company OS Score</a></li></ul></div>
       <div><h5>The Practice</h5><ul><li><a href={ROUTES.app}>The app</a></li><li><a href={ROUTES.story}>Why practice</a></li><li><a href={ROUTES.club}>The Club</a></li></ul></div>
     </div>
     <div class="fine"><span>© 2026 InnerBoard. The Practice and The Practice Club.</span><span class="fine-legal"><a href={ROUTES.privacy}>Privacy</a> · <a href={ROUTES.terms}>Terms</a></span><span>For the people doing the work.</span></div>

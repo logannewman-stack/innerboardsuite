@@ -21,14 +21,22 @@ export const ROUTES = {
 } as const;
 
 export const LINKS = {
-  /** Start Practicing, where it means open the app itself (the app page's membership). */
+  /** Open the app itself. */
   start: into("/", "suite"),
+  /** Buy: the app's membership page (Join the Practice Club, $29 a month or $249 a year), where an account and
+   * checkout begin. Every button on the site that sells the membership goes here. */
+  join: into("/membership", "suite"),
   /** Enroll now (INQ): the INQ Certification inside the app. */
   inqEnroll: into("/certifications/inq", "inq"),
-  /** Start a conversation (INQ). Pending: the INQ booking URL. */
-  inqTalk: "mailto:info@innerboardsuite.com?subject=INQ%20Certification%3A%20start%20a%20conversation",
-  /** Where the Company OS Score request goes until the site has a form backend. */
-  osEmail: "info@innerboardsuite.com",
+  /** Start a conversation (INQ): the INQ application, the first step on the INQ page the old site runs today
+   * (innerboardsuite.com/inq-certification-lp). Swap for an INQ Calendly when there is one. */
+  inqTalk: "https://api.leadconnectorhq.com/widget/survey/Z4JAbqIQ1CFb4Ep3G5dH",
+  /** Get Your Company OS Score: the assessment itself, in the app (the page the book prints, /os/score). */
+  osScore: into("/os/score", "os"),
+  /** Talk to Our Team (IOS): the InnerBoard OS discovery call on Calendly. */
+  osTalk: "https://calendly.com/innerboardos-support/os-discovery-call",
+  /** Buy the Book: Replaceable on Amazon (the app's own Buy the Book link resolves here). */
+  book: "https://www.amazon.com/dp/0998174475",
   contactEmail: "info@innerboardsuite.com"
 } as const;
 

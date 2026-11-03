@@ -5,6 +5,7 @@
  * submenu open with the script; without it the noscript styles in the layout show them open.
  */
 import { ROUTES } from "../config/links";
+import DualImage from "./DualImage.astro";
 interface Props { nav?: "learn" | "app" | "ios" | "club" }
 const { nav } = Astro.props;
 const cur = (n: string) => (nav === n ? "page" : undefined);
@@ -12,7 +13,7 @@ const cur = (n: string) => (nav === n ? "page" : undefined);
 <header class="site">
   <div class="wrap nav">
     <a class="brand" href={ROUTES.home} aria-label="The Practice home">
-      <span class="wordmark"><span class="wm-main">PRACTICE</span><span class="wm-sub">BY INNERBOARD ™</span></span>
+      <DualImage class="wm-img" src="/images/practice/logo-practice.webp" dark="/images/practice/logo-practice-light.webp" alt="Practice by InnerBoard" width={560} height={140} eager />
     </a>
     <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="navlinks">Menu</button>
     <ul class="navlinks" id="navlinks">

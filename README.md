@@ -37,6 +37,7 @@ host, so a texted link shows it), and the P mark as favicon and home screen icon
 
 - `src/layouts/Practice.astro`: the head, the header, the page, the footer, the script.
 - `src/components/Header.astro`, `Footer.astro`: the design's header (with the InnerBoard submenu) and footer.
+- `src/components/DualImage.astro`: an image with a dark mode version (the wordmark, the club lockup, the marks).
 - `src/components/AppPhone.astro`: a real screen of the app in a phone (the client, November 1: real screenshots,
   in a phone's shape, in place of the design's drawn app previews). Four screens, captured from the live app as a
   visitor on a phone (390 x 844 at 2x, light theme, a weekday morning): Today on the home page, Set Up Your Day on
@@ -48,7 +49,8 @@ host, so a texted link shows it), and the P mark as favicon and home screen icon
   collections and their lessons, the INQ modules.
 - `src/styles/practice.css`: the design's stylesheet as written (fonts self-hosted, the hash routing removed), with
   the few additions the site needs at the end.
-- `src/scripts/practice.ts`: the menu and submenu, the Academy collections and levels, the Company OS Score form.
+- `src/scripts/practice.ts`: the menu and submenu, the Academy collections and levels, the Company OS Score form (into
+  the app's assessment).
 - `src/config/links.ts`: every route and every outside destination.
 - `public/images/practice/`: the design's photos as WebP, the P mark, the INQ mark, the TPC monograms, the book
   cover. `public/fonts/`: Fraunces (with its optical size axis, which the design's display type uses) and
@@ -64,17 +66,30 @@ host, so a texted link shows it), and the P mark as favicon and home screen icon
   `#D8CCBC`, muted `#5D6270`, OS blue `#213B60`, OS ink `#2C4E7E`, its dark mode and the shades of its drawn
   details. `npm run brand` holds the build to that list.
 - **Leah Roling's book** stays on `/ios`, as designed (the client, November 1), with the real cover.
-- **Where the design pointed at itself**, the site points at the real place: Start Practicing on the app page opens
-  the app; Enroll now opens INQ Certification in the app; the second Start a conversation on `/inq` writes to the
-  team. The Company OS Score form opens an email to the team with what was entered, because the site has no form
-  backend yet. The App Store and Google Play buttons and Shop opens soon stay as the design has them (coming soon).
+- **Every button goes somewhere real** (the client, November 3: "we need to make sure these buttons are live"). The
+  design's own hash links became these, all in `src/config/links.ts`:
+  - The membership's Start Practicing, Join the Club and Join the Movement open the membership in the app
+    (`/membership`), where people buy; Open the app opens the app itself. The header's Start Practicing opens `/app`.
+  - Enroll now opens INQ Certification in the app (`/certifications/inq`); Start a conversation opens the INQ
+    application form the team already runs.
+  - Get Your Company OS Score, everywhere it appears, opens the assessment in the app (`/os/score`). Talk to Our Team opens the InnerBoard OS discovery call on Calendly (the "Leah or Abra"
+    scheduler on the old innerboardos.com booking page).
+  - The Company OS Score form takes people straight into the assessment, with what they typed after the `#` of the
+    address (name, organization, email, size, goal). The part after the `#` stays in the browser and is never sent
+    to a server; it is there so the app can read it and open an account for them once the app supports that.
+  - Buy the Book opens Replaceable on Amazon.
+  - Shop opens soon stays as the design has it (there is no shop yet).
+- **The design's update** (the second version of the same design) is in: the Practice wordmark in the
+  header and footer, The Practice Club lockup (Est. 2026) on the club page and the home page with "For the people
+  doing the work." centred under it, the club marks in the ticker, and the new photos on the INQ, IOS, Lab and club
+  pages. The navy logo and marks have cream versions (`*-light.webp`) that `DualImage.astro` swaps in for dark mode.
 - **Added** only what a live site needs: the privacy and terms links in the footer's fine print, the legal pages,
   the 404 page, and styles for the menu without the script.
 
 ## Links still to confirm
 
-In `src/config/links.ts`: the INQ conversation (an email for now), and where the Company OS Score form should send
-(an email for now). App Store, Google Play and the shop are marked coming soon in the design.
+In `src/config/links.ts`: Start a conversation on `/inq` opens the team's INQ application form; swap it for an INQ
+Calendly if there is one. The App Store and Google Play listings, and the shop, do not exist yet.
 
 ## Deploy
 

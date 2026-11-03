@@ -1,6 +1,8 @@
 ---
 /** The Practice Club (the club view of the client's design): the movement, founding members, challenges, the collection. */
 import Layout from "../layouts/Practice.astro";
+import DualImage from "../components/DualImage.astro";
+import { LINKS } from "../config/links";
 
 ---
 <Layout title="The Practice Club" description="For the people doing the work. Not because you’re broken. Because you’re alive, and your life is worth practicing for." path="/club" nav="club">
@@ -8,12 +10,12 @@ import Layout from "../layouts/Practice.astro";
   <div class="club-hero">
     <div class="wrap grid">
       <div>
-        <img loading="lazy" decoding="async" class="tpc-hero" src="/images/practice/tpc-light.png" alt="TPC" width="46" height="88">
-        <p class="eyebrow">The movement · Est. 2026</p>
-        <h1 style="margin-top:18px">The Practice Club</h1>
+        <img class="tpc-hero" src="/images/practice/tpc-light.webp" alt="" width="200" height="383" decoding="async">
+        <p class="eyebrow">The movement</p>
+        <h1 class="club-h1"><img src="/images/practice/club-logo-light.webp" alt="The Practice Club, Est. 2026" width="900" height="350" decoding="async"></h1>
         <p class="tagline">For the people doing the work.</p>
         <p class="lede">Not because you’re broken. Because you’re alive, and your life is worth practicing for.</p>
-        <div class="ctas"><a class="btn btn-solid" href="#club-join">Join the Movement <span class="arr">→</span></a></div>
+        <div class="ctas"><a class="btn btn-solid" href={LINKS.join}>Join the Movement <span class="arr">→</span></a></div>
       </div>
       <figure class="club-collage"><img loading="lazy" decoding="async" width="900" height="1125" src="/images/practice/club-collage.webp" alt="The Practice Club: cream hoodie, Life Takes Reps cap, Be Your Own Proof tote, and Reps Over Regret"></figure>
       </div>
@@ -21,14 +23,14 @@ import Layout from "../layouts/Practice.astro";
   </div>
 
   <div class="band ticker-band">
-    <div class="ticker" aria-label="Life takes reps. Be your own proof. Reps over regret. Better takes practice. Bring one thing.">
-      <div class="ticker-track"><div class="ticker-set"><span>Life takes reps.</span><i aria-hidden="true"></i><span>Be your own proof.</span><i aria-hidden="true"></i><span>Reps over regret.</span><i aria-hidden="true"></i><span>Better takes practice.</span><i aria-hidden="true"></i><span>Bring one thing.</span><i aria-hidden="true"></i></div><div class="ticker-set" aria-hidden="true"><span>Life takes reps.</span><i aria-hidden="true"></i><span>Be your own proof.</span><i aria-hidden="true"></i><span>Reps over regret.</span><i aria-hidden="true"></i><span>Better takes practice.</span><i aria-hidden="true"></i><span>Bring one thing.</span><i aria-hidden="true"></i></div></div>
+    <div class="ticker marks" aria-label="Life takes reps. Be your own proof. Better takes practice. For the people doing the work.">
+      <div class="ticker-track"><div class="ticker-set"><DualImage class="mark" src="/images/practice/mark-life-takes-reps.webp" dark="/images/practice/mark-life-takes-reps-light.webp" alt="Life takes reps." width={640} height={226} /><i aria-hidden="true"></i><DualImage class="mark" src="/images/practice/mark-be-your-own-proof.webp" dark="/images/practice/mark-be-your-own-proof-light.webp" alt="Be your own proof." width={640} height={193} /><i aria-hidden="true"></i><DualImage class="mark" src="/images/practice/mark-better-takes-practice.webp" dark="/images/practice/mark-better-takes-practice-light.webp" alt="Better takes practice." width={640} height={166} /><i aria-hidden="true"></i><DualImage class="mark" src="/images/practice/mark-for-the-people.webp" dark="/images/practice/mark-for-the-people-light.webp" alt="For the people doing the work." width={800} height={165} /><i aria-hidden="true"></i></div><div class="ticker-set" aria-hidden="true"><DualImage class="mark" src="/images/practice/mark-life-takes-reps.webp" dark="/images/practice/mark-life-takes-reps-light.webp" alt="" width={640} height={226} /><i aria-hidden="true"></i><DualImage class="mark" src="/images/practice/mark-be-your-own-proof.webp" dark="/images/practice/mark-be-your-own-proof-light.webp" alt="" width={640} height={193} /><i aria-hidden="true"></i><DualImage class="mark" src="/images/practice/mark-better-takes-practice.webp" dark="/images/practice/mark-better-takes-practice-light.webp" alt="" width={640} height={166} /><i aria-hidden="true"></i><DualImage class="mark" src="/images/practice/mark-for-the-people.webp" dark="/images/practice/mark-for-the-people-light.webp" alt="" width={800} height={165} /><i aria-hidden="true"></i></div></div>
     </div>
   </div>
 
   <div class="band paper">
     <div class="wrap founding">
-      <div class="tpc-panel"><img loading="lazy" decoding="async" src="/images/practice/tpc-dark.png" alt="The Practice Club TPC monogram" width="153" height="292"></div>
+      <div class="tpc-panel"><img loading="lazy" decoding="async" src="/images/practice/tpc-dark.webp" alt="The Practice Club TPC monogram" width="260" height="499"></div>
       <div class="stack">
         <p class="eyebrow">Founding members</p>
         <h2>The first ones in.</h2>
@@ -43,9 +45,9 @@ import Layout from "../layouts/Practice.astro";
       <p class="eyebrow">In real life</p>
       <h2 class="h2">The club, out in the world.</h2>
       <div class="tiles" style="margin-bottom:72px">
-        <div class="tile"><div class="ph photo"><img loading="lazy" decoding="async" width="800" height="450" src="/images/practice/club-early-reps.webp" alt="Two members walking a park path in Practice Club and Be Your Own Proof hoodies"></div><div class="tb"><h4>Early reps</h4><p>Showing up before the day asks anything of you.</p></div></div>
-        <div class="tile"><div class="ph photo"><img loading="lazy" decoding="async" width="800" height="450" src="/images/practice/club-conversations.webp" alt="Two women in club hoodies talking at a kitchen table"></div><div class="tb"><h4>The real conversations</h4><p>Where the practice matters most.</p></div></div>
-        <div class="tile"><div class="ph photo"><img loading="lazy" decoding="async" width="800" height="450" src="/images/practice/club-at-work.webp" alt="A team meeting around a table with a Be Your Own Proof tote"></div><div class="tb"><h4>Leading at work</h4><p>Taking the practice into the room.</p></div></div>
+        <div class="tile"><div class="ph photo"><img loading="lazy" decoding="async" width="1200" height="676" src="/images/practice/club-early-reps.webp" alt="Two members laughing on a park walk in Practice Club hoodies"></div><div class="tb"><h4>Early reps</h4><p>Showing up before the day asks anything of you.</p></div></div>
+        <div class="tile"><div class="ph photo"><img loading="lazy" decoding="async" width="1200" height="859" src="/images/practice/club-conversations.webp" alt="Three members laughing together in Practice Club hoodies, a tee, a cap, and a tote" style="object-position:50% 32%"></div><div class="tb"><h4>The real conversations</h4><p>Where the practice matters most.</p></div></div>
+        <div class="tile"><div class="ph photo"><img loading="lazy" decoding="async" width="1200" height="675" src="/images/practice/club-at-work.webp" alt="Leah coaching two leaders at a table"></div><div class="tb"><h4>Leading at work</h4><p>Taking the practice into the room.</p></div></div>
       </div>
       <p class="eyebrow">Club challenges</p>
       <h2 class="h2">Practice together.</h2>
@@ -69,7 +71,7 @@ import Layout from "../layouts/Practice.astro";
   </div>
 
   <div class="band navy on-navy" id="club-join">
-    <div class="wrap closer"><h2>Your life is worth<br>practicing for.</h2><div class="ctas"><a class="btn btn-solid" href="/app">Join the Movement <span class="arr">→</span></a><a class="btn btn-line" href="/story">Read the manifesto</a></div></div>
+    <div class="wrap closer"><h2>Your life is worth<br>practicing for.</h2><div class="ctas"><a class="btn btn-solid" href={LINKS.join}>Join the Movement <span class="arr">→</span></a><a class="btn btn-line" href="/story">Read the manifesto</a></div></div>
   </div>
 </section>
 </Layout>

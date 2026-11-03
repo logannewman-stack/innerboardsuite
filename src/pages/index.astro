@@ -4,6 +4,8 @@
  * practice, how practice works (the rep circle), the four pathways, the membership and the Club.
  */
 import Layout from "../layouts/Practice.astro";
+import DualImage from "../components/DualImage.astro";
+import { LINKS } from "../config/links";
 import AppPhone from "../components/AppPhone.astro";
 ---
 <Layout title="The Practice by InnerBoard" description="You can live the life you want. It just takes practice. A place to practice how you think, lead, and live." path="/">
@@ -76,8 +78,8 @@ import AppPhone from "../components/AppPhone.astro";
       <div class="pillars">
         <a class="pillar" href="/academy"><div class="ph photo"><img loading="lazy" decoding="async" width="1200" height="960" src="/images/practice/academy-books.webp" alt="Academy books on a shelf"></div><div class="body"><p class="eyebrow">Academy</p><h3>Learn it.</h3><p>Build the foundation. Understand the tools. Create real change.</p><span class="go">→</span></div></a>
         <a class="pillar" href="/lab"><div class="ph photo"><img loading="lazy" decoding="async" width="1000" height="563" src="/images/practice/lab-call.webp" alt="Members on a live coaching call"></div><div class="body"><p class="eyebrow">The Lab</p><h3>Live it.</h3><p>Apply the tools. Build new patterns. Make it part of your life.</p><span class="go">→</span></div></a>
-        <a class="pillar" href="/inq"><div class="ph photo"><img loading="lazy" decoding="async" width="1000" height="563" src="/images/practice/inq-online.webp" alt="A coach in training on an online INQ session"></div><div class="body"><p class="eyebrow">INQ</p><h3>Lead it.</h3><p>Deepen your expertise. Expand your impact. Be part of what’s next.</p><span class="go">→</span></div></a>
-        <a class="pillar" href="/ios"><div class="ph photo"><img loading="lazy" decoding="async" width="1000" height="563" src="/images/practice/ios-team.webp" alt="A leadership team in conversation"></div><div class="body"><p class="eyebrow">IOS</p><h3>Scale it.</h3><p>Bring self leadership into teams, culture, and organizations.</p><span class="go">→</span></div></a>
+        <a class="pillar" href="/inq"><div class="ph photo"><img loading="lazy" decoding="async" width="1400" height="788" src="/images/practice/leah-coaching.webp" alt="Leah Roling coaching two leaders at a table" style="object-position:52% 28%"></div><div class="body"><p class="eyebrow">INQ</p><h3>Lead it.</h3><p>Deepen your expertise. Expand your impact. Be part of what’s next.</p><span class="go">→</span></div></a>
+        <a class="pillar" href="/ios"><div class="ph photo"><img loading="lazy" decoding="async" width="1400" height="788" src="/images/practice/leah-team.webp" alt="Leah and her team working together around a table" style="object-position:50% 35%"></div><div class="body"><p class="eyebrow">IOS</p><h3>Scale it.</h3><p>Bring self leadership into teams, culture, and organizations.</p><span class="go">→</span></div></a>
       </div>
     </div>
   </div>
@@ -89,7 +91,7 @@ import AppPhone from "../components/AppPhone.astro";
         <h2 class="h2" style="margin-top:0">One membership. The whole practice.</h2>
         <p class="lede">When you join The Practice, the Academy and the Lab come with it, and the Practice Coach is with you the whole way.</p>
         <figure class="member-shot"><img loading="lazy" decoding="async" width="1000" height="563" src="/images/practice/lab-call.webp" alt="Members on a live coaching lab call"><figcaption>The Coaching Lab, included with your membership.</figcaption></figure>
-        <div class="ctas"><a class="btn btn-solid" href="/app">Start Practicing <span class="arr">→</span></a></div>
+        <div class="ctas"><a class="btn btn-solid" href={LINKS.join}>Start Practicing <span class="arr">→</span></a></div>
         <p class="member-note">INQ Certification and IOS for organizations are offered separately.</p>
       </div>
       <ul class="included">
@@ -105,7 +107,7 @@ import AppPhone from "../components/AppPhone.astro";
     <div class="merch merch-photos" aria-label="The Practice Club merch"><figure class="mph"><img loading="lazy" decoding="async" width="162" height="244" src="/images/practice/merch-hoodie.webp" alt="Cream hoodie, The Practice Club"><figcaption>Hoodie</figcaption></figure><figure class="mph"><img loading="lazy" decoding="async" width="156" height="142" src="/images/practice/merch-cap.webp" alt="Navy and cream caps"><figcaption>Cap</figcaption></figure><figure class="mph"><img loading="lazy" decoding="async" width="154" height="184" src="/images/practice/merch-tote.webp" alt="Canvas tote that reads Life Takes Reps"><figcaption>Tote</figcaption></figure><p class="tags merch-tag">Wear the work.</p></div>
     <div class="copy">
       <p class="tags">Community · Lifestyle · Merchandise · Belonging</p>
-      <h2>The Practice Club</h2>
+      <h2 class="club-h2"><DualImage src="/images/practice/club-logo.webp" dark="/images/practice/club-logo-light.webp" alt="The Practice Club, Est. 2026" width={700} height={273} /></h2>
       <p>For the people doing the work.</p>
       <p class="lede">The Practice is what you use. The Practice Club is what you belong to.</p>
       <a class="btn btn-line" href="/club" style="align-self:flex-start">Join the Movement <span class="arr">→</span></a>

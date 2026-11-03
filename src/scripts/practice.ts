@@ -1,6 +1,6 @@
 /**
  * The site's one script (the design's own, page by page): the menu and the InnerBoard submenu, the Academy's
- * collections and levels, and the Company OS Score form. Everything it touches is in the page already, so
+ * collections and levels, and the Company OS Score form (into the assessment in the app). Everything it touches is in the page already, so
  * without it every page still reads in full.
  */
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T | null;
@@ -46,16 +46,15 @@ if (data && grid) {
   tabs.forEach((t) => t.addEventListener("click", () => { lvl = Number(t.dataset.level); draw(); }));
 }
 
-/* IOS: the Company OS Score form opens an email to the team with what was entered (the site has no form backend). */
-const iosForm = $<HTMLFormElement>("iosForm"), iosMsg = $("iosMsg");
-if (iosForm && iosMsg) {
+/* IOS: the Company OS Score form sends the visitor straight into the assessment in the app, with what they
+ * entered after the # (it stays in their browser, never in a request), for the app to take up when it creates their
+ * account. */
+const iosForm = $<HTMLFormElement>("iosForm");
+if (iosForm) {
   iosForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const val = (id: string) => ($<HTMLInputElement>(id)?.value || "").trim();
-    const name = val("f-name"), org = val("f-org");
-    const body = [`Name: ${name}`, `Organization: ${org}`, `Work email: ${val("f-email")}`, `Team size: ${val("f-size")}`, "", "What we would like to improve:", val("f-goal")].join("\n");
-    const to = iosForm.dataset.to || "info@innerboardsuite.com";
-    location.href = `mailto:${to}?subject=${encodeURIComponent(`Company OS Score: ${org}`)}&body=${encodeURIComponent(body)}`;
-    iosMsg.textContent = `Thanks, ${name.split(" ")[0]}. Your email is ready to send to ${to}. If it didn’t open, write to that address and we’ll start with your baseline.`;
+    const intake = new URLSearchParams({ name: val("f-name"), org: val("f-org"), email: val("f-email"), size: val("f-size"), goal: val("f-goal") });
+    location.href = `${iosForm.dataset.to}#${intake}`;
   });
 }
