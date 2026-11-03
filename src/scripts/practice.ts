@@ -46,15 +46,20 @@ if (data && grid) {
   tabs.forEach((t) => t.addEventListener("click", () => { lvl = Number(t.dataset.level); draw(); }));
 }
 
-/* IOS: the Company OS Score form sends the visitor straight into the assessment in the app, with what they
- * entered after the # (it stays in their browser, never in a request), for the app to take up when it creates their
- * account. */
+/* IOS: the Company OS Score form sends the visitor straight into the assessment in the app, with their name and
+ * email for the app to fill in. The organization, team size and goal are the design's fields; the app has no place
+ * for them yet, so they stay on the page. */
 const iosForm = $<HTMLFormElement>("iosForm");
 if (iosForm) {
   iosForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const val = (id: string) => ($<HTMLInputElement>(id)?.value || "").trim();
-    const intake = new URLSearchParams({ name: val("f-name"), org: val("f-org"), email: val("f-email"), size: val("f-size"), goal: val("f-goal") });
-    location.href = `${iosForm.dataset.to}#${intake}`;
+    // The app reads ?name= and ?email= from a website's link, keeps them on the device, takes them off the address,
+    // and fills in the score's form and the account it offers (the client, November 3: "we capture their email and
+    // then right when they click submit they go right into the practice app").
+    const to = new URL(iosForm.dataset.to || "", location.href);
+    to.searchParams.set("name", val("f-name"));
+    to.searchParams.set("email", val("f-email"));
+    location.href = to.toString();
   });
 }

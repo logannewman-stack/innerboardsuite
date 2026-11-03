@@ -23,14 +23,18 @@ export const ROUTES = {
 export const LINKS = {
   /** Open the app itself. */
   start: into("/", "suite"),
+  /** Start Practicing, every one on the site (the client, November 3): the app opens with its Start Practicing
+   * pop-up, a free account or a membership with 7 days free, side by side. */
+  startPracticing: into("/start", "suite"),
   /** Buy: the app's membership page (Join the Practice Club, $29 a month or $249 a year), where an account and
    * checkout begin. Every button on the site that sells the membership goes here. */
   join: into("/membership", "suite"),
-  /** Enroll now (INQ): the INQ Certification inside the app. */
-  inqEnroll: into("/certifications/inq", "inq"),
-  /** Start a conversation (INQ): the INQ application, the first step on the INQ page the old site runs today
-   * (innerboardsuite.com/inq-certification-lp). Swap for an INQ Calendly when there is one. */
-  inqTalk: "https://api.leadconnectorhq.com/widget/survey/Z4JAbqIQ1CFb4Ep3G5dH",
+  /** Enroll now (INQ): the app's address for this button. It asks for an account if there is none, then opens
+   * INQ's checkout by itself. */
+  inqEnroll: into("/inq/enroll", "inq"),
+  /** Start a conversation (INQ): the app's address for this button. Name and email, no account needed, and the
+   * question goes to the INQ team. */
+  inqTalk: into("/inq/talk", "inq"),
   /** Get Your Company OS Score: the assessment itself, in the app (the page the book prints, /os/score). */
   osScore: into("/os/score", "os"),
   /** Talk to Our Team (IOS): the InnerBoard OS discovery call on Calendly. */

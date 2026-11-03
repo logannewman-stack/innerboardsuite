@@ -4,7 +4,7 @@
  * the sitemap.
  */
 import Layout from "../layouts/Practice.astro";
-import { ROUTES } from "../config/links";
+import { LINKS, ROUTES } from "../config/links";
 ---
 <Layout title="This page isn’t here · The Practice" description="This page isn’t here. You can live the life you want. It just takes practice." path="/404" noindex>
   <section class="view">
@@ -12,7 +12,7 @@ import { ROUTES } from "../config/links";
       <div class="wrap center stack">
         <p class="eyebrow">Life takes reps.</p>
         <h1>This page isn’t here.</h1>
-        <div class="ctas" style="justify-content:center"><a class="btn btn-solid" href={ROUTES.app}>Start Practicing <span class="arr">→</span></a><a class="btn btn-line" href={ROUTES.home}>Go to the homepage</a></div>
+        <div class="ctas" style="justify-content:center"><a class="btn btn-solid" href={LINKS.startPracticing}>Start Practicing <span class="arr">→</span></a><a class="btn btn-line" href={ROUTES.home}>Go to the homepage</a></div>
       </div>
     </div>
   </section>

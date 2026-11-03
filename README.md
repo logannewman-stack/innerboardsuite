@@ -68,15 +68,18 @@ host, so a texted link shows it), and the P mark as favicon and home screen icon
 - **Leah Roling's book** stays on `/ios`, as designed (the client, November 1), with the real cover.
 - **Every button goes somewhere real** (the client, November 3: "we need to make sure these buttons are live"). The
   design's own hash links became these, all in `src/config/links.ts`:
-  - The membership's Start Practicing, Join the Club and Join the Movement open the membership in the app
-    (`/membership`), where people buy; Open the app opens the app itself. The header's Start Practicing opens `/app`.
-  - Enroll now opens INQ Certification in the app (`/certifications/inq`); Start a conversation opens the INQ
-    application form the team already runs.
-  - Get Your Company OS Score, everywhere it appears, opens the assessment in the app (`/os/score`). Talk to Our Team opens the InnerBoard OS discovery call on Calendly (the "Leah or Abra"
-    scheduler on the old innerboardos.com booking page).
-  - The Company OS Score form takes people straight into the assessment, with what they typed after the `#` of the
-    address (name, organization, email, size, goal). The part after the `#` stays in the browser and is never sent
-    to a server; it is there so the app can read it and open an account for them once the app supports that.
+  - Every Start Practicing (the header, the home page, `/app`, the 404 page) opens the app's Start Practicing
+    pop-up (`/start`, the client, November 3): a free account or a membership with 7 days free, side by side.
+    Join the Club and Join the Movement open the membership in the app (`/membership`), where people buy; Open the
+    app opens the app itself.
+  - Enroll now and Start a conversation open the app's own pages for them: `/inq/enroll` (an account, then INQ's
+    checkout) and `/inq/talk` (name and email, no account needed, to the INQ team).
+  - Get Your Company OS Score, everywhere it appears, opens the assessment in the app (`/os/score`). Talk to Our
+    Team opens the InnerBoard OS discovery call on Calendly (the "Leah or Abra" scheduler on the old
+    innerboardos.com booking page).
+  - The Company OS Score form takes people straight into the assessment with their name and email on the link
+    (`?name=`, `?email=`), which the app keeps on the device, takes off the address, and fills in. The design's
+    organization, team size and goal fields stay on the page: the app has no place for them yet.
   - Buy the Book opens Replaceable on Amazon.
   - Shop opens soon stays as the design has it (there is no shop yet).
 - **The design's update** (the second version of the same design) is in: the Practice wordmark in the
@@ -88,8 +91,7 @@ host, so a texted link shows it), and the P mark as favicon and home screen icon
 
 ## Links still to confirm
 
-In `src/config/links.ts`: Start a conversation on `/inq` opens the team's INQ application form; swap it for an INQ
-Calendly if there is one. The App Store and Google Play listings, and the shop, do not exist yet.
+The App Store and Google Play listings, and the shop, do not exist yet.
 
 ## Deploy
 

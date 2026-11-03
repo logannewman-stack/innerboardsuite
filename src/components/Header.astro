@@ -4,7 +4,7 @@
  * and Start Practicing. `nav` marks the section the page belongs to (aria-current). The menu and the InnerBoard
  * submenu open with the script; without it the noscript styles in the layout show them open.
  */
-import { ROUTES } from "../config/links";
+import { LINKS, ROUTES } from "../config/links";
 import DualImage from "./DualImage.astro";
 interface Props { nav?: "learn" | "app" | "ios" | "club" }
 const { nav } = Astro.props;
@@ -28,8 +28,8 @@ const cur = (n: string) => (nav === n ? "page" : undefined);
       <li><a href={ROUTES.app} data-nav="app" aria-current={cur("app")}>The Practice</a></li>
       <li><a href={ROUTES.ios} data-nav="ios" aria-current={cur("ios")}>For Organizations</a></li>
       <li><a href={ROUTES.club} data-nav="club" aria-current={cur("club")}>The Club</a></li>
-      <li class="mobile-cta"><a class="btn btn-solid" href={ROUTES.app} style="border:0;padding:14px 20px">Start Practicing <span class="arr">→</span></a></li>
+      <li class="mobile-cta"><a class="btn btn-solid" href={LINKS.startPracticing} style="border:0;padding:14px 20px">Start Practicing <span class="arr">→</span></a></li>
     </ul>
-    <a class="btn btn-solid" href={ROUTES.app}>Start Practicing <span class="arr">→</span></a>
+    <a class="btn btn-solid" href={LINKS.startPracticing}>Start Practicing <span class="arr">→</span></a>
   </div>
 </header>
