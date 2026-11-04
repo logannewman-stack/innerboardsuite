@@ -1,9 +1,25 @@
 /**
  * The content behind the interactive parts of the design (November 1, 2026), word for word: the ten reasons
- * (/story), the twelve Academy collections and their lessons (/academy), and the INQ journey (/inq).
+ * (/story), the Academy's collections (/academy, now the Academy's own thirteen and their logos), and the INQ
+ * journey (/inq).
  */
 export interface Reason { title: string; sub: string; body: string; practice: string; changes: string; line: string }
-export interface Collection { name: string; title: string; desc: string; levels: string[][]; image: string }
+export interface Collection {
+  name: string;
+  /** "now": open in the app; "soon": coming soon. */
+  status: "now" | "soon";
+  desc: string;
+  /** The courses the app has in it, in its order; none for a collection still to come. */
+  courses: string[];
+  /** A line in place of the list, where a collection is one course. */
+  note?: string;
+  /** Where its button goes, and what the button says, when not the app. */
+  href?: string;
+  cta?: string;
+  slug: string;
+  image: string;
+  dark: string;
+}
 export interface Module { n: string; name: string; lessons: number }
 
 export const REASONS: Reason[] = [
@@ -89,313 +105,143 @@ export const REASONS: Reason[] = [
   }
 ];
 
-export const LEVELS = ["Foundations", "Practicum", "Graduate"] as const;
-export const LEVEL_NOTES: string[] = ["Foundations: the core ideas and your first reps.", "Practicum: applying the skill in harder, real situations.", "Graduate: leading with the skill and helping others build it."];
-
-export const COLLECTIONS: Collection[] = [
+/**
+ * The Academy's collections, as the Academy names them, each with its logo from the client's Drive ("Academy
+ * Logos / USE THESE LOGOS", November 3; Leah, November 4: "Can you swap these out with academy logos"). Each
+ * line is the approved Academy copy's ("Academy Page Rebuild: Copy and Build Directions"), except Health &
+ * Energy's, which that copy does not have yet. The three collections live in the app list their courses as the app
+ * has them; the rest are coming soon. `dark` is the logo on the dark-mode card.
+ */
+const ACADEMY: Omit<Collection, "image" | "dark">[] = [
   {
-    "name": "Self Awareness",
-    "title": "Understand yourself. Lead your life.",
-    "desc": "Build greater self awareness, recognize your patterns, and make more intentional choices.",
-    "levels": [
-      [
-        "Understanding your inner world",
-        "Thoughts, feelings, and behaviors",
-        "Personal values and beliefs",
-        "Building self trust",
-        "Creating new patterns"
-      ],
-      [
-        "Noticing patterns in real time",
-        "Your story versus the facts",
-        "Values in hard decisions",
-        "Keeping promises to yourself"
-      ],
-      [
-        "Self awareness under pressure",
-        "Leading from your values",
-        "Teaching what you practice"
-      ]
+    name: "Human Foundations",
+    status: "now",
+    desc: "Thought, emotion, identity, belief, and the daily practice of self-leadership.",
+    courses: [
+      "InnerBoard 101",
+      "Thought Awareness 101",
+      "Emotional Mastery 101",
+      "Personal Ownership 101",
+      "Personal Power",
+      "Self-Leadership Basics",
+      "Understanding Your Patterns",
+      "Rewiring Thought Loops",
+      "From Reaction to Response",
+      "Regulating Yourself Under Pressure",
+      "Identity Reconstruction",
+      "Emotional Alchemy",
+      "Advanced Self-Leadership",
+      "Embodied Self-Mastery"
     ],
-    "image": "/images/practice/collection-self-awareness.webp"
+    slug: "human-foundations"
   },
   {
-    "name": "Emotional Regulation",
-    "title": "Feel it without being ruled by it.",
-    "desc": "Name what you feel, tolerate discomfort, and choose your response.",
-    "levels": [
-      [
-        "Naming emotions",
-        "Feelings as information",
-        "The pause",
-        "Tolerating discomfort",
-        "Recovering after a reaction"
-      ],
-      [
-        "Regulating in conflict",
-        "Fear and action",
-        "Frustration without blame",
-        "Disappointment without quitting"
-      ],
-      [
-        "Steady under pressure",
-        "Emotional leadership at home and work",
-        "Helping others pause"
-      ]
-    ],
-    "image": "/images/practice/collection-emotional-regulation.webp"
+    name: "The Wisdom Collective",
+    status: "now",
+    desc: "48 books. 7 research-grounded frameworks. The science underneath why this work works.",
+    courses: [],
+    note: "One course, in seven parts.",
+    slug: "the-wisdom-collective"
   },
   {
-    "name": "Relationships",
-    "title": "Love well, on purpose.",
-    "desc": "Practical skills for the people who matter most.",
-    "levels": [
-      [
-        "Listening to understand",
-        "Expressing needs without blame",
-        "Allowing difference",
-        "The art of repair",
-        "Showing up with more than leftovers"
-      ],
-      [
-        "Hard conversations at home",
-        "Trust after a break",
-        "Boundaries that hold"
-      ],
-      [
-        "Relational leadership",
-        "Building a family culture",
-        "Long term connection"
-      ]
+    name: "Relationships & Connection",
+    status: "now",
+    desc: "How you communicate, what you keep repeating, where your boundaries are, and building real connection.",
+    courses: [
+      "Relationships 101",
+      "Communication 101",
+      "Boundaries 101",
+      "What You Believe Is True",
+      "Leading Yourself Through Conflict",
+      "The Practice of Honest Communication",
+      "When a Boundary Is Tested",
+      "The People-Pleasing Pattern",
+      "Relational Freedom",
+      "The Relational Mirror",
+      "Relational Leadership"
     ],
-    "image": "/images/practice/collection-relationships.webp"
+    slug: "relationships-and-connection"
   },
   {
-    "name": "Communication",
-    "title": "Say what matters, clearly.",
-    "desc": "Speak honestly, listen fully, and handle hard conversations.",
-    "levels": [
-      [
-        "Clear requests",
-        "Listening without fixing",
-        "Feedback you can hear",
-        "Saying no",
-        "Courageous conversations"
-      ],
-      [
-        "Conflict without casualties",
-        "Talking when you are hurt",
-        "Difficult news"
-      ],
-      [
-        "Communication as a leader",
-        "Facilitating hard rooms",
-        "Building a feedback culture"
-      ]
-    ],
-    "image": "/images/practice/collection-communication.webp"
+    name: "The Certified Mind Method",
+    status: "now",
+    desc: "The complete method behind INQ Certification: five tools that create real follow-through in your own life and with anyone you lead. One course, purchased as one.",
+    courses: [],
+    note: "Part of INQ Certification.",
+    href: "/inq",
+    cta: "See INQ Certification",
+    slug: "certified-mind-method"
   },
   {
-    "name": "Confidence",
-    "title": "Be your own proof.",
-    "desc": "Build self trust through action, follow through, and recovery.",
-    "levels": [
-      [
-        "Confidence from evidence",
-        "Keeping commitments",
-        "Taking manageable risks",
-        "Recovering from setbacks",
-        "Acting before you feel ready"
-      ],
-      [
-        "Self doubt in real time",
-        "Visibility and courage",
-        "Comparison"
-      ],
-      [
-        "Confidence as a leader",
-        "Holding your ground",
-        "Helping others build proof"
-      ]
-    ],
-    "image": "/images/practice/collection-confidence.webp"
+    name: "Teens",
+    status: "soon",
+    desc: "Identity, big emotions, confidence, and the early practice of self-leadership. Built for ages 14 to 18.",
+    courses: [],
+    slug: "teens"
   },
   {
-    "name": "Decision Making",
-    "title": "Decide without guarantees.",
-    "desc": "Make clearer choices and stop waiting for certainty.",
-    "levels": [
-      [
-        "Uncertainty is normal",
-        "Choosing by your values",
-        "Stopping avoidance",
-        "Small decisions, daily",
-        "Owning the outcome"
-      ],
-      [
-        "Big decisions",
-        "Decision fatigue",
-        "Changing your mind well"
-      ],
-      [
-        "Deciding for a team",
-        "Speed and judgment",
-        "Building decision habits"
-      ]
-    ],
-    "image": "/images/practice/collection-decision-making.webp"
+    name: "Young Adult Life",
+    status: "soon",
+    desc: "Self-trust, direction, and building stability while building a life. For ages 18 to 25.",
+    courses: [],
+    slug: "young-adult-life"
   },
   {
-    "name": "Leadership",
-    "title": "Lead yourself first.",
-    "desc": "Leadership starts with the ability to lead yourself.",
-    "levels": [
-      [
-        "Self leadership basics",
-        "Responsibility and influence",
-        "Your next action",
-        "Leading without a title",
-        "Accountability"
-      ],
-      [
-        "Leading people you love",
-        "Leading in hard seasons",
-        "Delegation"
-      ],
-      [
-        "Organizational leadership",
-        "Culture by behavior",
-        "Developing leaders"
-      ]
-    ],
-    "image": "/images/practice/collection-leadership.webp"
+    name: "Life Transitions & Midlife",
+    status: "soon",
+    desc: "For the season when everything is shifting and you\u2019re finding your footing.",
+    courses: [],
+    slug: "life-transitions-and-midlife"
   },
   {
-    "name": "Productivity",
-    "title": "Do what matters, repeatedly.",
-    "desc": "Habits and systems that make progress less dependent on motivation.",
-    "levels": [
-      [
-        "Reps over motivation",
-        "Priorities",
-        "Time and attention",
-        "Follow through",
-        "Adjusting what isn’t working"
-      ],
-      [
-        "Breaking a habit",
-        "Building a routine",
-        "Overwhelm"
-      ],
-      [
-        "Team rhythms",
-        "Sustainable pace",
-        "Systems that last"
-      ]
-    ],
-    "image": "/images/practice/collection-productivity.webp"
+    name: "Work, Career & Professional Life",
+    status: "soon",
+    desc: "Who you are at work, how you hold steady under pressure, and owning your part.",
+    courses: [],
+    slug: "work-career-and-professional-life"
   },
   {
-    "name": "Health and Wellbeing",
-    "title": "Care for the person living this life.",
-    "desc": "Treat your own life as worth the same care you give everyone else.",
-    "levels": [
-      [
-        "Rest without guilt",
-        "Energy and attention",
-        "Sustainable habits",
-        "Stress and recovery",
-        "Self respect"
-      ],
-      [
-        "Health goals that stick",
-        "Burnout warning signs",
-        "Saying yes to yourself"
-      ],
-      [
-        "Wellbeing as a leader",
-        "Modeling balance",
-        "Supporting your team"
-      ]
-    ],
-    "image": "/images/practice/collection-health-and-wellbeing.webp"
+    name: "Purpose & Life Design",
+    status: "soon",
+    desc: "From drifting to directing. Built on design, not motivation.",
+    courses: [],
+    slug: "purpose-and-life-design"
   },
   {
-    "name": "Purpose",
-    "title": "Live on purpose, now.",
-    "desc": "Get clear on what matters and take part in your life today.",
-    "levels": [
-      [
-        "What matters to you",
-        "Presence",
-        "Meaning in ordinary days",
-        "Dreams and participation",
-        "Your next chapter"
-      ],
-      [
-        "Transitions",
-        "Starting over",
-        "Legacy"
-      ],
-      [
-        "Purpose at work",
-        "Leading with meaning",
-        "Helping others find theirs"
-      ]
-    ],
-    "image": "/images/practice/collection-purpose.webp"
+    name: "Health & Energy",
+    status: "soon",
+    desc: "How sleep, movement, food and stress shape the way you think, feel and lead.",
+    courses: [],
+    slug: "health-and-energy"
   },
   {
-    "name": "Parenting",
-    "title": "Be here for these years.",
-    "desc": "Pausing, listening, and repair with the kids you love.",
-    "levels": [
-      [
-        "Pausing before reacting",
-        "Listening to your kids",
-        "Repair after a hard moment",
-        "Boundaries with warmth",
-        "Being present"
-      ],
-      [
-        "Parenting teenagers",
-        "Parenting together after separation",
-        "Letting them be different"
-      ],
-      [
-        "Family culture",
-        "Modeling self leadership",
-        "Raising leaders"
-      ]
-    ],
-    "image": "/images/practice/collection-parenting.webp"
+    name: "Spiritual Growth & Inner Expansion",
+    status: "soon",
+    desc: "Presence, stillness, trust, and the parts of life you feel more than you can explain.",
+    courses: [],
+    slug: "spiritual-growth-and-inner-expansion"
   },
   {
-    "name": "Money and Work",
-    "title": "Build results you’re proud of.",
-    "desc": "Decisions, boundaries, and leadership in your work and finances.",
-    "levels": [
-      [
-        "Money stories",
-        "Work and worth",
-        "Asking for what you want",
-        "Saying no at work",
-        "Owning your results"
-      ],
-      [
-        "Career decisions",
-        "Building a business",
-        "Leading a team"
-      ],
-      [
-        "Running an organization",
-        "Growth without burnout",
-        "Building what lasts"
-      ]
-    ],
-    "image": "/images/practice/collection-money-and-work.webp"
+    name: "Money & Financial Life",
+    status: "soon",
+    desc: "The beliefs driving what you do with money. The part underneath every budget and strategy.",
+    courses: [],
+    slug: "money-and-financial-life"
+  },
+  {
+    name: "Grief & Loss",
+    status: "soon",
+    desc: "Death, divorce, the loss of who you were. How to meet an ending, and what becomes possible after it.",
+    courses: [],
+    slug: "grief-and-loss"
   }
 ];
+
+export const COLLECTIONS: Collection[] = ACADEMY.map((c) => ({
+  ...c,
+  image: `/images/practice/academy/${c.slug}.webp`,
+  dark: `/images/practice/academy/${c.slug}-dark.webp`
+}));
 
 /** The INQ modules, in order. */
 export const MODULES: Module[] = [

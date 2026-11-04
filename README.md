@@ -21,7 +21,7 @@ Preview: https://innerboardsuite.vercel.app/ (the branch deploy). Production: ht
 | --- | --- | --- |
 | `/` | The Practice | The hero with the app (Today), why practice, the rep circle, the four pathways, the membership, the Club |
 | `/story` | Why practice | The brand belief, the ten reasons (open and close without the script), the manifesto |
-| `/academy` | Academy | The curriculum, why these skills matter, the twelve collections and their lessons by level, every lesson ends with a rep |
+| `/academy` | Academy | The curriculum, why these skills matter, the Academy's 13 collections with their logos (open now or coming soon, and the courses of the open ones), every lesson ends with a rep |
 | `/lab` | The Lab | Where practice meets real life, Academy or the Lab, what is included, how it works |
 | `/inq` | INQ Certification | Who it is for, the INQ journey (the app's own path, beside the modules), the credential, two steps to start |
 | `/ios` | InnerBoard OS | The challenge, the cost, the IOS model, the workflow and the Company OS Score, the outcome, the Company OS Score form, the book |
@@ -46,11 +46,12 @@ host, so a texted link shows it), and the P mark as favicon and home screen icon
   its own note asks: "the INQ journey path from The Practice app"), beside the module list. They live in `public/images/practice/app/` (780 x 1688, plus a
   390 px variant); `scripts/capture.mjs` recaptures any route.
 - `src/pages/*.astro`: one page per view, the design's markup with real routes for its hash links.
-- `src/data/practice.ts`: the content the design drew from its script, word for word: the ten reasons, the twelve
-  collections and their lessons, the INQ modules.
+- `src/data/practice.ts`: the content the design drew from its script, word for word: the ten reasons, the INQ
+  modules; and the Academy's collections (Leah, November 4: the Academy's own logos from the Drive, in place of
+  the design's twelve topic photos), with the approved Academy copy's line for each and the courses the app has.
 - `src/styles/practice.css`: the design's stylesheet as written (fonts self-hosted, the hash routing removed), with
   the few additions the site needs at the end.
-- `src/scripts/practice.ts`: the menu and submenu, the Academy collections and levels, the Company OS Score form (into
+- `src/scripts/practice.ts`: the menu and submenu, the Academy collections, the Company OS Score form (into
   the app's assessment).
 - `src/config/links.ts`: every route and every outside destination.
 - `public/images/practice/`: the design's photos as WebP, the P mark, the INQ mark, the TPC monograms, the book
