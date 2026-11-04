@@ -582,3 +582,10 @@ footer{background:var(--navy);color:var(--on-navy-muted);padding-block:56px 40px
 .club-hero .btn-solid:hover{background:var(--gold);color:#fff}
 .club-h2 + p{width:min(340px,100%);text-align:center}
 .shop-note{color:var(--muted);font-size:.82rem;margin:-6px 0 0}
+
+/* The Academy's collections with their logos (Leah, November 4): each tile says whether it is open now, and the
+ * logo above the panel is shown whole, at its own 16:10, rather than cropped to the photos' 16:9. */
+.coll .cimg picture{display:block;height:100%}
+.detail picture{display:block}
+.coll span small{display:block;margin-top:3px;font-size:.78rem;font-weight:400;color:var(--muted)}
+.coll-hero{aspect-ratio:16/10;object-fit:contain;background:var(--surface);border:1px solid var(--line)}

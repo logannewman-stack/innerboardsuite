@@ -1,11 +1,25 @@
 ---
 /**
- * Academy (the academy view of the client's design): the curriculum, why these skills matter, the twelve
- * collections (pick one to see its lessons at each level), and how every lesson ends with a rep.
+ * Academy (the academy view of the client's design): the curriculum, why these skills matter, the Academy's
+ * collections with their logos (pick one to see what is in it), and how every lesson ends with a rep.
+ *
+ * The collections were the design's twelve topics with stock photos until November 4, when Leah asked for the
+ * Academy's own logos ("Can you swap these out with academy logos :) in our drive"): now each is one of the
+ * Academy's collections, its logo, the approved line about it, and its courses where the app has them.
  */
 import Layout from "../layouts/Practice.astro";
-import { COLLECTIONS, LEVEL_NOTES } from "../data/practice";
-const first = COLLECTIONS[0];
+import { COLLECTIONS } from "../data/practice";
+
+/** What the panel under the grid says for a collection: worked out here, so the page and its script agree. */
+const VIEW = COLLECTIONS.map((c) => ({
+  ...c,
+  eyebrow: c.status === "now" ? "Available now" : "Coming soon",
+  ctaText: c.status === "now" ? c.cta || "Start this collection" : "Start with Human Foundations",
+  ctaHref: c.status === "now" ? c.href || "/app" : "/app",
+  head: c.courses.length ? `In this collection: ${c.courses.length} courses` : "",
+  noteText: c.note || (c.status === "soon" ? "Coming soon. Start with Human Foundations in the meantime." : "")
+}));
+const first = VIEW[0];
 ---
 <Layout title="Academy · The Practice" description="The curriculum school never offered. Practical lessons on demand to help you think, respond, communicate, decide, and lead in your real life." path="/academy" nav="learn">
 <section class="view" id="academy">
@@ -39,28 +53,24 @@ const first = COLLECTIONS[0];
 
   <div class="band paper" id="collections">
     <div class="wrap">
-      <p class="eyebrow">The 12 collections</p>
+      <p class="eyebrow">The {VIEW.length} collections</p>
       <h2 class="h2">Start with what you’re living right now.</h2>
       <div class="collections" id="collGrid">
-        {COLLECTIONS.map((c, i) => <button type="button" class="coll" aria-pressed={i === 0 ? "true" : "false"}><div class="cimg"><img src={c.image} alt="" width="640" height="360" loading="lazy" decoding="async" /></div><span>{c.name}</span></button>)}
+        {VIEW.map((c, i) => <button type="button" class="coll" aria-pressed={i === 0 ? "true" : "false"}><div class="cimg"><picture><source srcset={c.dark} media="(prefers-color-scheme: dark)" /><img src={c.image} alt="" width="640" height="400" loading="lazy" decoding="async" /></picture></div><span>{c.name}<small>{c.eyebrow}</small></span></button>)}
       </div>
       <div class="detail">
         <div class="stack" style="gap:14px">
-          <img class="coll-hero" id="collImg" src={first.image} alt={first.name} width="640" height="360" loading="lazy" decoding="async" />
-          <p class="eyebrow" id="collEyebrow">Self Awareness</p>
-          <h3 id="collTitle">Understand yourself. Lead your life.</h3>
-          <p class="lede" id="collDesc">Build greater self awareness, recognize your patterns, and make more intentional choices.</p>
-          <a class="btn btn-solid" href="/app" style="align-self:flex-start">Start this collection <span class="arr">→</span></a>
+          <picture><source id="collImgDark" srcset={first.dark} media="(prefers-color-scheme: dark)" /><img class="coll-hero" id="collImg" src={first.image} alt={first.name} width="640" height="400" loading="lazy" decoding="async" /></picture>
+          <p class="eyebrow" id="collEyebrow">{first.eyebrow}</p>
+          <h3 id="collTitle">{first.name}</h3>
+          <p class="lede" id="collDesc">{first.desc}</p>
+          <a class="btn btn-solid" id="collCta" href={first.ctaHref} style="align-self:flex-start"><span id="collCtaText">{first.ctaText}</span> <span class="arr">→</span></a>
         </div>
         <div>
-          <div class="tabs" role="tablist" aria-label="Learning level">
-            <button role="tab" aria-selected="true" data-level="0" id="tab0">Foundations</button>
-            <button role="tab" aria-selected="false" data-level="1" id="tab1">Practicum</button>
-            <button role="tab" aria-selected="false" data-level="2" id="tab2">Graduate</button>
-          </div>
-          <p class="levelnote" id="levelNote">{LEVEL_NOTES[0]}</p>
-          <ol class="lessons" id="lessons">{first.levels[0].map((t, i) => <li><b>{String(i + 1).padStart(2, "0")}</b><span>{t}</span><small>Lesson + rep</small></li>)}</ol>
-          <script type="application/json" id="collData" set:html={JSON.stringify({ c: COLLECTIONS, notes: LEVEL_NOTES })}></script>
+          <p class="levelnote" id="collListHead" hidden={!first.head}>{first.head}</p>
+          <ol class="lessons" id="lessons" hidden={!first.courses.length}>{first.courses.map((t, i) => <li><b>{String(i + 1).padStart(2, "0")}</b><span>{t}</span><small>Course</small></li>)}</ol>
+          <p class="levelnote" id="collNote" hidden={!first.noteText}>{first.noteText}</p>
+          <script type="application/json" id="collData" set:html={JSON.stringify({ c: VIEW })}></script>
         </div>
       </div>
     </div>

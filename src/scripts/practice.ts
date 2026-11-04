@@ -1,6 +1,6 @@
 /**
  * The site's one script (the design's own, page by page): the menu and the InnerBoard submenu, the Academy's
- * collections and levels, and the Company OS Score form (into the assessment in the app). Everything it touches is in the page already, so
+ * collections, and the Company OS Score form (into the assessment in the app). Everything it touches is in the page already, so
  * without it every page still reads in full.
  */
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T | null;
@@ -17,33 +17,36 @@ if (menu && menuBtn && learnBtn && learnMenu) {
   menu.addEventListener("click", (e) => { if ((e.target as Element).closest("a")) { menu.classList.remove("open"); menuBtn.setAttribute("aria-expanded", "false"); setLearn(false); } });
 }
 
-/* Academy: pick a collection, then a level, to see its lessons. */
+/* Academy: pick a collection to see what is in it (its logo, its line, its courses where the app has them). */
 const data = $("collData"), grid = $("collGrid");
 if (data && grid) {
-  const { c: C, notes } = JSON.parse(data.textContent || "{}") as { c: { name: string; title: string; desc: string; levels: string[][]; image: string }[]; notes: string[] };
-  const tabs = [...document.querySelectorAll<HTMLButtonElement>(".tabs button")];
-  const img = $<HTMLImageElement>("collImg")!, eyebrow = $("collEyebrow")!, title = $("collTitle")!, desc = $("collDesc")!, note = $("levelNote")!, lessons = $("lessons")!;
-  let cur = 0, lvl = 0;
+  type View = { name: string; desc: string; courses: string[]; image: string; dark: string; eyebrow: string; ctaText: string; ctaHref: string; head: string; noteText: string };
+  const { c: C } = JSON.parse(data.textContent || "{}") as { c: View[] };
+  const img = $<HTMLImageElement>("collImg")!, dark = $<HTMLSourceElement>("collImgDark")!, eyebrow = $("collEyebrow")!, title = $("collTitle")!, desc = $("collDesc")!;
+  const cta = $<HTMLAnchorElement>("collCta")!, ctaText = $("collCtaText")!, head = $("collListHead")!, note = $("collNote")!, lessons = $("lessons")!;
+  let cur = 0;
   const draw = () => {
     const c = C[cur];
     [...grid.children].forEach((b, i) => b.setAttribute("aria-pressed", String(i === cur)));
-    tabs.forEach((t, i) => t.setAttribute("aria-selected", String(i === lvl)));
-    eyebrow.textContent = c.name; img.src = c.image; img.alt = c.name;
-    title.textContent = c.title; desc.textContent = c.desc; note.textContent = notes[lvl];
-    lessons.replaceChildren(...c.levels[lvl].map((t, i) => {
+    eyebrow.textContent = c.eyebrow; dark.srcset = c.dark; img.src = c.image; img.alt = c.name;
+    title.textContent = c.name; desc.textContent = c.desc;
+    cta.href = c.ctaHref; ctaText.textContent = c.ctaText;
+    head.textContent = c.head; head.hidden = !c.head;
+    note.textContent = c.noteText; note.hidden = !c.noteText;
+    lessons.hidden = !c.courses.length;
+    lessons.replaceChildren(...c.courses.map((t, i) => {
       const li = document.createElement("li");
       const n = document.createElement("b"); n.textContent = String(i + 1).padStart(2, "0");
       const s = document.createElement("span"); s.textContent = t;
-      const k = document.createElement("small"); k.textContent = "Lesson + rep";
+      const k = document.createElement("small"); k.textContent = "Course";
       li.append(n, s, k);
       return li;
     }));
   };
   [...grid.children].forEach((b, i) => b.addEventListener("click", () => {
-    cur = i; lvl = 0; draw();
+    cur = i; draw();
     document.querySelector(".detail")?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
   }));
-  tabs.forEach((t) => t.addEventListener("click", () => { lvl = Number(t.dataset.level); draw(); }));
 }
 
 /* IOS: the Company OS Score form sends the visitor straight into the assessment in the app, with their name and
