@@ -581,3 +581,4 @@ footer{background:var(--navy);color:var(--on-navy-muted);padding-block:56px 40px
 .club-hero .btn-solid{background:var(--on-navy);color:#1B2332}
 .club-hero .btn-solid:hover{background:var(--gold);color:#fff}
 .club-h2 + p{width:min(340px,100%);text-align:center}
+.shop-note{color:var(--muted);font-size:.82rem;margin:-6px 0 0}

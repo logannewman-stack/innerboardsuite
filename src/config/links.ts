@@ -29,6 +29,9 @@ export const LINKS = {
   /** What are you practicing? (the home page's second button): the app's quiz of that name, which ends on the
    * result and the way in (the client, November 3: "it still says what are you practicing?"). */
   quiz: into("/quiz", "suite"),
+  /** See the collection (the club page): the whole merch line in the app's Practice Club, each piece with its photos
+   * and colors. The app says the shop opens soon until Printful is connected, and so does the button's line. */
+  collection: into("/club", "suite"),
   /** Buy: the app's membership page (Join the Practice Club, $29 a month or $249 a year), where an account and
    * checkout begin. Every button on the site that sells the membership goes here. */
   join: into("/membership", "suite"),

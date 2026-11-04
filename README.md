@@ -82,7 +82,8 @@ host, so a texted link shows it), and the P mark as favicon and home screen icon
     (`?name=`, `?email=`), which the app keeps on the device, takes off the address, and fills in. The design's
     organization, team size and goal fields stay on the page: the app has no place for them yet.
   - Buy the Book opens Replaceable on Amazon.
-  - Shop opens soon stays as the design has it (there is no shop yet).
+  - See the collection (the club page) opens the merch line in the app's Practice Club, with "The shop opens soon."
+    under it until the app's shop takes orders. The merch tiles are the shop's own photos of the same three pieces.
 - **The design's update** (the second version of the same design) is in: the Practice wordmark in the
   header and footer, The Practice Club lockup (Est. 2026) on the club page and the home page with "For the people
   doing the work." centred under it, the club marks in the ticker, and the new photos on the INQ, IOS, Lab and club
@@ -92,7 +93,7 @@ host, so a texted link shows it), and the P mark as favicon and home screen icon
 
 ## Links still to confirm
 
-The App Store and Google Play listings, and the shop, do not exist yet.
+The App Store and Google Play listings do not exist yet; the shop takes orders once Printful is connected in the app.
 
 ## Deploy
 
