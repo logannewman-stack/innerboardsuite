@@ -26,6 +26,9 @@ export const LINKS = {
   /** Start Practicing, every one on the site (the client, November 3): the app opens with its Start Practicing
    * pop-up, a free account or a membership with 7 days free, side by side. */
   startPracticing: into("/start", "suite"),
+  /** What are you practicing? (the home page's second button): the app's quiz of that name, which ends on the
+   * result and the way in (the client, November 3: "it still says what are you practicing?"). */
+  quiz: into("/quiz", "suite"),
   /** Buy: the app's membership page (Join the Practice Club, $29 a month or $249 a year), where an account and
    * checkout begin. Every button on the site that sells the membership goes here. */
   join: into("/membership", "suite"),
