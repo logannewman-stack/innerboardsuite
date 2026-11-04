@@ -40,7 +40,8 @@ host, so a texted link shows it), and the P mark as favicon and home screen icon
 - `src/components/DualImage.astro`: an image with a dark mode version (the wordmark, the club lockup, the marks).
 - `src/components/AppPhone.astro`: a real screen of the app in a phone (the client, November 1: real screenshots,
   in a phone's shape, in place of the design's drawn app previews). Four screens, captured from the live app as a
-  visitor on a phone (390 x 844 at 2x, light theme, a weekday morning): Today on the home page, Set Up Your Day on
+  visitor on a phone (390 x 844 at 2x, light theme, a weekday morning; last taken November 4, after the app's new
+  logo, colours, Rep of the Day and daily habits): Today on the home page, Set Up Your Day on
   `/app`, a scored Company OS Score on `/ios`, and the INQ journey on `/inq` (in place of the design's drawn path, as
   its own note asks: "the INQ journey path from The Practice app"), beside the module list. They live in `public/images/practice/app/` (780 x 1688, plus a
   390 px variant); `scripts/capture.mjs` recaptures any route.
