@@ -1,96 +1,142 @@
 ---
 /**
- * Academy (the academy view of the client's design): the curriculum, why these skills matter, the Academy's
- * collections with their logos (pick one to see what is in it), and how every lesson ends with a rep.
+ * Academy, as Leah's Academy page mockup (November 6) has it, in the site's own type, colors and buttons: the hero
+ * (own it, practice it), the library in its three groups (the core curriculum open now, the life stage and domain
+ * collections coming soon), the closing line, and a view of its own for each open collection.
  *
- * The collections were the design's twelve topics with stock photos until November 4, when Leah asked for the
- * Academy's own logos ("Can you swap these out with academy logos :) in our drive"): now each is one of the
- * Academy's collections, its logo, the approved line about it, and its courses where the app has them.
+ * A collection's view is this page at /academy#<collection>, as in the mockup: every view is in the page, and the
+ * one the address names is shown (CSS :target), so it opens, goes back and shares without the script. Each Buy is
+ * a link to the app's checkout for that course, collection or single course (`academyBuy`).
+ *
+ * The logos are the Drive's "Academy Logos / USE THESE LOGOS", files 14 to 26 (the icon with its name under it),
+ * re-inked onto the light card and the dark-mode card. Parenting & Family Life has none yet, so a quiet tile
+ * holds its place.
  */
 import Layout from "../layouts/Practice.astro";
-import { COLLECTIONS } from "../data/practice";
+import { GROUPS, OPEN, dollars, type OpenCollection, type SoonCollection } from "../data/practice";
+import { academyBuy } from "../config/links";
 
-/** What the panel under the grid says for a collection: worked out here, so the page and its script agree. */
-const VIEW = COLLECTIONS.map((c) => ({
-  ...c,
-  eyebrow: c.status === "now" ? "Available now" : "Coming soon",
-  ctaText: c.status === "now" ? c.cta || "Start this collection" : "Start with Human Foundations",
-  ctaHref: c.status === "now" ? c.href || "/app" : "/app",
-  head: c.courses.length ? `In this collection: ${c.courses.length} courses` : "",
-  noteText: c.note || (c.status === "soon" ? "Coming soon. Start with Human Foundations in the meantime." : "")
-}));
-const first = VIEW[0];
+const isOpen = (c: OpenCollection | SoonCollection): c is OpenCollection => "id" in c;
 ---
-<Layout title="Academy · The Practice" description="The curriculum school never offered. Practical lessons on demand to help you think, respond, communicate, decide, and lead in your real life." path="/academy" nav="learn">
-<section class="view" id="academy">
-  <div class="phero">
-    <div class="wrap split">
-      <div class="stack">
-        <p class="eyebrow">InnerBoard Academy · Learn it</p>
-        <a class="incl" href="/app#membership">Included with The Practice membership</a>
-        <h1>The curriculum school never offered.</h1>
-        <p class="lede">Practical lessons on demand to help you think, respond, communicate, decide, and lead in your real life.</p>
-        <div class="ctas"><a class="btn btn-solid" href="#collections">Explore the Academy <span class="arr">→</span></a></div>
-      </div>
-      <div class="ph photo hero-gfx"><img loading="lazy" decoding="async" width="1200" height="960" src="/images/practice/academy-books.webp" alt="Academy books on a shelf: Self Awareness, Confidence, Relationships, Communication, Decision Making, Leadership, Purpose, Parenting, Emotional Regulation"></div>
-    </div>
-  </div>
-
-  <div class="band">
-    <div class="wrap why">
-      <div class="stack">
-        <p class="eyebrow">Why these skills matter</p>
-        <h2 class="h2" style="margin-top:0">You were taught math and history. Were you ever taught how to live your life, and how to lead it?</h2>
-      </div>
-      <div class="points">
-        <div><h4>Your reactions shape your relationships.</h4><p>Most regret starts with a response we never practiced. These skills give you more choice in hard moments.</p></div>
-        <div><h4>Confidence comes from evidence.</h4><p>Learning a skill, then using it, builds trust in yourself in a way waiting never will.</p></div>
-        <div><h4>Leadership starts inside.</h4><p>How you lead yourself shows up at home, at work, and with the people you love.</p></div>
-        <div><h4>Experience alone isn’t enough.</h4><p>You can repeat the same year twenty times. Or you can spend twenty years getting better.</p></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="band paper" id="collections">
-    <div class="wrap">
-      <p class="eyebrow">The {VIEW.length} collections</p>
-      <h2 class="h2">Start with what you’re living right now.</h2>
-      <div class="collections" id="collGrid">
-        {VIEW.map((c, i) => <button type="button" class="coll" aria-pressed={i === 0 ? "true" : "false"}><div class="cimg"><picture><source srcset={c.dark} media="(prefers-color-scheme: dark)" /><img src={c.image} alt="" width="640" height="400" loading="lazy" decoding="async" /></picture></div><span>{c.name}<small>{c.eyebrow}</small></span></button>)}
-      </div>
-      <div class="detail">
-        <div class="stack" style="gap:14px">
-          <picture><source id="collImgDark" srcset={first.dark} media="(prefers-color-scheme: dark)" /><img class="coll-hero" id="collImg" src={first.image} alt={first.name} width="640" height="400" loading="lazy" decoding="async" /></picture>
-          <p class="eyebrow" id="collEyebrow">{first.eyebrow}</p>
-          <h3 id="collTitle">{first.name}</h3>
-          <p class="lede" id="collDesc">{first.desc}</p>
-          <a class="btn btn-solid" id="collCta" href={first.ctaHref} style="align-self:flex-start"><span id="collCtaText">{first.ctaText}</span> <span class="arr">→</span></a>
-        </div>
-        <div>
-          <p class="levelnote" id="collListHead" hidden={!first.head}>{first.head}</p>
-          <ol class="lessons" id="lessons" hidden={!first.courses.length}>{first.courses.map((t, i) => <li><b>{String(i + 1).padStart(2, "0")}</b><span>{t}</span><small>Course</small></li>)}</ol>
-          <p class="levelnote" id="collNote" hidden={!first.noteText}>{first.noteText}</p>
-          <script type="application/json" id="collData" set:html={JSON.stringify({ c: VIEW })}></script>
+<Layout title="Academy · The Practice" description="The curriculum school never offered. Self-paced courses in the skills nobody taught you: what to do with a racing mind, a big feeling, a hard conversation." path="/academy" nav="learn">
+<section class="view aca" id="academy">
+  <div class="alib">
+    <div class="phero aca-hero">
+      <div class="wrap">
+        <p class="eyebrow">Learn it · The Academy</p>
+        <h1>The curriculum school <em>never</em> offered.</h1>
+        <p class="lede">Self-paced courses in the skills nobody taught you: what to do with a racing mind, a big feeling, a hard conversation. Start at the beginning, or start where you are.</p>
+        <div class="ways">
+          <div><h2>Own it</h2><p>Buy a course here and it’s yours as a PDF to print and return to.</p></div>
+          <div><h2>Practice it</h2><p>Practice Club members use every Academy course inside the Practice.</p></div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="band">
-    <div class="wrap">
-      <p class="eyebrow">From lesson to daily practice</p>
-      <h2 class="h2">Every lesson ends with a rep.</h2>
-      <p class="lede" style="margin-top:14px">Lessons connect straight to the Practice Coach, so what you learn in the morning is something you try by the afternoon. Here’s a sample.</p>
-      <div class="flow">
-        <div><small>The lesson · 9 min</small><h4>The pause</h4><p>Why the space between what happens and how you respond is where most of your choices live.</p></div>
-        <div><small>Today’s rep</small><h4>Pause once</h4><p class="quote">Before you answer the next text or comment that bothers you, wait. Take one breath and ask: what do I actually want here?</p></div>
-        <div><small>Reflect in the app</small><h4>What happened?</h4><p>The Practice Coach asks what you noticed, what was different, and what you want to try next. Your streak grows.</p></div>
+    <div class="band" id="library">
+      <div class="wrap">
+        <p class="eyebrow">The library</p>
+        <h2 class="h2">Find your <em>door in.</em></h2>
+        <p class="lede" style="margin-top:14px">Most people start with Human Foundations, the complete inner-world curriculum. Start anywhere else if you already know exactly where the work is calling.</p>
+        {GROUPS.map((g) => (
+          <>
+            <h3 class="lib-group">{g.label}</h3>
+            <div class:list={["lib-grid", { four: g.cards.length === 4 }]}>
+              {g.cards.map((c) => {
+                const icon = c.image ? (
+                  <picture><source srcset={c.dark} media="(prefers-color-scheme: dark)" /><img src={c.image} alt="" width="1280" height="800" loading="lazy" decoding="async" /></picture>
+                ) : (
+                  <span class="lib-ph" aria-hidden="true"></span>
+                );
+                return isOpen(c) ? (
+                  <a class="lib-card" href={`#${c.id}`}>
+                    <div class="lib-icon">{icon}</div>
+                    <div class="lib-body">
+                      <h4>{c.name}</h4>
+                      <p>{c.blurb}</p>
+                      <div class="lib-foot"><span class="status">Available now</span><span class="go">Open the collection <span class="arr">→</span></span></div>
+                    </div>
+                  </a>
+                ) : (
+                  <div class="lib-card soon">
+                    <div class="lib-icon">{icon}</div>
+                    <div class="lib-body">
+                      <h4>{c.name}</h4>
+                      <p>{c.blurb}</p>
+                      <div class="lib-foot"><span class="status">Coming soon</span></div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        ))}
       </div>
+    </div>
+
+    <div class="band navy on-navy">
+      <div class="wrap closer"><h2>There is what you have <em>learned.</em> And what you were <em>never taught.</em></h2><a class="btn btn-solid" href="#human-foundations">Start with Human Foundations <span class="arr">→</span></a></div>
     </div>
   </div>
 
-  <div class="band navy on-navy">
-    <div class="wrap closer"><h2>Start where you are.<br>Build a life you’re proud of.</h2><a class="btn btn-solid" href="#collections">Explore the Academy <span class="arr">→</span></a></div>
-  </div>
+  {OPEN.map((c) => (
+    <div class="band acoll" id={c.id}>
+      <div class="wrap">
+        <a class="back" href="#library"><span aria-hidden="true">←</span> All collections</a>
+        <div class="col-hero">
+          <div class="col-icon"><picture><source srcset={c.dark} media="(prefers-color-scheme: dark)" /><img src={c.image} alt="" width="1280" height="800" loading="lazy" decoding="async" /></picture></div>
+          <div class="stack" style="gap:12px">
+            <p class="eyebrow">The Academy</p>
+            <h1>{c.name}</h1>
+            <p class="lede">{c.blurb}</p>
+          </div>
+        </div>
+        <p class="access"><span><b>Own it:</b> buy here and receive the PDF.</span><span><b>Practice it:</b> included for Practice Club members in the Practice.</span></p>
+
+        {c.tiers && c.bundle && (
+          <>
+            {c.tiers.map((t) => (
+              <div class="tier">
+                <div class="tier-head">
+                  <div><h2>{t.tier}</h2><p>{t.what}</p></div>
+                  <span class="price">{dollars(t.courses[0].price)} each</span>
+                </div>
+                <ul class="rows">
+                  {t.courses.map((k) => (
+                    <li>
+                      <div><h3>{k.title}</h3><p>{k.line}</p></div>
+                      <a class="btn btn-line buy" href={academyBuy(k.id)} aria-label={`Buy ${k.title}, ${dollars(k.price)}`}>Buy</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+            <div class="bundle on-navy">
+              <div><h2>{c.bundle.title}</h2><p>{c.bundle.text}</p></div>
+              <div class="bundle-buy"><span class="price">{dollars(c.price)}</span><a class="btn btn-solid" href={academyBuy(c.id)} aria-label={`Buy the ${c.name} collection, ${dollars(c.price)}`}>Buy the collection <span class="arr">→</span></a></div>
+            </div>
+          </>
+        )}
+
+        {c.single && (
+          <>
+            <div class="tier">
+              <div class="tier-head">
+                <div><h2>{c.single.label}</h2><p>{c.single.note}</p></div>
+                <span class="price">{dollars(c.price)}</span>
+              </div>
+              <ul class="rows">
+                {c.single.modules.map((m) => <li><div><h3>{m.title}</h3>{m.line && <p>{m.line}</p>}</div></li>)}
+              </ul>
+            </div>
+            <div class="bundle on-navy">
+              <div><h2>{c.name}</h2><p>{c.single.label}. Yours as a PDF to print and return to.</p></div>
+              <div class="bundle-buy"><span class="price">{dollars(c.price)}</span><a class="btn btn-solid" href={academyBuy(c.id)} aria-label={`Buy ${c.name}, ${dollars(c.price)}`}>Buy the course <span class="arr">→</span></a></div>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  ))}
 </section>
 </Layout>

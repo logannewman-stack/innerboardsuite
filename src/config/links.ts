@@ -32,9 +32,11 @@ export const LINKS = {
   /** See the collection (the club page): the whole merch line in the app's Practice Club, each piece with its photos
    * and colors. The app says the shop opens soon until Printful is connected, and so does the button's line. */
   collection: into("/club", "suite"),
-  /** Buy: the app's membership page (Join the Practice Club, $29 a month or $249 a year), where an account and
-   * checkout begin. Every button on the site that sells the membership goes here. */
-  join: into("/membership", "suite"),
+  /** Join the Club, every one on the site (the client, November 6: two invitations, each with one job; Start
+   * Practicing is for anyone new, Join the Club makes someone a member): the Practice sign up for the membership,
+   * the Start Practicing pop-up's member side. An account first when there is none, then the membership's
+   * checkout opens by itself, with 7 days free on a first membership. */
+  join: into("/start/member", "suite"),
   /** Enroll now (INQ): the app's address for this button. It asks for an account if there is none, then opens
    * INQ's checkout by itself. */
   inqEnroll: into("/inq/enroll", "inq"),
@@ -49,6 +51,10 @@ export const LINKS = {
   book: "https://www.amazon.com/dp/0998174475",
   contactEmail: "info@innerboardsuite.com"
 } as const;
+
+/** Buy (the Academy, Leah's mockup of November 6): the app's checkout for one course, a whole collection or a
+ * single course, by its id (`buyId` in `src/data/practice.ts`). The app builds the matching checkout. */
+export const academyBuy = (id: string) => `https://www.practiceinnerboard.com/academy/buy/${id}`;
 
 export const SITE = {
   name: "The Practice",

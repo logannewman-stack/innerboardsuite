@@ -21,9 +21,9 @@ Preview: https://innerboardsuite.vercel.app/ (the branch deploy). Production: ht
 | --- | --- | --- |
 | `/` | The Practice | The hero with the app (Today), why practice, the rep circle, the four pathways, the membership, the Club |
 | `/story` | Why practice | The brand belief, the ten reasons (open and close without the script), the manifesto |
-| `/academy` | Academy | The curriculum, why these skills matter, the Academy's 13 collections with their logos (open now or coming soon, and the courses of the open ones), every lesson ends with a rep |
+| `/academy` | Academy | Leah's Academy page (November 6): own it or practice it, the library in three groups with the collections' logos (the core curriculum open now, the rest coming soon), and a view for each open collection (`/academy#human-foundations` and so on) with its tiers, its courses, its prices and a Buy for each |
 | `/lab` | The Lab | Where practice meets real life, Academy or the Lab, what is included, how it works |
-| `/inq` | INQ Certification | Who it is for, the INQ journey (the app's own path, beside the modules), the credential, two steps to start |
+| `/inq` | INQ Certification | Who it is for, the INQ journey (the app's own path, beside the module names), the credential, two steps to start |
 | `/ios` | InnerBoard OS | The challenge, the cost, the IOS model, the workflow and the Company OS Score, the outcome, the Company OS Score form, the book |
 | `/app` | The app | The Practice app, the membership, how it connects |
 | `/club` | The Practice Club | The movement, founding members, the club out in the world, challenges, the founding collection |
@@ -47,12 +47,13 @@ host, so a texted link shows it), and the P mark as favicon and home screen icon
   390 px variant); `scripts/capture.mjs` recaptures any route.
 - `src/pages/*.astro`: one page per view, the design's markup with real routes for its hash links.
 - `src/data/practice.ts`: the content the design drew from its script, word for word: the ten reasons, the INQ
-  modules; and the Academy's collections (Leah, November 4: the Academy's own logos from the Drive, in place of
-  the design's twelve topic photos), with the approved Academy copy's line for each and the courses the app has.
+  modules; and the Academy's library as Leah's mockup of November 6 has it (its groups, the line for each
+  collection, the tiers and their courses, the single courses and their modules, the prices, and each one's buy id),
+  with the Academy's own logos from the Drive ("Academy Logos / USE THESE LOGOS", files 14 to 26).
 - `src/styles/practice.css`: the design's stylesheet as written (fonts self-hosted, the hash routing removed), with
   the few additions the site needs at the end.
-- `src/scripts/practice.ts`: the menu and submenu, the Academy collections, the Company OS Score form (into
-  the app's assessment).
+- `src/scripts/practice.ts`: the menu and submenu, the Company OS Score form (into the app's assessment). The
+  Academy's collection views need no script: the one the address names is shown with CSS (`:target`).
 - `src/config/links.ts`: every route and every outside destination.
 - `public/images/practice/`: the design's photos as WebP, the P mark, the INQ mark, the TPC monograms, the book
   cover. `public/fonts/`: Fraunces (with its optical size axis, which the design's display type uses) and
@@ -72,8 +73,13 @@ host, so a texted link shows it), and the P mark as favicon and home screen icon
   design's own hash links became these, all in `src/config/links.ts`:
   - Every Start Practicing (the header, the home page, `/app`, the 404 page) opens the app's Start Practicing
     pop-up (`/start`, the client, November 3): a free account or a membership with 7 days free, side by side.
-    Join the Club and Join the Movement open the membership in the app (`/membership`), where people buy; Open the
-    app opens the app itself.
+    Every Join the Club (`/app`, the home page's Practice Club, the club page) makes someone a member: the app's
+    sign up for the membership (`/start/member`, the pop-up's member side: an account, then checkout with 7 days
+    free on a first membership). Those are the two invitations, each with one job (the client, November 6); Join
+    the Movement became Join the Club. Open the app opens the app itself.
+  - Every Buy on the Academy page is a link to the app's checkout for it, `/academy/buy/<id>` on
+    www.practiceinnerboard.com, where the id is the title made into a slug (`buyId`): each course $19, each whole
+    collection $99, The Wisdom Collective and The Certified Mind Method $99 each.
   - Enroll now and Start a conversation open the app's own pages for them: `/inq/enroll` (an account, then INQ's
     checkout) and `/inq/talk` (name and email, no account needed, to the INQ team).
   - Get Your Company OS Score, everywhere it appears, opens the assessment in the app (`/os/score`). Talk to Our
