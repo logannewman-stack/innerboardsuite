@@ -438,13 +438,7 @@ main section.view{display:block;animation:rise .5s ease both}
 @media(max-width:1020px){.how-grid{grid-template-columns:1fr}}
 @media(max-width:700px){.cyc{display:none}.cyc-list{display:grid;margin-top:12px}}
 
-.coll{grid-template-rows:auto auto}
-.coll .cimg{aspect-ratio:16/10;overflow:hidden;background:var(--band)}
-.coll .cimg img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
-.coll:hover .cimg img{transform:scale(1.04)}
-.coll-hero{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;margin-bottom:6px}
 .inq-mark{width:92px;height:auto;display:block}
-@media(prefers-reduced-motion:reduce){.coll .cimg img{transition:none}}
 
 .cn{z-index:1}
 .cn h4,.cn p{background:var(--navy);padding:0 6px;position:relative}
@@ -583,9 +577,68 @@ footer{background:var(--navy);color:var(--on-navy-muted);padding-block:56px 40px
 .club-h2 + p{width:min(340px,100%);text-align:center}
 .shop-note{color:var(--muted);font-size:.82rem;margin:-6px 0 0}
 
-/* The Academy's collections with their logos (Leah, November 4): each tile says whether it is open now, and the
- * logo above the panel is shown whole, at its own 16:10, rather than cropped to the photos' 16:9. */
-.coll .cimg picture{display:block;height:100%}
-.detail picture{display:block}
-.coll span small{display:block;margin-top:3px;font-size:.78rem;font-weight:400;color:var(--muted)}
-.coll-hero{aspect-ratio:16/10;object-fit:contain;background:var(--surface);border:1px solid var(--line)}
+/* The Academy (Leah's mockup, November 6): the hero's two ways in, the library in its three groups, and each open
+ * collection's own view at /academy#<collection>. Every view is in the page; the one the address names is shown,
+ * and the library steps aside for it. The logos sit on the card's own colour, the colour they were inked on. */
+.aca em{font-style:italic;font-weight:400;color:var(--gold)}
+.aca .on-navy em{color:var(--gold-soft)}
+.aca-hero h1{margin-top:18px;max-width:15ch}
+.aca-hero .lede{margin-top:20px}
+.ways{display:grid;grid-template-columns:1fr 1fr;gap:20px 32px;margin-top:36px;max-width:820px}
+.ways > div{border-top:1px solid var(--gold-soft);padding-top:14px}
+.ways h2{font-size:1.4rem}
+.ways p{color:var(--muted);font-size:.98rem;margin-top:6px}
+@media(max-width:620px){.ways{grid-template-columns:1fr}}
+.lib-group{font-family:var(--body);font-size:.74rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);line-height:1.4;margin:48px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.lib-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.lib-grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:1000px){.lib-grid,.lib-grid.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.lib-grid,.lib-grid.four{grid-template-columns:1fr}}
+.lib-card{background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;text-decoration:none;color:inherit;min-width:0}
+a.lib-card{transition:border-color .2s,transform .2s}
+a.lib-card:hover{border-color:var(--gold-soft);transform:translateY(-2px)}
+.lib-icon{aspect-ratio:16/10;display:grid;place-items:center;overflow:hidden}
+.lib-icon picture,.lib-icon img{display:block;width:100%;height:100%}
+.lib-icon img{object-fit:contain}
+/* Coming soon: the dark-mode logos (bright on the navy) step back a little; the light ones are pale already. */
+@media (prefers-color-scheme: dark){.lib-card.soon .lib-icon img{opacity:.7}}
+.lib-ph{width:26%;aspect-ratio:1;border:1.5px dashed var(--gold-soft);border-radius:50%;position:relative;translate:0 -8%}
+.lib-ph::after{content:"";position:absolute;left:-55%;right:-55%;bottom:-34%;height:1px;background:var(--line)}
+.lib-body{padding:2px 22px 22px;display:flex;flex-direction:column;gap:10px;flex:1}
+.lib-card h4{font-size:1.35rem;line-height:1.12}
+.lib-card p{color:var(--muted);font-size:.93rem}
+.lib-foot{margin-top:auto;padding-top:8px;display:flex;justify-content:space-between;align-items:center;gap:6px 12px;flex-wrap:wrap}
+.status{font-size:.68rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;color:var(--gold)}
+.lib-card.soon .status{color:var(--muted)}
+.lib-foot .go{font-size:.86rem;font-weight:500;color:var(--ink);white-space:nowrap}
+.lib-foot .arr{display:inline-block;transition:transform .2s}
+a.lib-card:hover .arr{transform:translateX(3px)}
+.acoll{display:none}
+.acoll:target{display:block}
+.aca:has(.acoll:target) .alib{display:none}
+.back{display:inline-flex;gap:8px;align-items:center;font-size:.88rem;font-weight:500;text-decoration:none;color:var(--gold);margin-bottom:28px}
+.back:hover{color:var(--ink)}
+.col-hero{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:36px;align-items:center}
+.col-icon{aspect-ratio:16/10;background:var(--surface);border:1px solid var(--line)}
+.col-icon picture,.col-icon img{display:block;width:100%;height:100%;object-fit:contain}
+.col-hero h1{font-size:clamp(2.2rem,5vw,3.6rem)}
+@media(max-width:700px){.col-hero{grid-template-columns:1fr;gap:22px}.col-icon{max-width:320px}}
+.access{margin-top:28px;display:flex;flex-wrap:wrap;gap:8px 28px;font-size:.95rem;color:var(--muted)}
+.access b{color:var(--ink);font-weight:600}
+.tier{margin-top:52px}
+.tier-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap;border-bottom:1px solid var(--ink);padding-bottom:12px}
+.tier-head h2{font-size:1.75rem;font-style:italic;font-weight:400}
+.tier-head p{color:var(--muted);font-size:.95rem;max-width:56ch;margin-top:6px}
+.price{font-family:var(--display);font-size:1.25rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rows{list-style:none;margin:0;padding:0}
+.rows li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center;padding-block:18px;border-bottom:1px solid var(--line)}
+.rows h3{font-size:1.25rem;line-height:1.15}
+.rows p{color:var(--muted);font-size:.93rem;margin-top:4px;max-width:62ch}
+.btn.buy{padding:10px 20px;font-size:.88rem}
+.bundle{margin-top:56px;background:var(--navy);color:var(--on-navy);padding:36px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.bundle h2{font-size:1.9rem}
+.bundle p{color:var(--on-navy-muted);margin-top:8px;max-width:52ch}
+.bundle-buy{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.bundle .price{font-size:2rem}
+@media(max-width:560px){.bundle{padding:28px 22px}.rows li{gap:14px}}
+@media(prefers-reduced-motion:reduce){a.lib-card,.lib-foot .arr{transition:none}a.lib-card:hover{transform:none}}

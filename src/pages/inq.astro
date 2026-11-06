@@ -39,7 +39,7 @@ import { LINKS } from "../config/links";
       <p class="lede" style="margin-top:14px">Each module builds on the one before it. You start with your own awareness, emotions, and identity. Then you take the work into your relationships, your energy, and your choices. Only then do you learn to coach it, so by certification you’re leading others through work you’ve already done yourself.</p>
       <div class="journey-app">
         <AppPhone screen="inq-journey" width={300} alt="INQ Certification in The Practice app: your journey towards becoming a certified INQ coach, stop by stop, starting with Module 0, Accreditation." />
-        <ol class="journey-list" id="journeyList">{MODULES.map((m) => <li data-n={m.n}><b>{m.name}</b><small>{m.lessons} lessons</small></li>)}</ol>
+        <ol class="journey-list" id="journeyList">{MODULES.map((m) => <li data-n={m.n}><b>{m.name}</b></li>)}</ol>
       </div>
     </div>
   </div>

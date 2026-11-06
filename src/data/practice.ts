@@ -1,26 +1,31 @@
 /**
  * The content behind the interactive parts of the design (November 1, 2026), word for word: the ten reasons
- * (/story), the Academy's collections (/academy, now the Academy's own thirteen and their logos), and the INQ
+ * (/story), the Academy's library (/academy, as Leah's Academy page mockup of November 6 has it), and the INQ
  * journey (/inq).
  */
 export interface Reason { title: string; sub: string; body: string; practice: string; changes: string; line: string }
-export interface Collection {
+
+/** The three tiers a tiered collection is shelved in. */
+export type Tier = "Foundations" | "Practicum" | "Graduate";
+/** Something the Academy sells: its checkout id in the app (`/academy/buy/<id>`), its title and its price. */
+export interface Buyable { id: string; title: string; price: number }
+/** A course in a tiered collection: its title and the line under it. */
+export interface Course extends Buyable { line: string }
+/** One of the four open collections. A tiered one has `tiers` and `bundle`; a single course has `single`. */
+export interface OpenCollection extends Buyable {
   name: string;
-  /** "now": open in the app; "soon": coming soon. */
-  status: "now" | "soon";
-  desc: string;
-  /** The courses the app has in it, in its order; none for a collection still to come. */
-  courses: string[];
-  /** A line in place of the list, where a collection is one course. */
-  note?: string;
-  /** Where its button goes, and what the button says, when not the app. */
-  href?: string;
-  cta?: string;
-  slug: string;
+  blurb: string;
   image: string;
   dark: string;
+  tiers?: { tier: Tier; what: string; courses: Course[] }[];
+  /** The whole collection, bought at once. */
+  bundle?: { title: string; text: string };
+  /** One course bought as one: what it is, the note under it, and its modules (a title, and a line where it has one). */
+  single?: { label: string; note: string; modules: { title: string; line: string }[] };
 }
-export interface Module { n: string; name: string; lessons: number }
+/** A collection still to come. `image` is missing where its logo is still being drawn. */
+export interface SoonCollection { name: string; blurb: string; image?: string; dark?: string }
+export interface Module { n: string; name: string }
 
 export const REASONS: Reason[] = [
   {
@@ -106,193 +111,155 @@ export const REASONS: Reason[] = [
 ];
 
 /**
- * The Academy's collections, as the Academy names them, each with its logo from the client's Drive ("Academy
- * Logos / USE THESE LOGOS", November 3; Leah, November 4: "Can you swap these out with academy logos"). Each
- * line is the approved Academy copy's ("Academy Page Rebuild: Copy and Build Directions"), except Health &
- * Energy's, which that copy does not have yet. The three collections live in the app list their courses as the app
- * has them; the rest are coming soon. `dark` is the logo on the dark-mode card.
+ * The id a thing the Academy sells goes by, in the app’s checkout (`/academy/buy/<id>`): its title in lower case,
+ * "&" as "and", and every run of anything else that is not a letter or a digit as one hyphen.
  */
-const ACADEMY: Omit<Collection, "image" | "dark">[] = [
+export const buyId = (title: string) => title.toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
+/** Prices, in cents: every course in a tiered collection, a whole collection, and a single course. */
+export const PRICE = { course: 1900, collection: 9900, single: 9900 } as const;
+/** "$19", from 1900. */
+export const dollars = (cents: number) => `$${cents % 100 ? (cents / 100).toFixed(2) : cents / 100}`;
+
+/** What each tier is for (Leah’s mockup, `TIERS`). */
+export const TIERS: Record<Tier, string> = {
+  Foundations: "Where you start seeing what’s driving you. Your thoughts, your reactions, and why you keep doing what you do.",
+  Practicum: "You know it. You still do it. This is where that changes.",
+  Graduate: "For the moments with the most at stake. The hardest conversations, the oldest habits, and the places you still lose yourself."
+};
+
+/** A logo from the Drive’s "Academy Logos / USE THESE LOGOS" (files 14 to 26, the icon with its name under it),
+ * on the light card and on the dark-mode card. */
+const logo = (slug: string) => ({ image: `/images/practice/academy/${slug}.webp`, dark: `/images/practice/academy/${slug}-dark.webp` });
+const courses = (list: [string, string][]): Course[] => list.map(([title, line]) => ({ id: buyId(title), title, line, price: PRICE.course }));
+const tiers = (t: Record<Tier, [string, string][]>) => (Object.keys(t) as Tier[]).map((tier) => ({ tier, what: TIERS[tier], courses: courses(t[tier]) }));
+const open = (name: string, slug: string, price: number, rest: Omit<OpenCollection, keyof Buyable | "name" | "image" | "dark">): OpenCollection =>
+  ({ id: buyId(name), title: name, price, name, ...logo(slug), ...rest });
+
+/**
+ * The four open collections, word for word as Leah’s Academy page mockup (November 6) has them (`OPEN`): the
+ * two tiered collections, each course $19 and the whole collection $99, and the two single courses, $99 each.
+ */
+export const OPEN: OpenCollection[] = [
+  open("Human Foundations", "human-foundations", PRICE.collection, {
+    blurb: "The complete inner world: thought, emotion, identity, belief, and the daily practice of self-leadership.",
+    tiers: tiers({
+      Foundations: [
+        ["InnerBoard 101", "You are what you practice being."],
+        ["Thought Awareness 101", "Catch the thought before it becomes you."],
+        ["Emotional Mastery 101", "Feel it all the way through."],
+        ["Personal Ownership 101", "There’s a version of your life where everything that isn’t working is someone else’s fault."],
+        ["Personal Power", "Lead the moment, or it leads you."]
+      ],
+      Practicum: [
+        ["Self-Leadership Basics", "You already know more about yourself than you’re living."],
+        ["Understanding Your Patterns", "The same argument in different relationships. The same stall at the same point in a project."],
+        ["Rewiring Thought Loops", "There’s a thought you’ve had thousands of times."],
+        ["From Reaction to Response", "Someone says the thing that lands wrong, and you’re already reacting."],
+        ["Regulating Yourself Under Pressure", "You check who else is going before you say yes."]
+      ],
+      Graduate: [
+        ["Identity Reconstruction", "You built an identity to survive the context you were in. It worked, until it became the ceiling."],
+        ["Emotional Alchemy", "The capacity to feel everything, and be stopped by nothing."],
+        ["Advanced Self-Leadership", "Living what you know when it costs something."],
+        ["Embodied Self-Mastery", "The moment the work stops being something you do and becomes something you are."]
+      ]
+    }),
+    bundle: { title: "The whole collection", text: "All 14 Human Foundations courses, every tier." }
+  }),
+  open("Relationships & Connection", "relationships-and-connection", PRICE.collection, {
+    blurb: "Communication, patterns, boundaries, and the inner work of building real connection.",
+    tiers: tiers({
+      Foundations: [
+        ["Relationships 101", "Every relationship you have is a reflection of the one you have with yourself."],
+        ["Communication 101", "The conversation begins inside you."],
+        ["Boundaries 101", "A boundary isn’t a rule for someone else. It’s a decision about yourself."],
+        ["What You Believe Is True", "You author your experience. A belief makes that harder to see."]
+      ],
+      Practicum: [
+        ["Leading Yourself Through Conflict", "Conflict is an inside job."],
+        ["The Practice of Honest Communication", "Say what you mean. Own what you say."],
+        ["When a Boundary Is Tested", "The decision was the boundary. This is the follow-through."],
+        ["The People-Pleasing Pattern", "The yes was never for them."]
+      ],
+      Graduate: [
+        ["Relational Freedom", "Somewhere in your life is a relationship where the smallest moments hit the hardest."],
+        ["The Relational Mirror", "Your biggest reactions rarely match their moments."],
+        ["Relational Leadership", "Somewhere in your life is a relationship running below what you know is possible."]
+      ]
+    }),
+    bundle: { title: "The whole collection", text: "All 11 Relationships & Connection courses, every tier." }
+  }),
+  open("The Wisdom Collective", "the-wisdom-collective", PRICE.single, {
+    blurb: "48 books. 7 research-grounded frameworks. The science underneath why this work works.",
+    single: {
+      label: "One course, seven modules",
+      note: "Purchased as one. The modules work as one arc: mind, body, identity, behavior, performance, people, and purpose.",
+      modules: [
+        { title: "The Mind That Filters Everything", line: "What am I thinking that I think is true?" },
+        { title: "Your Body Has a Vote", line: "Is my biology supporting my ambition, or quietly working against it?" },
+        { title: "Who Do You Think You Are?", line: "Who am I becoming?" },
+        { title: "You Are What You Repeat", line: "How do I change what I do, not just what I intend to do?" },
+        { title: "The Architecture of Doing Your Best Work", line: "How do I consistently achieve at the level I know I’m capable of?" },
+        { title: "The Science of People Who Lead Well", line: "How do I influence, connect with, and bring out the best in the people around me?" },
+        { title: "What Is All of This in Service Of?", line: "The question the whole course builds toward." }
+      ]
+    }
+  }),
+  open("The Certified Mind Method", "certified-mind-method", PRICE.single, {
+    blurb: "The complete method behind INQ Certification: five tools that create real follow-through in your own life and with anyone you lead.",
+    single: {
+      label: "One course, standalone",
+      note: "Follow-through was never a discipline problem. Five tools, each taught twice: once to run on yourself, once to run with anyone you lead.",
+      modules: ["See the thought", "Trace the loop", "Find the driver", "Choose the instruction", "Take the seat"].map((title) => ({ title, line: "" }))
+    }
+  })
+];
+
+/**
+ * The library, in the mockup’s three groups (`GROUPS`). The core curriculum is the four open collections; every
+ * other collection is coming soon. Parenting & Family Life has no logo yet (Michelle is drawing it).
+ */
+export const GROUPS: { label: string; cards: (OpenCollection | SoonCollection)[] }[] = [
+  { label: "Core Curriculum", cards: OPEN },
   {
-    name: "Human Foundations",
-    status: "now",
-    desc: "Thought, emotion, identity, belief, and the daily practice of self-leadership.",
-    courses: [
-      "InnerBoard 101",
-      "Thought Awareness 101",
-      "Emotional Mastery 101",
-      "Personal Ownership 101",
-      "Personal Power",
-      "Self-Leadership Basics",
-      "Understanding Your Patterns",
-      "Rewiring Thought Loops",
-      "From Reaction to Response",
-      "Regulating Yourself Under Pressure",
-      "Identity Reconstruction",
-      "Emotional Alchemy",
-      "Advanced Self-Leadership",
-      "Embodied Self-Mastery"
-    ],
-    slug: "human-foundations"
+    label: "Life Stage Collections",
+    cards: [
+      { name: "Teens", blurb: "Identity, big emotions, confidence, and the early practice of self-leadership, built for ages 14 to 18.", ...logo("teens") },
+      { name: "Young Adult Life", blurb: "Self-trust, direction, and building stability while building a life, for ages 18 to 25.", ...logo("young-adult-life") },
+      { name: "Life Transitions & Midlife", blurb: "For anyone in a season where the life they were living no longer fits the person they are becoming.", ...logo("life-transitions-and-midlife") },
+      { name: "Parenting & Family Life", blurb: "How your inner world shapes your family system, and how to lead your home from the inside out." }
+    ]
   },
   {
-    name: "The Wisdom Collective",
-    status: "now",
-    desc: "48 books. 7 research-grounded frameworks. The science underneath why this work works.",
-    courses: [],
-    note: "One course, in seven parts.",
-    slug: "the-wisdom-collective"
-  },
-  {
-    name: "Relationships & Connection",
-    status: "now",
-    desc: "How you communicate, what you keep repeating, where your boundaries are, and building real connection.",
-    courses: [
-      "Relationships 101",
-      "Communication 101",
-      "Boundaries 101",
-      "What You Believe Is True",
-      "Leading Yourself Through Conflict",
-      "The Practice of Honest Communication",
-      "When a Boundary Is Tested",
-      "The People-Pleasing Pattern",
-      "Relational Freedom",
-      "The Relational Mirror",
-      "Relational Leadership"
-    ],
-    slug: "relationships-and-connection"
-  },
-  {
-    name: "The Certified Mind Method",
-    status: "now",
-    desc: "The complete method behind INQ Certification: five tools that create real follow-through in your own life and with anyone you lead. One course, purchased as one.",
-    courses: [],
-    note: "Part of INQ Certification.",
-    href: "/inq",
-    cta: "See INQ Certification",
-    slug: "certified-mind-method"
-  },
-  {
-    name: "Teens",
-    status: "soon",
-    desc: "Identity, big emotions, confidence, and the early practice of self-leadership. Built for ages 14 to 18.",
-    courses: [],
-    slug: "teens"
-  },
-  {
-    name: "Young Adult Life",
-    status: "soon",
-    desc: "Self-trust, direction, and building stability while building a life. For ages 18 to 25.",
-    courses: [],
-    slug: "young-adult-life"
-  },
-  {
-    name: "Life Transitions & Midlife",
-    status: "soon",
-    desc: "For the season when everything is shifting and you\u2019re finding your footing.",
-    courses: [],
-    slug: "life-transitions-and-midlife"
-  },
-  {
-    name: "Work, Career & Professional Life",
-    status: "soon",
-    desc: "Who you are at work, how you hold steady under pressure, and owning your part.",
-    courses: [],
-    slug: "work-career-and-professional-life"
-  },
-  {
-    name: "Purpose & Life Design",
-    status: "soon",
-    desc: "From drifting to directing. Built on design, not motivation.",
-    courses: [],
-    slug: "purpose-and-life-design"
-  },
-  {
-    name: "Health & Energy",
-    status: "soon",
-    desc: "How sleep, movement, food and stress shape the way you think, feel and lead.",
-    courses: [],
-    slug: "health-and-energy"
-  },
-  {
-    name: "Spiritual Growth & Inner Expansion",
-    status: "soon",
-    desc: "Presence, stillness, trust, and the parts of life you feel more than you can explain.",
-    courses: [],
-    slug: "spiritual-growth-and-inner-expansion"
-  },
-  {
-    name: "Money & Financial Life",
-    status: "soon",
-    desc: "The beliefs driving what you do with money. The part underneath every budget and strategy.",
-    courses: [],
-    slug: "money-and-financial-life"
-  },
-  {
-    name: "Grief & Loss",
-    status: "soon",
-    desc: "Death, divorce, the loss of who you were. How to meet an ending, and what becomes possible after it.",
-    courses: [],
-    slug: "grief-and-loss"
+    label: "Domain Collections",
+    cards: [
+      { name: "Work, Career & Professional Life", blurb: "The inner game of work: identity, regulation under pressure, and personal ownership in the workplace.", ...logo("work-career-and-professional-life") },
+      { name: "Purpose & Life Design", blurb: "Not motivation. Design. For the person ready to move from drifting to directing.", ...logo("purpose-and-life-design") },
+      { name: "Spiritual Growth & Inner Expansion", blurb: "Presence, stillness, trust, and the dimensions of experience that science describes but cannot fully contain.", ...logo("spiritual-growth-and-inner-expansion") },
+      { name: "Money & Financial Life", blurb: "The beliefs and identity stories driving your financial behavior, the self-leadership layer underneath the strategy.", ...logo("money-and-financial-life") },
+      { name: "Grief & Loss", blurb: "The inner work of endings: death, divorce, identity loss, and what becomes possible on the other side.", ...logo("grief-and-loss") },
+      { name: "Health & Energy", blurb: "The body as information. How your physical state shapes how you lead yourself, and the reverse.", ...logo("health-and-energy") }
+    ]
   }
 ];
 
-export const COLLECTIONS: Collection[] = ACADEMY.map((c) => ({
-  ...c,
-  image: `/images/practice/academy/${c.slug}.webp`,
-  dark: `/images/practice/academy/${c.slug}-dark.webp`
-}));
+/** Everything the Academy sells, for the app’s checkout: each course, each whole collection, each single course. */
+export const BUYABLE = OPEN.flatMap((c) => [
+  ...(c.tiers || []).flatMap((t) => t.courses.map((k) => ({ id: k.id, title: k.title, kind: "course" as const, collection: c.id, price_cents: k.price }))),
+  { id: c.id, title: c.name, kind: c.tiers ? ("collection" as const) : ("single" as const), collection: c.id, price_cents: c.price }
+]);
 
 /** The INQ modules, in order. */
 export const MODULES: Module[] = [
-  {
-    "n": "0",
-    "name": "Accreditation",
-    "lessons": 10
-  },
-  {
-    "n": "1",
-    "name": "Radical Awareness",
-    "lessons": 14
-  },
-  {
-    "n": "2",
-    "name": "Mastering Emotions",
-    "lessons": 13
-  },
-  {
-    "n": "3",
-    "name": "Identity Design & Reinvention",
-    "lessons": 10
-  },
-  {
-    "n": "4",
-    "name": "Relationships as the Mirror",
-    "lessons": 11
-  },
-  {
-    "n": "5",
-    "name": "Energy as a Leadership Strategy",
-    "lessons": 13
-  },
-  {
-    "n": "6",
-    "name": "Alignment in Action",
-    "lessons": 9
-  },
-  {
-    "n": "7",
-    "name": "Coaching Others: Becoming the Work",
-    "lessons": 8
-  },
-  {
-    "n": "8",
-    "name": "Integration & Certification: Being the Work",
-    "lessons": 6
-  },
-  {
-    "n": "B",
-    "name": "Bonus: The Entrepreneurial Path",
-    "lessons": 12
-  }
+  { n: "0", name: "Accreditation" },
+  { n: "1", name: "Radical Awareness" },
+  { n: "2", name: "Mastering Emotions" },
+  { n: "3", name: "Identity Design & Reinvention" },
+  { n: "4", name: "Relationships as the Mirror" },
+  { n: "5", name: "Energy as a Leadership Strategy" },
+  { n: "6", name: "Alignment in Action" },
+  { n: "7", name: "Coaching Others: Becoming the Work" },
+  { n: "8", name: "Integration & Certification: Being the Work" },
+  { n: "B", name: "Bonus: The Entrepreneurial Path" }
 ];
